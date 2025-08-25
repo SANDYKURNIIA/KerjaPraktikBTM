@@ -1,0 +1,8 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `generate_id_history_ranap`() RETURNS varchar(50) CHARSET utf8mb4
+BEGIN
+   DECLARE tbl_history_ranap INT;
+   select case when max(id_history) is null then 1 else (max(id_history)+1) end as id into tbl_history_ranap from history_pelayanan_ranap;
+   return tbl_history_ranap;
+END$$
+DELIMITER ;

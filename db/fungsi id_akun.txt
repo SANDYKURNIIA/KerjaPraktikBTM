@@ -1,0 +1,8 @@
+DELIMITER $$
+CREATE FUNCTION `generate_id_akun_online`() RETURNS VARCHAR(50)
+BEGIN
+   DECLARE tbl_id VARCHAR(50);
+   select CONCAT('ak_',case when count(*) is null then 1 else (count(*)+1) end) as id into tbl_id from akun_online;
+   return tbl_id;
+END$$
+DELIMITER $$

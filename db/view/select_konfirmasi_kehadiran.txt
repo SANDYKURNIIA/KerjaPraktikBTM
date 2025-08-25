@@ -1,0 +1,66 @@
+CREATE VIEW v_konfirmasi_kehadiran AS SELECT
+    `b`.`id_pelayanan` AS `id_pelayanan`,
+    `h`.`id_history` AS `id_history`,
+    `c`.`id_cara_bayar` AS `id_cara_bayar`,
+    `h`.`nama_poli` AS `nama_poli`,
+    `h`.`dpjp` AS `dpjp`,
+    `h`.`tgl_masuk` AS `tgl_masuk`,
+    `p`.`no_rm` AS `no_rm`,
+    `p`.`nama` AS `nama`,
+    `p`.`jenis_kelamin` AS `jenis_kelamin`,
+    `p`.`tgl_lahir` AS `tgl_lahir`,
+    `p`.`agama` AS `agama`,
+    `h`.`jenis_pelayanan` AS `jenis_pelayanan`,
+    `dok`.`nama` AS `nama_dokter`,
+    `b`.`no_sep` AS `no_sep`,
+    `b`.`diagnosa` AS `diagnosa`,
+    `c`.`nama` AS `cara_bayar`,
+    `pl`.`nama` AS `poli`,
+    `b`.`keterangan` AS `keterangan`,
+    `b`.`status` AS `status`,
+    `b`.`ket` AS `ket`,
+    `an`.`no_antri` AS `no_antri`,
+    `a`.`no_hp` AS `no_hp`,
+    `a`.`nama` AS `nama_akun`,
+    `al`.`nama` AS `nama_asal`,
+    `al`.`id_asal_pasien` AS `id_asal_pasien`
+FROM
+    (
+        (
+            (
+                (
+                    (
+                        (
+                            (
+                                (`pasien` `p`
+                            JOIN `pelayanan` `b`)
+                            JOIN `history_pelayanan` `h`
+                            )
+                        JOIN `cara_bayar` `c`
+                        )
+                    JOIN `list_poli` `pl`
+                    )
+                JOIN `dokter` `dok`
+                )
+            JOIN `akun_online` `a`
+            )
+        JOIN `asal_pasien` `al`
+        )
+        JOIN `antrian_poli` `an`
+        )
+    JOIN `list_rm_online` `l`
+    
+WHERE
+    (
+        (`p`.`no_rm` = `b`.`id_pasien`) AND(
+            `h`.`id_pelayanan` = `b`.`id_pelayanan`
+        ) AND(`c`.`id_cara_bayar` = `b`.`cara_bayar`) AND(`pl`.`id_list_poli` = `h`.`nama_poli`) AND(`h`.`dpjp` = `dok`.`id_dokter`) AND(`h`.`jenis_pelayanan` = 'POLI') AND(`b`.`tipe` = 'ONLINE') AND(
+            `b`.`asal_pasien` = `al`.`id_asal_pasien`
+        ) AND(`a`.`id_akun` = `l`.`id_akun`) AND(`l`.`no_rm` = `p`.`no_rm`) AND(`b`.`id_pasien` = `l`.`no_rm`) AND(`b`.`id_pelayanan` = `an`.`id_pelayanan`) AND (`an`.`jenis_antrian` = 'ONLINE') 
+    )
+ORDER BY
+    `h`.`tgl_masuk`
+DESC
+
+LIMIT 100
+    ;

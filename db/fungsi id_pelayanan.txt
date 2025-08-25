@@ -1,0 +1,8 @@
+DELIMITER $$
+CREATE FUNCTION `generate_pelayanan`() RETURNS VARCHAR(50)
+BEGIN
+   DECLARE tbl_pelayanan INT;
+   select case when max(id_pelayanan) is null then 1 else (max(id_pelayanan)+1) end as id into tbl_pelayanan from pelayanan;
+   return tbl_pelayanan;
+END $$
+DELIMITER $$
