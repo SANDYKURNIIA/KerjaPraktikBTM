@@ -46,8 +46,18 @@ class Main extends CI_Controller
         ];
         $this->M_Staff->update_token($data, $id_token);
 
+        // --- PERBAIKAN DI SINI ---
+
+        // 1. Ambil URL SSO dan simpan di variabel sementara SEBELUM sesi dihancurkan
+        $sso_logout_url = $this->session->userdata('base_sso');
+
+        // 2. Sekarang, baru hancurkan seluruh sesi
         $this->session->sess_destroy();
-        redirect($this->session->userdata['base_sso']);
+
+        // 3. Arahkan pengguna ke URL yang sudah kita simpan dengan aman
+        redirect($sso_logout_url);
+
+        // Baris di bawah ini bisa Anda hapus jika tidak diperlukan
         // redirect('Home');
     }
 

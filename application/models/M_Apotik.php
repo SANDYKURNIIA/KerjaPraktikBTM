@@ -9,7 +9,7 @@ class M_Apotik extends CI_Model
         $this->db->where('nama', 'status_so_apotik');
         return $this->db->get()->row_array();
     }
-    //pasien rajal
+    //pasien rajal 
 
     public function selectRangePasienRajal($mulai, $akhir) //poli
     {
@@ -20,29 +20,52 @@ class M_Apotik extends CI_Model
         if ($mulai != '' && $akhir != '') {
             $this->db->where(' tanggal >= ', $mulai);
             $this->db->where(' tanggal <=', $akhir);
-        } else {
+        } else { 
             $this->db->like(' tanggal ', $tgl);
         }
 
         return $this->db->get('v_rajal_apotik')->result();
     }
-    public function selectPasienIgd() //igd
-    {
-        $query =  $this->db->query("SELECT b.id_pelayanan,h.id_history,c.id_cara_bayar,'-' AS nama_poli,h.tgl_masuk,p.no_rm,p.nama ,p.jenis_kelamin,p.tgl_lahir,p.agama,h.jenis_pelayanan,dok.nama nama_dokter,b.no_sep,b.diagnosa,c.nama AS cara_bayar,'-' AS poli,b.keterangan,b.tipe,p.alamat,r.tgl_req tanggal
-        from pasien p , pelayanan b , history_pelayanan_ugd h , cara_bayar c , dokter dok , resep_obat r 
-        where p.no_rm = b.id_pasien 
-        and h.id_pelayanan = b.id_pelayanan 
-        and c.id_cara_bayar = b.cara_bayar 
-        and h.dpjp = dok.id_dokter 
-        and (b.status_rawat = 'dirawat' or b.status_rawat = 'dikembalikan') 
-        and b.status = 1 
-        and b.id_pelayanan = r.id_pelayanan 
-        and h.id_history = r.id_history 
-        and r.status = 1
-        and h.status = 1
-        ");
-        return $query->result();
-    }
+ public function selectPasienIgd() //igd
+{
+    $query =  $this->db->query("
+        SELECT 
+            b.id_pelayanan,
+            h.id_history,
+            c.id_cara_bayar,
+            '-' AS nama_poli,
+            h.tgl_masuk,
+            p.no_rm,
+            p.nama,
+            p.jenis_kelamin,
+            p.tgl_lahir,
+            p.agama,
+            h.jenis_pelayanan,
+            dok.nama nama_dokter,
+            b.no_sep,
+            b.diagnosa,
+            c.nama AS cara_bayar,
+            '-' AS poli,
+            b.keterangan,
+            b.tipe,
+            p.alamat,
+            r.tgl_req tanggal,
+            p.kode AS kode_pasien   -- ✅ tambahkan ini
+        FROM pasien p 
+        JOIN pelayanan b ON p.no_rm = b.id_pasien
+        JOIN history_pelayanan_ugd h ON h.id_pelayanan = b.id_pelayanan
+        JOIN cara_bayar c ON c.id_cara_bayar = b.cara_bayar
+        JOIN dokter dok ON h.dpjp = dok.id_dokter
+        JOIN resep_obat r ON b.id_pelayanan = r.id_pelayanan AND h.id_history = r.id_history
+        WHERE 
+            (b.status_rawat = 'dirawat' OR b.status_rawat = 'dikembalikan')
+            AND b.status = 1
+            AND r.status = 1
+            AND h.status = 1
+    ");
+    return $query->result();
+}
+
     public function selectObatBebas($mulai, $akhir)
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -105,6 +128,40 @@ class M_Apotik extends CI_Model
 
         return $this->db->get()->result();
     }
+
+    //yohanes1
+// ambil data pasien by kode (masih perlu karena dipanggil di controller)
+public function getPasienByKode($kode_pasien)
+{
+    return $this->db->get_where('pasien', ['kode' => $kode_pasien])->row_array();
+}
+
+// ambil data edukasi pasien berdasarkan no_rm (hanya 1 terakhir)
+public function getEdukasiByNoRM($no_rm)
+{
+    return $this->db->order_by('tanggal_input', 'DESC')
+                    ->get_where('topik_edukasi_ugd', ['no_rm' => $no_rm])
+                    ->row_array(); // hanya 1 baris
+}
+
+
+// insert atau update data edukasi (pakai no_rm)
+public function saveOrUpdateEdukasi($data)
+{
+    $cek = $this->db->get_where('topik_edukasi_ugd', [
+        'no_rm' => $data['no_rm']
+    ])->row();
+
+    if ($cek) {
+        $this->db->where('id_edukasi', $cek->id_edukasi);
+        return $this->db->update('topik_edukasi_ugd', $data);
+    } else {
+        return $this->db->insert('topik_edukasi_ugd', $data);
+    }
+}
+
+
+
     public function selectObatByResep_kronis($id_resep)
     {
         $this->db->select('t.*, l.nama, s.nama staff, si.tindakan,r.jenis_resep ');

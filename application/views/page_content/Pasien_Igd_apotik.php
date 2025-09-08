@@ -17,6 +17,7 @@
                             <tr class="bg-success">
                                 <th>NO</th>
                                 <th>TINDAKAN OBAT</th>
+                                <th>TOPIK EDUKASI</th>
                                 <!-- 												 <th>RACIKAN</th>  -->
                                 <th>TANGGAL PELAYANAN</th>
                                 <th>JAM REQUEST</th>
@@ -37,6 +38,7 @@
                             <tr class="bg-success">
                                 <th>NO</th>
                                 <th>TINDAKAN OBAT</th>
+                                <th>TOPIK EDUKASI</th>
                                 <!-- 												 <th>RACIKAN</th>  -->
                                 <th>TANGGAL PELAYANAN</th>
                                 <th>JAM REQUEST</th>

@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $http = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http";
-$config['base_url'] = 'http://192.168.100.139:8880/';
+$config['base_url'] = 'http://re-sibatik.local/';
 
 
 /*
