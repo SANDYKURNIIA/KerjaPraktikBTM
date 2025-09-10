@@ -585,11 +585,10 @@
                                         <div class="table-wrap" style="width: 85%; margin-bottom:40px;">
                                             <!-- <p id="notif_load" style="color:red;">Loading data, Please wait</p> -->
                                             <div class="table-responsive ">
-                                                <table class="table table-hover display " id="outTotalHarga1">
+                                                <table class="table table-hover display " id="outTotalHargaObat">
                                                     <thead>
                                                         <tr class="bg-success">
-                                                        <th style="font-weight:bold;">SUBTOTAL</th>
-                                                            <th style="font-weight:bold;">TOTAL BIAYA</th>
+                                                            <th style="font-weight:bold;">Total Keseluruhan</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody style="color: black">
@@ -669,7 +668,7 @@
                             <input type="hidden" class="form-control" id="inHisResep">
                             <input type="hidden" class="form-control" id="hargaCost1">
                             <input type="hidden" class="form-control" id="inDepo1">
-                            <input type="hidden" class="form-control" id="inResRetur">
+                            <input type="text" class="form-control" id="inResRetur">
                             <input type="hidden" class="form-control" id="inJenisPelRetur">
 
                             <div class="form-actions mt-10">
@@ -993,13 +992,6 @@
                 title: "Gagal!",
                 type: "warning",
                 text: "Pilih Cara Bayar Terlebih Dahulu!",
-                confirmButtonColor: "#3cb878",
-            });
-        }else if (id_dokter == '-') {
-            swal({
-                title: "Gagal!",
-                type: "warning",
-                text: "Pilih Dokter Terlebih Dahulu!",
                 confirmButtonColor: "#3cb878",
             });
         } else {
@@ -1493,93 +1485,49 @@
 
     }
 
-    // function reload_total_obat(id_pelayanan) {
-    //     $('#outTotalHargaObat').dataTable().fnClearTable();
-    //     $('#outTotalHargaObat').dataTable().fnDestroy();
-    //     $('#outTotalHargaObat').DataTable({
-    //         "pageLength": 10,
-    //         "searching": false,
-    //         "lengthChange": false,
-    //         "bInfo": false,
-    //         "paging": false,
-    //         "language": {
-    //             "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-    //             "sProcessing": "Sedang memproses...",
-    //             "sLengthMenu": "Tampilkan _MENU_ entri",
-    //             "sZeroRecords": "Tidak ditemukan data yang sesuai",
-    //             "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-    //             "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-    //             "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-    //             "sInfoPostFix": "",
-    //             "sSearch": "Pencarian :",
-    //             "sUrl": "",
-    //             "oPaginate": {
-    //                 "sFirst": "Pertama",
-    //                 "sPrevious": "Sebelumnya",
-    //                 "sNext": "Selanjutnya",
-    //                 "sLast": "Terakhir",
-    //             }
-    //         },
-    //         "ajax": {
-    //             "url": '<?php echo base_url('Obat_bebas/tampil_total_obat'); ?>',
-    //             "type": 'POST',
-    //             "data": {
-    //                 id_pelayanan: id_pelayanan
-    //             },
-    //         },
-    //         "deferRender": true,
-    //         "processing": true,
-    //         "order": [],
-    //         "columnDefs": [{
-    //             "targets": [0],
-    //             "orderable": false,
-    //         }, ],
-    //     });
-    // }
-
     function reload_total_obat(id_pelayanan) {
-		$('#outTotalHarga1').dataTable().fnClearTable();
-		$('#outTotalHarga1').dataTable().fnDestroy();
-		$('#outTotalHarga1').DataTable({
-			"pageLength": 10,
-			"searching": false,
-			"lengthChange": false,
-			"bInfo": false,
-			"paging": false,
-			"language": {
-				"sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-				"sProcessing": "Sedang memproses...",
-				"sLengthMenu": "Tampilkan _MENU_ entri",
-				"sZeroRecords": "Tidak ditemukan data yang sesuai",
-				"sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-				"sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-				"sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-				"sInfoPostFix": "",
-				"sSearch": "Cari Tindakan:",
-				"sUrl": "",
-				"oPaginate": {
-					"sFirst": "Pertama",
-					"sPrevious": "Sebelumnya",
-					"sNext": "Selanjutnya",
-					"sLast": "Terakhir",
-				}
-			},
-			"ajax": {
-				"url": '<?php echo base_url('Obat_bebas/tampil_list_total_obat'); ?>',
-				"type": 'POST',
-				"data": {
-					id_pelayanan: id_pelayanan
-				},
-			},
-			"deferRender": true,
-			"processing": true,
-			"order": [],
-			"columnDefs": [{
-				"targets": [0],
-				"orderable": false,
-			}, ],
-		});
-	}
+        $('#outTotalHargaObat').dataTable().fnClearTable();
+        $('#outTotalHargaObat').dataTable().fnDestroy();
+        $('#outTotalHargaObat').DataTable({
+            "pageLength": 10,
+            "searching": false,
+            "lengthChange": false,
+            "bInfo": false,
+            "paging": false,
+            "language": {
+                "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                "sProcessing": "Sedang memproses...",
+                "sLengthMenu": "Tampilkan _MENU_ entri",
+                "sZeroRecords": "Tidak ditemukan data yang sesuai",
+                "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                "sInfoPostFix": "",
+                "sSearch": "Pencarian :",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Pertama",
+                    "sPrevious": "Sebelumnya",
+                    "sNext": "Selanjutnya",
+                    "sLast": "Terakhir",
+                }
+            },
+            "ajax": {
+                "url": '<?php echo base_url('Obat_bebas/tampil_total_obat'); ?>',
+                "type": 'POST',
+                "data": {
+                    id_pelayanan: id_pelayanan
+                },
+            },
+            "deferRender": true,
+            "processing": true,
+            "order": [],
+            "columnDefs": [{
+                "targets": [0],
+                "orderable": false,
+            }, ],
+        });
+    }
 
 
     function reload_data_obat(id) {
@@ -1698,8 +1646,4 @@
         });
     }
 </script>
-<script>
-	$(document).ready(function() {
-		$.fn.modal.Constructor.prototype.enforceFocus = function () {};
-	});
-</script>
+

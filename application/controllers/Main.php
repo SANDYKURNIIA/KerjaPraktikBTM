@@ -54,7 +54,7 @@ class Main extends CI_Controller
         // 2. Sekarang, baru hancurkan seluruh sesi
         $this->session->sess_destroy();
 
-        // 3. Arahkan pengguna ke URL yang sudah kita simpan dengan aman
+        // 3. Arahkan pengguna ke URL yang sudah Obeakita simpan dengan aman
         redirect($sso_logout_url);
 
         // Baris di bawah ini bisa Anda hapus jika tidak diperlukan

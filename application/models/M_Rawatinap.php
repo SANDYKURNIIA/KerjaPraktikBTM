@@ -46,7 +46,7 @@ class M_Rawatinap extends CI_Model
                 $this->db->where("(nama_ruangan ='ODC')");
             }
             $this->db->where('keluar_kamar', NULL);
-            $this->db->where('status_rawat !=', 'selesai');
+            $this->db->where('status_rawat  !=', 'selesai');
             $this->db->from('v_perawat_ranap');
             return $this->db->get()->result();
         }

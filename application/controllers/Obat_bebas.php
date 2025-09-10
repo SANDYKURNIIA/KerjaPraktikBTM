@@ -18,8 +18,60 @@ class Obat_bebas extends CI_Controller
         $page_data['page_content'] = 'page_content/Obat_bebas_unit';
         $data = $this->session->userdata('data_auth');
         $perequest = $data->tipe;
-        $data_adm = $this->db->get_where('admin_logistik_farmasi', ['unit' => $perequest])->row();
-        $stok = $data_adm->stok;
+
+        if ($perequest == "apotik") {
+            $stok = "stok_apotik";
+        } else if ($perequest == "bpjs") {
+            $stok = "stok_bpjs";
+        } else if ($perequest == "deporanap") {
+            $stok = "stok_depo";
+        } else if ($perequest == "isolasi") {
+            $stok = "stok_isolasi";
+        } else if ($perequest == "icu") {
+            $stok = "stok_icu";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "baksos") {
+            $stok = "stok_baksos";
+        } else if ($perequest == "gizi") {
+            $stok = "stok_gizi";
+        } else if ($perequest == "igdfarmasi") {
+            $stok = "stok_igdfarmasi";
+        } else if ($perequest == "igdapotik") {
+            $stok = "stok_igd";
+        } else if ($perequest == "ipcn") {
+            $stok = "stok_ipcn";
+        } else if ($perequest == "kebidanan") {
+            $stok = "stok_kebidanan";
+        } else if ($perequest == "Klinik Pratama Kundur") {
+            $stok = "stok_kundur";
+        } else if ($perequest == "labor") {
+            $stok = "stok_labor";
+        } else if ($perequest == "mcu") {
+            $stok = "stok_mcu";
+        } else if ($perequest == "monev") {
+            $stok = "stok_monev";
+        } else if ($perequest == "nicu") {
+            $stok = "stok_nicu";
+        } else if ($perequest == "ok") {
+            $stok = "stok_ok";
+        } else if ($perequest == "obat expire") {
+            $stok = "stok_obatexpire";
+        } else if ($perequest == "radiologi") {
+            $stok = "stok_radiologi";
+        } else if ($perequest == "rawatinap") {
+            $stok = "stok_ranap";
+        } else if ($perequest == "rawatjalan") {
+            $stok = "stok_rajal";
+        } else if ($perequest == "retur obat") {
+            $stok = "stok_returobat";
+        } else if ($perequest == "sungairaya") {
+            $stok = "stok_sungairaya";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "bpi") {
+            $stok = "stok_bpi";
+        }
 
         $page_data['cara_bayar'] = $this->M_Pencarian_Pasien->getCaraBayar();
         $page_data['signa'] = $this->M_Apotik->getSigna();
@@ -34,14 +86,60 @@ class Obat_bebas extends CI_Controller
         date_default_timezone_set('Asia/Jakarta');
         $data_staff = $this->session->userdata('data_auth');
         $perequest = $data_staff->tipe;
-        $data_adm = $this->db->get_where('admin_logistik_farmasi', ['unit' => $perequest])->row();
-        if ($perequest == 'apotik') {
-            $stok = 'APOTIK';
-        } else if ($perequest == 'deporanap') {
-            $stok = 'DEPO RANAP';
-        } else {
-            $stok = $data_adm->nama;
+        if ($perequest == "apotik") {
+            $stok = "APOTIK";
+        } else if ($perequest == "bpjs") {
+            $stok = "BPJS";
+        } else if ($perequest == "deporanap") {
+            $stok = "DEPO RANAP";
+        } else if ($perequest == "isolasi") {
+            $stok = "ISOLASI";
+        } else if ($perequest == "icu") {
+            $stok = "ICU";
+        } else if ($perequest == "vip") {
+            $stok = "VIP";
+        } else if ($perequest == "baksos") {
+            $stok = "BAKSOS";
+        } else if ($perequest == "gizi") {
+            $stok = "GIZI";
+        } else if ($perequest == "igdfarmasi") {
+            $stok = "IGD FARMASI";
+        } else if ($perequest == "igdapotik") {
+            $stok = "IGD APOTIK";
+        } else if ($perequest == "ipcn") {
+            $stok = "IPCN";
+        } else if ($perequest == "kebidanan") {
+            $stok = "KEBIDANAN";
+        } else if ($perequest == "Klinik Pratama Kundur") {
+            $stok = "Klinik Pratama Kundur";
+        } else if ($perequest == "labor") {
+            $stok = "LABOR";
+        } else if ($perequest == "mcu") {
+            $stok = "MCU";
+        } else if ($perequest == "monev") {
+            $stok = "MONEV";
+        } else if ($perequest == "nicu") {
+            $stok = "NICU";
+        } else if ($perequest == "ok") {
+            $stok = "OK";
+        } else if ($perequest == "obat expire") {
+            $stok = "OBAT EXPIRE";
+        } else if ($perequest == "radiologi") {
+            $stok = "RADIOLOGI";
+        } else if ($perequest == "rawatinap") {
+            $stok = "RAWAT INAP";
+        } else if ($perequest == "rawatjalan") {
+            $stok = "RAWAT JALAN";
+        } else if ($perequest == "retur obat") {
+            $stok = "RETUR OBAT";
+        } else if ($perequest == "sungairaya") {
+            $stok = "SUNGAI RAYA";
+        } else if ($perequest == "vip") {
+            $stok = "VIP";
+        } else if ($perequest == "bpi") {
+            $stok = "BPI";
         }
+
 
         $data = array(
             'nama' => $this->input->post('nama'),
@@ -65,23 +163,89 @@ class Obat_bebas extends CI_Controller
         $id_tindakan = uniqid();
 
         $perequest = $data->tipe;
-        $data_adm = $this->db->get_where('admin_logistik_farmasi', ['unit' => $perequest])->row();
-        $stok = $data_adm->stok;
-        if ($perequest == 'apotik') {
-            $depo = 'APOTIK';
-        } else if ($perequest == 'deporanap') {
-            $depo = 'RANAP';
-        } else {
-            $depo = $data_adm->nama;
+
+        if ($perequest == "apotik") {
+            $stok = "stok_apotik";
+            $depo = "APOTIK";
+        } else if ($perequest == "bpjs") {
+            $stok = "stok_bpjs";
+            $depo = "BPJS";
+        } else if ($perequest == "deporanap") {
+            $stok = "stok_depo";
+            $depo = "RANAP";
+        } else if ($perequest == "isolasi") {
+            $stok = "stok_isolasi";
+            $depo = "ISOLASI";
+        } else if ($perequest == "icu") {
+            $stok = "stok_icu";
+            $depo = "ICU";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+            $depo = "VIP";
+        } else if ($perequest == "baksos") {
+            $stok = "stok_baksos";
+            $depo = "BAKSOS";
+        } else if ($perequest == "gizi") {
+            $stok = "stok_gizi";
+            $depo = "GIZI";
+        } else if ($perequest == "igdfarmasi") {
+            $stok = "stok_igdfarmasi";
+            $depo = "IGD FARMASI";
+        } else if ($perequest == "igdapotik") {
+            $stok = "stok_igd";
+            $depo = "IGD";
+        } else if ($perequest == "ipcn") {
+            $stok = "stok_ipcn";
+            $depo = "IPCN";
+        } else if ($perequest == "kebidanan") {
+            $stok = "stok_kebidanan";
+            $depo = "KEBIDANAN";
+        } else if ($perequest == "Klinik Pratama Kundur") {
+            $stok = "stok_kundur";
+            $depo = "Klinik Pratama Kundur";
+        } else if ($perequest == "labor") {
+            $stok = "stok_labor";
+            $depo = "LABOR";
+        } else if ($perequest == "mcu") {
+            $stok = "stok_mcu";
+            $depo = "MCU";
+        } else if ($perequest == "monev") {
+            $stok = "stok_monev";
+            $depo = "MONEV";
+        } else if ($perequest == "nicu") {
+            $stok = "stok_nicu";
+            $depo = "NICU";
+        } else if ($perequest == "ok") {
+            $stok = "stok_ok";
+            $depo = "OK";
+        } else if ($perequest == "obat expire") {
+            $stok = "stok_obatexpire";
+            $depo = "OBAT EXPIRE";
+        } else if ($perequest == "radiologi") {
+            $stok = "stok_radiologi";
+            $depo = "RADIOLOGI";
+        } else if ($perequest == "rawatinap") {
+            $stok = "stok_ranap";
+            $depo = "RAWAT INAP";
+        } else if ($perequest == "rawatjalan") {
+            $stok = "stok_rajal";
+            $depo = "RAWAT JALAN";
+        } else if ($perequest == "retur obat") {
+            $stok = "stok_returobat";
+            $depo = "RETUR OBAT";
+        } else if ($perequest == "sungairaya") {
+            $stok = "stok_sungairaya";
+            $depo = "SUNGAI RAYA";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+            $depo = "VIP";
+        } else if ($perequest == "bpi") {
+            $stok = "stok_bpi";
+            $depo = "BPI";
         }
-
-        $id_logistik = $this->input->post('id_list_tindakan');
-        $db_list = $this->db->get_where('list_logistik', ['id_logistik' => $id_logistik])->row();
-
         $page_data = array(
             'id_tindakan_farmasi' =>  $id_tindakan,
             'harga' => $this->input->post('harga'),
-            'harga_persediaan' => $db_list->harga_persediaan,
             'frek' => $this->input->post('frek'),
             'id_pelayanan' => $this->input->post('id_pelayanan'),
             'id_resep' => 'obat_bebas',
@@ -147,11 +311,8 @@ class Obat_bebas extends CI_Controller
         }
 
         $this->M_Apotik->insert_tindakan($datastok, $stok);
-        if ($stok == 'stok_apotik') {
-            $this->M_Apotik->update_perencanaan($id_logistik, 'stok_apotik', 'pr_apotik');
-        } else if ($stok == 'stok_depo') {
-            $this->M_Apotik->update_perencanaan($id_logistik, 'stok_depo', 'pr_depo');
-        }
+
+
         $out['status'] = "success";
         echo json_encode($out);
     }
@@ -164,7 +325,7 @@ class Obat_bebas extends CI_Controller
         }
         $out = null;
         for ($i = 0; $i < count($page_data); $i++) {
-            if ($page_data[$i]->id_nota == NULL) {
+            if (empty($page_data[$i]->id_pelayanan)) {
                 $hapus =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_tindakan(\"" . $page_data[$i]->id_obat_bebas . "\",\"" . $page_data[$i]->nama  . "\")' '><i class='fa fa-trash'></i></button>";
             } else {
                 $hapus =   "";
@@ -180,7 +341,7 @@ class Obat_bebas extends CI_Controller
             $carabayar = $page_data[$i]->carabayar;
             $dpjp = $page_data[$i]->dpjp;
             $keterangan = $page_data[$i]->keterangan;
-            $out[$i] = array($no, $tombol, $retur, $edit, $hapus, $tgl, $waktu, $nama, $carabayar, $dpjp, $keterangan);
+            $out[$i] = array($no, $tombol,$retur,$edit, $hapus, $tgl, $waktu, $nama, $carabayar, $dpjp, $keterangan);
         }
 
         if ($out == null) {
@@ -192,7 +353,7 @@ class Obat_bebas extends CI_Controller
             exit;
         }
     }
-    public function tampil_tindakan_obat_bebas()
+    public function tampil_tindakan_obat_bebas()        
     {
         $id = $this->input->post('id');
         $page_data = $this->M_Apotik->selectObatBebasById($id);
@@ -201,15 +362,15 @@ class Obat_bebas extends CI_Controller
 
         for ($i = 0; $i < count($page_data); $i++) {
             // 
-            $obat_bebas = $this->db->get_where('obat_bebas', ['id_obat_bebas' => $page_data[$i]->id_pelayanan])->row();
+            $obat_bebas = $this->db->get_where('obat_bebas',['id_obat_bebas'=>$page_data[$i]->id_pelayanan])->row();
             // $tombol =   "<button class='btn btn-success btn-icon-anim btn-square' data-toggle='modal' onclick='pilih_obat(\"" . $page_data[$i]->id_resep ."\",\"" .$page_data[$i]->jenis_resep.  "\")' '><i class='fa fa-rocket '></i></button>";
             $signa =   "<button class='btn btn-primary btn-icon-anim btn-square' data-toggle='modal' onclick='cetakSigna(\"" . $page_data[$i]->id_tindakan_farmasi . "\",\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='icon-printer'></i></button>";
             $edit =   "<button class='btn btn-warning btn-icon-anim btn-square' data-toggle='modal' onclick='edit_obat(\"" . $page_data[$i]->id_tindakan_farmasi . "\",\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-rocket'></i></button>";
-
-            if ($obat_bebas->id_nota == NULL) {
+            
+            if($obat_bebas->id_nota == NULL){
                 $hapus =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_obat(\"" . $page_data[$i]->id_tindakan_farmasi . "\",\"" . $page_data[$i]->nama . "\",\"" . $page_data[$i]->depo . "\")' '><i class='fa fa-trash'></i></button>";
-            } else {
-                $hapus = "";
+            }else{
+                $hapus ="";
             }
 
             $no = $i + 1;
@@ -316,7 +477,7 @@ class Obat_bebas extends CI_Controller
 
         $data['resep'] = $this->M_Apotik->getObatReturBebasById($id_resep);
         $data['nota'] = $this->M_Apotik->getNotaRetur($id_resep)[0]->no_nota;
-
+       
         $data['pasien'] = $this->M_Apotik->getDataObatBebas($id_resep);
         $this->load->view('print/cetak_obat_bebas', $data);
     }
@@ -348,7 +509,7 @@ class Obat_bebas extends CI_Controller
     public function getDataPasien()
     {
         $id_tindakan = $this->input->post('pelayanan');
-        $db = $this->db->get_where('obat_bebas', ['id_obat_bebas' => $id_tindakan])->result();
+        $db = $this->db->get_where('obat_bebas',['id_obat_bebas'=>$id_tindakan])->result();
         if (count($db) > 0) {
             $db = $db[0];
             $db->status_dt = 'found';
@@ -442,7 +603,7 @@ class Obat_bebas extends CI_Controller
     public function update_obat_bebas()
     {
         $staff = $this->session->userdata('data_auth');
-
+        
         $data = array(
             'nama' => $this->input->post('nama'),
             'cara_bayar' => $this->input->post('cara_bayar'),
@@ -455,7 +616,7 @@ class Obat_bebas extends CI_Controller
         );
         $this->M_Apotik->update($data, $where, 'obat_bebas');
         $out['status'] = "success";
-
+        
         echo json_encode($out);
     }
 
@@ -466,11 +627,61 @@ class Obat_bebas extends CI_Controller
         $data = $this->session->userdata('data_auth');
         $perequest = $data->tipe;
 
-        $data_adm = $this->db->get_where('admin_logistik_farmasi', ['unit' => $perequest])->row();
-        $stok = $data_adm->stok;
+        if ($perequest == "apotik") {
+            $stok = "stok_apotik";
+        } else if ($perequest == "bpjs") {
+            $stok = "stok_bpjs";
+        } else if ($perequest == "deporanap") {
+            $stok = "stok_depo";
+        } else if ($perequest == "isolasi") {
+            $stok = "stok_isolasi";
+        } else if ($perequest == "icu") {
+            $stok = "stok_icu";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "baksos") {
+            $stok = "stok_baksos";
+        } else if ($perequest == "gizi") {
+            $stok = "stok_gizi";
+        } else if ($perequest == "igdfarmasi") {
+            $stok = "stok_igdfarmasi";
+        } else if ($perequest == "igdapotik") {
+            $stok = "stok_igd";
+        } else if ($perequest == "ipcn") {
+            $stok = "stok_ipcn";
+        } else if ($perequest == "kebidanan") {
+            $stok = "stok_kebidanan";
+        } else if ($perequest == "Klinik Pratama Kundur") {
+            $stok = "stok_kundur";
+        } else if ($perequest == "labor") {
+            $stok = "stok_labor";
+        } else if ($perequest == "mcu") {
+            $stok = "stok_mcu";
+        } else if ($perequest == "monev") {
+            $stok = "stok_monev";
+        } else if ($perequest == "nicu") {
+            $stok = "stok_nicu";
+        } else if ($perequest == "ok") {
+            $stok = "stok_ok";
+        } else if ($perequest == "obat expire") {
+            $stok = "stok_obatexpire";
+        } else if ($perequest == "radiologi") {
+            $stok = "stok_radiologi";
+        } else if ($perequest == "rawatinap") {
+            $stok = "stok_ranap";
+        } else if ($perequest == "rawatjalan") {
+            $stok = "stok_rajal";
+        } else if ($perequest == "retur obat") {
+            $stok = "stok_returobat";
+        } else if ($perequest == "sungairaya") {
+            $stok = "stok_sungairaya";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "bpi") {
+            $stok = "stok_bpi";
+        }
 
         $this->M_Apotik->delete_obat($id_tindakan, $stok);
-
         $out['status'] = "success";
         echo json_encode($out);
     }
@@ -479,19 +690,68 @@ class Obat_bebas extends CI_Controller
         $id_tindakan = $this->input->post('id');
         $data = $this->session->userdata('data_auth');
         $perequest = $data->tipe;
-        $data_adm = $this->db->get_where('admin_logistik_farmasi', ['unit' => $perequest])->row();
-        $stok = $data_adm->stok;
 
+        if ($perequest == "apotik") {
+            $stok = "stok_apotik";
+        } else if ($perequest == "bpjs") {
+            $stok = "stok_bpjs";
+        } else if ($perequest == "deporanap") {
+            $stok = "stok_depo";
+        } else if ($perequest == "isolasi") {
+            $stok = "stok_isolasi";
+        } else if ($perequest == "icu") {
+            $stok = "stok_icu";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "baksos") {
+            $stok = "stok_baksos";
+        } else if ($perequest == "gizi") {
+            $stok = "stok_gizi";
+        } else if ($perequest == "igdfarmasi") {
+            $stok = "stok_igdfarmasi";
+        } else if ($perequest == "igdapotik") {
+            $stok = "stok_igd";
+        } else if ($perequest == "ipcn") {
+            $stok = "stok_ipcn";
+        } else if ($perequest == "kebidanan") {
+            $stok = "stok_kebidanan";
+        } else if ($perequest == "Klinik Pratama Kundur") {
+            $stok = "stok_kundur";
+        } else if ($perequest == "labor") {
+            $stok = "stok_labor";
+        } else if ($perequest == "mcu") {
+            $stok = "stok_mcu";
+        } else if ($perequest == "monev") {
+            $stok = "stok_monev";
+        } else if ($perequest == "nicu") {
+            $stok = "stok_nicu";
+        } else if ($perequest == "ok") {
+            $stok = "stok_ok";
+        } else if ($perequest == "obat expire") {
+            $stok = "stok_obatexpire";
+        } else if ($perequest == "radiologi") {
+            $stok = "stok_radiologi";
+        } else if ($perequest == "rawatinap") {
+            $stok = "stok_ranap";
+        } else if ($perequest == "rawatjalan") {
+            $stok = "stok_rajal";
+        } else if ($perequest == "retur obat") {
+            $stok = "stok_returobat";
+        } else if ($perequest == "sungairaya") {
+            $stok = "stok_sungairaya";
+        } else if ($perequest == "vip") {
+            $stok = "stok_vip";
+        } else if ($perequest == "bpi") {
+            $stok = "stok_bpi";
+        }
         $obat = $this->db->get_where('tindakan_farmasi', ['id_pelayanan' => $id_tindakan])->result();
         foreach ($obat as $row) {
             $this->M_Apotik->delete_obat($row->id_tindakan_farmasi, $stok);
-            if ($stok == 'stok_apotik') {
-                $this->M_Apotik->update_perencanaan($row->id_list_tindakan, 'stok_apotik', 'pr_apotik');
-            } else if ($stok == 'stok_depo') {
-                $this->M_Apotik->update_perencanaan($row->id_list_tindakan, 'stok_depo', 'pr_depo');
-            }
         }
         $this->M_Apotik->delete_tindakan($id_tindakan, 'obat_bebas', 'id_obat_bebas');
+
+
+
 
         $out['status'] = "success";
         echo json_encode($out);
@@ -539,38 +799,6 @@ class Obat_bebas extends CI_Controller
 
         echo json_encode($data);
     }
-
-    public function tampil_list_total_obat()
-    {
-        $id_pelayanan = $this->input->post('id_pelayanan');
-        $page_data = $this->M_Apotik->getTotalObat($id_pelayanan);
-        $out = null;
-
-        for ($i = 0; $i < count($page_data); $i++) {
-            // Menghitung total tanpa format mata uang
-            $total_tanpa_format = $page_data[$i]->total + ($page_data[$i]->total * 0.11);
-
-            // Format mata uang untuk id_tindakan_igd dan ppn
-            $id_tindakan_igd  = "Rp. " . number_format($page_data[$i]->total, 0, ',', '.');
-            $ppn  = "Rp. " . number_format($page_data[$i]->total * 0.11, 0, ',', '.');
-
-            // Format mata uang untuk total
-            $total_dengan_format = "Rp. " . number_format($total_tanpa_format, 0, ',', '.');
-
-            // Menambahkan nilai ke array output
-            $out[$i] = array($id_tindakan_igd, $total_dengan_format);
-        }
-        if ($out == null) {
-            echo '{"data":""}';
-            exit;
-        } else {
-            $page_data['data'] = $out;
-            echo json_encode($page_data);
-            exit;
-        }
-    }
-
-
     public function tampil_tindakan_obat_retur()
     {
         $id = $this->input->post('id');
@@ -609,3 +837,4 @@ class Obat_bebas extends CI_Controller
         }
     }
 }
+

@@ -69,47 +69,79 @@ class Erm_resume_pulang extends CI_Controller
         $this->load->view('assets/_footer');
     }
 
-
     public function simpan()
     {
         $staff = $this->session->userdata('data_auth');
-        $id = $this->input->post('id_pelayanan');
-        $diagnosa = $this->input->post('diagnosa');
-        $db = $this->db->query("SELECT count(*) count from resume_pulang where id_pelayanan ='$id'")->row();
-        if ($db->count == 0) {
-            $db = [
-                'no_rm' => $this->input->post('no_rm'),
-                'id_pelayanan' => $this->input->post('id_pelayanan'),
-                'id_history' => $this->input->post('id_history'),
-                'alasan' => $this->input->post('alasan'),
-                'riwayat' => $this->input->post('riwayat'),
-                'diagnosa' => json_encode($diagnosa),
-                'prosedur_terapi' => $this->input->post('prosedur_terapi'),
-                'keadaan_pulang' => $this->input->post('keadaan_pulang'),
-                'edukasi' => $this->input->post('edukasi'),
-                'staff' => $staff->id_staff,
-            ];
-            $this->M_Erm->insert($db, 'resume_pulang');
-        } else {
-            $db = [
-                'no_rm' => $this->input->post('no_rm'),
-                'id_pelayanan' => $this->input->post('id_pelayanan'),
-                'id_history' => $this->input->post('id_history'),
-                'alasan' => $this->input->post('alasan'),
-                'riwayat' => $this->input->post('riwayat'),
-                'diagnosa' => json_encode($diagnosa),
-                'prosedur_terapi' => $this->input->post('prosedur_terapi'),
-                'keadaan_pulang' => $this->input->post('keadaan_pulang'),
-                'edukasi' => $this->input->post('edukasi'),
-                'staff' => $staff->id_staff,
-                'created_at' => date('Y-m-d H:i:s'),
-            ];
-            $where = array('id_pelayanan' => $this->input->post('id_pelayanan'));
-            $this->M_Erm->update($db, $where, 'resume_pulang');
+
+        // Ambil input utama
+        $id_pelayanan = $this->input->post('id_pelayanan');
+        $no_rm        = $this->input->post('no_rm');
+        $id_history   = $this->input->post('id_history');
+
+        $alasan          = $this->input->post('alasan');
+        $riwayat         = $this->input->post('riwayat');
+        $prosedur_terapi = $this->input->post('prosedur_terapi');
+        $keadaan_pulang  = $this->input->post('keadaan_pulang');
+        $edukasi         = $this->input->post('edukasi');
+
+        // Diagnosa bisa dikirim array; simpan sebagai JSON
+        $diagnosa_post = $this->input->post('diagnosa');
+        $diagnosa_json = is_array($diagnosa_post) ? json_encode($diagnosa_post, JSON_UNESCAPED_UNICODE) : (string)$diagnosa_post;
+
+        // Diagnostik bisa dikirim sebagai string gabungan atau array checkbox → normalisasi ke string
+        $diagnostik_post = $this->input->post('diagnostik');
+        if (is_array($diagnostik_post)) {
+            $diagnostik_post = implode(', ', $diagnostik_post);
         }
-        $out['status'] = "success";
-        echo json_encode($out);
+        $diagnostik = (string)$diagnostik_post;
+
+        // Normalisasi tgl_kontrol → YYYY-MM-DD atau NULL
+        $tgl_kontrol_post = trim((string)$this->input->post('tgl_kontrol'));
+        if ($tgl_kontrol_post === '') {
+            $tgl_kontrol = null;
+        } else {
+            $ts = strtotime($tgl_kontrol_post);
+            $tgl_kontrol = $ts ? date('Y-m-d', $ts) : null;
+        }
+
+        // Cek apakah data resume_pulang untuk id_pelayanan ini sudah ada
+        $cek = $this->db->query(
+            "SELECT COUNT(*) AS count FROM resume_pulang WHERE id_pelayanan = ?",
+            [$id_pelayanan]
+        )->row();
+
+        $id_list_poli = $this->input->post('id_list_poli') ?: null;
+
+        // Payload untuk INSERT / UPDATE
+        $payload = [
+            'no_rm'           => $no_rm,
+            'id_pelayanan'    => $id_pelayanan,
+            'id_history'      => $id_history,
+            'alasan'          => $alasan,
+            'riwayat'         => $riwayat,
+            'diagnostik'      => $diagnostik,      // ← BARU
+            'diagnosa'        => $diagnosa_json,
+            'prosedur_terapi' => $prosedur_terapi,
+            'keadaan_pulang'  => $keadaan_pulang,
+            'edukasi'         => $edukasi,
+            'tgl_kontrol'     => $tgl_kontrol,     // ← BARU
+            'id_list_poli' => $id_list_poli,
+            'staff'           => isset($staff->id_staff) ? $staff->id_staff : null,
+        ];
+
+        if (empty($cek) || (int)$cek->count === 0) {
+            // INSERT
+            $this->M_Erm->insert($payload, 'resume_pulang');
+        } else {
+            // UPDATE
+            $payload['created_at'] = date('Y-m-d H:i:s'); // mengikuti pola yang sudah ada di kode kamu
+            $where = ['id_pelayanan' => $id_pelayanan];
+            $this->M_Erm->update($payload, $where, 'resume_pulang');
+        }
+
+        echo json_encode(['status' => 'success']);
     }
+
 
     public function get_data_resume()
     {
@@ -140,12 +172,85 @@ class Erm_resume_pulang extends CI_Controller
         from erm_diagnosa_dokter e 
         where e.id_history='$id_history'")->result();
         }
+
+
+
+
+        // ambil langsung kolom 'alasan' dari resume_pulang
+        // ambil alasan pasien saat pulang langsung dari tabel resume_pulang
+        $alasanRow = $this->db->select('alasan')
+            ->from('resume_pulang')
+            ->where('id_pelayanan', $id)
+            ->where('id_history', $id_history)
+            ->order_by('id', 'DESC')
+            ->limit(1)
+            ->get()
+            ->row();
+
+        $alasanPulang = $alasanRow ? ($alasanRow->alasan ?? '') : '';
+
+        $poliklinikRow = $this->db->select('p.nama_panjang')
+    ->from('resume_pulang r')
+    ->join('list_poli p', 'p.id_list_poli = r.id_list_poli', 'left')
+    ->where('r.id_pelayanan', $id)
+    ->where('r.id_history',   $id_history)
+    ->order_by('r.id', 'DESC')
+    ->limit(1)
+    ->get()
+    ->row();
+
+$poliklinikNama = $poliklinikRow->nama_panjang ?? '';
+
+$penunjangRow = $this->db->select('diagnostik')
+    ->from('resume_pulang')
+    ->where('id_pelayanan', $id)
+    ->where('id_history', $id_history)
+    ->order_by('id', 'DESC')
+    ->limit(1)
+    ->get()
+    ->row();
+
+$penunjang_diagnostik = $penunjangRow ? ($penunjangRow->diagnostik ?? '') : '';
+
+    $tglRow = $this->db->select('tgl_kontrol')
+    ->from('resume_pulang')
+    ->where('id_pelayanan', $id)
+    ->where('id_history', $id_history)
+    ->order_by('id','DESC')
+    ->limit(1)->get()->row();
+
+$tgl_kontrol = $tglRow ? $tglRow->tgl_kontrol : (isset($resume->tgl_kontrol) ? $resume->tgl_kontrol : null);
+
+// --- Ambil Alasan/Indikasi Masuk RS dari form_assesmen_dokter ---
+$alasanRow = $this->db->select('keluhan')
+    ->from('form_assesmen_dokter')
+    ->where('id_pelayanan', $id)
+    ->get()
+    ->row();
+
+// Pastikan tidak error kalau null
+$alasan_masuk = $alasanRow->keluhan ?? '';
+
+
+
+        // $alasanPulang = '';
+        // if (!empty($resume) && isset($resume->alasan)) {
+        //     $alasanPulang = $resume->alasan;
+        // }
+
+
         if (isset($poli) || (isset($poli) && isset($igd))) {
             $db = [
                 'alasan' => $poli->keluhan_utama,
                 'diagnosa' => $poli->kode . ' - ' . $poli->nama_diagnosa,
                 'resume' => $resume,
                 'diagnosa_ranap' => $diagnosa,
+                'alasan_pulang' => $alasanPulang,
+                'poliklinik_nama' => $poliklinikNama, 
+                'penunjang_diagnostik' => $penunjang_diagnostik,
+                'tgl_kontrol' => $tgl_kontrol,
+                'alasan_masuk'       => $alasan_masuk
+                
 
             ];
         } else {
@@ -155,6 +260,12 @@ class Erm_resume_pulang extends CI_Controller
                     'diagnosa' => $igd->kode . ' - ' . $igd->nama_diagnosa,
                     'resume' => $resume,
                     'diagnosa_ranap' => $diagnosa,
+                    'alasan_pulang' => $alasanPulang,
+                    'poliklinik_nama' => $poliklinikNama, 
+                    'penunjang_diagnostik' => $penunjang_diagnostik,
+                    'tgl_kontrol' => $tgl_kontrol,
+                    'alasan_masuk'       => $alasan_masuk
+
                 ];
             } else {
                 $db = null;
@@ -631,5 +742,42 @@ class Erm_resume_pulang extends CI_Controller
             );
         }
         echo json_encode($data);
+    }
+
+    public function get_list_poli()
+    {
+        $rows = $this->db->select('id_list_poli, nama_panjang')
+            ->from('list_poli')
+            ->where('status_dokter', 'ADA')   // hanya yang ADA
+            ->order_by('nama_panjang', 'ASC')
+            ->get()
+            ->result();
+
+        echo json_encode($rows);
+    }
+
+    public function last_draft()
+    {
+        $no_rm        = $this->input->get('no_rm');
+        $id_pelayanan = $this->input->get('id_pelayanan'); // opsional
+
+        if (!$no_rm) {
+            echo json_encode(null);
+            return;
+        }
+
+        $this->db->select('r.*, p.nama_panjang AS nama_poli');
+        $this->db->from('resume_pulang r');
+        $this->db->join('list_poli p', 'p.id_list_poli = r.id_list_poli', 'left');
+        $this->db->where('r.no_rm', $no_rm);
+        if ($id_pelayanan) {
+            $this->db->where('r.id_pelayanan', $id_pelayanan); // kalau mau filter layanan yang sama
+        }
+        $this->db->order_by('r.created_at', 'DESC');
+        $this->db->order_by('r.id', 'DESC');
+        $this->db->limit(1);
+
+        $row = $this->db->get()->row();
+        echo json_encode($row ?: null);
     }
 }
