@@ -14,6 +14,7 @@ class Erm_ranap extends CI_Controller
 		$this->load->model('M_Assembling');
 		$this->load->model('M_Rawatinap');
 		$this->load->model('M_Apelkes');
+		$this->load->model('OneDayCare_model');
 		$this->load->model('M_Pencarian_Pasien');
 	}
 
@@ -52,7 +53,6 @@ class Erm_ranap extends CI_Controller
 		// $page_data['tindakan_fisio'] = $this->M_Rawatinap->selectNamaTindakan('list_tindakan_poli_fisio');
 		$page_data['dokter'] = $this->M_Rawatinap->selectNamaDPJP();
 		$page_data['action'] = site_url("Pasien/edit_rawat_jalan");
-
 
 		if ($selectPasien->kelas != 'KELAS III' && $selectPasien->cara_bayar == 'BPJS') {
 			$kelas_penunjang = 'KELAS III';
@@ -228,6 +228,8 @@ class Erm_ranap extends CI_Controller
 	public function checkData()
 	{
 		$id_pelayanan = $this->input->post('id_pelayanan');
+		$id_histori = $this->input->post('id_histori');
+
 		$asesmen_awal_dewasa = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_awal_dewasa');
 		$asesmen_ulang_dewasa = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_dewasa');
 		$asesmen_awal_geriatri = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_awal_geriatri');
@@ -251,6 +253,9 @@ class Erm_ranap extends CI_Controller
 		$resume_pulang = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_pulang');
 		$resume_bayi_tabung = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_bayi_tabung');
 		$discharge_planning = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'discharger');
+
+		$one_day_care = $this->OneDayCare_model->checkData(['no_rm' => $id_histori], 'onedaycare');
+
 		// $asses_per_igd = $this->M_Erm->checkData($id_pelayanan, 'form_ass_per_igd');
 		// $observasi = $this->M_Erm->checkData($id_pelayanan, 'form_observasi');
 		// $sebab_kematian = $this->M_Erm->checkData($id_pelayanan, 'form_sebab_kematian');
@@ -284,6 +289,9 @@ class Erm_ranap extends CI_Controller
 		$db['resume_pulang'] = empty($resume_pulang) ? 'not-found' : 'found';
 		$db['resume_bayi_tabung'] = empty($resume_bayi_tabung) ? 'not-found' : 'found';
 		$db['discharge_planning'] = empty($discharge_planning) ? 'not-found' : 'found';
+
+		$db['one_day_care'] = empty($one_day_care) ? 'not-found' : 'found';
+		
 
 		// $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
 		// $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';

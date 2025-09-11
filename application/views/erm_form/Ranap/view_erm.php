@@ -359,9 +359,13 @@
                                                 Discharge Planning
                                             </a>
 
+                                            <a class="btn btn-success col-md-5  one_day_care" href="<?= base_url('OneDayCare/decer/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                                One Day Care
+                                            </a>
+
                                             <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
-                                            </a> -->
+                                            </a> -->    
 
 
 
@@ -400,12 +404,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
         id_pelayanan = $('#inPel').val();
+        id_histori = $('#inHis').val();
         $.ajax({
             url: "<?php echo base_url() ?>Erm_ranap/checkData",
             method: "POST",
             dataType: 'json',
             data: {
-                id_pelayanan: id_pelayanan
+                id_pelayanan: id_pelayanan,
+                id_histori : id_histori
             },
             success: function(data) {
                 if (data.asses_per_ranap == "found") {
@@ -468,6 +474,9 @@
                     $('.discharge_planning').removeClass('btn-success').addClass('btn-danger ');
                     $('.discharge_planning').attr('href', '<?php echo base_url('Discharge_planning/edit_discharger/') . $id_pelayanan . '/' . $id_histori; ?>');
                 }
+                if (data.one_day_care == "found") {
+                    $('.one_day_care').removeClass('btn-success').addClass('btn-danger ');
+                }
                 if (data.pengobatan_sakit == "found") {
                     $('.pengobatan_sakit').removeClass('btn-success').addClass('btn-danger ');
                     // $('.pengobatan_sakit').attr('href', '<?php echo base_url('Erm_ranap_infus_sehari/forminfus/') . $id_pelayanan . '/' . $id_histori; ?>');
@@ -475,9 +484,10 @@
                 if (data.anamnesis_fisik == "found") {
                     $('.anamnesis_fisik').removeClass('btn-success').addClass('btn-danger ');
                     $('.anamnesis_fisik').attr('href', '<?php echo base_url('Erm_ranap_asesmen_dokter/formedit/') . $id_pelayanan . '/' . $id_histori; ?>');
+                    
                 }
-                if (data.surveilans == "found") {
-                    $('.surveilans').removeClass('btn-success').addClass('btn-danger ');
+                if (data.one_day_care == "found") {
+                    $('.one_day_care').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
