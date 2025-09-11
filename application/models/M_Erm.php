@@ -387,5 +387,43 @@ class M_Erm extends CI_Model
             $this->db->insert('hasil_penunjang_diagnostik', $data);
         }
     }
+
+    public function insert_and_get_id($data, $table)
+    {
+        $this->db->insert($table, $data);
+        return $this->db->insert_id(); 
+    }
     
+    public function get_triase($id_pelayanan)
+    {
+        $this->db->select('
+        p.no_rm,
+        p.nama AS pasien,
+        p.tgl_lahir,
+        dokter.keluhan AS keluhan_utama,
+        perawat.tekanan_darah,
+        perawat.frequensi_nadi,
+        perawat.frequensi_nafas,
+        perawat.spo2,
+        perawat.suhu,
+        perawat.gcs,
+        triase.mata,
+        triase.skala_nyeri,
+        triase.verbal,
+        triase.motorik,
+        triase.airway,
+        triase.breathing,
+        triase.cyrculation,
+        triase.disability,
+        triase.exposure
+    ');
+
+        $this->db->from('form_ass_per_igd per');
+        $this->db->join('pasien p', 'per.no_rm = p.no_rm', 'left');
+        $this->db->join('form_ass_dokter_igd dokter', 'per.id_history = dokter.id_history', 'left');
+        $this->db->join('form_ass_per_igd perawat', 'per.id_history = perawat.id_history', 'left');
+        $this->db->join('form_ass_triase_ugd triase', 'per.id_history = triase.id_history', 'left');
+        $this->db->where('per.id_pelayanan', $id_pelayanan);
+        return $this->db->get()->row_array();
+    }
 }

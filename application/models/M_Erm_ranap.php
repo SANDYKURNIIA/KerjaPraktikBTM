@@ -688,4 +688,15 @@ class M_Erm_ranap extends CI_Model
         $this->db->order_by('v.tgl_masuk', 'desc'); // ORDER BY v.tgl_masuk DESC
         return $this->db->get()->result();
     }
+    public function get_perkembangan($id_array)
+    {
+        $this->db->select('c.*, v.*, s.nama as nama_staff');
+        $this->db->from('catatan_perkembangan_terintegrasi c');
+        $this->db->join('v_perawat_ranap v', 'c.no_rm = v.no_rm', 'left');
+        $this->db->join('staff s', 'c.staff = s.id_staff', 'left');
+        $this->db->where_in('c.id_catatan', $id_array);
+        $this->db->order_by('c.tgl_verif', 'ASC');
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

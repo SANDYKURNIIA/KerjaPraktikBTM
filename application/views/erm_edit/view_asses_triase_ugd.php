@@ -19,9 +19,12 @@
                 <input type="hidden" class="form-control" value="<?= $id_pelayanan ?>" id="inPel">
                 <input type="hidden" class="form-control" value="<?= $id_history ?>" id="inHis">
                 <div class="has-success">
-                  <input type="hidden" class="form-control" name="inId">
+                    <?php if ($data) : ?>
+                        <input type="hidden" id="inId" name="inId" value="<?php echo $data['id_triase_ugd']; ?>">
+                    <?php else : ?>
+                        <div class="alert alert-danger">ID Asesmen tidak ditemukan.</div>
+                    <?php endif; ?>
                 </div>
-                <input type="hidden" class="form-control" id="id">
               </div>
             </div>
 
@@ -128,7 +131,7 @@
                     <label class="control-label mb-10 text-left">Tekanan Darah<span class="help"></span></label>
                     <span id="td_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="tekanan_darah" placeholder="mmHg">
+                      <input type="text" class="form-control" name="tekanan_darah" placeholder="mmHg" disabled>
                     </div>
                   </div>
                 </div>
@@ -139,7 +142,7 @@
                     <label class="control-label mb-10 text-left">Suhu<span class="help"></span></label>
                     <span id="suhu_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="suhu" placeholder="Celsius">
+                      <input type="number" class="form-control" name="suhu" placeholder="Celsius" disabled>
                     </div>
                   </div>
                 </div>
@@ -149,7 +152,7 @@
                     <label class="control-label mb-10 text-left">Frequensi Nadi<span class="help"></span></label>
                     <span id="nadi_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="frequensi_nadi" placeholder="x/menit">
+                      <input type="text" class="form-control" name="frequensi_nadi" placeholder="x/menit" disabled>
                     </div>
                   </div>
                 </div>
@@ -159,7 +162,7 @@
                     <label class="control-label mb-10 text-left">SPO2<span class="help"></span></label>
                     <span id="spo2_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="spo2" placeholder="">
+                      <input type="number" class="form-control" name="spo2" placeholder="spo2" disabled>
                     </div>
                   </div>
                 </div>
@@ -169,7 +172,7 @@
                     <label class="control-label mb-10 text-left">Berat Badan<span class="help"></span></label>
                     <span id="berat_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="berat_badan" placeholder="Kg">
+                      <input type="number" class="form-control" name="berat_badan" placeholder="Kg" disabled>
                     </div>
                   </div>
                 </div>
@@ -179,7 +182,7 @@
                     <label class="control-label mb-10 text-left">Frequensi Nafas<span class="help"></span></label>
                     <span id="nafas_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="frequensi_nafas" placeholder="x/menit">
+                      <input type="text" class="form-control" name="frequensi_nafas" placeholder="x/menit" disabled>
                     </div>
                   </div>
                 </div>
@@ -189,7 +192,7 @@
                     <label class="control-label mb-10 text-left">Tinggi Badan<span class="help"></span></label>
                     <span id="tinggi_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="tinggi_badan" placeholder="Cm">
+                      <input type="number" class="form-control" name="tinggi_badan" placeholder="Cm" disabled>
                     </div>
                   </div>
                 </div>
@@ -241,7 +244,7 @@
                     <label class="control-label mb-10 text-left">GCS :<span class="help"></span></label>
                     <span id="gcs_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="GCS" id="gcs" placeholder="">
+                      <input type="number" class="form-control" name="gcs" id="gcs" placeholder="">
                     </div>
                   </div>
                 </div>
@@ -386,9 +389,9 @@
                   <!-- Bagian resutasi -->
                   <div id="resutasi" style="display: none; margin-top: 20px;">
                     <label>AIR WAY</label><br>
-                    <input type="radio" name="resutasi" value="sumbatan_total" id="total">
+                    <input type="radio" name="airway" value="sumbatan_total" id="total">
                     <label for="total">Sumbatan total</label><br>
-                    <input type="radio" name="resutasi" value="sumbatan_sebagian" id="sebagian">
+                    <input type="radio" name="airway" value="sumbatan_sebagian" id="sebagian">
                     <label for="sebagian">Sumbatan sebagian</label>
 
                     <!-- Bagian BREATHING-->
@@ -436,9 +439,9 @@
                 <!-- Bagian Emergency -->
                 <div id="emergency" style="display: none; margin-top: 20px;">
                   <label>AIR WAY</label><br>
-                  <input type="radio" name="emergency" value="risiko_gangguan" id="risiko">
+                  <input type="radio" name="airway" value="risiko_gangguan" id="risiko">
                   <label for="risiko">Risiko gangguan Airway</label><br>
-                  <input type="radio" name="emergency" value="distress_nafas" id="distress">
+                  <input type="radio" name="airway" value="distress_nafas" id="distress">
                   <label for="distress">Distress nafas berat</label>
 
                   <!-- Bagian BREATHING-->
@@ -498,7 +501,7 @@
               <!-- Bagian Urgent -->
               <div id="urgent" style="display: none; margin-top: 20px;">
                 <label>AIR WAY</label><br>
-                <input type="radio" name="urgent" value="paten" id="urgent_paten">
+                <input type="radio" name="airway" value="paten_urgent" id="urgent_paten">
                 <label for="urgent_paten">Paten</label>
 
                 <!-- Bagian BREATHING-->
@@ -556,11 +559,11 @@
             <!-- Bagian Tidak Darurat -->
             <div id="tidak_darurat" style="display: none; margin-top: 20px;">
               <label>AIR WAY</label><br>
-              <input type="radio" name="tidak_darurat" value="paten" id="td_paten">
+              <input type="radio" name="airway" value="paten_td" id="td_paten">
               <label for="td_paten">Paten</label><br>
-              <input type="radio" name="tidak_darurat" value="aspirasi" id="aspirasi">
+              <input type="radio" name="airway" value="aspirasi" id="aspirasi">
               <label for="aspirasi">Aspirasi benda asing tanpa distres nafas</label><br>
-              <input type="radio" name="tidak_darurat" value="kesulitan" id="kesulitan">
+              <input type="radio" name="airway" value="kesulitan" id="kesulitan">
               <label for="kesulitan">Kesulitan menelan tanpa distres nafas</label>
 
               <!-- Bagian BREATHING-->
@@ -704,54 +707,83 @@
           id: id_history
         },
         success: function(data) {
-          $('#id').val(data.id_form_ass_triase_ugd);
-          if (data.pRujuk == "Tidak") {
-            $('input[name="pRujuk"][value="' + data.pRujuk + '"]').prop("checked", true);
-          } else {
-            $('input[name="pRujuk"][value="Ya"]').prop("checked", true);
-            $('#inAsalRujuk').val(data.pRujuk);
-            $('#inAsalRujuk').show();
-          }
-
-          $('#gcs').val(data.gcs);
-          $('input[name="inId"]').val(data.id_triase_ugd);
           $('input[name="keluhan_utama"]').val(data.keluhan);
-          $('input[name="tekanan_darah"]').val(data.tekanan_darah);
-          $('input[name="suhu"]').val(data.suhu);
-          $('input[name="frequensi_nadi"]').val(data.frequensi_nadi);
-          $('input[name="spo2"]').val(data.spo2);
-          $('input[name="berat_badan"]').val(data.berat_badan);
-          $('input[name="frequensi_nafas"]').val(data.frequensi_nafas);
-          $('input[name="tinggi_badan"]').val(data.tinggi_badan);
+          $('input[name="inId"]').val(data.id_triase_ugd);
+          if (data.status_dt == 'found') {
+            $('input[name="tekanan_darah"]').val(data.tekanan_darah);
+            $('input[name="frequensi_nadi"]').val(data.frequensi_nadi);
+            $('input[name="frequensi_nafas"]').val(data.frequensi_nafas);
+            $('input[name="suhu"]').val(data.suhu);
+            $('input[name="tinggi_badan"]').val(data.tinggi_badan);
+            $('input[name="berat_badan"]').val(data.berat_badan);
+            $('input[name="spo2"]').val(data.spo2);
+            $('input[name="gcs"]').val(data.gcs);
+            var kebutuhan = data.kebutuhan_khusus.split(',');
+            $('input[name="kebutuhan_khusus"]').each(function() {
+              if (kebutuhan.includes($(this).val())) {
+                $(this).prop('checked', true);
+              }
+            });
+            $('input[name="mata"][value="' + data.mata + '"]').prop('checked', true);
+            $('input[name="verbal"][value="' + data.verbal + '"]').prop('checked', true);
+            $('input[name="motorik"][value="' + data.motorik + '"]').prop('checked', true);
+            $('input[name="pemeriksaan"][value="' + data.pemeriksaan + '"]').prop('checked', true);
+            $('input[name="airway"][value="' + data.airway + '"]').prop('checked', true);
+            $('input[name="breathing"][value="' + data.breathing + '"]').prop('checked', true);
+            $('input[name="cyrculation"][value="' + data.cyrculation + '"]').prop('checked', true);
+            $('input[name="disability"][value="' + data.disability + '"]').prop('checked', true);
+            $('input[name="exposure"][value="' + data.exposure + '"]').prop('checked', true);
+          } else {
+            $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2, #gcs, #kebutuhan_khusus').text('-');
+            $('input[type="checkbox"], input[type="radio"]').prop('checked', false);
+          }
+        // success: function(data) {
+        //   $('#id').val(data.id_form_ass_triase_ugd);
+        //   if (data.pRujuk == "Tidak") {
+        //     $('input[name="pRujuk"][value="' + data.pRujuk + '"]').prop("checked", true);
+        //   } else {
+        //     $('input[name="pRujuk"][value="Ya"]').prop("checked", true);
+        //     $('#inAsalRujuk').val(data.pRujuk);
+        //     $('#inAsalRujuk').show();
+        //   }
+        //   $('#gcs').val(data.gcs);
+        //   $('input[name="inId"]').val(data.id_triase_ugd);
+        //   $('input[name="keluhan_utama"]').val(data.keluhan);
+        //   $('input[name="tekanan_darah"]').val(data.tekanan_darah);
+        //   $('input[name="suhu"]').val(data.suhu);
+        //   $('input[name="frequensi_nadi"]').val(data.frequensi_nadi);
+        //   $('input[name="spo2"]').val(data.spo2);
+        //   $('input[name="berat_badan"]').val(data.berat_badan);
+        //   $('input[name="frequensi_nafas"]').val(data.frequensi_nafas);
+        //   $('input[name="tinggi_badan"]').val(data.tinggi_badan);
+        //   $('input[name="mata"][value="' + data.mata + '"]').prop("checked", true);
+        //   $('input[name="verbal"][value="' + data.verbal + '"]').prop("checked", true);
+        //   $('input[name="motorik"][value="' + data.motorik + '"]').prop("checked", true);
+        //   $('input[name="pemeriksaan"][value="' + data.pemeriksaan + '"]').prop("checked", true);
+        //   $('input[name="resutasi"][value="' + data.resutasi + '"]').prop("checked", true);
+        //   $('input[name="breathing"][value="' + data.breathing + '"]').prop("checked", true);
+        //   $('input[name="cyrculation"][value="' + data.cyrculation + '"]').prop("checked", true);
+        //   $('input[name="disability"][value="' + data.disability + '"]').prop("checked", true);
+        //   $('input[name="exposure"][value="' + data.exposure + '"]').prop("checked", true);
+        //   $('input[name="emergency"][value="' + data.emergency + '"]').prop("checked", true);
+        //   $('input[name="urgent"][value="' + data.urgent + '"]').prop("checked", true);
+        //   $('input[name="tidak_darurat"][value="' + data.tidak_darurat + '"]').prop("checked", true);
 
-          $('input[name="mata"][value="' + data.mata + '"]').prop("checked", true);
-          $('input[name="verbal"][value="' + data.verbal + '"]').prop("checked", true);
-          $('input[name="motorik"][value="' + data.motorik + '"]').prop("checked", true);
-          $('input[name="pemeriksaan"][value="' + data.pemeriksaan + '"]').prop("checked", true);
-          $('input[name="resutasi"][value="' + data.resutasi + '"]').prop("checked", true);
-          $('input[name="breathing"][value="' + data.breathing + '"]').prop("checked", true);
-          $('input[name="cyrculation"][value="' + data.cyrculation + '"]').prop("checked", true);
-          $('input[name="disability"][value="' + data.disability + '"]').prop("checked", true);
-          $('input[name="exposure"][value="' + data.exposure + '"]').prop("checked", true);
-          $('input[name="emergency"][value="' + data.emergency + '"]').prop("checked", true);
-          $('input[name="urgent"][value="' + data.urgent + '"]').prop("checked", true);
-          $('input[name="tidak_darurat"][value="' + data.tidak_darurat + '"]').prop("checked", true);
-
-          if (data.kebutuhan_khusus.match(/Tidak Ada.*/)) {
-            $('input[name="kebutuhan_khusus"][value="Tidak Ada"]').prop("checked", true);
-          }
-          if (data.kebutuhan_khusus.match(/Alat Bantu Dengar/)) {
-            $('input[name="kebutuhan_khusus"][value="Alat Bantu Dengar"]').prop("checked", true);
-          }
-          if (data.kebutuhan_khusus.match(/Kacamata/)) {
-            $('input[name="kebutuhan_khusus"][value="Kacamata"]').prop("checked", true);
-          }
-          if (data.kebutuhan_khusus.match(/Tongkat/)) {
-            $('input[name="kebutuhan_khusus"][value="Tongkat"]').prop("checked", true);
-          }
-          if (data.kebutuhan_khusus.match(/Gigi Palsu/)) {
-            $('input[name="kebutuhan_khusus"][value="Gigi Palsu"]').prop("checked", true);
-          }
+        //   if (data.kebutuhan_khusus.match(/Tidak Ada.*/)) {
+        //     $('input[name="kebutuhan_khusus"][value="Tidak Ada"]').prop("checked", true);
+        //   }
+        //   if (data.kebutuhan_khusus.match(/Alat Bantu Dengar/)) {
+        //     $('input[name="kebutuhan_khusus"][value="Alat Bantu Dengar"]').prop("checked", true);
+        //   }
+        //   if (data.kebutuhan_khusus.match(/Kacamata/)) {
+        //     $('input[name="kebutuhan_khusus"][value="Kacamata"]').prop("checked", true);
+        //   }
+        //   if (data.kebutuhan_khusus.match(/Tongkat/)) {
+        //     $('input[name="kebutuhan_khusus"][value="Tongkat"]').prop("checked", true);
+        //   }
+        //   if (data.kebutuhan_khusus.match(/Gigi Palsu/)) {
+        //     $('input[name="kebutuhan_khusus"][value="Gigi Palsu"]').prop("checked", true);
+        //   }
           // if (data.asesment_triase.match(/Merah/)) {
           //   $('input[name="asesment_triase"][value="Merah"]').prop("checked", true);
           // }
@@ -877,7 +909,6 @@
           // }
 
         }
-
       });
     });
   </script>
@@ -1121,6 +1152,7 @@
       verbal = $('input[name="verbal"]:checked').val();
       motorik = $('input[name="motorik"]:checked').val();
       pemeriksaan = $('input[name="pemeriksaan"]:checked').val();
+      airway = $('input[name="airway"]:checked').val();
       resutasi = $('input[name="resutasi"]:checked').val();
       breathing = $('input[name="breathing"]:checked').val();
       cyrculation = $('input[name="cyrculation"]:checked').val();
@@ -1174,6 +1206,7 @@
         '&motorik=' + motorik +
         '&pemeriksaan=' + pemeriksaan +
         '&resutasi=' + resutasi +
+        '&airway=' + airway +
         '&breathing=' + breathing +
         '&cyrculation=' + cyrculation +
         '&disability=' + disability +
@@ -1257,7 +1290,7 @@
     }
 
     function cetak() {
-      id = $('#id').val();
-      window.location.href = "<?php echo base_url('Erm_igd_edit/print_ass_per_igd/') ?>" + id;
+      id = $('#inPel').val();
+      window.open("<?php echo base_url('Erm_ases_triase_ugd/print_triase/') ?>" + id);
     }
   </script>

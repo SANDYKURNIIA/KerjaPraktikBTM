@@ -217,7 +217,7 @@
                 <a class="btn btn-default btn-anim btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
                 <button id="simpan" onclick="simpan()" type="submit" class="btn btn-success mb-4">Simpan</button>
                 <button style="display: none;" id="edit" type="submit" class="btn btn-warning mb-4" onclick="edit()">Edit</button>
-                <button style="display: none;" id="cetak" type="submit" class="btn btn-primary mb-4" onclick="cetak()">Cetak</button>
+                <button id="cetak" type="button" class="btn btn-success mb-4" style="display:none;" onclick="cetakTerpilih()">Cetak</button>
               </div>
             </div>
             <canvas id="can" style="display:none;"></canvas>
@@ -244,6 +244,7 @@
               <table class="table table-hover display pb-60" id="tabel_terapi">
                 <thead>
                   <tr class="bg-success">
+                    <th><label for="check_all"><input id="check_all" type="checkbox" onClick="toggle(this)">All</label></br></th>
                     <th>NO</th>
                     <th>PILIH</th>
                     <th>LANJUTKAN</th>
@@ -264,6 +265,7 @@
                 </thead>
                 <tfoot>
                   <tr class="bg-success">
+                    <th><label for="check_all"> All</label></br></th>
                     <th>NO</th>
                     <th>PILIH</th>
                     <th>LANJUTKAN</th>
@@ -427,6 +429,15 @@
     return false;
   }
 
+  function toggle(source) {
+    if ($('#check_all').is(":checked")) {
+      $('input[name="check[]"]').prop("checked", true);
+    } else {
+      $('input[name="check[]"]').prop("checked", false);
+
+    }
+  }
+
   function hapus(id) { //utk hapus diagnosa pasien
     swal({
       title: "Warning?",
@@ -506,6 +517,21 @@
         "targets": [0],
         "orderable": false,
       }, ],
+      "drawCallback": function(settings) {
+            var api = this.api();
+            var data = api.rows({
+                page: 'current'
+            }).data();
+
+            // Cek apakah tabel memiliki data
+            if (data.length > 0) {
+                // Jika ya, tampilkan tombol cetak
+                $('#cetak').show();
+            } else {
+                // Jika tidak, sembunyikan tombol cetak
+                $('#cetak').hide();
+            }
+        }
     });
   }
 
@@ -694,4 +720,39 @@
       $("#detail_verifikasi").hide(); // Jika radio button lain dipilih, sembunyikan kembali (opsional)
     }
   });
+</script>
+<script>
+  function cetakTerpilih() {
+    var ids = [];
+    $('input[name="check[]"]:checked').each(function() {
+      ids.push($(this).val());
+    });
+
+    if (ids.length === 0) {
+      swal({
+        title: "Perhatian!",
+        text: "Silakan pilih data yang ingin dicetak terlebih dahulu.",
+        type: "warning", // atau bisa juga "info"
+        confirmButtonColor: "#3cb878",
+        confirmButtonText: "Mengerti"
+    });
+    return;
+    }
+    var idString = ids.join(',');
+    var form = document.createElement('form');
+    form.method = 'POST'; // Set metode ke POST
+    form.action = "<?php echo base_url('Erm_ranap_catatan_perkembangan/print_perkembangan/') ?>"; // URL controller
+    form.target = '_blank'; // Buka di tab baru
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'ids'; // Nama ini akan digunakan di controller
+    hiddenInput.value = idString; // Nilainya adalah string ID kita
+
+    form.appendChild(hiddenInput);
+    document.body.appendChild(form);
+
+    form.submit();
+    document.body.removeChild(form);
+  }
 </script>

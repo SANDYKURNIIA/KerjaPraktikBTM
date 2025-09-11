@@ -109,6 +109,8 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 			$tombol = "<button class='btn btn-success btn-icon-anim btn square' id='myButton' onclick='pilih(\"" . $page_data[$i]->id_catatan . "\")'><i class='icon-rocket'></i></button>";
 			$lanjut = "<button class='btn btn-warning btn-icon-anim btn square' id='myButton' onclick='next(\"" . $page_data[$i]->id_catatan . "\")'><i class='icon-rocket'></i></button>";
 			$hapus = "<button class='btn btn-danger btn-icon-anim btn square' id='myButton' onclick='hapus(\"" . $page_data[$i]->id_catatan . "\")'><i class='icon-trash'></i></button>";
+			$checkbox = "<div class='checkbox checkbox-success'><input type='checkbox' name='check[]' value='" . $page_data[$i]->id_catatan . "'><label></label></div>";
+
 
 			$S = $page_data[$i]->S;
 			$O = $page_data[$i]->O;
@@ -125,7 +127,7 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 			$dbdokter = $this->db->get_where('dokter', ['nama' => $dokter])->row();
 			$ttd = (empty($dbdokter) || $page_data[$i]->verif!='Ya')?'':'<img src="' . base_url() . 'assets/ttd/' . $dbdokter->foto . '" style="width: 80px; ">';
 
-			$out[$i] = array($no, $tombol, $lanjut, $hapus, $S, $O, $A, $P, $instruksi, $date, $mulai_pukul, $tgl_verif, $dokter, $ttd, $staff);
+			$out[$i] = array($checkbox, $no, $tombol, $lanjut, $hapus, $S, $O, $A, $P, $instruksi, $date, $mulai_pukul, $tgl_verif, $dokter, $ttd, $staff);
 		}
 		if ($out == null) {
 			echo '{"data":""}';
@@ -219,5 +221,17 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 		}
 		echo json_encode($db);
 		exit;
+	}
+
+	public function print_perkembangan()
+	{
+		$ids_string = $this->input->post('ids');
+		if (empty($ids_string)) {
+			show_error('Tidak ada data yang dipilih untuk dicetak.', 400);
+			return;
+		}
+		$id_array = explode(',', $ids_string);
+		$data['data'] = $this->M_Erm_ranap->get_perkembangan($id_array);
+		$this->load->view('erm_ranap_print/print_perkembangan', $data);
 	}
 }
