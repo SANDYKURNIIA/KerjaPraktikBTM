@@ -11,6 +11,7 @@
     </table>
     <hr style="height: 5px;">
     <table>
+        <span style="font-weight: bold; font-size: 30px;"><?= ($pasien['iterasi'] && $pasien['iterasi'] !== "-") ? $pasien['iterasi'] : "" ?></span>
         <td></td>
         <td></td>
         <td></td>
@@ -103,7 +104,16 @@
     </table>
 
     <?php
+    ?>
+    <table width="100%">
+        <tr>
+            <td style="padding-right: 100px; text-align: right; font-weight: bold; font-size: 30px;">
+                <?= $pasien['iterasi'] !== "-" ? "DET ORIG" : "" ?>
+            </td>
+        </tr>
+    </table>
 
+    <?php
 
     echo "<br>NAMA : " . $pasien['nama'];
     echo "<br>NO RM : " . $pasien['no_rm'];
@@ -113,6 +123,7 @@
     echo "<br>CARA BAYAR : " . $pasien['cara_bayar'];
     // echo "<br>POLI : " . $pasien['nama_panjang'];
     echo "<br>POLI/RUANGAN : " . $pasien['ruang'];
+    // echo "<br>kamu  : " . $pasien['ruang'];
     ?>
     <br>
     <br>

@@ -581,6 +581,7 @@ $izinAkses = $data->izin_akses;
                                     <th>NAMA RESEP</th>
                                     <th>JENIS RESEP</th>
                                     <th>DEPO</th>
+                                    <th>ITERASI</th>
                                     <th>TANGGAL</th>
                                 </tr>
                             </thead>

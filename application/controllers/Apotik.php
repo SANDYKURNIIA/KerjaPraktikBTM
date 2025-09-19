@@ -24,69 +24,154 @@ class Apotik extends CI_Controller
         $this->load->view('Main', $page_data);
         $this->load->view('assets/_footer');
     }
-    public function tampil_pasien_rajal()
-    {
-        $staff = $this->session->userdata('data_auth');
-        if ($this->input->post('mulai') != null && $this->input->post('akhir') != null || $this->input->post('mulai') != '' && $this->input->post('akhir') != '') {
-            $page_data = $this->M_Apotik->selectRangePasienRajal($this->input->post('mulai'), $this->input->post('akhir'));
-        } else {
-            $page_data = $this->M_Apotik->selectRangePasienRajal("", "");
-        }
-        $out = null;
-        for ($i = 0; $i < count($page_data); $i++) {
-            $tombol =   "<button class='btn btn-success btn-icon-anim btn-square' data-toggle='modal' onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")' '><i class='fa fa-rocket '></i></button>";
-
-            // $id_pelayanan = $page_data[$i]->id_pelayanan;
-            // $data = $this->db->query("SELECT * from tindakan_farmasi where depo='RANAP' and id_pelayanan='$id_pelayanan'")->result();
-            // if (count($data) > 0) {
-            //     $depo = "RANAP";
-            // } else {
-            //     $depo = "APOTIK/IGD";
-            // }
-            $no = $i + 1;
-            $time = strtotime($page_data[$i]->tanggal);
-            $tgl = strftime("%d %B %Y %H:%M WIB", $time);
-            $waktu = strftime("%H:%M WIB", $time);
-            $no_rm =  " " . sprintf('%06d', $page_data[$i]->no_rm);
-            $pasien = $page_data[$i]->nama;
-            $jk = $page_data[$i]->jenis_kelamin;
-
-            $time1 = strtotime($page_data[$i]->tgl_lahir);
-            $tgl1 = strftime("%A, %d %B %Y", $time1);
-            $birthDate = $page_data[$i]->tgl_lahir;
-            $date = new DateTime($birthDate);
-            $now = new DateTime();
-            $interval = $now->diff($date);
-
-            $umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
-            $alamat = $page_data[$i]->alamat;
-            $jenis_pelayanan = $page_data[$i]->jenis_pelayanan;
-            $poli = $page_data[$i]->poli;
-
-            $countPoli = $this->M_Apotik->countPoliRajal($page_data[$i]->id_history);
-            $totalPoli = $countPoli->total;
-            if ($totalPoli > 1) {
-                $jumPoli = '<span class="label label-warning">2 POLI</span>';
-            } elseif ($totalPoli == 1) {
-                $jumPoli = '<span class="label label-success">1 POLI</span>';
-            } else {
-                $jumPoli = '-';
-            }
-            $caraBayar = $page_data[$i]->cara_bayar;
-            $diagnosa = $page_data[$i]->diagnosa;
-            $dokter = $page_data[$i]->nama_dokter;
-            $out[$i] = array($no, $tombol, $tgl, $no_rm, $pasien, $jk, $tgl1, $umur, $alamat, $jumPoli, $poli, $caraBayar, $diagnosa, $dokter);
-        }
-
-        if ($out == null) {
-            echo '{"data":""}';
-            exit;
-        } else {
-            $page_data['data'] = $out;
-            echo json_encode($page_data);
-            exit;
-        }
+  public function tampil_pasien_rajal()
+{
+    $staff = $this->session->userdata('data_auth');
+    if ($this->input->post('mulai') != null && $this->input->post('akhir') != null || $this->input->post('mulai') != '' && $this->input->post('akhir') != '') {
+        $page_data = $this->M_Apotik->selectRangePasienRajal($this->input->post('mulai'), $this->input->post('akhir'));
+    } else {
+        $page_data = $this->M_Apotik->selectRangePasienRajal("", "");
     }
+
+    $out = null;
+    for ($i = 0; $i < count($page_data); $i++) {
+        // Tombol resep
+        $tombol_obat = "<button class='btn btn-success btn-icon-anim btn-square' 
+                        data-toggle='modal' 
+                        onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")'>
+                        <i class='fa fa-rocket'></i></button>";
+
+        // Tombol edukasi pendaftaran rajal (pakai no_rm)
+        $tombol_edukasi = "<a href='" . base_url('Apotik/edukasi_pendaftaran_ugd/' . $page_data[$i]->no_rm) . "' 
+                           class='btn btn-info btn-icon-anim btn-square'>
+                           <i class='fa fa-book'></i></a>";
+
+        $no = $i + 1;
+        $time = strtotime($page_data[$i]->tanggal);
+        $tgl = strftime("%d %B %Y %H:%M WIB", $time);
+        $no_rm =  " " . sprintf('%06d', $page_data[$i]->no_rm);
+        $pasien = $page_data[$i]->nama;
+        $jk = $page_data[$i]->jenis_kelamin;
+        $time1 = strtotime($page_data[$i]->tgl_lahir);
+        $tgl1 = strftime("%A, %d %B %Y", $time1);
+        $birthDate = $page_data[$i]->tgl_lahir;
+        $date = new DateTime($birthDate);
+        $now = new DateTime();
+        $interval = $now->diff($date);
+        $umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
+        $alamat = $page_data[$i]->alamat;
+        $caraBayar = $page_data[$i]->cara_bayar;
+        $diagnosa = $page_data[$i]->diagnosa;
+        $dokter = $page_data[$i]->nama_dokter;
+
+        $out[$i] = array(
+            $no,
+            $tombol_obat,
+            $tombol_edukasi,
+            $tgl,
+            $no_rm,
+            $pasien,
+            $jk,
+            $tgl1,
+            $umur,
+            $alamat,
+            $caraBayar,
+            $diagnosa,
+            $dokter
+        );
+    }
+
+    if ($out == null) {
+        echo '{"data":""}';
+        exit;
+    } else {
+        $page_data['data'] = $out;
+        echo json_encode($page_data);
+        exit;
+    }
+}
+public function edukasi_pendaftaran_rajal($no_rm)
+{
+    $data_staff = $this->session->userdata('data_auth');
+    $page_data['sso_user_data'] = $data_staff;
+    $page_data['page_content'] = 'form_form/edukasi_pendaftaran_ugd';
+
+    // ambil data pasien berdasarkan no_rm
+    $pasien = $this->db->get_where('pasien', ['no_rm' => $no_rm])->row_array();
+    if (!$pasien) show_404();
+
+    $page_data['pasien'] = $pasien;
+    $page_data['no_rm']  = $pasien['no_rm'];
+
+    // ambil data edukasi pasien (kalau ada)
+    $page_data['edukasi'] = $this->M_Apotik->getEdukasiByNoRM($pasien['no_rm']);
+
+    $this->load->view('assets/_header');
+    $this->load->view('Main', $page_data);
+    $this->load->view('assets/_footer');
+}
+
+public function simpan_edukasi_rajal()
+{
+    $no_rm = $this->input->post('no_rm');
+
+    // validasi pasien
+    $pasien = $this->db->get_where('pasien', ['no_rm' => $no_rm])->row_array();
+    if (!$pasien) {
+        echo json_encode(['status' => 'error', 'message' => 'Pasien tidak ditemukan.']);
+        return;
+    }
+
+    // ambil pelayanan terbaru
+    $pelayanan = $this->db->order_by('tanggal', 'DESC')
+                          ->get_where('pelayanan', ['id_pasien' => $pasien['kode']])
+                          ->row();
+    if ($pelayanan) {
+        $id_pelayanan = $pelayanan->id_pelayanan;
+        $id_staff     = $pelayanan->id_staff;
+    } else {
+        $id_pelayanan = null;
+        $id_staff     = $this->session->userdata('data_auth')['id_staff'];
+    }
+
+    // ambil data dari form
+    $data = [
+        'no_rm'        => $no_rm,
+        'id_staff'     => $id_staff,
+        'id_pelayanan' => $id_pelayanan,
+        'tanggal_input'=> date('Y-m-d H:i:s')
+    ];
+
+    for ($i=1; $i<=4; $i++) {
+        $data["topik$i"]              = $this->input->post("topik$i");
+        $materi = $this->input->post("materi_penyampaian$i");
+        $data["materi_penyampaian$i"] = !empty($materi) && is_array($materi) ? implode(', ', $materi) : null;
+        $data["durasi$i"]             = $this->input->post("durasi$i");
+        $data["pasien_keluarga$i"]    = $this->input->post("pasien_keluarga$i");
+        $data["edukator$i"]           = $this->input->post("edukator$i");
+        $data["evaluasi$i"]           = $this->input->post("evaluasi$i");
+    }
+
+    $this->M_Apotik->saveOrUpdateEdukasi($data);
+
+    echo json_encode(['status' => 'success', 'message' => 'Data edukasi Rajal berhasil disimpan.']);
+}
+
+public function print_edukasi_rajal($no_rm)
+{
+    $pasien  = $this->db->get_where('pasien', ['no_rm' => $no_rm])->row_array();
+    $edukasi = $this->M_Apotik->getEdukasiByNoRM($no_rm);
+    $staff   = $this->session->userdata('data_auth');
+
+    if (!$pasien || !$edukasi) show_404();
+
+    $page_data['pasien'] = $pasien;
+    $page_data['edukasi'] = $edukasi;
+    $page_data['sso_user_data'] = $staff;
+
+    $this->load->view('print/print_edukasi_rajal', $page_data);
+}
+
     public function pasien_Igd() //Igd
     {
         $this->load->view('assets/_header');
@@ -103,16 +188,17 @@ public function tampil_pasien_Igd()
 
     $out = null;
     for ($i = 0; $i < count($page_data); $i++) {
-        // Tombol tindakan obat (pakai modal resep)
-        $tombol_obat = "<button class='btn btn-success btn-icon-anim btn-square' 
-                        data-toggle='modal' 
-                        onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")'>
-                        <i class='fa fa-rocket'></i></button>";
+   // Tombol tindakan obat (pakai modal resep)
+$tombol_obat = "<button class='btn btn-success btn-icon-anim btn-square' 
+                data-toggle='modal' 
+                onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")'>
+                <i class='fa fa-rocket'></i></button>";
 
-        // Tombol edukasi pendaftaran (redirect ke view)
- $tombol_edukasi = "<a href='" . base_url('Apotik/edukasi_pendaftaran_ugd/' . $page_data[$i]->kode_pasien) . "' 
+// Tombol edukasi pendaftaran (redirect ke view, pakai no_rm)
+$tombol_edukasi = "<a href='" . base_url('Apotik/edukasi_pendaftaran_ugd/' . $page_data[$i]->no_rm) . "' 
                    class='btn btn-info btn-icon-anim btn-square'>
                    <i class='fa fa-book'></i></a>";
+
 
 
 
@@ -168,14 +254,14 @@ public function tampil_pasien_Igd()
 }
 
 // tampilkan form edukasi UGD
-public function edukasi_pendaftaran_ugd($kode_pasien)
+public function edukasi_pendaftaran_ugd($no_rm)
 {
     $data_staff = $this->session->userdata('data_auth');
     $page_data['sso_user_data'] = $data_staff;
     $page_data['page_content'] = 'form_form/edukasi_pendaftaran_ugd';
 
-    // ambil data pasien
-    $pasien = $this->M_Apotik->getPasienByKode($kode_pasien);
+    // ambil data pasien berdasarkan no_rm
+    $pasien = $this->db->get_where('pasien', ['no_rm' => $no_rm])->row_array();
     if (!$pasien) show_404();
 
     $page_data['pasien'] = $pasien;
@@ -189,6 +275,7 @@ public function edukasi_pendaftaran_ugd($kode_pasien)
     $this->load->view('assets/_footer');
 }
 
+
 // simpan edukasi UGD pakai AJAX
 public function simpan_edukasi_ugd()
 {
@@ -201,24 +288,22 @@ public function simpan_edukasi_ugd()
         return;
     }
 
-    // ambil pelayanan terbaru
+    // ambil pelayanan terbaru berdasarkan no_rm (bisa kosong)
     $pelayanan = $this->db->order_by('tgl_masuk', 'DESC')
-                          ->get_where('pelayanan', ['id_pasien' => $pasien['kode']])
+                          ->get_where('pelayanan', ['id_pasien' => $pasien['no_rm']])
                           ->row();
-    if ($pelayanan) {
-        $id_pelayanan = $pelayanan->id_pelayanan;
-        $id_staff     = $pelayanan->id_staff;
-    } else {
-        $id_pelayanan = null;
-        $id_staff     = $this->session->userdata('data_auth')['id_staff'];
-    }
 
-    // ambil data dari form
+    $id_pelayanan = $pelayanan ? $pelayanan->id_pelayanan : null;
+
+    // selalu ambil staff dari session (yang login)
+    $id_staff = $this->session->userdata('data_auth')->id_staff;
+
+    // data utama
     $data = [
-        'no_rm'        => $no_rm,
-        'id_staff'     => $id_staff,
-        'id_pelayanan' => $id_pelayanan,
-        'tanggal_input'=> date('Y-m-d H:i:s')
+        'no_rm'         => $no_rm,
+        'id_staff'      => $id_staff,         // ✅ staff login
+        'id_pelayanan'  => $id_pelayanan,     // bisa null kalau belum ada
+        'tanggal_input' => date('Y-m-d H:i:s')
     ];
 
     // loop 4 topik
@@ -232,11 +317,12 @@ public function simpan_edukasi_ugd()
         $data["evaluasi$i"]           = $this->input->post("evaluasi$i");
     }
 
-    // simpan (replace / insert)
+    // simpan
     $this->M_Apotik->saveOrUpdateEdukasi($data);
 
     echo json_encode(['status' => 'success', 'message' => 'Data edukasi berhasil disimpan.']);
 }
+
 
 
 // ambil riwayat edukasi pasien berdasarkan no_rm
@@ -1161,61 +1247,96 @@ public function print_edukasi_ugd($no_rm)
         $this->load->view('Main', $page_data);
         $this->load->view('assets/_footer');
     }
-    public function tampil_pasien_ranap()
-    {
-        $page_data = $this->M_Apotik->selectPasienRanap();
+public function tampil_pasien_ranap()
+{
+    $page_data = $this->M_Apotik->selectPasienRanap();
 
+    $out = null;
+    for ($i = 0; $i < count($page_data); $i++) {
 
-        $out = null;
-        for ($i = 0; $i < count($page_data); $i++) {
-            $tombol =   "<button class='btn btn-success btn-icon-anim btn-square' data-toggle='modal' onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")' '><i class='fa fa-rocket '></i></a>";
-            $no = $i + 1;
-            $time = strtotime($page_data[$i]->tgl_req);
-            $tgl = strftime("%A, %d %B %Y", $time);
-            $waktu = strftime("%H:%M WIB", $time);
-            $time2 = strtotime($page_data[$i]->tgl_masuk);
-            $tgl2 = strftime("%A, %d %B %Y", $time2);
-            $no_rm =  " " . sprintf('%06d', $page_data[$i]->no_rm);
-            $pasien = $page_data[$i]->nama;
-            $jk = $page_data[$i]->jenis_kelamin;
+        // Tombol Non Racikan (resep)
+        $tombol_nonracikan = "<button class='btn btn-success btn-icon-anim btn-square' 
+                                data-toggle='modal' 
+                                onclick='tampil_resep(\"" . $page_data[$i]->id_pelayanan . "\",\"" . $page_data[$i]->id_history . "\")'>
+                                <i class='fa fa-rocket'></i>
+                              </button>";
 
-            $time1 = strtotime($page_data[$i]->tgl_lahir);
-            $tgl1 = strftime("%A, %d %B %Y", $time1);
-            $birthDate = $page_data[$i]->tgl_lahir;
-            $date = new DateTime($birthDate);
-            $now = new DateTime();
-            $interval = $now->diff($date);
+        // Tombol Edukasi Pendaftaran (pakai no_rm)
+        $tombol_edukasi = "<a href='" . base_url('Apotik/edukasi_pendaftaran_ugd/' . $page_data[$i]->no_rm) . "' 
+                               class='btn btn-info btn-icon-anim btn-square'>
+                               <i class='fa fa-book'></i>
+                           </a>";
 
-            $umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
-            $alamat = $page_data[$i]->alamat;
-            $jenis_pelayanan = $page_data[$i]->jenis_pelayanan;
-            $poli = $page_data[$i]->poli;
+        $no     = $i + 1;
+        $time   = strtotime($page_data[$i]->tgl_req);
+        $tgl    = strftime("%A, %d %B %Y", $time);
+        $waktu  = strftime("%H:%M WIB", $time);
 
-            $countPoli = $this->M_Apotik->countPoliRajal($page_data[$i]->id_history);
-            $totalPoli = $countPoli->total;
-            if ($totalPoli > 1) {
-                $jumPoli = '<span class="label label-warning">2 POLI</span>';
-            } elseif ($totalPoli == 1) {
-                $jumPoli = '<span class="label label-success">1 POLI</span>';
-            } else {
-                $jumPoli = '-';
-            }
-            $caraBayar = $page_data[$i]->cara_bayar;
-            $diagnosa = $page_data[$i]->diagnosa;
-            $dokter = $page_data[$i]->nama_dokter;
+        $time2  = strtotime($page_data[$i]->tgl_masuk);
+        $tgl2   = strftime("%A, %d %B %Y", $time2);
 
-            $out[$i] = array($no, $tombol, $tgl2, $waktu, $tgl, $no_rm, $pasien, $jk, $tgl1, $umur, $alamat, $jenis_pelayanan, $poli, $caraBayar, $diagnosa, $dokter);
-        }
+        $no_rm  = " " . sprintf('%06d', $page_data[$i]->no_rm);
+        $pasien = $page_data[$i]->nama;
+        $jk     = $page_data[$i]->jenis_kelamin;
 
-        if ($out == null) {
-            echo '{"data":""}';
-            exit;
+        $time1  = strtotime($page_data[$i]->tgl_lahir);
+        $tgl1   = strftime("%A, %d %B %Y", $time1);
+        $birthDate = $page_data[$i]->tgl_lahir;
+        $date   = new DateTime($birthDate);
+        $now    = new DateTime();
+        $interval = $now->diff($date);
+
+        $umur   = $interval->y . " Tahun, " . $interval->m . " Bulan";
+        $alamat = $page_data[$i]->alamat;
+        $jenis_pelayanan = $page_data[$i]->jenis_pelayanan;
+        $poli   = $page_data[$i]->poli;
+
+        $countPoli = $this->M_Apotik->countPoliRajal($page_data[$i]->id_history);
+        $totalPoli = $countPoli->total;
+        if ($totalPoli > 1) {
+            $jumPoli = '<span class="label label-warning">2 POLI</span>';
+        } elseif ($totalPoli == 1) {
+            $jumPoli = '<span class="label label-success">1 POLI</span>';
         } else {
-            $page_data['data'] = $out;
-            echo json_encode($page_data);
-            exit;
+            $jumPoli = '-';
         }
+
+        $caraBayar = $page_data[$i]->cara_bayar;
+        $diagnosa  = $page_data[$i]->diagnosa;
+        $dokter    = $page_data[$i]->nama_dokter;
+
+        // Sesuai urutan tabel: NON RACIKAN -> EDUKASI PENDAFTARAN -> lainnya
+        $out[$i] = array(
+            $no,
+            $tombol_nonracikan,
+            $tombol_edukasi,
+            $tgl2,
+            $tgl,
+            $waktu,
+            $no_rm,
+            $pasien,
+            $jk,
+            $tgl1,
+            $umur,
+            $alamat,
+            $jenis_pelayanan,
+            $poli,
+            $caraBayar,
+            $diagnosa,
+            $dokter
+        );
     }
+
+    if ($out == null) {
+        echo '{"data":""}';
+        exit;
+    } else {
+        $page_data['data'] = $out;
+        echo json_encode($page_data);
+        exit;
+    }
+}
+
 
     //Riwayat Pasien
     public function Riwayat_pasien()
@@ -1951,6 +2072,7 @@ public function print_edukasi_ugd($no_rm)
 
         $this->load->view('Main', $page_data);
         $this->load->view('assets/_footer');
+        
     }
     public function Tampil_laporan_pasien_rajal()
     {

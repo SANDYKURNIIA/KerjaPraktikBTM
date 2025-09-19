@@ -40,6 +40,20 @@
                 </div>
             </div>
         </div>
+
+                <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">ITERASI</label>
+                <div class="col-md-9 has-success">
+                    <select class="form-control filled-input select2" id="inIterasi" name="iterasi">
+                        <option value="-"> - </option>
+                        <option value="ITER 1x">ITER 1x</option>
+                        <option value="ITER 2x">ITER 2x</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="collapse_next_resep" style="display: none;">
 
@@ -309,6 +323,53 @@
                 "targets": [0],
                 "orderable": false,
             }, ],
+        });
+    }
+    
+    function insert_resep() {
+        jenis_resep = $('#inJenisResep').val();
+        nama_resep = $('#inNamaResep').val();
+        depo = $('#inDepo1').val();
+        id_pelayanan = $('#inPelResep').val();
+        id_history = $('#inHisResep').val();
+        var iterasi = $("#inIterasi").val()
+        console.log(iterasi)
+        $.ajax({
+            url: "<?= base_url() . 'Poli/insert_resep' ?>",
+            method: "POST",
+            dataType: 'json',
+            data: {
+                jenis_resep: jenis_resep,
+                nama_resep: nama_resep,
+                depo: depo,
+                iterasi: iterasi,
+                id_pelayanan: id_pelayanan,
+                id_history: id_history
+            },
+            success: function(data) {
+                if (data.status == "success") {
+                    console.log(data);
+                    $.toast({
+                        heading: 'Success!',
+                        text: 'Tindakan ini telah ditambah',
+                        showHideTransition: 'fade',
+                        icon: 'success'
+                    });
+                    $('#inJenisResep').val(1).change();
+                    $('#inNamaResep').val('');
+                    $('#inIterasi').val('-').change(); // default ke ITER1
+                    $("#collap_nonracikan").collapse('hide');
+                    $("#collap_racikan").collapse('hide');
+                    $('#tableresep').DataTable().ajax.reload();
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        type: "warning",
+                        text: data.status,
+                        confirmButtonColor: "#3cb878",
+                    });
+                }
+            }
         });
     }
 </script>

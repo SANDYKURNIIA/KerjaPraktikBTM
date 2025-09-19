@@ -589,8 +589,9 @@ class M_Kasir extends CI_Model
     }
     public function getHcById($id_mcu)
     {
-        $this->db->select('*');
-        $this->db->from('homecare');
+        $this->db->select('t.*,c.nama cara_bayar');
+        $this->db->from('homecare t');
+        $this->db->join('cara_bayar c','c.id_cara_bayar=t.cara_bayar');
         $this->db->where('id_pasien', $id_mcu);
         return $this->db->get()->row_array();
     }

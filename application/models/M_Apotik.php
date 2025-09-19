@@ -9,7 +9,7 @@ class M_Apotik extends CI_Model
         $this->db->where('nama', 'status_so_apotik');
         return $this->db->get()->row_array();
     }
-    //pasien rajal
+    //pasien rajal 
 
     public function selectRangePasienRajal($mulai, $akhir) //poli
     {
@@ -20,87 +20,79 @@ class M_Apotik extends CI_Model
         if ($mulai != '' && $akhir != '') {
             $this->db->where(' tanggal >= ', $mulai);
             $this->db->where(' tanggal <=', $akhir);
-        } else {
+        } else { 
             $this->db->like(' tanggal ', $tgl);
         }
 
         return $this->db->get('v_rajal_apotik')->result();
     }
-
-    public function updateStatus($data,$where,$table)
-    {
-        $this->db->where($where);
-        $this->db->update($table, $data);
-    }
-
-    public function selectPasienIgd() //igd
-    {
-        $query =  $this->db->query("SELECT b.id_pelayanan,h.id_history,c.id_cara_bayar,'-' AS nama_poli,h.tgl_masuk,p.no_rm,p.nama ,p.jenis_kelamin,p.tgl_lahir,p.agama,h.jenis_pelayanan,dok.nama nama_dokter,b.no_sep,b.diagnosa,c.nama AS cara_bayar,'-' AS poli,b.keterangan,b.tipe,p.alamat,r.tgl_req tanggal
-        from pasien p , pelayanan b , history_pelayanan_ugd h , cara_bayar c , dokter dok , resep_obat r 
-        where p.no_rm = b.id_pasien 
-        and h.id_pelayanan = b.id_pelayanan 
-        and c.id_cara_bayar = b.cara_bayar 
-        and h.dpjp = dok.id_dokter 
-        and (b.status_rawat = 'dirawat' or b.status_rawat = 'dikembalikan') 
-        and b.status = 1 
-        and b.id_pelayanan = r.id_pelayanan 
-        and h.id_history = r.id_history 
-        and r.status = 1
-        and h.status = 1
-        ");
-        return $query->result();
-    }
-   public function selectObatBebas($mulai = '', $akhir = '')
+ public function selectPasienIgd() //igd
 {
-    date_default_timezone_set('Asia/Jakarta');
-    $tgl = date('Y-m-d');
-
-    // Ambil tipe user dengan aman
-    $auth = $this->session->userdata('data_auth');
-    $tipe = (is_object($auth) && isset($auth->tipe)) ? strtolower($auth->tipe) : null;
-
-    // Map tipe -> unit
-    $unit = null;
-    if     ($tipe === 'apotik')    $unit = 'APOTIK';
-    elseif ($tipe === 'deporanap') $unit = 'DEPO RANAP';
-
-    $this->db->select("
-        o.*,
-        c.nama AS carabayar,
-        c.nama AS cara_bayar,                 -- alias tambahan (dipakai controller)
-        MAX(tf.id_pelayanan) AS id_pelayanan, -- NULL jika belum ada detail
-        COUNT(tf.id_tindakan_farmasi) AS jml_detail
-    ", false);
-
-    $this->db->from('obat_bebas o');
-    $this->db->join('cara_bayar c', 'o.cara_bayar = c.id_cara_bayar', 'inner');
-
-    // Relasi ke detail: tindakan_farmasi.id_pelayanan = obat_bebas.id_obat_bebas
-    $this->db->join(
-        'tindakan_farmasi tf',
-        "tf.id_resep = 'obat_bebas' AND tf.id_pelayanan = o.id_obat_bebas",
-        'left'
-    );
-
-    // Filter unit bila ada
-    if (!is_null($unit)) {
-        $this->db->where('o.unit', $unit);
-    }
-
-    // Filter tanggal
-    if ($mulai !== '' && $akhir !== '') {
-        $this->db->where('o.tanggal >=', $mulai);
-        $this->db->where('o.tanggal <=', $akhir);
-    } else {
-        $this->db->like('o.tanggal', $tgl);
-    }
-
-    $this->db->group_by('o.id_obat_bebas');     // karena ada agregasi MAX/COUNT
-    $this->db->order_by('o.tanggal', 'DESC');
-
-    return $this->db->get()->result();
+    $query =  $this->db->query("
+        SELECT 
+            b.id_pelayanan,
+            h.id_history,
+            c.id_cara_bayar,
+            '-' AS nama_poli,
+            h.tgl_masuk,
+            p.no_rm,
+            p.nama,
+            p.jenis_kelamin,
+            p.tgl_lahir,
+            p.agama,
+            h.jenis_pelayanan,
+            dok.nama nama_dokter,
+            b.no_sep,
+            b.diagnosa,
+            c.nama AS cara_bayar,
+            '-' AS poli,
+            b.keterangan,
+            b.tipe,
+            p.alamat,
+            r.tgl_req tanggal,
+            p.kode AS kode_pasien   -- ✅ tambahkan ini
+        FROM pasien p 
+        JOIN pelayanan b ON p.no_rm = b.id_pasien
+        JOIN history_pelayanan_ugd h ON h.id_pelayanan = b.id_pelayanan
+        JOIN cara_bayar c ON c.id_cara_bayar = b.cara_bayar
+        JOIN dokter dok ON h.dpjp = dok.id_dokter
+        JOIN resep_obat r ON b.id_pelayanan = r.id_pelayanan AND h.id_history = r.id_history
+        WHERE 
+            (b.status_rawat = 'dirawat' OR b.status_rawat = 'dikembalikan')
+            AND b.status = 1
+            AND r.status = 1
+            AND h.status = 1
+    ");
+    return $query->result();
 }
 
+    public function selectObatBebas($mulai, $akhir)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $tgl = date("Y-m-d");
+        $data = $this->session->userdata('data_auth');
+        $perequest = $data->tipe;
+        if ($perequest == "apotik") {
+            $stok = "APOTIK";
+        } else if ($perequest == "deporanap") {
+            $stok = "DEPO RANAP";
+        }
+
+        $this->db->select('o.*, c.nama carabayar');
+        $this->db->from('obat_bebas o, cara_bayar c');
+        $this->db->where('o.cara_bayar = c.id_cara_bayar');
+        if ($perequest == "apotik" && $perequest == "deporanap") {
+            $this->db->where('o.unit', $stok);
+        }
+        if ($mulai != '' && $akhir != '') {
+            $this->db->where('tanggal >=', $mulai);
+            $this->db->where('tanggal <=', $akhir);
+        } else {
+            $this->db->like(' tanggal ', $tgl);
+        }
+        $this->db->order_by('tanggal desc');
+        return $this->db->get()->result();
+    }
     public function countPoliRajal($id)
     {
         $this->db->select('COUNT(*) total');
@@ -119,6 +111,7 @@ class M_Apotik extends CI_Model
         $this->db->where('r.id_history', $id_history);
         $this->db->where('r.status = 1');
         $this->db->where('r.jenis_resep != 4');
+        // $this->db->where('r.jenis_resep != 0');
         $this->db->order_by('r.tanggal desc');
         return $this->db->get()->result();
     }
@@ -135,6 +128,40 @@ class M_Apotik extends CI_Model
 
         return $this->db->get()->result();
     }
+
+    //yohanes1
+// ambil data pasien by kode (masih perlu karena dipanggil di controller)
+public function getPasienByKode($kode_pasien)
+{
+    return $this->db->get_where('pasien', ['kode' => $kode_pasien])->row_array();
+}
+
+// ambil data edukasi pasien berdasarkan no_rm (hanya 1 terakhir)
+public function getEdukasiByNoRM($no_rm)
+{
+    return $this->db->order_by('tanggal_input', 'DESC')
+                    ->get_where('topik_edukasi_ugd', ['no_rm' => $no_rm])
+                    ->row_array(); // hanya 1 baris
+}
+
+
+// insert atau update data edukasi (pakai no_rm)
+public function saveOrUpdateEdukasi($data)
+{
+    $cek = $this->db->get_where('topik_edukasi_ugd', [
+        'no_rm' => $data['no_rm']
+    ])->row();
+
+    if ($cek) {
+        $this->db->where('id_edukasi', $cek->id_edukasi);
+        return $this->db->update('topik_edukasi_ugd', $data);
+    } else {
+        return $this->db->insert('topik_edukasi_ugd', $data);
+    }
+}
+
+
+
     public function selectObatByResep_kronis($id_resep)
     {
         $this->db->select('t.*, l.nama, s.nama staff, si.tindakan,r.jenis_resep ');
@@ -160,6 +187,7 @@ class M_Apotik extends CI_Model
         $this->db->where('t.id_pelayanan = o.id_obat_bebas');
         $this->db->where('s.id_staff=t.id_staff');
         $this->db->where('t.frek>0');
+        $this->db->where('t.id_resep', 'obat_bebas');
         $this->db->where('o.id_obat_bebas', $id);
         $this->db->order_by('t.tanggal desc');
 
@@ -253,18 +281,18 @@ class M_Apotik extends CI_Model
     }
     public function getResepById($id_resep)
     {
-        $this->db->select('sum(t.total) total, sum(t.frek) frek, sum(t.frek_req) frek_req, l.nama obat, l.high_alert, t.id_signa, s.tindakan, c.cara_pemakaian, t.keterangan');
-        $this->db->from('tindakan_farmasi t');
-        $this->db->join('list_logistik l', 't.id_list_tindakan = l.id_logistik');
-        $this->db->join('resep_obat r', 'r.id_resep = t.id_resep');
-        $this->db->join('signa_obat s', 't.id_signa = s.id_signa');
-        $this->db->join('cara_pemakaian_obat c', 't.id_cara_pakai = c.id_cara_pemakaian');
+        $this->db->select('sum(t.total) total, sum(t.frek) frek, sum(t.frek_req) frek_req,l.nama obat, t.id_signa, s.tindakan, c.cara_pemakaian,t.keterangan');
+        $this->db->from('tindakan_farmasi t, list_logistik l, resep_obat r, signa_obat s,cara_pemakaian_obat c');
+        $this->db->where('r.id_resep=t.id_resep');
+        $this->db->where('t.id_list_tindakan=l.id_logistik');
+        $this->db->where('t.id_signa=s.id_signa');
+        $this->db->where('t.id_cara_pakai=c.id_cara_pemakaian');
         $this->db->where('t.id_resep', $id_resep);
         $this->db->where_not_in('t.frek', 0);
         $this->db->group_by('t.id_list_tindakan');
+        $this->db->having('frek !=0');
         return $this->db->get()->result_array();
     }
-
     public function getResepById_copy($id_resep)
     {
         $this->db->select('sum(t.total) total, sum(t.frek) frek, sum(t.frek_req) frek_req,l.nama obat, t.id_signa, s.tindakan, c.cara_pemakaian,t.keterangan,l.satuan_terkecil satuan');
@@ -447,15 +475,6 @@ class M_Apotik extends CI_Model
         return $this->db->get()->result_array();
     }
 
-    public function getStatus($id_resep)
-    {
-        $this->db->select('status');
-        $this->db->from('antrian_farmasi',);
-        $this->db->where('status', 0);
-        $this->db->where('id_resep', $id_resep);
-        return $this->db->get()->row();
-    }
-
     public function getNamaObatUnit($stok)
     {
         $this->db->select('sl.id_logistik,l.nama , SUM(sl.frek) stok,max(sl.kadaluarsa) kadaluarsa,l.margin,l.harga_cost,l.ppn');
@@ -482,6 +501,16 @@ class M_Apotik extends CI_Model
             $this->db->having('stok>0');
             $this->db->order_by('stok desc');
             return $this->db->get()->result();
+        } else if ($depo == 'GUDANG'){
+            $this->db->select('sl.id_logistik,l.nama , SUM(sl.frek) stok,max(sl.kadaluarsa) kadaluarsa,l.margin,l.harga_cost,l.ppn');
+            $this->db->from('stok_logistik sl, list_logistik l');
+            $this->db->where(' sl.id_logistik=l.id_logistik');
+            $this->db->where('l.status', 'AKTIF');
+            $this->db->group_by('sl.id_logistik');
+            $this->db->having('stok>0');
+            $this->db->order_by('stok desc');
+            return $this->db->get()->result();
+        
         } else {
             $this->db->select('sl.id_logistik,l.nama , SUM(sl.frek) stok,max(sl.kadaluarsa) kadaluarsa,l.margin,l.harga_cost,l.ppn');
             $this->db->from('stok_depo sl, list_logistik l');
@@ -571,6 +600,13 @@ class M_Apotik extends CI_Model
     {
         $this->db->select('sum(frek) stok');
         $this->db->from('stok_depo');
+        $this->db->where(' id_logistik', $obat);
+        return $this->db->get()->row_array();
+    }
+    public function getSumObatGudang($obat)
+    {
+        $this->db->select('sum(frek) stok');
+        $this->db->from('stok_logistik');
         $this->db->where(' id_logistik', $obat);
         return $this->db->get()->row_array();
     }
@@ -805,18 +841,10 @@ class M_Apotik extends CI_Model
         $this->db->where('id_list_tindakan', $id);
         return $this->db->update('list_tindakan_homecare', $data);
     }
-    public function delete_signa_obat($id, $data)
-    {
-        $this->db->where('id_list_tindakan', $id);
-        return $this->db->delete('list_tindakan_homecare', $data);
-    }
     public function insert_tindakan_signaobat($data, $table)
     {
         $this->db->insert($table, $data);
     }
-
-
-    
     //Stok Obat Apotik
     public function selectStokApotik()
     {
@@ -1091,9 +1119,9 @@ class M_Apotik extends CI_Model
         AND r.id_resep=t.id_resep AND l.id_logistik=t.id_list_tindakan AND ps.no_rm=p.id_pasien AND p.status=1 AND hs.status=1 AND t.tgl_acc IS NOT NULL AND t.tanggal>='$mulai' AND t.tanggal<='$akhir' and p.id_pelayanan not in(select id_pelayanan from history_pelayanan_ranap )
         UNION ALL
         SELECT ps.nama pasien,ps.no_rm,c.nama caraBayar, ps.jenis_kelamin,d.nama dokter, l.nama,l.golongan_obat,l.satuan_terkecil tipe,l.produsen, l.distributor, l.kode, l.standar,t.harga, t.margin, t.frek total, t.total total_jual,p.tgl_masuk,t.tanggal,t.keterangan,t.hna, t.disc
-        FROM pelayanan p, history_pelayanan hs, tindakan_farmasi t, dokter d, cara_bayar c, pasien ps, list_logistik l,stok_apotik s
-        WHERE p.id_pelayanan=t.id_pelayanan AND hs.dpjp=d.id_dokter AND c.id_cara_bayar=p.cara_bayar AND t.id_tindakan_farmasi = s.id_req and t.poli = hs.id_history
-        AND t.id_resep like '%obat farmasi%' AND l.id_logistik=t.id_list_tindakan AND ps.no_rm=p.id_pasien AND p.status=1 AND hs.status=1  AND t.tanggal>='$mulai' AND t.tanggal<='$akhir' and p.id_pelayanan not in(select id_pelayanan from history_pelayanan_ranap )
+        FROM pelayanan p, history_pelayanan hs, tindakan_farmasi t, dokter d, cara_bayar c, pasien ps, list_logistik l
+        WHERE p.id_pelayanan=hs.id_pelayanan AND p.id_pelayanan=t.id_pelayanan AND hs.dpjp=d.id_dokter AND c.id_cara_bayar=p.cara_bayar  
+        AND l.id_logistik=t.id_list_tindakan AND ps.no_rm=p.id_pasien AND p.status=1 AND t.id_resep like '%obat farmasi%' AND t.tanggal>='$mulai' AND t.tanggal<='$akhir' and p.id_pelayanan not in(select id_pelayanan from history_pelayanan_ranap )
         group by t.id_tindakan_farmasi
         order by tanggal asc
         ");
@@ -1483,7 +1511,7 @@ class M_Apotik extends CI_Model
 
     public function selectRangeLaporanObatRajal($mulai, $akhir)
     {
-        $this->db->select('l.nama,l.golongan_obat,l.satuan_terkecil tipe,l.produsen,l.harga_cost, l.margin, l.kode, l.distributor, l.standar, t.frek ,SUM(t.frek) total, SUM(t.total) total_jual');
+        $this->db->select('l.nama,l.golongan_obat,l.satuan_terkecil tipe,l.produsen,l.harga_cost,l.kode, l.standar, l.distributor, l.margin, l.golongan_farmakologi golongan, t.frek ,SUM(t.frek) total, SUM(t.total) total_jual');
         $this->db->from('list_logistik l, tindakan_farmasi t, pelayanan p,history_pelayanan h, resep_obat r');
         $this->db->where('t.id_pelayanan=p.id_pelayanan');
         $this->db->where('h.id_pelayanan=p.id_pelayanan');
@@ -1865,22 +1893,31 @@ class M_Apotik extends CI_Model
         $this->db->order_by('a.no_antri');
         return $this->db->get()->row_array();
     }
-    public function selectAntrian($id_pelayanan)
+    public function selectAntrian($id_pelayanan, $mulai, $akhir)
     {
         date_default_timezone_set('Asia/Jakarta');
         $tanggal = date('Y-m-d');
-        $this->db->select('a.*,a.status as stat_antrian, p.nama, c.nama as nm_cara_bayar, p.no_rm');
-        // $this->db->select('a.*, p.nama, c.nama, p.no_rm');
+
+        $this->db->select('a.*, a.status as stat_antrian, p.nama, c.nama as nm_cara_bayar, p.no_rm');
         $this->db->from('antrian_farmasi a, pelayanan pel, pasien p, cara_bayar c');
         $this->db->where('p.no_rm = pel.id_pasien');
         $this->db->where('c.id_cara_bayar = pel.cara_bayar');
         $this->db->where('a.id_pelayanan = pel.id_pelayanan');
-        //$this->db->where('DATE(a.tgl_proses)', $tanggal);
         $this->db->where_Not_In('a.status', '4');
+
+        if ($mulai != '' && $akhir != '') {
+            // Tambahkan kondisi untuk rentang tanggal
+            $this->db->where('DATE(a.tgl_proses) >=', $mulai);
+            $this->db->where('DATE(a.tgl_proses) <=', $akhir);
+        }
+
+        $this->db->group_by('pel.id_pelayanan');
         $this->db->order_by('a.status');
         $this->db->order_by('a.no_antri');
+
         return $this->db->get()->result();
     }
+
     public function insertplaySuara($data, $table)
     {
         $this->db->insert($table, $data);
@@ -1924,8 +1961,15 @@ class M_Apotik extends CI_Model
         $this->db->where(array('id_tindakan_farmasi' => $id_tindakan));
         $this->db->update('tindakan_farmasi_kronis', ['staff_hapus' => $staff->id_staff, 'tgl_hapus' => date('Y-m-d H:i:s')]);
         $this->db->delete('tindakan_farmasi', array('id_tindakan_farmasi' => $id_tindakan));
+        
+        $dblog =$this->db->get_where($stok,['id_req' => $id_tindakan])->row();
 
         $this->db->delete($stok, array('id_req' => $id_tindakan));
+        if ($stok == 'stok_apotik') {
+            $this->M_Apotik->update_perencanaan($dblog->id_logistik, 'stok_apotik', 'pr_apotik');
+        } else if ($stok == 'stok_depo') {
+            $this->M_Apotik->update_perencanaan($dblog->id_logistik, 'stok_depo', 'pr_depo');
+        }
         // $sql = "DELETE s.* from stok_apotik s , tindakan_farmasi f  WHERE s.id_req = f.id_tindakan_farmasi and s.id_req=?";
         // $this->db->query($sql, array($id_tindakan));
     }
@@ -2019,9 +2063,19 @@ class M_Apotik extends CI_Model
     {
         $tgl = date('Y-m-d H:i:s');
         $d_stok = $this->db->query("SELECT sum(frek) stok from $stok where id_logistik ='$id_logistik'")->row();
-        $d_penggunaan = $this->db->query("SELECT sum(frek) stok from $stok where asal_tujuan = 'PENJUALAN' and id_logistik ='$id_logistik'")->row();
-
-        $this->M_Apotik->update(['stok_tersedia' => $d_stok->stok, 'penggunaan' => $d_penggunaan->stok, 'tanggal_update' => $tgl], ['id_logistik' => $id_logistik], $table);
+        // $d_penggunaan = $this->db->query("SELECT sum(frek) stok from $stok where asal_tujuan = 'PENJUALAN' and id_logistik ='$id_logistik'")->row();
+        $pr = $this->db->query("SELECT count(id_logistik) jum from `$table` where id_logistik ='$id_logistik'")->row();
+        if ($pr->jum > 0) {
+            $this->M_Apotik->update(['stok_tersedia' => $d_stok->stok,  'tanggal_update' => $tgl], ['id_logistik' => $id_logistik], $table);
+        } else {
+            $page_data = [
+                'id_logistik' => $id_logistik,
+                'stok_tersedia' => $d_stok->stok,
+                'penggunaan' => 0,
+                'tanggal_update' => $tgl
+            ];
+            $this->db->insert($table, $page_data);
+        }
     }
     function getNota($id_resep)
     {
@@ -2099,14 +2153,24 @@ class M_Apotik extends CI_Model
 
         return $this->db->get()->result_array();
     }
+    // public function getTotalObat($id_pelayanan)
+    // {
+    //     $this->db->select_sum('total');
+    //     $this->db->from('tindakan_farmasi');
+    //     $this->db->where('id_resep', 'obat farmasi');
+    //     $this->db->where('id_pelayanan', $id_pelayanan);
+    //     return $this->db->get()->result();
+    // }
+
     public function getTotalObat($id_pelayanan)
     {
         $this->db->select_sum('total');
         $this->db->from('tindakan_farmasi');
-        $this->db->where('id_resep', 'obat farmasi');
+        $this->db->like('id_resep', 'obat_bebas');
         $this->db->where('id_pelayanan', $id_pelayanan);
         return $this->db->get()->result();
     }
+
     public function getDataById($id_history)
     {
         $query =  $this->db->query("SELECT pa.nama,pa.no_rm,pa.tgl_lahir, pa.alamat,c.nama  cara_bayar, lp.nama_panjang ruang, a.nama asal,d.nama dokter, d.foto
@@ -2413,4 +2477,3 @@ class M_Apotik extends CI_Model
         return $query->result();
     }
 }
-

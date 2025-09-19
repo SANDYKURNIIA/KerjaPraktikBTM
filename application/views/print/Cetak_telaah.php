@@ -222,6 +222,14 @@
                                     <?= $berat_badan ?> kg
                                 </td>
 
+
+                            </tr>
+                            <tr>
+
+                                <td style="font-weight: bold; font-size: 35px; text-align: center;">
+                                    <?= $pasien['iterasi'] ?>
+                                </td>
+
                             </tr>
                         </table>
 
