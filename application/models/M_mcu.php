@@ -21,6 +21,7 @@ class M_mcu extends CI_Model
   {
     $this->db->insert($table, $page_data);
   }
+  
   public function update($data, $where, $table)
   {
     $this->db->where($where);

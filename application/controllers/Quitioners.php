@@ -5,35 +5,45 @@ class Quitioners extends CI_Controller
 {
     function __construct()
     {
-        parent::__construct();
+        parent::__construct();    
         date_default_timezone_set('Asia/Jakarta');
         setlocale(LC_ALL, 'id_ID');
         $this->load->model('M_mcu');
+        $this->load->model('Penyakit_Model');
+        $this->load->model('M_Staff');
+        $this->load->model('M_Hoby_Kebiasaan');
+        $this->load->library('session');
     }
 
+    // ✅ Halaman utama MCU
     public function tampil($id_mcu)
     {
         $this->load->view('assets/_header');
 
         $page_data['data_mcu'] = $this->M_mcu->getMCUById($id_mcu);
-
         $page_data['page_content'] = 'page_content/Quitioners';
+
         $this->load->view('Main', $page_data);
         $this->load->view('assets/_footer');
     }
-    public function form_pemeriksaan($form)
+
+    // ✅ Load form pemeriksaan
+    public function form_pemeriksaan($form, $id_mcu = null)
     {
         $page_data['gambar'] = base_url("assets/dist/img/gambar.png");
+        $page_data['id_mcu'] = $id_mcu; // kirim id_mcu ke view
 
         $view_path = 'kuisioner_mcu/' . $form;
-        $response = $this->load->view($view_path, [], true); // Tambahkan parameter ketiga 'true'
+        $response = $this->load->view($view_path, $page_data, true);
         echo $response;
     }
+
+    // ✅ Simpan Pemeriksaan Pribadi
     public function simpan_pemeriksaan_pribadi()
     {
         $id_mcu = $this->input->post('id_mcu');
-        $data = array(
-            'id_mcu' => $this->input->post('id_mcu'),
+        $data = [
+            'id_mcu' => $id_mcu,
             'P11a' => $this->input->post('P11a'),
             'P11b' => $this->input->post('P11b'),
             'P12a' => $this->input->post('P12a'),
@@ -54,8 +64,8 @@ class Quitioners extends CI_Controller
             'number_smoker' => $this->input->post('numbersmoked'),
             'concumption_alcohol' => $this->input->post('concumption_alcohol'),
             'terhambat_belanjaan' => $this->input->post('terhambat_belanjaan'),
+        ];
 
-        );
         $db = $this->db->get_where('quiz_pemeriksaan_pribadi', ['id_mcu' => $id_mcu])->row();
         if (empty($db)) {
             $this->M_mcu->insert_mcu($data, 'quiz_pemeriksaan_pribadi');
@@ -63,8 +73,144 @@ class Quitioners extends CI_Controller
             $this->M_mcu->update($data, ['id_mcu' => $id_mcu], 'quiz_pemeriksaan_pribadi');
         }
 
-        $out['status'] = 'success';
-        echo json_encode($out);
+        echo json_encode(['status' => 'success']);
     }
-    public function simpan_riwayat_keluarga() {}
+
+    // ✅ Simpan Penyakit (Insert Banyak)
+    public function simpan_penyakit_pasien($id_mcu)
+    {
+        $staff = $this->session->userdata['data_auth'];
+
+        $data = [
+            'id_mcu' => $id_mcu,
+            'id_staff' => $staff->id_staff,
+            'asma_checked' => $this->input->post('asma_checked'),
+            'asma_tahun' => $this->input->post('asma_tahun'),
+            'asma_status' => $this->input->post('asma_status'),
+
+            'kanker_checked' => $this->input->post('kanker_checked'),
+            'kanker_tahun' => $this->input->post('kanker_tahun'),
+            'kanker_status' => $this->input->post('kanker_status'),
+
+            'kencing_manis_checked' => $this->input->post('kencing_manis_checked'),
+            'kencing_manis_tahun' => $this->input->post('kencing_manis_tahun'),
+            'kencing_manis_status' => $this->input->post('kencing_manis_status'),
+
+            'radang_otak_checked' => $this->input->post('radang_otak_checked'),
+            'radang_otak_tahun' => $this->input->post('radang_otak_tahun'),
+            'radang_otak_status' => $this->input->post('radang_otak_status'),
+
+            'jantung_checked' => $this->input->post('jantung_checked'),
+            'jantung_tahun' => $this->input->post('jantung_tahun'),
+            'jantung_status' => $this->input->post('jantung_status'),
+
+            'batu_ginjal_checked' => $this->input->post('batu_ginjal_checked'),
+            'batu_ginjal_tahun' => $this->input->post('batu_ginjal_tahun'),
+            'batu_ginjal_status' => $this->input->post('batu_ginjal_status'),
+
+            'gangguan_fungsi_ginjal_checked' => $this->input->post('gangguan_fungsi_ginjal_checked'),
+            'gangguan_fungsi_ginjal_tahun' => $this->input->post('gangguan_fungsi_ginjal_tahun'),
+            'gangguan_fungsi_ginjal_status' => $this->input->post('gangguan_fungsi_ginjal_status'),
+
+            'malaria_checked' => $this->input->post('malaria_checked'),
+            'malaria_tahun' => $this->input->post('malaria_tahun'),
+            'malaria_status' => $this->input->post('malaria_status'),
+
+            'ayan_epilepsi_checked' => $this->input->post('ayan_epilepsi_checked'),
+            'ayan_epilepsi_tahun' => $this->input->post('ayan_epilepsi_tahun'),
+            'ayan_epilepsi_status' => $this->input->post('ayan_epilepsi_status'),
+
+            'gondong_parotitis_checked' => $this->input->post('gondong_parotitis_checked'),
+            'gondong_parotitis_tahun' => $this->input->post('gondong_parotitis_tahun'),
+            'gondong_parotitis_status' => $this->input->post('gondong_parotitis_status'),
+            'tgl_input' => date('Y-m-d H:i:s')
+        ];
+
+        // VALIDASI: Cek minimal satu input terisi
+        $all_empty = true;
+        foreach ($data as $key => $value) {
+            // abaikan field id_mcu dan tgl_input
+            if (!in_array($key, ['id_mcu', 'tgl_input']) && !empty($value)) {
+                $all_empty = false;
+                break;
+            }
+        }
+
+        if ($all_empty) {
+            echo json_encode(['status' => 'error', 'message' => 'Silakan isi minimal satu data penyakit!']);
+            return;
+        }
+
+        // Cek data di DB
+        $db = $this->db->get_where('penyakit_pasien', ['id_mcu' => $id_mcu])->row();
+        if (empty($db)) {
+            $this->M_mcu->insert_mcu($data, 'penyakit_pasien');
+        } else {
+            $this->M_mcu->update($data, ['id_mcu' => $id_mcu], 'penyakit_pasien');
+        }
+
+        echo json_encode(['status' => 'success']);
+    }
+
+    public function getPenyakitPasien($id_mcu)
+    {
+        $db = $this->db->get_where('penyakit_pasien', ['id_mcu' => $id_mcu])->row();
+
+        echo json_encode(['data' => $db]);
+    }
+
+    // ✅ Simpan Hoby Dan Penyakit
+    public function simpan_hoby_kebiasaan($id_mcu)
+    {
+        $staff = $this->session->userdata['data_auth'];
+
+        $hobi           = $this->input->post('hobi');         // array
+        $hobi_lain      = $this->input->post('hobi_lain');    // string
+        $kebiasaan      = $this->input->post('kebiasaan');    // array
+        $kebiasaan_lain = $this->input->post('kebiasaan_lain'); // string
+
+        // --- Filter jika "lainnya" tidak dicentang ---
+        if (!empty($hobi) && !in_array("lainnya", $hobi)) {
+            $hobi_lain = null; // kosongkan
+        }
+
+        if (!empty($kebiasaan) && !in_array("lainnya", $kebiasaan)) {
+            $kebiasaan_lain = null; // kosongkan
+        }
+
+        $data = [
+            'id_mcu'          => $id_mcu,
+            'id_staff'        => $staff->id_staff,
+            'hobi'            => !empty($hobi) ? implode(",", $hobi) : null,
+            'hobi_lain'       => !empty($hobi_lain) ? $hobi_lain : null,
+            'kebiasaan'       => !empty($kebiasaan) ? implode(",", $kebiasaan) : null,
+            'kebiasaan_lain'  => !empty($kebiasaan_lain) ? $kebiasaan_lain : null
+        ];
+
+        $db = $this->M_Hoby_Kebiasaan->getById($id_mcu);
+        if (empty($db)) {
+            $this->M_Hoby_Kebiasaan->insert($data);
+        } else {
+            $this->M_Hoby_Kebiasaan->update($id_mcu, $data);
+        }
+
+        echo json_encode(['status' => 'success']);
+    }
+    
+
+    public function get_hoby_kebiasaan($id_mcu)
+    {
+        $data = $this->M_Hoby_Kebiasaan->getById($id_mcu);
+
+        if ($data) {
+            // ubah string "musik_keras,headset" jadi array ["musik_keras","headset"]
+            $data['hobi']       = !empty($data['hobi']) ? explode(",", $data['hobi']) : [];
+            $data['kebiasaan']  = !empty($data['kebiasaan']) ? explode(",", $data['kebiasaan']) : [];
+
+            echo json_encode(['status' => 'success', 'data' => $data]);
+        } else {
+            echo json_encode(['status' => 'error', 'msg' => 'Data tidak ditemukan']);
+        }
+    }
+
 }
