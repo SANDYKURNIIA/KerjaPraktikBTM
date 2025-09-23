@@ -300,5 +300,75 @@ class Quitioners extends CI_Controller
         echo json_encode(['status' => 'success']);
     }
 
-public function simpan_riwayat_keluarga() {}
+ public function simpan_riwayat_keluarga()
+    {
+        $staff = $this->session->userdata['data_auth'];
+        $id_mcu = trim((string)$this->input->post('id_mcu', true));
+        if($id_mcu === '' || $id_mcu === null){
+            $id_mcu = (string)$this->session->userdata('current_id_mcu');
+        }
+         if (empty($id_mcu)) {
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'ID MCU tidak ditemukan'
+                ]));
+            return;
+        }
+        $data = [
+            'id_mcu'        => $id_mcu,
+            'id_staff'      => $staff->id_staff,
+            'stroke'        => $this->input->post('stroke'),
+            'hipertensi'    => $this->input->post('hipertensi'),
+            'jantung'       => $this->input->post('jantung'),
+            'asma'          => $this->input->post('asma'),
+            'kanker'        => $this->input->post('kanker'),
+            'kanker_pd'     => $this->input->post('kanker_pd'),
+            'kanker_it'     => $this->input->post('kanker_it'),
+            'kanker_ub'     => $this->input->post('kanker_ub'),
+            'kencing_manis' => $this->input->post('kencing_manis'),
+            'kolesterol'    => $this->input->post('kolesterol'),
+            'asam_urat'     => $this->input->post('asam_urat'),
+            'obesitas'      => $this->input->post('obesitas'),
+            'tbc'           => $this->input->post('tbc'),
+            'katarak'       => $this->input->post('katarak'),
+            'tekanan'       => $this->input->post('tekanan'),
+            'osteoporosis'  => $this->input->post('osteoporosis'),
+            'alergi'        => $this->input->post('alergi'),
+            'epilepsi'      => $this->input->post('epilepsi'),
+            'alkoholisme'   => $this->input->post('alkoholisme'),
+            'pendarahan'    => $this->input->post('pendarahan'),
+            'tgl_input'     => date('Y-m-d H:i:s')
+        ];
+
+        $db = $this->db->get_where('quiz_riwayat_kesehatan', ['id_mcu' => $id_mcu])->row();
+        if (empty($db)) {
+            $this->M_mcu->insert_mcu($data, 'quiz_riwayat_kesehatan');
+        } else {
+            $this->M_mcu->update($data, ['id_mcu' => $id_mcu], 'quiz_riwayat_kesehatan');
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['status' => 'success']));
+    }
+
+     public function get_riwayat_keluarga($id_mcu)
+    {
+    $data = $this->db->get_where('quiz_riwayat_kesehatan', ['id_mcu' => $id_mcu])->row_array();
+
+    if ($data) {
+        echo json_encode([
+            'status' => 'success',
+            'data'   => $data
+        ]);
+    } else {
+        echo json_encode([
+            'status'  => 'not_found',
+            'message' => 'Data riwayat keluarga tidak ditemukan'
+        ]);
+    }
+    }
+
 }

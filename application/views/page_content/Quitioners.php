@@ -100,7 +100,7 @@
                                 <div class="form-body">
                                     <ul role="tablist" class="nav nav-pills" id="myTabs_9">
                                         <li role="presentation" class="active"><a aria-expanded="true" data-toggle="tab" role="tab" href="#pemeriksaan_data_pribadi">Pemeriksaan Data Pribadi</a></li>
-                                        <li role="presentation" class=""><a data-toggle="tab" role="tab" href="#riw_kes_keluarga">Riwayat Kesehatan Keluarga</a></li>
+                                        <li role="presentation" class="active"><a data-toggle="tab" role="tab" href="#riw_kes_keluarga">Riwayat Kesehatan Keluarga</a></li>
                                         <li role="presentation" class=""><a data-toggle="tab" role="tab" href="#penyakit_diderita">Penyakit Yang Sedang / Pernah Diderita</a></li>
                                         <li role="presentation" class=""><a data-toggle="tab" role="tab" href="#gejala_dialami">Gejala Yang Dialami Sekarang</a></li>
                                         <li role="presentation" class=""><a data-toggle="tab" role="tab" href="#hambatan_fisik">SRQ-29 (Suspect)</a></li>

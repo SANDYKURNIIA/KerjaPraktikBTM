@@ -566,4 +566,9 @@ class M_mcu extends CI_Model
 
     return $this->db->get()->row_array();
   }
+    public function getRiwayatById($id_mcu)
+  {
+    return $this->db->get_where('quiz_riwayat_kesehatan', ['id_mcu' => $id_mcu])->row_array();
+  }
+
 }
