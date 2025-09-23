@@ -12,6 +12,7 @@ class Quitioners extends CI_Controller
         $this->load->model('Penyakit_Model');
         $this->load->model('M_Staff');
         $this->load->model('M_Hoby_Kebiasaan');
+        $this->load->model('M_Staff', 'mstaff');
         $this->load->library('session');
     }
 
@@ -23,6 +24,9 @@ class Quitioners extends CI_Controller
         $page_data['data_mcu'] = $this->M_mcu->getMCUById($id_mcu);
         $page_data['page_content'] = 'page_content/Quitioners';
 
+        // simpan utk fallback fragment
+        $this->session->set_userdata('current_id_mcu', $id_mcu);
+
         $this->load->view('Main', $page_data);
         $this->load->view('assets/_footer');
     }
@@ -31,7 +35,7 @@ class Quitioners extends CI_Controller
     public function form_pemeriksaan($form, $id_mcu = null)
     {
         $page_data['gambar'] = base_url("assets/dist/img/gambar.png");
-        $page_data['id_mcu'] = $id_mcu; // kirim id_mcu ke view
+         $page_data['id_mcu'] = $this->input->get_post('id_mcu') ?: $this->session->userdata('current_id_mcu');
 
         $view_path = 'kuisioner_mcu/' . $form;
         $response = $this->load->view($view_path, $page_data, true);
@@ -159,6 +163,20 @@ class Quitioners extends CI_Controller
         echo json_encode(['data' => $db]);
     }
 
+        private function _current_staff_id()
+    {
+        $auth = $this->session->userdata('data_auth');
+        $username = is_array($auth) ? ($auth['username'] ?? null)
+            : (is_object($auth) ? ($auth->username ?? null) : null);
+        if (!$username) return null;
+
+        $rows = $this->mstaff->get_staffByUsername($username);
+        if ($rows && isset($rows[0]->id_staff)) {
+            return (string)$rows[0]->id_staff;
+        }
+        return null;
+    }
+
     // ✅ Simpan Hoby Dan Penyakit
     public function simpan_hoby_kebiasaan($id_mcu)
     {
@@ -213,4 +231,74 @@ class Quitioners extends CI_Controller
         }
     }
 
+     public function simpan_survey_diagnosis_stres()
+    {
+        // Ambil id_mcu dari POST → fallback session
+        $id_mcu = trim((string)$this->input->post('id_mcu', true));
+        if ($id_mcu === '' || $id_mcu === null) {
+            $id_mcu = (string)$this->session->userdata('current_id_mcu');
+        }
+
+        // Ambil id_staff via helper
+        $id_staff = $this->_current_staff_id();
+
+        // Validasi dasar
+        if (empty($id_mcu) || empty($id_staff)) {
+            echo json_encode(['status' => 'error', 'message' => 'id_mcu dan id_staff wajib diisi']);
+            return;
+        }
+        if (strlen($id_mcu) > 50 || strlen($id_staff) > 50) {
+            echo json_encode(['status' => 'error', 'message' => 'Panjang id_mcu/id_staff melebihi 50 karakter']);
+            return;
+        }
+
+        // Pastikan id_mcu valid
+        if ($this->db->where('id_mcu', $id_mcu)->limit(1)->get('mcu')->num_rows() === 0) {
+            echo json_encode(['status' => 'error', 'message' => 'id_mcu tidak ditemukan']);
+            return;
+        }
+
+        // Ambil jawaban survey q1 - q18
+        $data = [];
+        for ($i = 1; $i <= 18; $i++) {
+            $jawaban = $this->input->post('q' . $i, true);
+            if ($jawaban === null || $jawaban === '') {
+                echo json_encode(['status' => 'error', 'message' => "Jawaban pertanyaan $i wajib diisi"]);
+                return;
+            }
+            if (!is_numeric($jawaban)) {
+                echo json_encode(['status' => 'error', 'message' => "Jawaban pertanyaan $i harus berupa angka"]);
+                return;
+            }
+            $data['q' . $i] = (int)$jawaban;
+        }
+
+        // Siapkan data insert
+        $insert_data = array_merge([
+            'id_mcu'        => $id_mcu,
+            'id_staff'      => $id_staff,
+            'tanggal_input' => date('Y-m-d H:i:s')
+        ], $data);
+
+        // Simpan ke tabel quiz_diagnosis_stres dengan transaksi
+        $this->db->trans_start();
+        $this->db->insert('quiz_diagnosis_stres', $insert_data);
+        $insert_ok = ($this->db->affected_rows() > 0);
+        $this->db->trans_complete();
+
+        // Cek hasil insert
+        if (!$insert_ok || $this->db->trans_status() === false) {
+            $db_err = $this->db->error();
+            echo json_encode([
+                'status'  => 'error',
+                'message' => $db_err['code'] ? ('DB Error ' . $db_err['code'] . ': ' . $db_err['message'])
+                    : 'Gagal menyimpan data survey'
+            ]);
+            return;
+        }
+
+        echo json_encode(['status' => 'success']);
+    }
+
+public function simpan_riwayat_keluarga() {}
 }

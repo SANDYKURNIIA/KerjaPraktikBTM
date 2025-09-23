@@ -148,6 +148,7 @@ class Erm_laporan_operasi extends CI_Controller
                 'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
                 'indikasi_operasi' => $this->input->post('indikasi_operasi'),
                 'jenis_operasi' => $this->input->post('jenis_operasi'),
+                'kategori_operasi' => $this->input->post('kategori_operasi'),
                 'tanggal_operasi' => $this->input->post('tanggal_operasi'),
                 'operasi_dimulai' => $this->input->post('operasi_dimulai'),
                 'operasi_selesai' => $this->input->post('operasi_selesai'),

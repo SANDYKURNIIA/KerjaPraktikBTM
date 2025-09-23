@@ -18,10 +18,7 @@
                             <div id="tambah_obat">
 
                                 <div class="row">
-
-
                                     <input type="hidden" class="form-control" id="inName" name="inName" value="<?php echo $data_mcu['nama_pasien']; ?>">
-
                                     <input type="hidden" id="intanggalmasuk" value="<?php echo date('Y-m-d H:i:s'); ?>">
                                     <input type="hidden" class="form-control" id="inPlace" name="inPlace" value="<?php echo $data_mcu['tempat_lahir']; ?>">
                                     <input type="hidden" class="form-control" id="inDateofbirth" name="inDateofbirth" value="<?php echo $data_mcu['tgl_lahir']; ?>">
@@ -49,30 +46,36 @@
                                         </div>
                                     </div>
                                     <hr width="95%">
-                                    <div class="col-md-6">
+  					                <div class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label col-md-3">KESEHATAN</label>
                                             <div class="col-md-9">
                                                 <div class="radio-button radio-button-primary col-md-6">
-                                                    <input type="radio" name="sehat" value="BAIK" id="sehat1"> <label class="control-label" for="sehat1">BAIK</label>
+                                                    <input type="radio" name="sehat" value="BAIK" id="sehat1" checked>
+                                                    <label class="control-label" for="sehat1">BAIK</label>
                                                 </div>
                                                 <div class="radio-button radio-button-primary col-md-6">
-                                                    <input type="radio" name="sehat" value="TIDAK BAIK" id="sehat2"> <label class="control-label" for="sehat2">TIDAK BAIK </label>
+                                                    <input type="radio" name="sehat" value="TIDAK BAIK" id="sehat2">
+                                                    <label class="control-label" for="sehat2">TIDAK BAIK</label>
                                                 </div>
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
+                                   <div  class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label col-md-3">TANGGAL PERIKSA</label>
                                             <div class="col-md-9 has-success">
-                                                <input type="date" class="form-control" id="inTanggal" name="inTanggal">
+                                                <input type="date" class="form-control" id="inTanggal" name="inTanggal" value="<?php echo date("Y-m-d"); ?>">
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
                                     </div>
+                                     <script>
+                                        // Ambil tanggal hari ini dalam format YYYY-MM-DD
+                                        const today = new Date().toISOString().split('T')[0];
+                                        document.getElementById('inTanggal').value = today;
+                                    </script> 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-3">BERAT BADAN</label>
@@ -239,6 +242,7 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-offset-3 col-md-9">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
                                                 <button type="submit" class="btn btn-success mr-10">CETAK</button>
 
                                                 <span></span>

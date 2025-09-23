@@ -164,8 +164,11 @@
                                             </div>
                                         </div>
                                     </div>
-
-
+                                     <script>
+                                        // Ambil tanggal hari ini dalam format YYYY-MM-DD
+                                        const today = new Date().toISOString().split('T')[0];
+                                        document.getElementById('inTanggal').value = today;
+                                    </script> 
                                 </div>
                                 <!--/span-->
 
@@ -176,7 +179,7 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-offset-3 col-md-9">
-                                                <div id="batalFarmasi" onclick="batalFarmasi()" class="btn btn-danger ">BATAL</div>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
                                                 <button type="submit" class="btn btn-success mr-10">CETAK</button>
 
                                                 <span></span>

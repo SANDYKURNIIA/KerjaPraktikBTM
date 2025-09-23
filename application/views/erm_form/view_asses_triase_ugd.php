@@ -77,7 +77,7 @@
                   <label class="control-label mb-10 text-left">Keluhan Utama<span class="help"></span></label>
                   <span id="td_error" class="text-danger">*</span>
                   <div class="has-success">
-                    <input type="text" disabled class="form-control" name="keluhan_utama">
+                    <input type="text" disabled class="form-control" id="keluhan_utama" name="keluhan_utama">
                   </div>
                 </div>
               </div>
@@ -127,7 +127,7 @@
                     <label class="control-label mb-10 text-left">Tekanan Darah<span class="help"></span></label>
                     <span id="td_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="tekanan_darah" placeholder="mmHg" disabled>
+                      <input type="text" class="form-control" id="tekanan_darah" name="tekanan_darah" placeholder="MmHg" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -137,7 +137,7 @@
                     <label class="control-label mb-10 text-left">Suhu<span class="help"></span></label>
                     <span id="suhu_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="suhu" placeholder="Celsius" disabled>
+                      <input type="number" class="form-control" id="suhu" name="suhu" placeholder="Celsius" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -147,7 +147,7 @@
                     <label class="control-label mb-10 text-left">Frequensi Nadi<span class="help"></span></label>
                     <span id="nadi_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="frequensi_nadi" placeholder="x/menit" disabled>
+                      <input type="text" class="form-control" id="frequensi_nadi" name="frequensi_nadi" placeholder="x/menit" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -157,7 +157,7 @@
                     <label class="control-label mb-10 text-left">SPO2<span class="help"></span></label>
                     <span id="spo2_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="spo2" placeholder="spo2" disabled>
+                      <input type="number" class="form-control" id="spo2" name="spo2" placeholder="Spo2" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -167,7 +167,7 @@
                     <label class="control-label mb-10 text-left">Berat Badan<span class="help"></span></label>
                     <span id="berat_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="berat_badan" placeholder="Kg" disabled>
+                      <input type="number" class="form-control" id="berat_badan" name="berat_badan" placeholder="Kg" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -177,7 +177,7 @@
                     <label class="control-label mb-10 text-left">Frequensi Nafas<span class="help"></span></label>
                     <span id="nafas_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" name="frequensi_nafas" placeholder="x/menit" disabled>
+                      <input type="text" class="form-control" id="frequensi_nafas" name="frequensi_nafas" placeholder="x/menit" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -187,7 +187,7 @@
                     <label class="control-label mb-10 text-left">Tinggi Badan<span class="help"></span></label>
                     <span id="tinggi_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="tinggi_badan" placeholder="Cm" disabled>
+                      <input type="number" class="form-control" id="tinggi_badan" name="tinggi_badan" placeholder="Cm" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -239,7 +239,7 @@
                     <label class="control-label mb-10 text-left">GCS :<span class="help"></span></label>
                     <span id="gcs_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="gcs" id="gcs" placeholder="">
+                      <input type="number" class="form-control" name="GCS" id="gcs" placeholder="">
                     </div>
                   </div>
                 </div>
@@ -384,9 +384,9 @@
                   <!-- Bagian resutasi -->
                   <div id="resutasi" style="display: none; margin-top: 20px;">
                     <label>AIR WAY</label><br>
-                    <input type="radio" name="airway" value="sumbatan_total" id="total">
+                    <input type="radio" name="resutasi" value="sumbatan_total" id="total">
                     <label for="total">Sumbatan total</label><br>
-                    <input type="radio" name="airway" value="sumbatan_sebagian" id="sebagian">
+                    <input type="radio" name="resutasi" value="sumbatan_sebagian" id="sebagian">
                     <label for="sebagian">Sumbatan sebagian</label>
 
                     <!-- Bagian BREATHING-->
@@ -434,9 +434,9 @@
                 <!-- Bagian Emergency -->
                 <div id="emergency" style="display: none; margin-top: 20px;">
                   <label>AIR WAY</label><br>
-                  <input type="radio" name="airway" value="risiko_gangguan" id="risiko">
+                  <input type="radio" name="emergency" value="risiko_gangguan" id="risiko">
                   <label for="risiko">Risiko gangguan Airway</label><br>
-                  <input type="radio" name="airway" value="distress_nafas" id="distress">
+                  <input type="radio" name="emergency" value="distress_nafas" id="distress">
                   <label for="distress">Distress nafas berat</label>
 
                   <!-- Bagian BREATHING-->
@@ -496,7 +496,7 @@
               <!-- Bagian Urgent -->
               <div id="urgent" style="display: none; margin-top: 20px;">
                 <label>AIR WAY</label><br>
-                <input type="radio" name="airway" value="paten_urgent" id="urgent_paten">
+                <input type="radio" name="urgent" value="paten" id="urgent_paten">
                 <label for="urgent_paten">Paten</label>
 
                 <!-- Bagian BREATHING-->
@@ -554,11 +554,11 @@
             <!-- Bagian Tidak Darurat -->
             <div id="tidak_darurat" style="display: none; margin-top: 20px;">
               <label>AIR WAY</label><br>
-              <input type="radio" name="airway" value="paten_td" id="td_paten">
+              <input type="radio" name="tidak_darurat" value="paten" id="td_paten">
               <label for="td_paten">Paten</label><br>
-              <input type="radio" name="airway" value="aspirasi" id="aspirasi">
+              <input type="radio" name="tidak_darurat" value="aspirasi" id="aspirasi">
               <label for="aspirasi">Aspirasi benda asing tanpa distres nafas</label><br>
-              <input type="radio" name="airway" value="kesulitan" id="kesulitan">
+              <input type="radio" name="tidak_darurat" value="kesulitan" id="kesulitan">
               <label for="kesulitan">Kesulitan menelan tanpa distres nafas</label>
 
               <!-- Bagian BREATHING-->
@@ -663,22 +663,30 @@
 <script src="<?= base_url(); ?>assets/dist/js/slider.js"></script>
 <link rel="stylesheet" href="<?= base_url(); ?>assets/dist/css/range-slide.css">
 <script type="text/javascript">
-  function tampilStatus(val) {
-    if (val >= 0 && val < 1) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
-    } else if (val >= 1 && val < 3) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
-    } else if (val >= 3 && val < 5) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-    } else if (val >= 5 && val < 7) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang1.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-    } else if (val >= 7 && val < 9) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Berat</span>");
-    } else if (val >= 9 && val <= 10) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
-    }
-  }
-  $(document).ready(function() {
+  
+      // $(document).ready(function() {
+      //   var no_rm = "<?php echo $no_rm; ?>";
+
+      //   $.ajax({
+      //     url: "<?php echo base_url('Erm_ases_triase_ugd/get_ass_per'); ?>",
+      //     method: "POST",
+      //     dataType: "json",
+      //     data: { id: no_rm },
+      // success: function(data) {
+      //   $('input[name="keluhan_utama"]').val(data.keluhan);
+      //   console.log(data.tekanan_darah)
+      //   if (data.status_dt === 'found') {
+      //     $('#tekanan_darah').val(data.tekanan_darah);
+      //     $('#suhu').val(data.suhu);
+      //     $('#frequensi_nadi').val(data.frequensi_nadi);
+      //     $('#frequensi_nafas').val(data.frequensi_nafas);
+      //     $('#tinggi_badan').val(data.tinggi_badan);
+      //     $('#berat_badan').val(data.berat_badan);
+      //     $('#spo2').val(data.spo2);
+      //   } else {
+      //     $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2').text('-');
+      //   }
+      $(document).ready(function() {
     id_history = $('#inHis').val();
     $.ajax({
       url: "<?php echo base_url() ?>Erm_ases_triase_ugd/get_ass_per",
@@ -690,21 +698,75 @@
       success: function(data) {
         $('input[name="keluhan_utama"]').val(data.keluhan);
         if (data.status_dt == 'found') {
-          $('input[name="tekanan_darah"]').val(data.tekanan_darah);
-          $('input[name="frequensi_nadi"]').val(data.frequensi_nadi);
-          $('input[name="frequensi_nafas"]').val(data.frequensi_nafas);
-          $('input[name="suhu"]').val(data.suhu);
-          $('input[name="tinggi_badan"]').val(data.tinggi_badan);
-          $('input[name="berat_badan"]').val(data.berat_badan);
-          $('input[name="spo2"]').val(data.spo2);
-          $('input[name="gcs"]').val(data.gcs);
+          $('#tekanan_darah').val(data.tekanan_darah);
+          $('#frequensi_nadi').val(data.frequensi_nadi);
+          $('#frequensi_nafas').val(data.frequensi_nafas);
+          $('#suhu').val(data.suhu);
+          $('#tinggi_badan').val(data.tinggi_badan);
+          $('#berat_badan').val(data.berat_badan);
+          $('#spo2').val(data.spo2);
         }else {
-          $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2, #gcs').text('-');
+          $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2').text('-');
         }
       }
     });
   });
 </script>
+
+<!-- <script type="text/javascript">
+  $(document).ready(function() {
+    no_rm = $('#inNoRM').val();
+    $.ajax({
+      url: "<?php echo base_url() ?>Erm_ases_triase_igd/get_ass_per_igd",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id: no_rm
+      },
+      success: function(data) {
+        if (data.status_dt == 'found') {
+          $('#riwayat_sakit_dulu').val(data.riwayat).attr('disabled', true);
+        }
+      }
+
+    });
+  });
+  $(document).ready(function() {
+    id_pelayanan = $('#inPel').val();
+    $.ajax({
+      url: "<?php echo base_url() ?>Erm_ases_triase_igd/get_ass_per_igd",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id: id_pelayanan
+      },
+      success: function(data) {
+        if (data.status_dt == 'found') {
+          $('#tekanan_darah').val(data.tekanan_darah);
+          $('#frequensi_nadi').val(data.frequensi_nadi);
+          $('#frequensi_nafas').val(data.frequensi_nafas);
+          $('#suhu').val(data.suhu);
+          $('#skala_nyeri').val(data.skala_nyeri);
+          $('#gcs').val(data.gcs);
+          $('#kondisi_umum').val(data.kondisi_umum);
+          $('#berat_badan').val(data.berat_badan);
+          $('#tinggi_badan').val(data.tinggi_badan);
+          // $('#kebutuhan_khusus').val(data.kebutuhan_khusus);
+          // $('#asesment_triase').val(data.asesment_triase);
+        }
+      }
+
+    });
+  });
+  $(document).ready(function(e) {
+    id_pelayanan = $('#inPel').val();
+    id_history = $('#inHis').val();
+    reload_data_diagnosa(id_pelayanan, id_history);
+    reload_data_diagnosa_id_pel(id_history);
+    reload_data_diagnosa1_id_pel1(id_history);
+    reload_data_penunjang(id_pelayanan);
+  });
+</script> -->
 
 <script type="text/javascript">
   function tampilStatus(val) {
@@ -957,7 +1019,6 @@
     motorik = $('input[name="motorik"]:checked').val();
     pemeriksaan = $('input[name="pemeriksaan"]:checked').val();
     resutasi = $('input[name="resutasi"]:checked').val();
-    airway = $('input[name="airway"]:checked').val();
     breathing = $('input[name="breathing"]:checked').val();
     cyrculation = $('input[name="cyrculation"]:checked').val();
     disability = $('input[name="disability"]:checked').val();
@@ -1008,7 +1069,6 @@
       '&verbal=' + verbal +
       '&motorik=' + motorik +
       '&pemeriksaan=' + pemeriksaan +
-      '&airway=' + airway +
       '&resutasi=' + resutasi +
       '&breathing=' + breathing +
       '&cyrculation=' + cyrculation +

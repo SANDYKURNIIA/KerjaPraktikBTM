@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 class="modal-title" id="myLargeModalLabel"><i class="icon-user mr-10"></i> DATA SURAT KETERANGAN SEHAT ROHANI
+                <h5 class="modal-title" id="myLargeModalLabel"><i class="icon-user mr-10"></i> DATA SURAT KETERANGAN BUTA WARNA & VISUS
                 </h5>
             </div>
             <div class="modal-body">
@@ -82,16 +82,18 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group ">
-                                            <label class="control-label col-md-3">TANGGAL PEMERIKSAAN</label>
+                                            <label class="control-label col-md-3">TANGGAL PERIKSA</label>
                                             <div class="col-md-9 has-success">
-                                                <input type="date" class="form-control" id="inTanggal" name="inTanggal">
+                                                <input type="date" class="form-control" id="inTanggal" name="inTanggal" value="<?= date('Y-m-d'); ?>">
                                                 <span class="help-block"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    
-
-
+                                    <script>
+                                        // Ambil tanggal hari ini dalam format YYYY-MM-DD
+                                        const today = new Date().toISOString().split('T')[0];
+                                        document.getElementById('inTanggal').value = today;
+                                    </script>
                                 </div>
                                 <!--/span-->
 
@@ -102,7 +104,7 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-offset-3 col-md-9">
-                                                <div id="batalFarmasi" onclick="batalFarmasi()" class="btn btn-danger ">BATAL</div>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
                                                 <button type="submit" class="btn btn-success mr-10">CETAK</button>
 
                                                 <span></span>

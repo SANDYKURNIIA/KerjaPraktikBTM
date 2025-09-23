@@ -180,76 +180,66 @@
                 </div>
               </div>
 
-              <div class="form-group ">
-                <div class="col-md-6">
-                  <label class="control-label mb-10 text-left">Jenis Operasi</label>
-                  <div class="radio-button radio-button-primary">
-                    <div class="col-md-3">
-                      <input id="inJenOperasi1" type="radio" name="inJenOperasi" value="Ringan">
-                      <label class="control-label" for="inJenOperasi1">
-                        Ringan
-                      </label>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="radio-button radio-button-primary">
-                        <input id="inJenOperasi2" type="radio" name="inJenOperasi" value="Sedang">
-                        <label class="control-label" for="operasi2">
-                          Sedang
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="radio-button radio-button-primary">
-                        <input id="inJenOperasi3" type="radio" name="inJenOperasi" value="Besar">
-                        <label class="control-label" for="operasi3">
-                          Besar
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="radio-button radio-button-primary">
-                        <input id="inJenOperasi4" type="radio" name="inJenOperasi" value="Khusus">
-                        <label class="control-label" for="operasi4">
-                          Khusus
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             <div class="form-group">
+  <div class="col-md-12">
 
-              <div class="form-group">
-                <div class="col-md-6">
-                  <label class="control-label mb-10 text-left">Waktu Operasi<span class="help"></span></label>
-                  <div class="has-success">
-                    <span class="help-block"></span>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="control-label mb-10 text-left">tanggal_operasi</label>
-                    <?php
-                    // Mendapatkan tanggal hari ini
-                    $tanggal_operasi = date("Y/m/d");
-                    echo '<input type="text" id="inTglOperasi" readonly name="inTglOperasi" class="form-control" 
-                  value="' . $tanggal_operasi . '">';
-                    ?>
-                    <span class="help-block"></span>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="control-label mb-10 text-left">Operasi Dimulai<span class="help"></span></label>
-                    <div class="has-success">
-                      <input type="time" class="form-control" id="inOpeMulai" name="inOpeMulai">
-                      <span class="help-block"></span>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="control-label mb-10 text-left">Operasi Selesai<span class="help"></span></label>
-                    <div class="has-success">
-                      <input type="time" class="form-control" id="inOpeSelesai" name="inOpeSelesai">
-                      <span class="help-block"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <!-- Jenis Operasi -->
+    <label class="control-label mb-10 text-left">Jenis Operasi</label>
+    <div class="row">
+      <div class="col-md-2">
+        <input id="inJenOperasi1" type="radio" name="inJenOperasi" value="Ringan">
+        <label class="control-label" for="inJenOperasi1">Ringan</label>
+      </div>
+      <div class="col-md-2">
+        <input id="inJenOperasi2" type="radio" name="inJenOperasi" value="Sedang">
+        <label class="control-label" for="inJenOperasi2">Sedang</label>
+      </div>
+      <div class="col-md-2">
+        <input id="inJenOperasi3" type="radio" name="inJenOperasi" value="Besar">
+        <label class="control-label" for="inJenOperasi3">Besar</label>
+      </div>
+      <div class="col-md-2">
+        <input id="inJenOperasi4" type="radio" name="inJenOperasi" value="Khusus">
+        <label class="control-label" for="inJenOperasi4">Khusus</label>
+      </div>
+    </div>
+
+    <!-- Kategori Operasi -->
+    <label class="control-label mb-10 text-left" style="margin-top:15px;">Kategori Operasi</label>
+    <div class="row">
+      <div class="col-md-2">
+        <input id="inKatOperasi1" type="radio" name="inKatOperasi" value="Cito">
+        <label class="control-label" for="inKatOperasi1">Cito</label>
+      </div>
+      <div class="col-md-2">
+        <input id="inKatOperasi2" type="radio" name="inKatOperasi" value="Elektif">
+        <label class="control-label" for="inKatOperasi2">Elektif</label>
+      </div>
+    </div>
+
+    <!-- Waktu Operasi -->
+    <label class="control-label mb-10 text-left" style="margin-top:15px;">Waktu Operasi</label>
+    <div class="row">
+      <div class="col-md-3">
+        <label class="control-label mb-10 text-left">Tanggal Operasi</label>
+        <?php
+          $tanggal_operasi = date("Y/m/d");
+          echo '<input type="text" id="inTglOperasi" readonly name="inTglOperasi" class="form-control" 
+          value="' . $tanggal_operasi . '">';
+        ?>
+      </div>
+      <div class="col-md-3">
+        <label class="control-label mb-10 text-left">Operasi Dimulai</label>
+        <input type="time" class="form-control" id="inOpeMulai" name="inOpeMulai">
+      </div>
+      <div class="col-md-3">
+        <label class="control-label mb-10 text-left">Operasi Selesai</label>
+        <input type="time" class="form-control" id="inOpeSelesai" name="inOpeSelesai">
+      </div>
+    </div>
+
+  </div>
+</div>
 
               <div class="col-md-12">
                 <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
@@ -565,127 +555,129 @@
                 });
               </script>
               <script type="text/javascript">
-                function simpan() {
-                  id_pelayanan = $('#inPel').val();
-                  id_history = $('#inHis').val();
-                  no_rm = $('#inNoRM').val();
-                  nama_ahli_bedah = $('#inNamaAhli').val();
-                  nama_perawat_instrumen = $('#inNamaPerawat').val();
-                  nama_asisten1 = $('#inNamaAsisten1').val();
-                  nama_asisten2 = $('#inNamaAsisten2').val();
-                  diagnosa_pra_operasi = $('#inDiagPra').val();
-                  tindakan_operasi = $('#inTinOperasi').val();
-                  diagnosa_post_operasi = $('#inDiagPost').val();
-                  indikasi_operasi = $('#inOperasi').val();
-                  jenis_operasi = $('input[name="inJenOperasi"]:checked').val();
-                  tanggal_operasi = $('#inTglOperasi').val();
-                  operasi_dimulai = $('#inOpeMulai').val();
-                  operasi_selesai = $('#inOpeSelesai').val();
-                  jaringan_eksisi = $('#inJarEksisi').val();
-                  bahan_dikirim_laboratorium = $('#inBahDikirim').val();
-                  pemeriksaan_pathologie = $('input[name="inPemPath"]:checked').val();
-                  untuk_pemeriksaan = $('#inUntPem').val();
-                  singkatan_kelainan = $('#inSingKel').val();
-                  antiseptik = $('input[name="inAntiSeptik"]:checked').val();
-                  jumlah_pendarahan = $('#inJumPenda').val();
-                  jumlah_transfusi = $('#inJumTrans').val();
-                  // tambahan
-                  laporan_operasi = $('#inLaporan_operasi').val();
+               function simpan() {
+  id_pelayanan = $('#inPel').val();
+  id_history = $('#inHis').val();
+  no_rm = $('#inNoRM').val();
+  nama_ahli_bedah = $('#inNamaAhli').val();
+  nama_perawat_instrumen = $('#inNamaPerawat').val();
+  nama_asisten1 = $('#inNamaAsisten1').val();
+  nama_asisten2 = $('#inNamaAsisten2').val();
+  diagnosa_pra_operasi = $('#inDiagPra').val();
+  tindakan_operasi = $('#inTinOperasi').val();
+  diagnosa_post_operasi = $('#inDiagPost').val();
+  indikasi_operasi = $('#inOperasi').val();
+  jenis_operasi = $('input[name="inJenOperasi"]:checked').val();
+  //kategori_operasi ditambahkan
+  kategori_operasi = $('input[name="inKatOperasi"]:checked').val();
 
-                  penyulit_operasi = $('input[name="inPenOperasi"]:checked').val();
-                  if (penyulit_operasi == "Ada") {
-                    penyulit_operasi = $('#inPenOperasi').val();
-                  }
-                  penyulit = $('input[name="penyulit"]:checked').val();
+  tanggal_operasi = $('#inTglOperasi').val();
+  operasi_dimulai = $('#inOpeMulai').val();
+  operasi_selesai = $('#inOpeSelesai').val();
+  jaringan_eksisi = $('#inJarEksisi').val();
+  bahan_dikirim_laboratorium = $('#inBahDikirim').val();
+  pemeriksaan_pathologie = $('input[name="inPemPath"]:checked').val();
+  untuk_pemeriksaan = $('#inUntPem').val();
+  singkatan_kelainan = $('#inSingKel').val();
+  antiseptik = $('input[name="inAntiSeptik"]:checked').val();
+  jumlah_pendarahan = $('#inJumPenda').val();
+  jumlah_transfusi = $('#inJumTrans').val();
 
-                  komplikasi_operasi = $('input[name="inKomplikasi"]:checked').val();
-                  if (komplikasi_operasi == "Ada") {
-                    komplikasi_operasi = $('#inKomplikasi').val();
-                  }
-                  komplikasi = $('input[name="komplikasi"]:checked').val();
+  // tambahan
+  laporan_operasi = $('#inLaporan_operasi').val();
 
-                  nomor_pendaftaran = $('#inNoPend').val();
+  penyulit_operasi = $('input[name="inPenOperasi"]:checked').val();
+  if (penyulit_operasi == "Ada") {
+    penyulit_operasi = $('#inPenOperasi').val();
+  }
+  penyulit = $('input[name="penyulit"]:checked').val();
 
+  komplikasi_operasi = $('input[name="inKomplikasi"]:checked').val();
+  if (komplikasi_operasi == "Ada") {
+    komplikasi_operasi = $('#inKomplikasi').val();
+  }
+  komplikasi = $('input[name="komplikasi"]:checked').val();
 
+  nomor_pendaftaran = $('#inNoPend').val();
 
-                  $.ajax({
-                    url: "<?php echo base_url() ?>Erm_laporan_operasi/store",
-                    method: "POST",
-                    dataType: 'json',
-                    data: {
-                      id_pelayanan: id_pelayanan,
-                      no_rm: no_rm,
-                      id_history: id_history,
-                      nama_ahli_bedah: nama_ahli_bedah,
-                      nama_perawat_instrumen: nama_perawat_instrumen,
-                      nama_asisten1: nama_asisten1,
-                      nama_asisten2: nama_asisten2,
-                      diagnosa_pra_operasi: diagnosa_pra_operasi,
-                      tindakan_operasi: tindakan_operasi,
-                      diagnosa_post_operasi: diagnosa_post_operasi,
-                      indikasi_operasi: indikasi_operasi,
-                      jenis_operasi: jenis_operasi,
-                      tanggal_operasi: tanggal_operasi,
-                      operasi_dimulai: operasi_dimulai,
-                      operasi_selesai: operasi_selesai,
-                      jaringan_eksisi: jaringan_eksisi,
-                      bahan_dikirim_laboratorium: bahan_dikirim_laboratorium,
-                      pemeriksaan_pathologie: pemeriksaan_pathologie,
-                      untuk_pemeriksaan: untuk_pemeriksaan,
-                      singkatan_kelainan: singkatan_kelainan,
-                      antiseptik: antiseptik,
-                      jumlah_pendarahan: jumlah_pendarahan,
-                      jumlah_transfusi: jumlah_transfusi,
-                      penyulit_operasi: penyulit_operasi,
-                      komplikasi_operasi: komplikasi_operasi,
-                      nomor_pendaftaran: nomor_pendaftaran,
-                      laporan_operasi: laporan_operasi,
+  $.ajax({
+    url: "<?php echo base_url() ?>Erm_laporan_operasi/store",
+    method: "POST",
+    dataType: 'json',
+    data: {
+      id_pelayanan: id_pelayanan,
+      no_rm: no_rm,
+      id_history: id_history,
+      nama_ahli_bedah: nama_ahli_bedah,
+      nama_perawat_instrumen: nama_perawat_instrumen,
+      nama_asisten1: nama_asisten1,
+      nama_asisten2: nama_asisten2,
+      diagnosa_pra_operasi: diagnosa_pra_operasi,
+      tindakan_operasi: tindakan_operasi,
+      diagnosa_post_operasi: diagnosa_post_operasi,
+      indikasi_operasi: indikasi_operasi,
+      jenis_operasi: jenis_operasi,
+      kategori_operasi: kategori_operasi,   //ikut dikirim
+      tanggal_operasi: tanggal_operasi,
+      operasi_dimulai: operasi_dimulai,
+      operasi_selesai: operasi_selesai,
+      jaringan_eksisi: jaringan_eksisi,
+      bahan_dikirim_laboratorium: bahan_dikirim_laboratorium,
+      pemeriksaan_pathologie: pemeriksaan_pathologie,
+      untuk_pemeriksaan: untuk_pemeriksaan,
+      singkatan_kelainan: singkatan_kelainan,
+      antiseptik: antiseptik,
+      jumlah_pendarahan: jumlah_pendarahan,
+      jumlah_transfusi: jumlah_transfusi,
+      penyulit_operasi: penyulit_operasi,
+      komplikasi_operasi: komplikasi_operasi,
+      nomor_pendaftaran: nomor_pendaftaran,
+      laporan_operasi: laporan_operasi,
+    },
+    success: function(data) {
+      console.log(data)
+      if (data.status == "success") {
+        window.location.href = "<?php echo base_url('erm_ranap/form/') ?>" + '<?= urlencode(base64_encode($id_pelayanan)) ?>' + '/' + '<?= urlencode(base64_encode($id_history)) ?>';
+      } else if (data.error) {
+        if (nama_ibu == '' | nama_ibu == null) {
+          $('#ibu_error').html('*wajib diisi');
+        } else {
+          $('#ibu_error').html('');
+        }
+        if (jenis_persalinan == '' | jenis_persalinan == null) {
+          $('#persalinan_error').html('*wajib diisi');
+        } else {
+          $('#persalinan_error').html('');
+        }
+        if (rawat_gabung == '' | rawat_gabung == null) {
+          $('#rawat_error').html('*wajib diisi');
+        } else {
+          $('#rawat_error').html('');
+        }
+        if (alasan == '' | alasan == null) {
+          $('#alasan_error').html('*wajb diisi');
+        } else {
+          $('#alasan_error').html('');
+        }
+        if (catatan == '' | catatan == null) {
+          $('#catatan_error').html('*wajib diisi');
+        } else {
+          $('#catatan_error').html('');
+        }
+      } else {
+        swal({
+          title: "Gagal!",
+          type: "warning",
+          text: data.status,
+          confirmButtonColor: "#3cb878",
+        });
+      }
+    }
+  });
 
-                    },
-                    success: function(data) {
-                      console.log(data)
-                      if (data.status == "success") {
-                        // alert('success');
-                        window.location.href = "<?php echo base_url('erm_ranap/form/') ?>" + '<?= urlencode(base64_encode($id_pelayanan)) ?>' + '/' + '<?= urlencode(base64_encode($id_history)) ?>';
-                      } else if (data.error) {
-                        if (nama_ibu == '' | nama_ibu == null) {
-                          $('#ibu_error').html('*wajib diisi');
-                        } else {
-                          $('#ibu_error').html('');
-                        }
-                        if (jenis_persalinan == '' | jenis_persalinan == null) {
-                          $('#persalinan_error').html('*wajib diisi');
-                        } else {
-                          $('#persalinan_error').html('');
-                        }
-                        if (rawat_gabung == '' | rawat_gabung == null) {
-                          $('#rawat_error').html('*wajib diisi');
-                        } else {
-                          $('#rawat_error').html('');
-                        }
-                        if (alasan == '' | alasan == null) {
-                          $('#alasan_error').html('*wajb diisi');
-                        } else {
-                          $('#alasan_error').html('');
-                        }
-                        if (catatan == '' | catatan == null) {
-                          $('#catatan_error').html('*wajib diisi');
-                        } else {
-                          $('#catatan_error').html('');
-                        }
-                      } else {
-                        swal({
-                          title: "Gagal!",
-                          type: "warning",
-                          text: data.status,
-                          confirmButtonColor: "#3cb878",
-                        });
-                      }
-                    }
+  return false;
+}
 
-                  });
-                  return false;
-                }
 
                 function reload_data_diagnosa(id_pelayanan, id_history) { //nampilinn diagnosa seluruhnya utk nambah ke diagnosa pasien
                   $('#tabledgns').dataTable().fnClearTable();

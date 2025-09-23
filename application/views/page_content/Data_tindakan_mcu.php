@@ -149,11 +149,11 @@
                                             Labor
                                         </button>";
 											?>
-											<!-- </?php echo
+											<?php echo
 											"<a class='btn btn-success col-md-5' href='" . base_url('Mcu/edit_detail/') . $id_pelayanan . "'>
                                             MCU
                                         </a>";
-											?> -->
+											?>
 											<?php echo
 											"<a class='btn btn-success col-md-5' href='" . base_url('Mcu/cetak_sertif/') . $id_pelayanan . "'>
                                             Cetak Sertifikat
@@ -353,29 +353,29 @@
 	}
 </script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $.ajax({
-            url: "<?php echo base_url() ?>Erm_poli/checkData",
-            method: "POST",
-            dataType: 'json',
-            data: {
-                id: '<?=$id_pelayanan?>'
-            },
-            success: function(data) {
-              
-                if (data.asses_per_igd == "found") {
-                    $('.asses_per_igd').removeClass('btn-success').addClass('btn-danger ');
-                    $('.asses_per_igd').attr('href', '<?php echo base_url('Resume_okupasi/form_perawat/put/') . $id_pelayanan; ?>');
-                }
-                if (data.asses_dokter_igd == "found") {
-                    $('.asses_dokter_igd').removeClass('btn-success').addClass('btn-danger ');
-                    $('.asses_dokter_igd').attr('href', '<?php echo base_url('Resume_okupasi/form_dokter/put/') . $id_pelayanan; ?>');
-                }
-               
-            }
-        });
-        return false;
-    });
+	$(document).ready(function() {
+		$.ajax({
+			url: "<?php echo base_url() ?>Erm_poli/checkData",
+			method: "POST",
+			dataType: 'json',
+			data: {
+				id: '<?= $id_pelayanan ?>'
+			},
+			success: function(data) {
+
+				if (data.asses_per_igd == "found") {
+					$('.asses_per_igd').removeClass('btn-success').addClass('btn-danger ');
+					$('.asses_per_igd').attr('href', '<?php echo base_url('Resume_okupasi/form_perawat/put/') . $id_pelayanan; ?>');
+				}
+				if (data.asses_dokter_igd == "found") {
+					$('.asses_dokter_igd').removeClass('btn-success').addClass('btn-danger ');
+					$('.asses_dokter_igd').attr('href', '<?php echo base_url('Resume_okupasi/form_dokter/put/') . $id_pelayanan; ?>');
+				}
+
+			}
+		});
+		return false;
+	});
 </script>
 <script>
 	// $(document).ready(function() {

@@ -480,7 +480,7 @@
                     $('.surveilans').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.resume_pulang == "found") {
-                    $('.resume_pulang').removeClass('btn-success').addClass('btn-danger ');
+                    $('.resume_pulang').removeClass('btn-success').addClass('btn-danger');
                    
                 }
                 

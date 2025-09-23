@@ -276,17 +276,17 @@
     <label class="control-label mb-10 text-left">Pemeriksaan Penunjang Diagnostik :</label>
 
     <div class="has-success">
-      <label class="form-check form-check-inline">
+      <label class="form-check form-check-inline " style="color: black;">
         <input class="form-check-input" type="checkbox" name="penunjang[]" id="radiologi" value="Radiologi">
         <span>Radiologi</span>
       </label>
 
-      <label class="form-check form-check-inline">
+      <label class="form-check form-check-inline" style="color: black;">
         <input class="form-check-input" type="checkbox" name="penunjang[]" id="laboratorium" value="Laboratorium">
         <span>Laboratorium</span>
       </label>
 
-      <label class="form-check form-check-inline">
+      <label class="form-check form-check-inline" style="color: black;">
         <input class="form-check-input" type="checkbox" name="penunjang[]" id="lain" value="Lain-lain">
         <span>Lain-lain</span>
       </label>
