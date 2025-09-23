@@ -270,10 +270,11 @@ class Erm_poli extends CI_Controller
         // $laporan_tin_operasi = $this->M_Erm_poli->checkData($id_histori, 'form_tindakan_operasi');
         $skrining_tbc = $this->M_Erm_poli->checkData($id_histori, 'pasien_TBC');
         $eval = $this->M_Erm_poli->checkData($id_histori, 'form_lembar_evaluasi');
-
+         $form_fisikrehab =  $this->M_Erm_poli->checkData($id_histori, 'fr_rj_form');
         // $db['super_ranap'] = empty($super_ranap) ? 'not-found' : 'found';
         $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
         $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';
+        $db['form_fisikrehab'] = empty($form_fisikrehab) ? 'not-found' : 'found';
         // $db['observasi'] = empty($observasi) ? 'not-found' : 'found';
         // $db['sebab_kematian'] = empty($sebab_kematian) ? 'not-found' : 'found';
         // $db['lembar_rujukan'] = empty($lembar_rujukan) ? 'not-found' : 'found';

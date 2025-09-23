@@ -359,7 +359,8 @@
                                                 Discharge Planning
                                             </a>
 
-                                            <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
+                               
+                                                <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
                                             </a> -->
 
@@ -481,9 +482,11 @@
                 }
                 if (data.resume_pulang == "found") {
                     $('.resume_pulang').removeClass('btn-success').addClass('btn-danger');
-                   
+
                 }
-                
+
+          
+
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
                 }
@@ -643,4 +646,3 @@
         return false;
     }
 </script>
-

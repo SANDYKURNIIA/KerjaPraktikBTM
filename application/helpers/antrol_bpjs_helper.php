@@ -36,20 +36,20 @@ function tambah_antrian($data)
 
     ////// print_r($request);
 
-    $json = json_encode($request);
-    ///////// echo $json;
-    //////insert////////////////////
-    $headers = generate_headers_antrean_json();
-    $key = generate_key();
-    $url = base_antrean() . "antrean/add";
-    $response = post($url, $headers, $json);
+    // $json = json_encode($request);
+    // ///////// echo $json;
+    // //////insert////////////////////
+    // $headers = generate_headers_antrean_json();
+    // $key = generate_key();
+    // $url = base_antrean() . "antrean/add";
+    // $response = post($url, $headers, $json);
 
-    $data_update = [
-        'code' => $response['metadata']['code'],
-        'message_respon' => $response['metadata']['message'],
-        'id_pelayanan' => $data['id_pelayanan'],
-    ];
-    $CI->lp->update($data_update, ['id' => $id], 'schedule_antrol');
+    // $data_update = [
+    //     'code' => $response['metadata']['code'],
+    //     'message_respon' => $response['metadata']['message'],
+    //     'id_pelayanan' => $data['id_pelayanan'],
+    // ];
+    // $CI->lp->update($data_update, ['id' => $id], 'schedule_antrol');
     //////end///////////////////////////
 
     //////// echo json_encode($response);
@@ -57,10 +57,10 @@ function tambah_antrian($data)
 
 
     //////////////////////////////////////////////////////////
-    $hasil['message'] = $response['metadata']['message'];
-    $hasil['code_bpjs'] = $response['metadata']['code'];
+    // $hasil['message'] = $response['metadata']['message'];
+    // $hasil['code_bpjs'] = $response['metadata']['code'];
 
-    return $hasil;
+    // return $hasil;
 }
 
 function update_antrian($data)
@@ -74,35 +74,35 @@ function update_antrian($data)
     $request['taskid'] = $data['taskid'];
     $request['waktu'] = $data['waktu'];
     // print_r($request);
-    $data_task = $CI->db->get_where('schedule_antrol_task', ['taskid' => $data['taskid'], 'kodebooking' => $data['kodebooking']])->result();
-    if (empty($data_task)) {
-        $id = $CI->lp->insert($request, 'schedule_antrol_task');
-        $CI->lp->update(['id_staff' => $staff->id_staff], ['id' => $id], 'schedule_antrol_task');
-    } else {
-        $id = "";
-    }
+    // $data_task = $CI->db->get_where('schedule_antrol_task', ['taskid' => $data['taskid'], 'kodebooking' => $data['kodebooking']])->result();
+    // if (empty($data_task)) {
+    //     $id = $CI->lp->insert($request, 'schedule_antrol_task');
+    //     $CI->lp->update(['id_staff' => $staff->id_staff], ['id' => $id], 'schedule_antrol_task');
+    // } else {
+    //     $id = "";
+    // }
 
 
-    $json = json_encode($request);
-    // echo $json;
-    //////////////////insert//////////////////////////
-    $headers = generate_headers_antrean_json();
-    $key = generate_key();
-    $url = base_antrean() . "antrean/updatewaktu";
-    $response = post($url, $headers, $json);
-    if (!empty($response)) {
-        if (isset($response['status']) && $response['status'] == 'error') {
-        } else {
-            $data_update = [
-                'code' => $response['metadata']['code'],
-                'message_respon' => $response['metadata']['message'],
-            ];
+    // $json = json_encode($request);
+    // // echo $json;
+    // //////////////////insert//////////////////////////
+    // $headers = generate_headers_antrean_json();
+    // $key = generate_key();
+    // $url = base_antrean() . "antrean/updatewaktu";
+    // $response = post($url, $headers, $json);
+    // if (!empty($response)) {
+    //     if (isset($response['status']) && $response['status'] == 'error') {
+    //     } else {
+    //         $data_update = [
+    //             'code' => $response['metadata']['code'],
+    //             'message_respon' => $response['metadata']['message'],
+    //         ];
 
-            if ($id != "") {
-                $CI->lp->update($data_update, ['id' => $id], 'schedule_antrol_task');
-            }
-        }
-    }
+    //         if ($id != "") {
+    //             $CI->lp->update($data_update, ['id' => $id], 'schedule_antrol_task');
+    //         }
+    //     }
+    // }
 
     // ////// echo json_encode($response);
     // return $response['metadata']['code'];
