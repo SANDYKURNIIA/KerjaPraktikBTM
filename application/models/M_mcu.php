@@ -571,4 +571,23 @@ class M_mcu extends CI_Model
     return $this->db->get_where('quiz_riwayat_kesehatan', ['id_mcu' => $id_mcu])->row_array();
   }
 
+
+   public function simpan_riwayat_pekerjaan_kini($data) 
+  {
+      $table = 'riwayat_pekerjaan_kini';
+      $id_mcu = $data['id_mcu'];
+  
+      // cek apakah sudah ada data untuk id_mcu ini
+      $existing = $this->db->get_where($table, ['id_mcu' => $id_mcu])->row();
+  
+      if ($existing) {
+          // kalau ada -> update record yang sama
+          $this->db->where('id_mcu', $id_mcu);
+          return $this->db->update($table, $data);
+      } else {
+          // kalau belum ada -> insert
+          return $this->db->insert($table, $data);
+      }
+  }
+
 }

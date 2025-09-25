@@ -17,6 +17,22 @@ class Quitioners extends CI_Controller
     }
 
     // ✅ Halaman utama MCU
+
+
+    private function _current_staff_id()
+    {
+        $auth = $this->session->userdata('data_auth');
+        $username = is_array($auth) ? ($auth['username'] ?? null)
+                  : (is_object($auth) ? ($auth->username ?? null) : null);
+        if (!$username) return null;
+
+        $rows = $this->M_Staff->get_staffByUsername($username);
+        if ($rows && isset($rows[0]->id_staff)) {
+            return (string)$rows[0]->id_staff;
+        }
+        return null;
+    }
+
     public function tampil($id_mcu)
     {
         $this->load->view('assets/_header');
@@ -163,19 +179,7 @@ class Quitioners extends CI_Controller
         echo json_encode(['data' => $db]);
     }
 
-        private function _current_staff_id()
-    {
-        $auth = $this->session->userdata('data_auth');
-        $username = is_array($auth) ? ($auth['username'] ?? null)
-            : (is_object($auth) ? ($auth->username ?? null) : null);
-        if (!$username) return null;
-
-        $rows = $this->mstaff->get_staffByUsername($username);
-        if ($rows && isset($rows[0]->id_staff)) {
-            return (string)$rows[0]->id_staff;
-        }
-        return null;
-    }
+      
 
     // ✅ Simpan Hoby Dan Penyakit
     public function simpan_hoby_kebiasaan($id_mcu)
@@ -369,6 +373,94 @@ class Quitioners extends CI_Controller
             'message' => 'Data riwayat keluarga tidak ditemukan'
         ]);
     }
+    }
+
+     public function simpan_riwayat_pekerjaan_kini()
+    {
+        $this->output->set_content_type('application/json');
+
+        if ($this->input->method() !== 'post') {
+            echo json_encode(['status' => 'error', 'message' => 'Metode permintaan tidak valid.']);
+            return;
+        }
+
+        $id_mcu = trim((string)$this->input->post('id_mcu', true));
+        if ($id_mcu === '' || $id_mcu === null) {
+            $id_mcu = (string)$this->session->userdata('current_id_mcu');
+        }
+
+        // Ambil id_staff menggunakan fungsi helper yang baru ditambahkan
+        $id_staff = $this->_current_staff_id();
+
+        if (empty($id_mcu) || empty($id_staff)) {
+            echo json_encode(['status' => 'error', 'message' => 'id_mcu dan id_staff wajib diisi']);
+            return;
+        }
+
+        if (strlen($id_mcu) > 50 || strlen($id_staff) > 50) {
+            echo json_encode(['status'=>'error','message'=>'Panjang id_mcu/id_staff melebihi 50 karakter']);
+            return;
+        }
+
+        if ($this->db->where('id_mcu', $id_mcu)->limit(1)->get('mcu')->num_rows() === 0) {
+            echo json_encode(['status'=>'error','message'=>'id_mcu tidak ditemukan']);
+            return;
+        }
+
+        $data_simpan = [
+            'id_mcu'         => $id_mcu,
+            'perusahaan'     => $this->input->post('perusahaan', true),
+            'tahun_dari'     => $this->input->post('tahun_dari', true),
+            'tahun_sampai'   => $this->input->post('tahun_sampai', true),
+            'sebagai'        => $this->input->post('sebagai', true),
+            'divisi'         => $this->input->post('divisi', true),
+            'programK3'      => $this->input->post('programK3', true),
+            'berdebu'        => $this->input->post('berdebu', true),
+            'ket_berdebu'    => $this->input->post('ket_berdebu', true),
+            'bahanKimia'     => $this->input->post('bahanKimia', true),
+            'ket_bahanKimia' => $this->input->post('ket_bahanKimia', true),
+            'radiasi'        => $this->input->post('radiasi', true),
+            'ket_radiasi'    => $this->input->post('ket_radiasi', true),
+            'asap'           => $this->input->post('asap', true),
+            'ket_asap'       => $this->input->post('ket_asap', true),
+            'fume'           => $this->input->post('fume', true),
+            'ket_fume'       => $this->input->post('ket_fume', true),
+            'makanan'        => $this->input->post('makanan', true),
+            'ket_makanan'    => $this->input->post('ket_makanan', true),
+            'alatBerat'      => $this->input->post('alatBerat', true),
+            'ket_alatBerat'  => $this->input->post('ket_alatBerat', true),
+            'getaran'        => $this->input->post('getaran', true),
+            'ket_getaran'    => $this->input->post('ket_getaran', true),
+            'panas'          => $this->input->post('panas', true),
+            'ket_panas'      => $this->input->post('ket_panas', true),
+            'dingin'         => $this->input->post('dingin', true),
+            'ket_dingin'     => $this->input->post('ket_dingin', true),
+            'ketinggian'     => $this->input->post('ketinggian', true),
+            'ket_ketinggian' => $this->input->post('ket_ketinggian', true),
+            'bising'         => $this->input->post('bising', true),
+            'ket_bising'     => $this->input->post('ket_bising', true),
+            'penglihatan'    => $this->input->post('penglihatan', true),
+            'ket_penglihatan'=> $this->input->post('ket_penglihatan', true),
+            'kantoran'       => $this->input->post('kantoran', true),
+            'ket_kantoran'   => $this->input->post('ket_kantoran', true),
+            'id_staff'       => $id_staff,
+            'tanggal_input'  => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->trans_start();
+        $this->M_mcu->simpan_riwayat_pekerjaan_kini($data_simpan);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === false) {
+            $db_err = $this->db->error();
+            echo json_encode([
+                'status'  => 'error',
+                'message' => $db_err['code'] ? ('DB Error ' . $db_err['code'] . ': ' . $db_err['message']) : 'Gagal menyimpan data riwayat pekerjaan'
+            ]);
+            return;
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'Data berhasil disimpan']);
     }
 
 }

@@ -66,7 +66,7 @@ class M_FR_Diagnosa extends CI_Model
             $data['nama_diagnosa'] = $this->get_nama_by_kode($data['kode']);
         }
         $row = [
-            'id_pelayanan'  => $data['id_pelayanan'],
+            'id_pelayanan'  => $data['id_pelayanan'],   
             'id_history'    => $data['id_history'],
             'kode'          => $data['kode'],
             'nama_diagnosa' => $data['nama_diagnosa'],

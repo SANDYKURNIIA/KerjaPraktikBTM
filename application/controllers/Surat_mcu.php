@@ -307,16 +307,20 @@ class Surat_mcu extends CI_Controller
                 'id_surat' => uniqid(),
                 'id_mcu' => $this->input->post('id_mcu'),
                 'tgl_periksa' => $this->input->post('inTanggal'),
+                'kebutuhan' => $this->input->post('inKebutuhan'),   
                 'tinggi_badan' => $this->input->post('tinggi'),
                 'berat_badan' => $this->input->post('berat'),
                 'tekanan_darah' => $this->input->post('tekanan'),
                 'nadi' =>$this->input->post('nadi'),
                 'dokter' => $this->input->post('inDokter'),
-                'metamphetamine' => $this->input->post('metamphetamine'),
+                'amphetamine' => $this->input->post('amphetamine'),
+                'cocain' => $this->input->post('cocain'),
                 'morphine' => $this->input->post('morphine'),
                 'benzodiazepam' => $this->input->post('benzodiazepam'),
+                'metamphetamine' => $this->input->post('metamphetamine'),
                 'marijuana' => $this->input->post('marijuana'),
-                'cocain' => $this->input->post('cocain'),
+                'tanda_narkoba' => $this->input->post('tanda_narkoba'),
+               
                 'tgl' => date("Y-m-d H:i:s"),
                 'staff' => $staff->id_staff,
             ];
@@ -324,16 +328,20 @@ class Surat_mcu extends CI_Controller
         } else {
             $db = [
                 'tgl_periksa' => $this->input->post('inTanggal'),
+                'kebutuhan' => $this->input->post('inKebutuhan'),
                 'tinggi_badan' => $this->input->post('tinggi'),
                 'berat_badan' => $this->input->post('berat'),
                 'tekanan_darah' => $this->input->post('tekanan'),
                 'nadi' =>$this->input->post('nadi'),
                 'dokter' => $this->input->post('inDokter'),
-                'metamphetamine' => $this->input->post('metamphetamine'),
+                'amphetamine' => $this->input->post('amphetamine'),
+                'cocain' => $this->input->post('cocain'),
                 'morphine' => $this->input->post('morphine'),
                 'benzodiazepam' => $this->input->post('benzodiazepam'),
+                'metamphetamine' => $this->input->post('metamphetamine'),
                 'marijuana' => $this->input->post('marijuana'),
-                'cocain' => $this->input->post('cocain'),
+                'tanda_narkoba' => $this->input->post('tanda_narkoba'),
+                
             ];
             $where =['id_mcu' => $this->input->post('id_mcu')];
             $this->M_mcu->update($db,$where, 'bebas_narkoba');

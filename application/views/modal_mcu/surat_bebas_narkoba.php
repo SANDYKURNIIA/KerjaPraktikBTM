@@ -80,7 +80,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
+                                    <div class="col-md-6 form-group-radio">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4 custom-label">AMPHETAMINE</label>
+                                            <div class="col-md-8 radio-group">
+                                                <div class="radio-button radio-button-primary">
+                                                    <input type="radio" name="amphetamine" value="NEGATIF" id="amphetamine1">
+                                                    <label class="control-label" for="amphetamine1">NEGATIF</label>
+                                                </div>
+                                                <div class="radio-button radio-button-primary">
+                                                    <input type="radio" name="amphetamine" value="POSITIF" id="amphetamine2">
+                                                    <label class="control-label" for="amphetamine2">POSITIF</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     <div class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label col-md-4">METAMPHETAMINE</label>
@@ -95,7 +113,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label col-md-3">MORPHINE</label>
@@ -137,7 +155,7 @@
                                                     <input type="radio" name="marijuana" value="POSITIF" id="marijuana2"> <label class="control-label" for="marijuana2">POSITIF</label>
                                                     <span class="help-block"></span>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -164,41 +182,68 @@
                                             </div>
                                         </div>
                                     </div>
-                                     <script>
-                                        // Ambil tanggal hari ini dalam format YYYY-MM-DD
-                                        const today = new Date().toISOString().split('T')[0];
-                                        document.getElementById('inTanggal').value = today;
-                                    </script> 
-                                </div>
-                                <!--/span-->
-
-
-                            </div>
-                            <div class="form-actions mt-10">
-                                <div class="row">
                                     <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-offset-3 col-md-9">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
-                                                <button type="submit" class="btn btn-success mr-10">CETAK</button>
-
-                                                <span></span>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">KEBUTUHAN</label>
+                                            <div class="col-md-9 has-success">
+                                                <input type="text" class="form-control" id="inKebutuhan" name="inKebutuhan">
+                                                <span class="help-block"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"> </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-radio">
+                                            <label class="control-label col-md-4 custom-label-full">TANDA - TANDA NARKOBA</label>
+                                            <div class="col-md-8 radio-group-full">
+                                                <div class="radio-button radio-button-primary">
+                                                    <input type="radio" name="tanda_narkoba" value="DITEMUKAN" id="tanda1">
+                                                    <label class="control-label" for="tanda1"><strong>DITEMUKAN</strong></label>
+                                                </div>
+                                                <div class="radio-button radio-button-primary">
+                                                    <input type="radio" name="tanda_narkoba" value="TIDAK DITEMUKAN" id="tanda2">
+                                                    <label class="control-label" for="tanda2"><strong>TIDAK DITEMUKAN</strong></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
-
+                            <script>
+                                // Ambil tanggal hari ini dalam format YYYY-MM-DD
+                                const today = new Date().toISOString().split('T')[0];
+                                document.getElementById('inTanggal').value = today;
+                            </script>
                     </div>
+                    <!--/span-->
 
 
                 </div>
+                <div class="form-actions mt-10">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
+                                    <button type="submit" class="btn btn-success mr-10">CETAK</button>
+
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6"> </div>
+                    </div>
+                </div>
+                </form>
+
             </div>
+
 
         </div>
     </div>
+
+</div>
+</div>
 </div>
 <script>
     function batalFarmasi() {

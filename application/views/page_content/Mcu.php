@@ -256,13 +256,14 @@
 				</div>
 			</div>
 		</div>
+		<!-- Alamat Perusahaan -->
 		<div class="col-md-6">
 			<div class="form-group">
 				<label class="control-label col-md-3 pt-5">Alamat Perusahaan</label>
 				<div class="col-md-9 has-success">
+					<!-- pesan error akan muncul disini -->
 					<input type="text" class="form-control" id="inComp">
 					<span class="help-block"></span>
-
 				</div>
 			</div>
 		</div>
@@ -289,28 +290,38 @@
 	}
 </script>
 
-
-
-
 <script type="text/javascript">
 	function insert_dataPersonal() {
-		nama = $("#inName").val();
-		place = $("#inPlace").val();
-		birthday = $("#inDateofbirth").val();
-		occupation = $("#inOccupation").val();
-		var a = $("#inperusahaan").val();
-		var splitDiag = a.split('|')
-		perusahaan = splitDiag[1];
-		cara_bayar = splitDiag[0];
-		alamat = $("#inAlamat").val();
-		alamat_comp = $("#inComp").val();
-		badge = $("#inbadge").val();
-		blood = $("#result_blood").val();
-		status_pegawai = $("#inStatus").val();
-		unit = $("#inUnit").val();
-		fungsi = $("#inFungsi").val();
-		var radios = document.getElementsByName("sex");
-		for (var i = 0, length = radios.length; i < length; i++) {
+		// Hapus pesan error sebelumnya
+		$("#errorAlamatComp").remove();
+
+		// Ambil nilai
+		let alamat_comp = $("#inComp").val().trim();
+
+		// Validasi wajib isi
+		if (alamat_comp === "") {
+			$("#inComp").closest(".col-md-9").prepend('<p id="errorAlamatComp" style="color:red;margin-bottom:5px;">Data Ini Wajib diisi</p>');
+			$("#inComp").focus();
+			return; // hentikan proses submit
+		}
+
+		let nama = $("#inName").val();
+		let place = $("#inPlace").val();
+		let birthday = $("#inDateofbirth").val();
+		let occupation = $("#inOccupation").val();
+		let a = $("#inperusahaan").val();
+		let splitDiag = a.split('|');
+		let perusahaan = splitDiag[1];
+		let cara_bayar = splitDiag[0];
+		let alamat = $("#inAlamat").val();
+		let badge = $("#inbadge").val();
+		let blood = $("#result_blood").val();
+		let status_pegawai = $("#inStatus").val();
+		let unit = $("#inUnit").val();
+		let fungsi = $("#inFungsi").val();
+		let sex = "";
+		let radios = document.getElementsByName("sex");
+		for (let i = 0, length = radios.length; i < length; i++) {
 			if (radios[i].checked) {
 				sex = radios[i].value;
 			}
@@ -366,9 +377,13 @@
 			}
 		});
 	}
+
+	// Hilangkan pesan error jika user mulai mengetik
+	$(document).on("input", "#inComp", function() {
+		$("#errorAlamatComp").remove();
+	});
 </script>
-<!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
+
 <link rel="stylesheet" href="<?php echo base_url('assets/dist/jquery-ui.css'); ?>">
 <script src="<?php echo base_url('assets/dist/jquery-ui.min.js'); ?>"></script>
 <script type="text/javascript">
@@ -377,17 +392,14 @@
 			source: "<?php echo base_url('Mcu/get_autocomplete/?'); ?>",
 			focus: function(event, ui) {
 				$('#inName').val(ui.item.value);
-
 			},
 			select: function(event, ui) {
 				$('#inDateofbirth').val(ui.item.tgl_lahir).change();
-
 				if (ui.item.sex == "LAKI-LAKI") {
 					$('input[name="sex"][value="Laki-laki"]').prop("checked", true);
 				} else {
 					$('input[name="sex"][value="Perempuan"]').prop("checked", true);
 				}
-
 				$('#inOccupation').val(ui.item.pekerjaan);
 				$('#inAlamat').val(ui.item.alamat);
 				$('#inPendidikan').val(ui.item.pendidikan);
@@ -398,12 +410,8 @@
 				$('#inAgama').val(ui.item.agama);
 				$('#inKepalaKeluarga').val(ui.item.kepala_keluarga);
 				$('#inHP').val(ui.item.no_hp);
-
-
 			}
 		});
-	});
-	$(document).ready(function() {
 
 		$('input').keyup(function(event) {
 			if (event.which === 13) {
