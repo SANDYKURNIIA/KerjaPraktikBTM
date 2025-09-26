@@ -11,6 +11,7 @@ class Erm_poli extends CI_Controller
         $this->load->model('M_Apotik');
         $this->load->model('M_Erm');
         $this->load->model('M_Erm_poli');
+        $this->load->model('M_Lembar_uji_fungsi');
         $this->load->model('M_Rawatinap');
         $this->load->helper('satusehat');
     }
@@ -284,6 +285,7 @@ class Erm_poli extends CI_Controller
         // $db['laporan_tin_operasi'] = empty($laporan_tin_operasi) ? 'not-found' : 'found';
         $db['skrining_tbc'] = empty($skrining_tbc) ? 'not-found' : 'found';
         $db['eval'] = empty($eval) ? 'not-found' : 'found';
+        $uji_fungsi = $this->M_Erm_poli->checkData($id_histori, 'lembar_uji_fungsi');
         echo json_encode($db);
         exit;
     }

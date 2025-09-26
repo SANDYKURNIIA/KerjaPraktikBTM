@@ -359,6 +359,8 @@
                                                 Discharge Planning
                                             </a>
 
+                                            
+
                                
                                                 <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning

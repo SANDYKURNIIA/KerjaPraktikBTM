@@ -336,6 +336,11 @@
                                     <a class="btn btn-success col-md-5 tb" id="kirimDataTBC" data-id-pel="<?= $id_pel; ?>" data-no-rm="<?= $no_rm; ?>">
                                         Kirim Data TBC
                                     </a>
+
+                                      <a class="btn btn-success col-md-5 tb lembar_uji_fungsi"
+                                        href="<?= base_url('Lembar_uji_fungsi/form/' . $id_pelayanan . '/' . $no_rm); ?>">
+                                        Lembar Uji Fungsi Setelah Rehab
+                                    </a>
                                     <a class="btn btn-success col-md-5 form_fisikrehab"
                                                 href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
                                                 Formulir Layanan Rehabilitasi Medik
@@ -486,6 +491,11 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                 }
                 $('#loader').removeClass('hide')
             }
+
+              if (data.uji_fungsi == "found") {
+                    $('.lembar_uji_fungsi').removeClass('btn-success').addClass('btn-danger ');
+                    // $('.laporan_tin_operasi').attr('href', '<?php echo base_url('Erm_laporan_tin_operasi/edit_laporan/') . $id_pelayanan . '/' . $id_histori; ?>');
+                }
         });
         return false;
     });

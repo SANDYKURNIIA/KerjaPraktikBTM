@@ -463,6 +463,18 @@
                   </div>
                   <br>
 
+                  <!-- Diagnosa new -->
+                      <div class="col-md-6">
+                      <label class="control-label mb-10 text-left">
+                        Diagnosa : 
+                      </label>
+                      <div class="has-success">
+                        <textarea class="form-control" id="diagnosa2" name="diagnosa2" rows="3"></textarea>
+                        <span class="help-block"></span>
+                      </div>
+                    </div>
+
+
                   <div class="form-group">
                     <div class="col-md-12">
                       <div class="panel panel-default card-view">
@@ -1235,6 +1247,7 @@
 
     // 5) PROSEDUR & EDUKASI
     const prosedur_terapi = ($('#prosedur_terapi').val() || '').trim();
+    const diagnosa2 = ($('#diagnosa2').val() || '').trim();
     const edukasi         = ($('#edukasi').val() || '').trim();
 
     // 6) DIAGNOSA (array dari UI)
@@ -1256,7 +1269,8 @@
       tgl_kontrol,
       prosedur_terapi,
       edukasi,
-      diagnosa
+      diagnosa,
+      diagnosa2
     };
 
     console.log('PAYLOAD SIMPAN RESUME:', payload);

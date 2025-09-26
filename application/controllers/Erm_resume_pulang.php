@@ -81,6 +81,7 @@ class Erm_resume_pulang extends CI_Controller
         $alasan          = $this->input->post('alasan');
         $riwayat         = $this->input->post('riwayat');
         $prosedur_terapi = $this->input->post('prosedur_terapi');
+        $diagnosa2 = $this->input->post('diagnosa2');
         $keadaan_pulang  = $this->input->post('keadaan_pulang');
         $edukasi         = $this->input->post('edukasi');
 
@@ -122,6 +123,7 @@ class Erm_resume_pulang extends CI_Controller
             'diagnostik'      => $diagnostik,      // ← BARU
             'diagnosa'        => $diagnosa_json,
             'prosedur_terapi' => $prosedur_terapi,
+            'diagnosa2'       => $diagnosa2,
             'keadaan_pulang'  => $keadaan_pulang,
             'edukasi'         => $edukasi,
             'tgl_kontrol'     => $tgl_kontrol,     // ← BARU
