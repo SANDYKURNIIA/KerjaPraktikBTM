@@ -48,40 +48,67 @@ class Erm_ranap_pengobatan_orang_sakit extends CI_Controller
 		$this->load->view('assets/_footer');
 	}
 
-	public function tampil_list_per_id()
-	{
-		// $id_akun = 'dgok8itaesm';
-		$id_pelayanan = $this->input->post('id_pelayanan');
-		$page_data = $this->M_Erm_ranap->selectPengobatan($id_pelayanan);
+	//perbaikan tampil tanggal
+public function tampil_list_per_id()
+{
+    $id_pelayanan = $this->input->post('id_pelayanan');
+    $page_data    = $this->M_Erm_ranap->selectPengobatan($id_pelayanan);
 
-		// $page_data = null;
-		$out = null;
-		for ($i = 0; $i < count($page_data); $i++) {
-			$no = $i + 1;
-			$tombol = "<button class='btn btn-success btn-icon-anim btn square' id='myButton' onclick='pilih(\"" . $page_data[$i]->id_pengobatan . "\")' '><i class='icon-rocket'></i></button>";
-			$hapus = "<button class='btn btn-danger btn-icon-anim btn square' id='myButton' onclick='hapus(\"" . $page_data[$i]->id_pengobatan . "\")' '><i class='icon-trash'></i></button>";
+    $out = [];
+    if (!empty($page_data)) {
+        $bulanIndo = [
+            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        $hariIndo = [
+            'Sunday'    => 'Minggu',
+            'Monday'    => 'Senin',
+            'Tuesday'   => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday'  => 'Kamis',
+            'Friday'    => 'Jumat',
+            'Saturday'  => 'Sabtu'
+        ];
 
-			$jenis_obat = $page_data[$i]->jenis_obat;
-			$nama_obat = $page_data[$i]->nama_obat;
-			$jam = $page_data[$i]->jam;
-			$tanggal_pengobatan = strtotime($page_data[$i]->tanggal);
-			$date = strftime("%A, %d %B %Y ", $tanggal_pengobatan);
-			$staff = $page_data[$i]->staff;
-			// $gambar = null;
-			// foreach (explode(',', $page_data[$i]->file) as $image) { // 1, 2, 3
-			//     $gambar .= "<img src='".base_url()."assets/images/" . $image . "' class='img-responsive zoom'><br>";
-			// }
-			$out[$i] = array($no, $tombol, $hapus, $date, $jam, $jenis_obat, $nama_obat,$staff);
-		}
-		if ($out == null) {
-			echo '{"data":""}';
-			exit;
-		} else {
-			$page_data['data'] = $out;
-			echo json_encode($page_data);
-			exit;
-		}
-	}
+        foreach ($page_data as $i => $row) {
+            $no     = $i + 1;
+            $tombol = "<button class='btn btn-success btn-icon-anim btn square' onclick='pilih(\"{$row->id_pengobatan}\")'><i class='icon-rocket'></i></button>";
+            $hapus  = "<button class='btn btn-danger btn-icon-anim btn square' onclick='hapus(\"{$row->id_pengobatan}\")'><i class='icon-trash'></i></button>";
+
+            // Tanggal pengobatan (dipilih user)
+            $dtPengobatan = new DateTime($row->tanggal_pengobatan);
+            $tanggal_pengobatan = $hariIndo[$dtPengobatan->format('l')] . ", " .
+                                  $dtPengobatan->format('d') . " " .
+                                  $bulanIndo[(int)$dtPengobatan->format('m')] . " " .
+                                  $dtPengobatan->format('Y');
+
+            // Tanggal input (tanggal dibuat sistem)
+            $dtInput = new DateTime($row->tanggal); // field `tanggal` di DB
+            $tanggal_input = $hariIndo[$dtInput->format('l')] . ", " .
+                             $dtInput->format('d') . " " .
+                             $bulanIndo[(int)$dtInput->format('m')] . " " .
+                             $dtInput->format('Y') . " " . $dtInput->format('H:i:s');
+
+            $out[] = [
+                $no,
+                $tombol,
+                $hapus,
+                $tanggal_pengobatan, // kolom Tanggal Obat
+                $row->jam,
+                $row->jenis_obat,
+                $row->nama_obat,
+                $row->staff,
+                $tanggal_input       // kolom tambahan: Tanggal Input
+            ];
+        }
+    }
+
+    echo json_encode(['data' => $out ?: ""]);
+    exit;
+}
+
+
+
 	public function insert_pengobatan()
 	{
 		$data = $this->session->userdata('data_auth');

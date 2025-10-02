@@ -288,6 +288,10 @@
                                         <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_surveilans_hais_rs/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Surveilans Hais RS
                                         </a>
+                                        <a class="btn btn-success col-md-5 surveilans"
+                                            href="<?php echo base_url('Erm_edukasi_igd/edukasi_pendaftaran_igd/' . urlencode($no_rm));?>">
+                                            Form Edukasi Pasien
+                                        </a>
 
 
                                     </div>

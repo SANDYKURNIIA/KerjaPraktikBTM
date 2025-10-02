@@ -1417,6 +1417,7 @@ $izinAkses = $data->izin_akses;
 			<!-- <li>
 				<a href="<?= base_url('Logistik_farmasi/Laporan_cetak_dp'); ?>">LAPORAN DP</a>
 			</li> -->
+			
 			<li>
 				<a href="<?= base_url('Logistik_farmasi/Laporan_stok'); ?>">LAPORAN KARTU STOK</a>
 			</li>

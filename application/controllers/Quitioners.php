@@ -58,6 +58,180 @@ class Quitioners extends CI_Controller
         echo $response;
     }
 
+    public function simpan_perasaan_pribadi()
+{
+    // Ambil data dari form
+    $id_mcu = $this->input->post('id_mcu', true);
+    $id_staff = $this->_current_staff_id(); // Ambil id_staff dari session
+
+    // Validasi data
+    if (empty($id_mcu) || empty($id_staff)) {
+        echo json_encode(['status' => 'error', 'message' => 'id_mcu dan id_staff wajib diisi']);
+        return;
+    }
+
+    // Ambil jawaban survey perasaan pribadi
+    $data = [];
+    $questions = [
+        'merasa_tenang', 'merasa_bertenaga', 'merasa_sedih', 'merasa_gembira', 
+        'merasa_tidak_berguna', 'merasa_santai', 'pengaruh_nasional', 'secara_umum'
+    ];
+    
+    foreach ($questions as $question) {
+        $answer = $this->input->post($question, true);
+        if (empty($answer)) {
+            echo json_encode(['status' => 'error', 'message' => "Jawaban untuk $question wajib diisi"]);
+            return;
+        }
+        $data[$question] = $answer;
+    }
+
+    // Siapkan data insert
+    $insert_data = [
+        'id_mcu'        => $id_mcu,
+        'id_staff'      => $id_staff,
+        'tanggal_input' => date('Y-m-d H:i:s'),
+     
+    ];
+    $insert_data = array_merge($insert_data, $data);
+
+    // Mulai transaksi untuk menyimpan data
+    $this->db->trans_start();
+    $this->db->insert('quiz_perasaan_pribadi', $insert_data);
+    $insert_ok = ($this->db->affected_rows() > 0);
+    $this->db->trans_complete();
+
+    // Cek hasil insert
+    if (!$insert_ok || $this->db->trans_status() === false) {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan data survey']);
+        return;
+    }
+
+    echo json_encode(['status' => 'success']);
+}
+
+ public function simpan_aktifitas_fisik()
+    {
+    // Ambil id_mcu dari POST → fallback session
+    $id_mcu = trim((string)$this->input->post('id_mcu', true));
+    if ($id_mcu === '' || $id_mcu === null) {
+        $id_mcu = (string)$this->session->userdata('current_id_mcu');
+    }
+
+    // Ambil id_staff via helper yang sudah ada
+    $id_staff = $this->_current_staff_id();
+
+    // Validasi dasar
+    if (empty($id_mcu) || empty($id_staff)) {
+        echo json_encode(['status' => 'error', 'message' => 'id_mcu dan id_staff wajib diisi']); return;
+    }
+    if (strlen($id_mcu) > 50 || strlen($id_staff) > 50) {
+        echo json_encode(['status'=>'error','message'=>'Panjang id_mcu/id_staff melebihi 50 karakter']); return;
+    }
+
+    // Pastikan id_mcu valid
+    if ($this->db->where('id_mcu',$id_mcu)->limit(1)->get('mcu')->num_rows() === 0) {
+        echo json_encode(['status'=>'error','message'=>'id_mcu tidak ditemukan']); return;
+    }
+
+    // Ambil payload
+    // minggu: radio (0..7), kirim sebagai 'minggu'
+    $minggu_raw = $this->input->post('minggu', true);
+    $hari_aerobik = is_numeric($minggu_raw) ? (int)$minggu_raw : -1;
+
+    // aktivitas_text: string comma-separated dari front-end
+    // (mis. "golf, joging, berkebun")
+    $aktivitas_text = trim((string)$this->input->post('aktivitas_text', true));
+
+    // Validasi nilai minggu
+    if ($hari_aerobik < 0 || $hari_aerobik > 7) {
+        echo json_encode(['status'=>'error','message'=>'Nilai hari aerobik (minggu) tidak valid (0-7)']); return;
+    }
+    if ($aktivitas_text === '') {
+        echo json_encode(['status'=>'error','message'=>'Minimal pilih satu aktivitas']); return;
+    }
+
+    $data = [
+        'id_mcu'         => $id_mcu,
+        'id_staff'       => $id_staff,
+        'tanggal_input'  => date('Y-m-d H:i:s'),
+        'hari_aerobik'   => $hari_aerobik,
+        'aktivitas_text' => $aktivitas_text
+    ];
+
+    // Insert transaksional
+    $this->db->trans_start();
+    $this->db->insert('quiz_aktifitas_fisik', $data);
+    $insert_ok = ($this->db->affected_rows() > 0);
+    $this->db->trans_complete();
+
+    if (!$insert_ok || $this->db->trans_status() === false) {
+        $db_err = $this->db->error();
+        echo json_encode([
+            'status'  => 'error',
+            'message' => $db_err['code'] ? ('DB Error '.$db_err['code'].': '.$db_err['message'])
+                                         : 'Gagal menyimpan aktifitas fisik'
+        ]);
+        return;
+    }
+
+    echo json_encode(['status' => 'success']);
+    }
+ public function simpan_gejala_dialami()
+{
+    // id_mcu dari POST -> fallback session
+    $id_mcu = trim((string)$this->input->post('id_mcu', true));
+    if ($id_mcu === '' || $id_mcu === null) {
+        $id_mcu = (string)$this->session->userdata('current_id_mcu');
+    }
+
+    // id_staff via helper kamu
+    $id_staff = $this->_current_staff_id();
+
+    // Validasi dasar
+    if (empty($id_mcu) || empty($id_staff)) {
+        echo json_encode(['status'=>'error','message'=>'id_mcu dan id_staff wajib diisi']); return;
+    }
+    if (strlen($id_mcu) > 50 || strlen($id_staff) > 50) {
+        echo json_encode(['status'=>'error','message'=>'Panjang id_mcu/id_staff melebihi 50 karakter']); return;
+    }
+
+    // Validasi id_mcu exist
+    if ($this->db->where('id_mcu',$id_mcu)->limit(1)->get('mcu')->num_rows() === 0) {
+        echo json_encode(['status'=>'error','message'=>'id_mcu tidak ditemukan']); return;
+    }
+
+    // Payload
+    $gejalaStr = (string)$this->input->post('gejala', true);          // "a, b, c"
+    $lainnya   = trim((string)$this->input->post('gejala_lainnya_text', true));
+    $data = [
+        'id_mcu'         => $id_mcu,
+        'id_staff'       => $id_staff,
+        'tanggal_input'  => date('Y-m-d H:i:s'),
+        'gejala_text'    => $gejalaStr,
+        'keterangan_lain'=> ($lainnya !== '') ? $lainnya : null,
+    ];
+
+    // INSERT + cek affected_rows SEBELUM trans_complete
+    $this->db->trans_start();
+    $this->db->insert('quiz_gejala_dialami', $data);
+    $insert_ok = ($this->db->affected_rows() > 0);   // <-- di sini
+    $this->db->trans_complete();
+
+    if (!$insert_ok || $this->db->trans_status() === false) {
+        $db_err = $this->db->error();
+        echo json_encode([
+            'status'  => 'error',
+            'message' => $db_err['code'] ? ('DB Error '.$db_err['code'].': '.$db_err['message'])
+                                         : 'Gagal menyimpan gejala'
+        ]);
+        return;
+    }
+
+    echo json_encode(['status'=>'success']);
+}
+
+
     // ✅ Simpan Pemeriksaan Pribadi
     public function simpan_pemeriksaan_pribadi()
     {

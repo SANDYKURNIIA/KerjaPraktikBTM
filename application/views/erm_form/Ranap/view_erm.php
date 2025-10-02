@@ -358,6 +358,9 @@
                                             <a class="btn btn-success col-md-5  discharge_planning" href="<?= base_url('Discharge_planning/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
                                             </a>
+                                            <a class="btn btn-success col-md-5  assesmen_gizi" href="<?= base_url('Erm_assesmen_gizi/formgizi/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                                Assesmen Gizi
+                                            </a>
 
                                             <a class="btn btn-success col-md-5  one_day_care" href="<?= base_url('OneDayCare/decer/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                                 One Day Care

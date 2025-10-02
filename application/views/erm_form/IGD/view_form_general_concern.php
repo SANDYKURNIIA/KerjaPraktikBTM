@@ -63,13 +63,16 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Telpon<span class="help"></span></label>
+                                         <div class="form-group">
+                                        <label class="control-label mb-10 text-left">Telpon<span class="help"></span></label>
+                                        <input type="text" class="form-control" value="<?php echo $data['no_hp']?>">
+                                    <!-- </div>
                                         <span id="tlp_error" class="text-danger"></span>
                                         <div class="col-md-9 has-success">
                                             <input type="text" class="form-control" id="gHP">
                                             <span class="help-block"></span>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
