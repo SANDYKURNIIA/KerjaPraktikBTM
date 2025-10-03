@@ -30,18 +30,43 @@ class M_Jadwal_dokter extends CI_Model
     return $this->db->get('jadwal_dokter_lokal')->result();
   }
 
-
+  //INI CODE LAMA 
   ////Jadwal
+  
+  // public function selectJadwalDokter()
+  // {
+  //   $this->db->select('d.*, l.nama_panjang');
+  //   $this->db->from('dokter d, list_poli l');
+  //   $this->db->where('l.kdpoli_bpjs=d.dokter_spes');
+  //   $this->db->where('d.nama !=', '-');
+  //   $this->db->where('d.status', 'AKTIF');
+  //   $this->db->order_by('d.id_dokter');
+  //   return $this->db->get()->result();
+  // }
   public function selectJadwalDokter()
   {
-    $this->db->select('d.*, l.nama_panjang');
-    $this->db->from('dokter d, list_poli l');
-    $this->db->where('l.kdpoli_bpjs=d.dokter_spes');
-    $this->db->where('d.nama !=', '-');
-    $this->db->where('d.status', 'AKTIF');
-    $this->db->order_by('d.id_dokter');
-    return $this->db->get()->result();
+      $this->db->select('d.*, l.nama_panjang');
+      $this->db->from('dokter d');
+      $this->db->join('list_poli l', 'l.kdpoli_bpjs = d.dokter_spes', 'left');   
+      $this->db->where('d.nama !=', '-');
+      $this->db->where('d.status', 'AKTIF');
+      $this->db->where('l.status_dokter', 'ADA'); // << tambahan filter poli aktif
+      $this->db->order_by('d.id_dokter', 'ASC');
+  
+      return $this->db->get()->result();
   }
+
+  //BARU
+  public function getSpesialis()
+{
+    return $this->db->select('id_list_poli, nama_panjang, kdpoli_bpjs')
+                    ->from('list_poli')
+                    ->where('status_dokter', 'ADA')
+                    ->order_by('nama_panjang', 'ASC')
+                    ->get()
+                    ->result_array();
+}
+  
   public function selectDataJadwalDokter($id)
   {
     $this->db->where('id_dokter', $id);
@@ -56,11 +81,9 @@ class M_Jadwal_dokter extends CI_Model
   }
   public function insert_jadwal_dokter($data, $table)
   {
-     $this->db->insert($table, $data);
-     return $this->db->insert_id();
-  }
-
-  public function checkData($id_mcu, $table)
+      // Lakukan operasi insert dan langsung kembalikan hasilnya (TRUE/FALSE)
+      return $this->db->insert($table, $data);
+  }  public function checkData($id_mcu, $table)
   {
     $this->db->from($table);
     $this->db->where('id_pasien', $id_mcu);

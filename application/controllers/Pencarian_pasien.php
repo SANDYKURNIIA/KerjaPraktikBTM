@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Pencarian_pasien extends CI_Controller
 {
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -86,16 +86,15 @@ class Pencarian_pasien extends CI_Controller
         }
     }
 
-
     public function tampil_riwayat_kunjungan()
     {
         $no_rm = $this->input->post('no_rm');
         $jenis_pelayanan = $this->input->post('jenis_pelayanan');
         if ($jenis_pelayanan == 'UGD') {
             $page_data = $this->M_Pencarian_Pasien->getRiwayatKunjunganUgd($no_rm);
-        } else  if ($jenis_pelayanan == 'POLI') {
+        } else if ($jenis_pelayanan == 'POLI') {
             $page_data = $this->M_Pencarian_Pasien->getRiwayatKunjunganPoli($no_rm);
-        } else  if ($jenis_pelayanan == 'RANAP') {
+        } else if ($jenis_pelayanan == 'RANAP') {
             $page_data = $this->M_Pencarian_Pasien->getRiwayatKunjunganRanap($no_rm);
         } else {
             $page_data = $this->M_Pencarian_Pasien->getRiwayatKunjunganRanap('');
@@ -136,7 +135,7 @@ class Pencarian_pasien extends CI_Controller
                 $tombol = "<span class='label label-success'>SELESAI</span>";
             }
 
-            $out[$i] = array($no,  $tgl_masuk, $waktu,  $tgl_keluar,  $unit, $nama_dkt, $tipe,  $cara_bayar,  $diagnosa, $tombol);
+            $out[$i] = [$no, $tgl_masuk, $waktu, $tgl_keluar, $unit, $nama_dkt, $tipe, $cara_bayar, $diagnosa, $tombol];
         }
 
         if ($out == null || $out == "") {
@@ -192,14 +191,14 @@ class Pencarian_pasien extends CI_Controller
             $username = $data->username;
             $id_staff = $this->M_Pencarian_Pasien->getIdStaff($username);
             $now = new DateTime();
-            $id =  $this->input->post('no_rm');
+            $id = $this->input->post('no_rm');
 
             if ($this->input->post('ket') == 'BARU') {
                 $tgl = $now->format('Y-m-d H:i:s');
             } else {
                 $tgl = '2022-04-01 23:33:27';
             }
-            $data = array(
+            $data = [
                 'no_rm' => $id,
                 'nama' => $this->input->post('nama'),
                 'no_ktp' => $this->input->post('no_ktp'),
@@ -223,7 +222,7 @@ class Pencarian_pasien extends CI_Controller
                 'no_id_lain' => $this->input->post('no_id_lain'),
                 'tgl_daftar' => $tgl,
                 'id_staff' => $id_staff->id_staff,
-            );
+            ];
 
             $pasien = $this->db->query("SELECT * FROM pasien where no_rm ='$id'")->result();
             $no_rm = $this->M_Pencarian_Pasien->getMax();
@@ -238,13 +237,13 @@ class Pencarian_pasien extends CI_Controller
                 }
             }
         } else {
-            $out = array(
-                'error'   => true,
+            $out = [
+                'error' => true,
                 'noRM_error' => form_error('no_rm'),
                 'name_error' => form_error('nama'),
                 'ktp_error' => form_error('no_ktp'),
-                'tgl_error' => form_error('tgl_lahir')
-            );
+                'tgl_error' => form_error('tgl_lahir'),
+            ];
         }
         echo json_encode($out);
     }
@@ -258,7 +257,7 @@ class Pencarian_pasien extends CI_Controller
         $id_kamar = $this->input->post('tempat_tidur');
         $jenis_pelayanan = $this->input->post('jenis_pelayanan');
         $cara_bayar = $this->input->post('cara_bayar');
-        $tgl =  date("Y-m-d");
+        $tgl = date("Y-m-d");
 
         $id_pelayanan = $this->M_Pencarian_Pasien->get_ai_tbl_pelayanan();
         $out = null;
@@ -269,9 +268,7 @@ class Pencarian_pasien extends CI_Controller
 
         $db_carabayar = $this->db->get_where("cara_bayar", ['id_cara_bayar' => $cara_bayar])->row();
 
-
         $biaya = update_biaya($no_rm, $cara_bayar, $dpjp, $jenis_pelayanan, $poli);
-
 
         if (empty($dpjp)) {
             $error['dpjp'] = '*wajib diisi';
@@ -284,22 +281,21 @@ class Pencarian_pasien extends CI_Controller
             $out['error'] = $error;
         } else {
             $no_rm = $this->input->post('id_pasien');
-            // $pelayanan = $this->db->query("SELECT * from pelayanan p where p.id_pasien = '$no_rm' and p.status = 1 
+            // $pelayanan = $this->db->query("SELECT * from pelayanan p where p.id_pasien = '$no_rm' and p.status = 1
             // and p.status_rawat !='selesai'  and date(p.tgl_masuk) = '$tgl'")->result();
             // if (count($pelayanan) > 0) {
             //     $out['status'] = "Pasien masih terdaftar di hari yang sama. Silahkan didaftarkan di rujukan internal!";
             // } else {
 
-
-            $data_pelayanan = array(
+            $data_pelayanan = [
                 'id_pelayanan' => $id_pelayanan,
-                'id_pasien' =>  $this->input->post('id_pasien'),
+                'id_pasien' => $this->input->post('id_pasien'),
                 'asal_pasien' => $this->input->post('asal_pasien'),
                 'no_sep' => $this->input->post('no_sep'),
                 'status_rawat' => "dirawat",
                 'total_bayar' => 0,
                 'tgl_masuk' => $this->input->post('tgl_masuk'),
-                'tgl_keluar' => NULL,
+                'tgl_keluar' => null,
                 'cara_bayar' => $this->input->post('cara_bayar'),
                 'diagnosa' => $this->input->post('diagnosa'),
                 'cara_keluar' => "-",
@@ -308,32 +304,32 @@ class Pencarian_pasien extends CI_Controller
                 'no_jaminan' => "-",
                 'tipe' => "LANGSUNG",
                 'status' => "1",
-                'biaya_jasa' =>  $biaya['biaya_jasa'],
-                'biaya_rs' =>  $biaya['biaya_rs'],
-                'biaya_admin' =>  $biaya['biaya_admin'],
+                'biaya_jasa' => $biaya['biaya_jasa'],
+                'biaya_rs' => $biaya['biaya_rs'],
+                'biaya_admin' => $biaya['biaya_admin'],
                 'id_staff' => $id_staff->id_staff,
-            );
+            ];
 
             // $out['status'] = "success";
             if ($jenis_pelayanan == "1") {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_history_ugd = $this->M_Pencarian_Pasien->get_ai_tbl_history_ugd();
-                $data_history = array(
+                $data_history = [
                     'id_history' => $id_history_ugd,
                     'jenis_pelayanan' => 'UGD',
                     'tgl_masuk' => date("Y-m-d H:i:s"),
-                    'tgl_keluar' => NULL,
+                    'tgl_keluar' => null,
                     'dpjp' => $this->input->post('dpjp'),
                     'id_pelayanan' => $id_pelayanan,
                     'id_staff' => $id_staff->id_staff,
-                    'biaya_jasa' =>  $biaya['biaya_jasa'],
-                );
+                    'biaya_jasa' => $biaya['biaya_jasa'],
+                ];
 
-                $page_data = array(
+                $page_data = [
                     'id_antrian' => uniqid(),
                     'inisial' => "-",
-                    'no_antri' =>    "-",
+                    'no_antri' => "-",
                     'poli' => "UGD",
                     'tanggal' => $tgl,
                     'jam' => $jam,
@@ -343,24 +339,24 @@ class Pencarian_pasien extends CI_Controller
                     // 'id_history' => $id_history_ugd,
                     'id_akun' => '-',
                     'rujukan' => '-',
-                );
+                ];
 
                 //KAMAR KARTU TRACER AUTO
-                $data_tracer = array(
-                    'id_pelayanan'  => $id_pelayanan,
+                $data_tracer = [
+                    'id_pelayanan' => $id_pelayanan,
                     'jenis_pelayanan' => 'UGD',
-                    'no_rm'     => $this->input->post('id_pasien'),
-                    'time_cetak'    => time(),
-                    'status'         => 0,
-                );
+                    'no_rm' => $this->input->post('id_pasien'),
+                    'time_cetak' => time(),
+                    'status' => 0,
+                ];
 
-                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan_ugd h where p.id_pelayanan = h.id_pelayanan 
-                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.status = 1 and p.status = 1 
+                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan_ugd h where p.id_pelayanan = h.id_pelayanan
+                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.status = 1 and p.status = 1
                         and p.status_rawat !='selesai'  and date(p.tgl_masuk) = '$tgl' and date(h.tgl_masuk) = '$tgl'")->result();
                 // $duplikat = $this->db->get_where("history_pelayanan", ['id_pelayanan' => $id_pelayanan, 'dpjp' => $dpjp,'status'=>1])->result();
 
                 if (count($duplikat) > 0) {
-                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama. 
+                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama.
                             Silahkan didaftarkan di rujukan internal!";
                 } else {
                     $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
@@ -370,24 +366,24 @@ class Pencarian_pasien extends CI_Controller
                     $out['status'] = "success";
                 }
             } else if ($jenis_pelayanan == "5") {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_history_ugd = $this->M_Pencarian_Pasien->get_ai_tbl_history_ugd();
-                $data_history = array(
+                $data_history = [
                     'id_history' => $id_history_ugd,
                     'jenis_pelayanan' => 'UGD PONEK',
                     'tgl_masuk' => date("Y-m-d H:i:s"),
-                    'tgl_keluar' => NULL,
+                    'tgl_keluar' => null,
                     'dpjp' => $this->input->post('dpjp'),
                     'id_pelayanan' => $id_pelayanan,
                     'id_staff' => $id_staff->id_staff,
-                    'biaya_jasa' =>  $biaya['biaya_jasa'],
-                );
+                    'biaya_jasa' => $biaya['biaya_jasa'],
+                ];
 
-                $page_data = array(
+                $page_data = [
                     'id_antrian' => uniqid(),
                     'inisial' => "-",
-                    'no_antri' =>    "-",
+                    'no_antri' => "-",
                     'poli' => "UGD PONEK",
                     'tanggal' => $tgl,
                     'jam' => $jam,
@@ -397,24 +393,24 @@ class Pencarian_pasien extends CI_Controller
                     // 'id_history' => $id_history_ugd,
                     'id_akun' => '-',
                     'rujukan' => '-',
-                );
+                ];
 
                 //KAMAR KARTU TRACER AUTO
-                $data_tracer = array(
-                    'id_pelayanan'  => $id_pelayanan,
+                $data_tracer = [
+                    'id_pelayanan' => $id_pelayanan,
                     'jenis_pelayanan' => 'UGD PONEK',
-                    'no_rm'     => $this->input->post('id_pasien'),
-                    'time_cetak'    => time(),
-                    'status'         => 0,
-                );
+                    'no_rm' => $this->input->post('id_pasien'),
+                    'time_cetak' => time(),
+                    'status' => 0,
+                ];
 
-                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan_ugd h where p.id_pelayanan = h.id_pelayanan 
-                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.status = 1 and p.status = 1 
+                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan_ugd h where p.id_pelayanan = h.id_pelayanan
+                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.status = 1 and p.status = 1
                         and p.status_rawat !='selesai'  and date(p.tgl_masuk) = '$tgl' and date(h.tgl_masuk) = '$tgl'")->result();
                 // $duplikat = $this->db->get_where("history_pelayanan", ['id_pelayanan' => $id_pelayanan, 'dpjp' => $dpjp,'status'=>1])->result();
 
                 if (count($duplikat) > 0) {
-                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama. 
+                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama.
                             Silahkan didaftarkan di rujukan internal!";
                 } else {
                     $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
@@ -426,40 +422,40 @@ class Pencarian_pasien extends CI_Controller
             } elseif ($jenis_pelayanan == "3") {
                 $out['status'] = "success";
                 $ruangan = $this->db->get_where('ruangan', ['id_ruangan' => $id_kamar])->row();
-                $data_history = array(
+                $data_history = [
                     'id_history' => $this->M_Pencarian_Pasien->get_ai_tbl_history_ranap(),
                     'jenis_pelayanan' => 'RAWAT INAP',
                     'tgl_masuk' => date("Y-m-d H:i:s"),
-                    'tgl_keluar' => NULL,
+                    'tgl_keluar' => null,
                     'dpjp' => $this->input->post('dpjp'),
                     'id_pelayanan' => $id_pelayanan,
                     'id_kamar' => $id_kamar,
                     'id_staff' => $id_staff->id_staff,
-                    'biaya_jasa' =>  $biaya['biaya_jasa'],
-                    'biaya_ruangan' =>  $ruangan->biaya_ruangan,
-                );
+                    'biaya_jasa' => $biaya['biaya_jasa'],
+                    'biaya_ruangan' => $ruangan->biaya_ruangan,
+                ];
 
-                $data_kamar = array(
+                $data_kamar = [
                     'id_riwayat' => $this->M_Pencarian_Pasien->get_ai_tbl_riwayat(),
                     'id_pelayanan' => $id_pelayanan,
                     'id_kamar' => $id_kamar,
                     'tanggal_masuk' => date("Y-m-d H:i:s"),
-                    'tanggal_keluar' => NULL,
+                    'tanggal_keluar' => null,
                     'status' => $this->input->post('status'),
                     'id_staff' => $id_staff->id_staff,
-                );
-                $data_status_kamar = array(
+                ];
+                $data_status_kamar = [
                     'status' => "dipakai",
-                );
+                ];
 
                 //KAMAR KARTU TRACER AUTO
-                $data_tracer = array(
-                    'id_pelayanan'  => $id_pelayanan,
+                $data_tracer = [
+                    'id_pelayanan' => $id_pelayanan,
                     'jenis_pelayanan' => 'RAWAT INAP',
-                    'no_rm'     => $this->input->post('id_pasien'),
-                    'time_cetak'    => time(),
-                    'status'         => 0,
-                );
+                    'no_rm' => $this->input->post('id_pasien'),
+                    'time_cetak' => time(),
+                    'status' => 0,
+                ];
 
                 $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
                 $this->M_Pencarian_Pasien->tambah_history_ranap($data_history);
@@ -474,22 +470,22 @@ class Pencarian_pasien extends CI_Controller
 
             } elseif ($jenis_pelayanan == "4") {
                 $id_history = $this->M_Pencarian_Pasien->get_ai_tbl_history_poli();
-                $data_history = array(
+                $data_history = [
                     'id_history' => $id_history,
                     'jenis_pelayanan' => 'POLI PRIORITAS',
                     'tgl_masuk' => date("Y-m-d H:i:s"),
-                    'tgl_keluar' => NULL,
+                    'tgl_keluar' => null,
                     'dpjp' => $this->input->post('dpjp'),
                     'nama_poli' => $this->input->post('nama'),
 
                     'id_pelayanan' => $id_pelayanan,
                     'id_staff' => $id_staff->id_staff,
-                    'biaya_jasa' =>  $biaya['biaya_jasa'],
-                );
-                $page_data = array(
+                    'biaya_jasa' => $biaya['biaya_jasa'],
+                ];
+                $page_data = [
                     'id_antrian' => uniqid(),
                     'inisial' => '-',
-                    'no_antri' =>    '-',
+                    'no_antri' => '-',
                     'poli' => $this->input->post('nama'),
                     'dpjp' => $this->input->post('dpjp'),
                     'tanggal' => date("Y-m-d"),
@@ -500,23 +496,23 @@ class Pencarian_pasien extends CI_Controller
                     // 'id_history' => $id_history,
                     'id_akun' => '-',
                     'rujukan' => '-',
-                );
+                ];
                 //KAMAR KARTU TRACER AUTO
-                $data_tracer = array(
-                    'id_pelayanan'  => $id_pelayanan,
+                $data_tracer = [
+                    'id_pelayanan' => $id_pelayanan,
                     'jenis_pelayanan' => 'POLI',
-                    'no_rm'     => $this->input->post('id_pasien'),
-                    'time_cetak'    => time(),
-                    'status'         => 0,
-                );
+                    'no_rm' => $this->input->post('id_pasien'),
+                    'time_cetak' => time(),
+                    'status' => 0,
+                ];
 
-                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan h where p.id_pelayanan = h.id_pelayanan 
-                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.nama_poli ='$poli' and h.status = 1 and p.status = 1 
+                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan h where p.id_pelayanan = h.id_pelayanan
+                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.nama_poli ='$poli' and h.status = 1 and p.status = 1
                         and p.status_rawat ='dirawat'  and date(p.tgl_masuk) = '$tgl' and date(h.tgl_masuk) = '$tgl'")->result();
                 // $duplikat = $this->db->get_where("history_pelayanan", ['id_pelayanan' => $id_pelayanan, 'dpjp' => $dpjp,'status'=>1])->result();
 
                 if (count($duplikat) > 0) {
-                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama. 
+                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama.
                         Silahkan didaftarkan di rujukan internal!";
                 } else if (date('H:i:s') < '07:00:00' && preg_match("/BPJS/i", $db_carabayar->nama) && $db_carabayar->nama != 'BPJSTK') {
                     $out['status'] = "Tidak dapat melakukan tambah kunjungan sebelum jam 07:00 WIB";
@@ -529,18 +525,17 @@ class Pencarian_pasien extends CI_Controller
                 }
             } else {
                 $id_history = $this->M_Pencarian_Pasien->get_ai_tbl_history_poli();
-                $data_history = array( //Untuk insert ke history pelayanan poli
+                $data_history = [ //Untuk insert ke history pelayanan poli
                     'id_history' => $id_history,
                     'jenis_pelayanan' => 'POLI',
                     'tgl_masuk' => date("Y-m-d H:i:s"),
-                    'tgl_keluar' => NULL,
+                    'tgl_keluar' => null,
                     'dpjp' => $this->input->post('dpjp'),
                     'nama_poli' => $this->input->post('nama_poli'),
                     'id_pelayanan' => $id_pelayanan,
                     'id_staff' => $id_staff->id_staff,
-                    'biaya_jasa' =>  $biaya['biaya_jasa'],
-                );
-
+                    'biaya_jasa' => $biaya['biaya_jasa'],
+                ];
 
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
@@ -549,24 +544,23 @@ class Pencarian_pasien extends CI_Controller
                 $no_antri = $this->input->post('antrian');
                 $antrian = $this->M_Pencarian_Pasien->cekAntrian($poli, $no_antri);
                 $inisial = $this->db->get_where("list_poli", ['id_list_poli' => $poli])->row()->inisial;
-                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan h where p.id_pelayanan = h.id_pelayanan 
-                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.nama_poli ='$poli' and h.status = 1 and p.status = 1 
+                $duplikat = $this->db->query("SELECT * from pelayanan p, history_pelayanan h where p.id_pelayanan = h.id_pelayanan
+                        and p.id_pasien = '$no_rm' and p.cara_bayar = '$cara_bayar' and h.dpjp ='$dpjp' and h.nama_poli ='$poli' and h.status = 1 and p.status = 1
                         and p.status_rawat !='selesai'  and date(p.tgl_masuk) = '$tgl' and date(h.tgl_masuk) = '$tgl'")->result();
                 // $duplikat = $this->db->get_where("history_pelayanan", ['id_pelayanan' => $id_pelayanan, 'dpjp' => $dpjp,'status'=>1])->result();
-
 
                 if ($antrian == $no_antri || !empty($antrian)) {
                     $out['status'] = "error";
                 } elseif (count($duplikat) > 0) {
-                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama. 
+                    $out['status'] = "Pasien sudah terdaftar di poli yang sama dengan DPJP yang sama pada hari yang sama.
                             Silahkan didaftarkan di rujukan internal!";
                 } else if (date('H:i:s') < '07:00:00' && preg_match("/BPJS/i", $db_carabayar->nama) && $db_carabayar->nama != 'BPJSTK') {
                     $out['status'] = "Tidak dapat melakukan tambah kunjungan sebelum jam 07:00 WIB";
-                } elseif ($antrian == NULL) {
-                    $page_data = array(
+                } elseif ($antrian == null) {
+                    $page_data = [
                         'id_antrian' => $id_antrian,
                         'inisial' => $inisial,
-                        'no_antri' =>    $no_antri,
+                        'no_antri' => $no_antri,
                         'poli' => $this->input->post('nama_poli'),
                         'dpjp' => $this->input->post('dpjp'),
                         'tanggal' => $tgl,
@@ -577,22 +571,21 @@ class Pencarian_pasien extends CI_Controller
                         // 'id_history' => $id_history,
                         'id_akun' => '-',
                         'rujukan' => '-',
-                    );
+                    ];
 
                     //KAMAR KARTU TRACER AUTO
-                    $data_tracer = array(
-                        'id_pelayanan'      => $id_pelayanan,
-                        'jenis_pelayanan'   => 'POLI',
-                        'no_rm'             => $this->input->post('id_pasien'),
-                        'time_cetak'        => time(),
-                        'status'            => 0,
-                    );
-                    
+                    $data_tracer = [
+                        'id_pelayanan' => $id_pelayanan,
+                        'jenis_pelayanan' => 'POLI',
+                        'no_rm' => $this->input->post('id_pasien'),
+                        'time_cetak' => time(),
+                        'status' => 0,
+                    ];
+
                     // $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
                     // $this->M_Pencarian_Pasien->tambah_history_poli($data_history);
                     // $this->M_Pencarian_Pasien->insert_antrian_poli($page_data);
                     // $this->M_Pencarian_Pasien->tambah_tracer_kamar_kartu($data_tracer);
-
 
                     ////////////  antrol onsite ///////////////////////
                     $pasien = $this->db->get_where("pasien", ['no_rm' => $no_rm])->row();
@@ -602,7 +595,6 @@ class Pencarian_pasien extends CI_Controller
                     $estimasi = strtotime('+1 minute') * 1000;
                     $kuota = $dokter->kuota;
                     $total_antrian = $this->M_SEP->getTotalAntrian($list_poli->inisial, $dpjp, $tgl);
-
 
                     if (preg_match("/BPJS/i", $db_carabayar->nama) && $db_carabayar->nama != 'BPJSTK') {
                         $total_antrian = !empty($total_antrian) ? $total_antrian->bpjs : 0;
@@ -646,8 +638,7 @@ class Pencarian_pasien extends CI_Controller
                             $jam_praktek = '08:00-17:00';
                         }
 
-
-                        $data_antrol = array(
+                        $data_antrol = [
                             "kodebooking" => $id_antrian,
                             "jenispasien" => $jenis_pasien,
                             "nomorkartu" => $nomorkartu,
@@ -667,7 +658,7 @@ class Pencarian_pasien extends CI_Controller
                             "totaljkn" => $total_antrian->bpjs,
                             "totalnonjkn" => $total_antrian->non_bpjs,
 
-                        );
+                        ];
 
                         if ($poli != '111111' && $poli != '6E975PL694' && $poli != 'NM3075J78') {
                             $hasil = tambah_antrian($data_antrol);
@@ -680,13 +671,12 @@ class Pencarian_pasien extends CI_Controller
                         // $antrian = $this->db->get_where('antrian_poli', ['id_antrian' => $id_antrian])->row();
                         $pasien1 = $this->M_Pasien->get_pasien_baru($no_rm)->result();
 
-
                         if (count($pasien1) > 0) {
 
                             $data_antrol1 = [
                                 'kodebooking' => $id_antrian,
                                 'taskid' => 1,
-                                'waktu' => strtotime($pasien1[0]->tgl_daftar) * 1000
+                                'waktu' => strtotime($pasien1[0]->tgl_daftar) * 1000,
                             ];
                             update_antrian($data_antrol1);
 
@@ -695,21 +685,21 @@ class Pencarian_pasien extends CI_Controller
                             $data_antrol2 = [
                                 'kodebooking' => $id_antrian,
                                 'taskid' => 2,
-                                'waktu' => $random * 1000
+                                'waktu' => $random * 1000,
                             ];
                             update_antrian($data_antrol2);
 
                             $data_antrol3 = [
                                 'kodebooking' => $id_antrian,
                                 'taskid' => 3,
-                                'waktu' => strtotime("+" . rand(120, 300) . " seconds", strtotime($tgl_task2)) * 1000
+                                'waktu' => strtotime("+" . rand(120, 300) . " seconds", strtotime($tgl_task2)) * 1000,
                             ];
                             update_antrian($data_antrol3);
                         } else {
                             $data_antrol = [
                                 'kodebooking' => $id_antrian,
                                 'taskid' => 3,
-                                'waktu' => strtotime('now') * 1000
+                                'waktu' => strtotime('now') * 1000,
                             ];
                             update_antrian($data_antrol);
                         }
@@ -735,15 +725,15 @@ class Pencarian_pasien extends CI_Controller
         $id_pelayanan = $this->M_Pencarian_Pasien->get_ai_tbl_pelayanan();
         $out = null;
 
-        $data_pelayanan = array(
+        $data_pelayanan = [
             'id_pelayanan' => $id_pelayanan,
-            'id_pasien' =>  $this->input->post('id_pasien'),
+            'id_pasien' => $this->input->post('id_pasien'),
             'asal_pasien' => $this->input->post('asal_pasien'),
             'no_sep' => $this->input->post('no_sep'),
             'status_rawat' => "dirawat",
             'total_bayar' => 0,
             'tgl_masuk' => $this->input->post('tgl_masuk'),
-            'tgl_keluar' => NULL,
+            'tgl_keluar' => null,
             'cara_bayar' => $this->input->post('cara_bayar'),
             'diagnosa' => $this->input->post('diagnosa'),
             'cara_keluar' => "-",
@@ -752,53 +742,52 @@ class Pencarian_pasien extends CI_Controller
             'no_jaminan' => "-",
             'tipe' => "POLI SORE",
             'status' => "1",
-            'biaya_jasa' =>  $this->input->post('biaya_jasa'),
-            'biaya_rs' =>  $biaya_rs,
-            'biaya_admin' =>  $this->input->post('biaya_admin'),
+            'biaya_jasa' => $this->input->post('biaya_jasa'),
+            'biaya_rs' => $biaya_rs,
+            'biaya_admin' => $this->input->post('biaya_admin'),
             'id_staff' => $id_staff->id_staff,
-        );
-
+        ];
 
         // $out['status'] = "success";
         if ($jenis_pelayanan == "1") {
-            $data_history = array(
+            $data_history = [
                 'id_history' => $this->M_Pencarian_Pasien->get_ai_tbl_history_ugd(),
                 'jenis_pelayanan' => 'UGD',
                 'tgl_masuk' => date("Y-m-d H:i:s"),
-                'tgl_keluar' => NULL,
+                'tgl_keluar' => null,
                 'dpjp' => $this->input->post('dpjp'),
                 'id_pelayanan' => $id_pelayanan,
                 'id_staff' => $id_staff->id_staff,
-            );
+            ];
             $this->M_Pencarian_Pasien->tambah_history_ugd($data_history);
             $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
 
             $out['status'] = "success";
         } elseif ($jenis_pelayanan == "3") {
             $out['status'] = "success";
-            $data_history = array(
+            $data_history = [
                 'id_history' => $this->M_Pencarian_Pasien->get_ai_tbl_history_ranap(),
                 'jenis_pelayanan' => 'RAWAT INAP',
                 'tgl_masuk' => date("Y-m-d H:i:s"),
-                'tgl_keluar' => NULL,
+                'tgl_keluar' => null,
                 'dpjp' => $this->input->post('dpjp'),
                 'id_pelayanan' => $id_pelayanan,
                 'id_kamar' => $id_kamar,
                 'id_staff' => $id_staff->id_staff,
-            );
+            ];
 
-            $data_kamar = array(
+            $data_kamar = [
                 'id_riwayat' => $this->M_Pencarian_Pasien->get_ai_tbl_riwayat(),
                 'id_pelayanan' => $id_pelayanan,
                 'id_kamar' => $id_kamar,
                 'tanggal_masuk' => date("Y-m-d H:i:s"),
-                'tanggal_keluar' => NULL,
+                'tanggal_keluar' => null,
                 'status' => "AKTIF",
                 'id_staff' => $id_staff->id_staff,
-            );
-            $data_status_kamar = array(
+            ];
+            $data_status_kamar = [
                 'status' => "dipakai",
-            );
+            ];
 
             $this->M_Pencarian_Pasien->ubah_status_kamar($id_kamar, $data_status_kamar);
             $this->M_Pencarian_Pasien->tambah_history_ranap($data_history);
@@ -810,20 +799,19 @@ class Pencarian_pasien extends CI_Controller
             //  Update ruangan menggunakan trigger update
             //  Triger insert id_kamar di riwayat kamar
 
-
         } else {
-            $data_history = array(
+            $data_history = [
                 'id_history' => $this->M_Pencarian_Pasien->get_ai_tbl_history_poli(),
                 'jenis_pelayanan' => 'POLI',
                 'tgl_masuk' => date("Y-m-d H:i:s"),
-                'tgl_keluar' => NULL,
+                'tgl_keluar' => null,
                 'dpjp' => $this->input->post('dpjp'),
                 'nama_poli' => $this->input->post('nama_poli'),
                 'id_pelayanan' => $id_pelayanan,
                 'id_staff' => $id_staff->id_staff,
-            );
+            ];
             if ($this->input->post('nama_poli') == '111111') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -833,7 +821,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == '146582') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -843,7 +831,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == '15487956') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -852,7 +840,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == '24QRNLX29R') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -861,7 +849,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == '2JZ09X4K22') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -870,7 +858,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == '6E975PL694') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -879,7 +867,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'AX1520L18') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -888,7 +876,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'E00RX703') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -897,7 +885,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'HLGI4176K8') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -906,7 +894,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'I9NXY5VNQG') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -915,11 +903,11 @@ class Pencarian_pasien extends CI_Controller
 
                 if ($antrian == $no_antri || !empty($antrian)) {
                     $out['status'] = "error";
-                } elseif ($antrian == NULL) {
-                    $page_data = array(
+                } elseif ($antrian == null) {
+                    $page_data = [
                         'id_antrian' => $id_antrian,
                         'inisial' => 'j',
-                        'no_antri' =>    $no_antri,
+                        'no_antri' => $no_antri,
                         'poli' => $this->input->post('nama_poli'),
                         'tanggal' => $tgl,
                         'jam' => $jam,
@@ -928,7 +916,7 @@ class Pencarian_pasien extends CI_Controller
                         'id_pelayanan' => $id_pelayanan,
                         'id_akun' => '-',
                         'rujukan' => '-',
-                    );
+                    ];
                     $this->M_Pencarian_Pasien->insert_antrian_poli($page_data);
                     $this->M_Pencarian_Pasien->tambah_history_poli($data_history);
                     $this->M_Pencarian_Pasien->tambah_pelayanan($data_pelayanan);
@@ -936,7 +924,7 @@ class Pencarian_pasien extends CI_Controller
                     $out['status'] = "success";
                 }
             } elseif ($this->input->post('nama_poli') == 'MWK205D30K') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -945,7 +933,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'O782EGU4PR') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -955,7 +943,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'ODI8643C27') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -964,7 +952,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'RZE28J1098') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -973,7 +961,7 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             } elseif ($this->input->post('nama_poli') == 'UQ81K76373') {
-                $tgl =  date("Y-m-d");
+                $tgl = date("Y-m-d");
                 $jam = date("H:i:s");
                 $id_antrian = uniqid();
                 $poli = $this->input->post('nama_poli');
@@ -982,7 +970,6 @@ class Pencarian_pasien extends CI_Controller
 
                 $out['status'] = "success";
             }
-
 
             // $out['status'] = "success";
         }
@@ -1000,7 +987,7 @@ class Pencarian_pasien extends CI_Controller
             $headers = generate_headers();
             // print_arr($headers);
             /**
-             Sending record to API Aplicares (for UPDATE)
+            Sending record to API Aplicares (for UPDATE)
              */
             $ch = curl_init();
             // curl_setopt($ch, CURLOPT_URL, "https://www.khayalan.net");
@@ -1028,7 +1015,7 @@ class Pencarian_pasien extends CI_Controller
     public function edit_pasien()
     {
         $id = $this->input->post('no_rm');
-        $data = array(
+        $data = [
             'no_rm' => $id,
             'nama' => $this->input->post('nama'),
             'no_ktp' => $this->input->post('no_ktp'),
@@ -1051,7 +1038,7 @@ class Pencarian_pasien extends CI_Controller
             'provinsi' => $this->input->post('prov'),
             'no_id_lain' => $this->input->post('no_id_lain'),
 
-        );
+        ];
 
         $this->M_Pencarian_Pasien->ubah_pasien($id, $data);
         $out['status'] = "success";
@@ -1091,11 +1078,11 @@ class Pencarian_pasien extends CI_Controller
 
         $i = 0;
         if ($db[$i]->no_antri == 0) {
-            $db = array(3);
+            $db = [3];
         } else {
-            $db = array(
-                $id_max = $db[$i]->no_antri + 1
-            );
+            $db = [
+                $id_max = $db[$i]->no_antri + 1,
+            ];
         }
 
         echo json_encode($db);
@@ -1110,11 +1097,11 @@ class Pencarian_pasien extends CI_Controller
 
         $i = 0;
         if ($db[$i]->no_antri == 0) {
-            $db = array(3);
+            $db = [3];
         } else {
-            $db = array(
-                $id_max = $db[$i]->no_antri + 1
-            );
+            $db = [
+                $id_max = $db[$i]->no_antri + 1,
+            ];
         }
 
         echo json_encode($db);
@@ -1122,28 +1109,70 @@ class Pencarian_pasien extends CI_Controller
     }
 
     //Dokter
+    // Dokter
     public function getDokter()
     {
-        $tipe = $this->input->post('tipe_masuk');
+        $tipe = $this->input->post('tipe_masuk'); // 1=UGD, 3=RANAP, 4=PRIORITAS, lainnya=POLI RAJAL
         $poli = $this->input->post('poli');
-        if ($tipe == 1 || $tipe == 5) {
-            $spes = "UMU";
-            $data = $this->M_Pencarian_Pasien->getDokter($spes);
-        } elseif ($tipe == 3) {
+
+        // default
+        $data = [];
+
+        // RANAP → pakai daftar DPJP (full)
+        if ($tipe == 3) {
             $data = $this->M_Pencarian_Pasien->getNamaDPJP();
-        } elseif ($tipe == 4) {
-            $db = $this->db->get_where('list_poli', ['id_list_poli' => $poli])->row();
-
-            $spes = $db->kdpoli_bpjs;
-            $data = $this->M_Pencarian_Pasien->getDokter($spes);
-        } else {
-            $db = $this->db->get_where('list_poli', ['id_list_poli' => $poli])->row();
-
-            $spes = $db->kdpoli_bpjs;
-            $data = $this->M_Pencarian_Pasien->getDokter($spes);
+            echo json_encode($data);
+            return;
         }
+
+        // Ambil kdpoli_bpjs dari poli (kalau ada)
+        $kdpoli = null;
+        if (!empty($poli)) {
+            $rowPoli = $this->db->get_where('list_poli', ['id_list_poli' => $poli])->row();
+            if ($rowPoli) {
+                $kdpoli = $rowPoli->kdpoli_bpjs;
+            }
+        }
+
+        if ($tipe == 1) {
+            // UGD → default ke spesialis umum (UMU).
+            // Kalau user memilih poli tertentu, ikut spesialis poli tsb (tetap tidak bikin kode dokter baru).
+            $data = $this->M_Pencarian_Pasien->getDokter(!empty($kdpoli) ? $kdpoli : 'UMU');
+        } else {
+            // POLI RAJAL / PRIORITAS / lainnya → ikut spesialis dari poli yang dipilih.
+            // Tidak fallback ke kode buatan; kalau poli kosong ya kosongkan hasilnya.
+            if (!empty($kdpoli)) {
+                $data = $this->M_Pencarian_Pasien->getDokter($kdpoli);
+            } else {
+                $data = [];
+            }
+        }
+
         echo json_encode($data);
     }
+
+    // public function getDokter()
+    // {
+    //     $tipe = $this->input->post('tipe_masuk');
+    //     $poli = $this->input->post('poli');
+    //     if ($tipe == 1 || $tipe == 5) {
+    //         $spes = "UMU";
+    //         $data = $this->M_Pencarian_Pasien->getDokter($spes);
+    //     } elseif ($tipe == 3) {
+    //         $data = $this->M_Pencarian_Pasien->getNamaDPJP();
+    //     } elseif ($tipe == 4) {
+    //         $db = $this->db->get_where('list_poli', ['id_list_poli' => $poli])->row();
+
+    //         $spes = $db->kdpoli_bpjs;
+    //         $data = $this->M_Pencarian_Pasien->getDokter($spes);
+    //     } else {
+    //         $db = $this->db->get_where('list_poli', ['id_list_poli' => $poli])->row();
+
+    //         $spes = $db->kdpoli_bpjs;
+    //         $data = $this->M_Pencarian_Pasien->getDokter($spes);
+    //     }
+    //     echo json_encode($data);
+    // }
 
     //Dokter
     public function getDokterPrioritas()
@@ -1189,10 +1218,10 @@ class Pencarian_pasien extends CI_Controller
                 $umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
                 $tgl = strtotime($page_data[$i]->tgl_lahir);
                 $no = $i + 1;
-                $no_rm =  " " . sprintf('%06d', $page_data[$i]->no_rm);
-                $rm_lama =  " " . sprintf('%06d', $page_data[$i]->rm_lama);
-                $no_bpjs =  $page_data[$i]->no_bpjs;
-                $no_ktp =  $page_data[$i]->no_ktp;
+                $no_rm = " " . sprintf('%06d', $page_data[$i]->no_rm);
+                $rm_lama = " " . sprintf('%06d', $page_data[$i]->rm_lama);
+                $no_bpjs = $page_data[$i]->no_bpjs;
+                $no_ktp = $page_data[$i]->no_ktp;
                 $nama = $page_data[$i]->nama;
                 $jenis_kelamin = $page_data[$i]->jenis_kelamin;
                 $tgl_lahir = strftime(" %d %B %Y ", $tgl);
@@ -1202,7 +1231,7 @@ class Pencarian_pasien extends CI_Controller
                 $alamat = $page_data[$i]->alamat;
                 $aksi = $tombol;
 
-                $out[$i] = array($no, $aksi, $no_rm, $rm_lama, $nama, $jenis_kelamin, $tgl_lahir, $no_bpjs, $no_ktp, $umur, $kota, $alamat);
+                $out[$i] = [$no, $aksi, $no_rm, $rm_lama, $nama, $jenis_kelamin, $tgl_lahir, $no_bpjs, $no_ktp, $umur, $kota, $alamat];
             }
 
             if ($out == null || $out == "") {

@@ -3,14 +3,12 @@
         <div class="pull-left">
             <h6 class="panel-title txt-dark"><span class="span span-success"> JADWAL DOKTER</span></h6>
         </div>
-
-
-
         <div class="clearfix"></div>
     </div>
 
     <div align="right">
-        <button class="btn btn-primary btn-anim mr-50" style="margin-right: 40px;" data-toggle="modal" data-target="#modal_jadwal"><i class="icon-plus"></i><span class="btn-text">TAMBAH DATA DOKTER</span>
+        <button class="btn btn-primary btn-anim mr-50" style="margin-right: 40px;" data-toggle="modal" data-target="#modal_jadwal">
+            <i class="icon-plus"></i><span class="btn-text">TAMBAH DATA DOKTER</span>
         </button>
     </div>
 
@@ -22,31 +20,12 @@
 
     <div class="panel-wrapper collapse in">
         <div class="panel-body">
-            <!-- <form id="form-filter" class="form-horizontal"> -->
             <div class="form-group">
-
-
-
                 <div class="row mt-30">
-                    <!-- <div class="col-md-12">
-
-                    </div> -->
+                    <!-- <div class="col-md-12"></div> -->
                 </div>
 
-
-
-
-                <!-- <div class="form-group">
-
-        </div> -->
-
-
-
-
-
                 <div class="table-wrap">
-                    <!-- <p id="notif_load" style="color:red;">Loading data, Please wait</p> -->
-
                     <div class="table-responsive">
                         <table class="table table-hover display  pb-30" id="datable">
                             <thead>
@@ -61,19 +40,19 @@
                                 </tr>
                             </thead>
                             <tfoot class="bg-success">
-                                <th>NO</th>
-                                <th>EDIT</th>
-                                <th>NAMA DOKTER</th>
-                                <th>SPESIALIS</th>
-                                <th>KODE SPESIALIS</th>
-                                <th>KODE DOKTER</th>
-                                <th>STATUS</th>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>EDIT</th>
+                                    <th>NAMA DOKTER</th>
+                                    <th>SPESIALIS</th>
+                                    <th>KODE SPESIALIS</th>
+                                    <th>KODE DOKTER</th>
+                                    <th>STATUS</th>
+                                </tr>
                             </tfoot>
                             <tbody style="color: black">
-
                                 <!--percobaan nampilin data-->
                                 <!--end percobaan penampilan data-->
-
                             </tbody>
                         </table>
                     </div>
@@ -81,15 +60,9 @@
             </div>
         </div>
 
-
-        <!--data table-->
-
-        <!--modal yang akan dipakai-->
-
+        <!-- Modal untuk tambah data dokter -->
         <div class="panel-wrapper collapse in">
             <div class="panel-body">
-                <!-- sample modal content -->
-
                 <div class="modal fade modal-pendaftaranakun" id="modal_jadwal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -98,44 +71,50 @@
                                 <p><i class="icon-people mr-10"></i>INPUT DATA DOKTER</p>
                             </div>
                             <div class="modal-body">
-                                <!-- Form body  -->
                                 <div class="form-body mt-20">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">NAMA DOKTER</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="NAMA DOKTER" id="inNamaDokter" name="nama" required=""></input>
+                                                    <input type="text" class="form-control" placeholder="NAMA DOKTER" id="inNamaDokter" name="nama" required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- span -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label col-md-3"> SPESIA-LIS</label>
+                                                <label class="control-label col-md-3">SPESIALIS</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="SPESIALIS" id="inSpes" name="spes"></input>
+                                                    <select class="form-control select2" id="inSpes" name= "spes" required>
+                                                        <option value=""> Pilih Spesialis </option>
+                                                        <?php foreach ($spes as $poli): ?>
+                                                            <option value="<?=$poli['kdpoli_bpjs'];?>">
+                                                                <?=$poli['nama_panjang'];?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--/span-->
                                     </div>
-                                    <p class="mt-15">
-                                        <!-- /Row -->
+
+                                    <p class="mt-15"></p>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">KODE DOKTER</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="KODE DOKTER" required="" id="inKode" name="kode"></input>
+                                                    <input type="text" class="form-control" placeholder="KODE DOKTER" required id="inKode" name="kode">
                                                 </div>
                                             </div>
                                         </div>
+
+                                         <p class="mt-15">
                                         <div class="col-md-6">
-                                            <div class="form-group ">
+                                            <div class="form-group">
                                                 <label class="control-label col-md-3">STATUS</label>
                                                 <div class="col-md-9 has-success">
-                                                    <select class="form-control filled-input select2" id="inStatusDokter">
+                                                    <select class="form-control filled-input select2" id="inStatusDokter" name="status">
                                                         <option value="AKTIF">AKTIF</option>
                                                         <option value="TIDAK AKTIF">TIDAK AKTIF</option>
                                                     </select>
@@ -143,72 +122,73 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- span -->
+                                    </p>
+                                    
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">NIP</label>
+                                                <div class="col-md-9 has-success">
+                                                    <!-- Inputan user -->
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Nomor Induk Pegawai"
+                                                        id="inNip" name="username" required>
+
+                                                    <!-- Hidden field untuk nik -->
+                                                    <input type="hidden" id="inNik" name="nik">
+                                                </div>
+                                            </div>
+                                        </div>
+                                   
                                 </div>
-                                <!-- /Row -->
-                                <!-- End -->
                             </div>
                             <div class="modal-footer mb-10 mr-15">
-
-                                <button onclick="insertDokter()" class="btn btn-success btn-anim  btn-sm" type="button"><i class="icon-rocket"></i><span class="btn-text">Submit</span></button>
-
+                                <button onclick="insertDokter()" class="btn btn-success btn-anim btn-sm" type="button">
+                                    <i class="icon-rocket"></i><span class="btn-text">Submit</span>
+                                </button>
                             </div>
                         </div>
-                        <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
                 </div>
             </div>
 
 
+            <!-- Modal untuk edit jadwal dokter -->
             <div class="panel-body">
-                <!-- sample modal edit -->
-
                 <div class="modal fade modal-pendaftaranakun" id="modal_edit_jadwal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
-                            <!-- <div class="modal-header">
-                                <p>JADWAL DOKTER</p>
-                                <p><i class="icon-people mr-10"></i>EDIT JADWAL DOKTER</p>
-
-                            </div> -->
                             <div class="modal-body">
-                                <!-- Form body  -->
-
                                 <div class="form-body mt-20">
-                                    <h6 class="txt-dark capitalize-font pl-20"><i class="icon-people mr-10"></i>TAMBAH JADWAL DOKTER
-                                    </h6>
+                                    <h6 class="txt-dark capitalize-font pl-20"><i class="icon-people mr-10"></i>TAMBAH JADWAL DOKTER</h6>
                                     <hr width="95%">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">NAMA DOKTER</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="NAMA DOKTER" id="upNama" name="nama" required="" disabled></input>
+                                                    <input type="text" class="form-control" placeholder="NAMA DOKTER" id="upNama" name="nama" required="" disabled>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- span -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label col-md-3"> SPESIA-LIS</label>
+                                                <label class="control-label col-md-3">SPESIALIS</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="SPESIALIS" id="upSpes" name="spes" disabled></input>
+                                                    <select class="form-control select2" id="upSpes" name="spes" required>
+                                                        <option value="">-- Pilih Spesialis --</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--/span-->
                                     </div>
 
                                     <p class="mt-15">
-                                        <!-- /Row -->
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">KODE DOKTER</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="KODE DOKTER" required="" id="upKode" name="kode" disabled></input>
+                                                    <input type="text" class="form-control" placeholder="KODE DOKTER" required="" id="upKode" name="kode" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -224,7 +204,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
@@ -235,19 +214,13 @@
                                         </div>
                                     </div>
 
-                                    <!-- span -->
-
-                                    <!-- /Row -->
-
                                     <p class="mt-15">
-                                        <!-- /Row -->
-
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">JAM MULAI</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="time" class="form-control" placeholder="JAM MULAI" required="" id="upMulai" name="mulai"></input>
+                                                    <input type="time" class="form-control" placeholder="JAM MULAI" required="" id="upMulai" name="mulai">
                                                 </div>
                                             </div>
                                         </div>
@@ -255,16 +228,13 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">JAM SELESAI</label>
                                                 <div class="col-md-9 has-success">
-                                                    <input type="time" class="form-control" placeholder="JAM SELESAI" required="" id="upSelesai" name="selesai"></input>
+                                                    <input type="time" class="form-control" placeholder="JAM SELESAI" required="" id="upSelesai" name="selesai">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-
                                     <p class="mt-15">
-                                        <!-- /Row -->
-
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -284,170 +254,151 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- <div class="col-md-6">
-                                            <div class="form-group ">
-                                                <label class="control-label col-md-3">ID STAFF</label>
-                                                <div class="col-md-9 has-success">
-                                                    <input type="text" class="form-control" placeholder="-" required="" id="upStaff" name="kode"></input>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                     </div>
-
                                 </div>
-                                <!-- End -->
-                            </div>
-                            <div class="modal-footer mb-10 mr-15">
 
-                                <button onclick="insertJadwal()" class="btn btn-success btn-anim  btn-sm" type="submit"><i class="icon-rocket"></i><span class="btn-text">Tambah Jadwal</span></button>
+                                <div class="modal-footer mb-10 mr-15">
+                                    <button onclick="insertJadwal()" class="btn btn-success btn-anim  btn-sm" type="submit"><i class="icon-rocket"></i><span class="btn-text">Tambah Jadwal</span></button>
+                                </div>
 
-                            </div>
-                            <!-- Start Edit collapse -->
-                            <div class="form-wrap">
-                                <div class="form-body mt-10 collapse" id="collapse_jadwal_perdokter">
-                                    <h6 class="txt-dark capitalize-font pl-20"><i class="icon-notebook mr-10"></i>EDIT JADWAL DOKTER
-                                    </h6>
-                                    <hr width="95%">
-                                    <form id="form_edit_jadwal_perdokter">
+                                <!-- Start Edit collapse -->
+                                <div class="form-wrap">
+                                    <div class="form-body mt-10 collapse" id="collapse_jadwal_perdokter">
+                                        <h6 class="txt-dark capitalize-font pl-20"><i class="icon-notebook mr-10"></i>EDIT JADWAL DOKTER</h6>
+                                        <hr width="95%">
+                                        <form id="form_edit_jadwal_perdokter">
+                                            <p class="mt-15">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group ">
+                                                        <label class="control-label col-md-3">STATUS</label>
+                                                        <div class="col-md-9 has-success">
+                                                            <select class="form-control filled-input select2" id="upStatusEdit">
+                                                                <option value="AKTIF">AKTIF</option>
+                                                                <option value="TIDAK AKTIF">TIDAK AKTIF</option>
+                                                            </select>
+                                                            <span class="help-block"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">HARI</label>
+                                                        <div class="col-md-9 has-success">
+                                                            <select class="form-control filled-input select2" id="upHariEdit">
+                                                                <option value="-">-</option>
+                                                                <option value="SENIN">SENIN</option>
+                                                                <option value="SELASA">SELASA</option>
+                                                                <option value="RABU">RABU</option>
+                                                                <option value="KAMIS">KAMIS</option>
+                                                                <option value="JUMAT">JUMAT</option>
+                                                                <option value="SABTU">SABTU</option>
+                                                                <option value="MINGGU">MINGGU</option>
+                                                            </select>
+                                                            <span class="help-block"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <input type="hidden" class="form-control " autocomplete="off" id="upIdEdit">
+                                                            <span></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                        <p class="mt-15">
-                                            <!-- /Row -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">JAM MULAI</label>
+                                                        <div class="col-md-9 has-success">
+                                                            <input type="time" class="form-control" placeholder="JAM MULAI" required="" id="upMulaiEdit" name="mulai">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">JAM SELESAI</label>
+                                                        <div class="col-md-9 has-success">
+                                                            <input type="time" class="form-control" placeholder="JAM SELESAI" required="" id="upSelesaiEdit" name="selesai">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group ">
-                                                    <label class="control-label col-md-3">STATUS</label>
-                                                    <div class="col-md-9 has-success">
-                                                        <select class="form-control filled-input select2" id="upStatusEdit">
-                                                            <option value="AKTIF">AKTIF</option>
-                                                            <option value="TIDAK AKTIF">TIDAK AKTIF</option>
-                                                        </select>
-                                                        <span class="help-block"></span>
-                                                    </div>
+                                            <div class="col-md-12" style="padding-right:45px;">
+                                                <div class="form-group pull-right">
+                                                    <button type="submit" onclick="editJadwal()" class="btn btn-success btn-anim  btn-sm ml-20 mt-5"><i class="icon-rocket"></i><span class="btn-text">SIMPAN EDIT</span></button>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">HARI</label>
-                                                    <div class="col-md-9 has-success">
-                                                        <select class="form-control filled-input select2" id="upHariEdit">
-                                                            <option value="-">-</option>
-                                                            <option value="SENIN">SENIN</option>
-                                                            <option value="SELASA">SELASA</option>
-                                                            <option value="RABU">RABU</option>
-                                                            <option value="KAMIS">KAMIS</option>
-                                                            <option value="JUMAT">JUMAT</option>
-                                                            <option value="SABTU">SABTU</option>
-                                                            <option value="MINGGU">MINGGU</option>
-                                                        </select>
-                                                        <span class="help-block"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-md-6">
-                                                <div class="row">
-                                                    <div class="col-md-offset-3 col-md-9">
-                                                        <input type="hidden" class="form-control " autocomplete="off" id="upIdEdit">
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">JAM MULAI</label>
-                                                    <div class="col-md-9 has-success">
-                                                        <input type="time" class="form-control" placeholder="JAM MULAI" required="" id="upMulaiEdit" name="mulai"></input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">JAM SELESAI</label>
-                                                    <div class="col-md-9 has-success">
-                                                        <input type="time" class="form-control" placeholder="JAM SELESAI" required="" id="upSelesaiEdit" name="selesai"></input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                    </form>
-                                    <div class="row">
-                                        <div class="col-md-12" style="padding-right:45px;">
-                                            <div class="form-group pull-right">
-                                                <button type="submit" onclick="editJadwal()" class="btn btn-success btn-anim  btn-sm ml-20 mt-5"><i class="icon-rocket"></i><span class="btn-text">SIMPAN EDIT</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- End Edit collapse -->
+                                <!-- End Edit collapse -->
 
-
-                            <h6 class="txt-dark capitalize-font pl-20"><i class="icon-list mr-10"></i>JADWAL</h6>
-                            <hr width="95%">
-                            <div class="table-wrap" style="width: 95%; margin: auto ">
-                                <div class="table-responsive">
-                                    <table class="table table-hover display pb-60" id="tablejadwaldokter">
-                                        <thead>
-                                            <tr class="bg-success">
-                                                <th>NO</th>
-                                                <th>AKSI</th>
-                                                <th>EDIT</th>
-                                                <th>HARI</th>
-                                                <th>JAM MULAI</th>
-                                                <th>JAM SELESAI</th>
-                                                <th>STATUS</th>
-                                                <th>ID STAFF</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr class="bg-success">
-                                                <th>NO</th>
-                                                <th>AKSI</th>
-                                                <th>EDIT</th>
-                                                <th>HARI</th>
-                                                <th>JAM MULAI</th>
-                                                <th>JAM SELESAI</th>
-                                                <th>STATUS</th>
-                                                <th>ID STAFF</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody style="color: black">
-                                        </tbody>
-                                    </table>
+                                <h6 class="txt-dark capitalize-font pl-20"><i class="icon-list mr-10"></i>JADWAL</h6>
+                                <hr width="95%">
+                                <div class="table-wrap" style="width: 95%; margin: auto ">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover display pb-60" id="tablejadwaldokter">
+                                            <thead>
+                                                <tr class="bg-success">
+                                                    <th>NO</th>
+                                                    <th>AKSI</th>
+                                                    <th>EDIT</th>
+                                                    <th>HARI</th>
+                                                    <th>JAM MULAI</th>
+                                                    <th>JAM SELESAI</th>
+                                                    <th>STATUS</th>
+                                                    <th>ID STAFF</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr class="bg-success">
+                                                    <th>NO</th>
+                                                    <th>AKSI</th>
+                                                    <th>EDIT</th>
+                                                    <th>HARI</th>
+                                                    <th>JAM MULAI</th>
+                                                    <th>JAM SELESAI</th>
+                                                    <th>STATUS</th>
+                                                    <th>ID STAFF</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody style="color: black">
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                        <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
                 </div>
             </div>
-
         </div>
     </div>
-    <!--akhir modal yang akan dipakai-->
 
-    <!--ajax-->
+    <script>
+    // Saat user ketik NIP, otomatis isi nik juga
+         document.getElementById("inNip").addEventListener("input", function() {
+        document.getElementById("inNik").value = this.value;
+      });
+    </script>
+
     <script type="text/javascript">
         function insertDokter() {
             inNamaDokter = $('#inNamaDokter').val();
             inKode = $('#inKode').val();
             inSpes = $('#inSpes').val();
             inStatusDokter = $('#inStatusDokter').val();
+            inNip = $('#inNip').val();
+            inNik = $('#inNik').val();
 
             $.ajax({
-                url: "<?= base_url() . 'Jadwal_dokter/insert_dokter' ?>",
+                url: "<?=base_url() . 'Jadwal_dokter/insert_dokter'?>",
                 method: "POST",
                 dataType: 'json',
                 cache: true,
@@ -456,6 +407,8 @@
                     kode_dokter: inKode,
                     dokter_spes: inSpes,
                     status: inStatusDokter,
+                    username: inNip,
+                    nik: inNik,
                 },
                 success: function(data) {
                     if (data.status == "success") {
@@ -485,17 +438,15 @@
             });
         }
 
-
         function insertJadwal() {
             upId = $('#upId').val();
             upHari = $('#upHari').val();
             upMulai = $('#upMulai').val();
             upSelesai = $('#upSelesai').val();
             upStatus = $('#upStatus').val();
-            // staff = $('#upStaff').val();
 
             $.ajax({
-                url: "<?= base_url() . 'Jadwal_dokter/insert_jadwal_perdokter' ?>",
+                url: "<?=base_url() . 'Jadwal_dokter/insert_jadwal_perdokter'?>",
                 method: "POST",
                 dataType: 'json',
                 cache: true,
@@ -521,7 +472,6 @@
                         $('#upStatus').val('AKTIF').change();
                         $('#tablejadwaldokter').DataTable().ajax.reload();
                         $('#outTotalHargaMcu').DataTable().ajax.reload();
-                        // $("#modal_jadwal").modal('hide');
                         $('#datable').DataTable().ajax.reload();
                     } else {
                         swal({
@@ -559,9 +509,7 @@
             });
         }
 
-
         function delete_jadwal_dokter(id_jadwal) {
-            // nama = $("#NamaPasien").val();
             swal({
                 title: "Apakah kamu yakin akan !",
                 text: "Menghapus data ini ?",
@@ -606,11 +554,10 @@
         }
 
         function edit_data_jadwalPerDokter(id_jadwal) {
-            // $('#id_jadwal').val(id);
             $("#collapse_jadwal_perdokter").collapse('toggle');
 
             $.ajax({
-                url: "<?= base_url() . 'Jadwal_dokter/getDataJadwalPerDokter' ?>",
+                url: "<?=base_url() . 'Jadwal_dokter/getDataJadwalPerDokter'?>",
                 data: {
                     id_jadwal: id_jadwal
                 },
@@ -618,13 +565,11 @@
                 dataType: 'json',
                 success: function(data) {
                     if (data.status_dt == "found") {
-
                         $('#upIdEdit').val(data.id_jadwal);
                         $('#upHariEdit').val(data.hari).change();
                         $('#upMulaiEdit').val(data.jam_mulai);
                         $('#upSelesaiEdit').val(data.jam_selesai);
                         $('#upStatusEdit').val(data.status).change();
-
                     } else {
                         alert("data tidak ditemukan");
                     }
@@ -638,10 +583,9 @@
             upMulaiEdit = $('#upMulaiEdit').val();
             upSelesaiEdit = $('#upSelesaiEdit').val();
             upStatusEdit = $('#upStatusEdit').val();
-            // staff = $('#upStaff').val();
 
             $.ajax({
-                url: "<?= base_url() . 'Jadwal_dokter/update_jadwal_perdokter' ?>",
+                url: "<?=base_url() . 'Jadwal_dokter/update_jadwal_perdokter'?>",
                 method: "POST",
                 dataType: 'json',
                 cache: true,
@@ -667,7 +611,6 @@
                         $('#upStatus').val('');
                         $('#tablejadwaldokter').DataTable().ajax.reload();
                         $('#outTotalHargaMcu').DataTable().ajax.reload();
-                        // $("#modal_jadwal").modal('hide');
                         $('#datable').DataTable().ajax.reload();
                     } else {
                         swal({
@@ -680,13 +623,10 @@
                 }
             });
         }
-
     </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
-
-
             $('#datable').DataTable({
                 "language": {
                     "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
@@ -763,7 +703,4 @@
             });
         }
     </script>
-
-
-
-    <!--end of ajax-->
+</div>
