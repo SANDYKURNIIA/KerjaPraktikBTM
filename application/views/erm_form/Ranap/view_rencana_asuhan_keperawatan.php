@@ -257,7 +257,15 @@
                               <label class="control-label" for="fasilitasi_konsultasi_agama">Fasilitasi konsultasi dengan tokoh agama bila dibutuhkan</label>
                             </div>
                           </div>
-                        </div>
+                          </div>
+                           <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_dukungan_ibadah" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_dukungan_ibadah" 
+                          name="laiinnya_dukungan_ibadah"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
                     <?php elseif ($id_masalah == 2): ?>
@@ -398,6 +406,15 @@
                           <input id="pendinginan_eksternal" name="manajemen_hipertermia[]" type="checkbox" value="pendinginan_eksternal">
                           <label class="control-label" for="pendinginan_eksternal">Lakukan pendinginan eksternal (mis. selimut hipotermia atau kompres dingin)</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_manajemen_hipertermia" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_manajemen_hipertermia" 
+                        name="laiinnya_manajemen_hipertermia"
+                        class="form-control"
+                        rows="5"
+                        style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -632,7 +649,7 @@
                         <div class="radio-button radio-button-primary">
                           <input name="manajemen_mual[]" type="checkbox" value="kolaborasi_pemberian_antimietik">
                           <label class="control-label" for="kolaborasi_pemberian_antimietik">Kolaborasi pemberian antimietik, jika perlu</label>
-                        </div>
+                    </div>
                       </div>
 
                       <!-- Manajemen Muntah -->
@@ -673,6 +690,15 @@
                           <input name="manajemen_muntah[]" type="checkbox" value="kolaborasi_pemberian_antimietik_muntah">
                           <label class="control-label" for="kolaborasi_pemberian_antimietik_muntah">Kolaborasi pemberian antimietik, jika perlu</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_manajemen_muntah" class="control-label">Lainnya</label>
+                         <textarea id="laiinnya_manajemen_muntah" 
+                          name="laiinnya_manajemen_muntah"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
                     <?php elseif ($id_masalah == 4): ?>
@@ -905,6 +931,15 @@
                           <input id="anjurkan_membuang_sekresi" name="manajemen_isolasi[]" type="checkbox" value="anjurkan_membuang_sekresi">
                           <label class="control-label" for="anjurkan_membuang_sekresi">Anjurkan membuang sekresi/ ludah/ sputum pada kantong kuning yang disediakan</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_isolasi"class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_isolasi" 
+                          name="laiinnya_isolasi"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
                     <?php elseif ($id_masalah == 5): ?>
@@ -1002,6 +1037,15 @@
                               <input type="checkbox" name="hasil_nyeri[]" value="sikap_protektif_menurun" id="hasil_sikap_protektif_menurun">
                               <label class="control-label" for="hasil_sikap_protektif_menurun">Sikap protektif menurun</label>
                             </div>
+
+                             <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_nyeri" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_nyeri" 
+                          name="laiinnya_nyeri"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                           </div>
 
                           <div class="col-md-6">
@@ -1193,6 +1237,15 @@
                           <input id="kolaborasi_obat" name="manajemen_diare[]" type="checkbox" value="kolaborasi_obat">
                           <label class="control-label" for="kolaborasi_obat">Kolaborasi pemberian obat anti diare</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_diare" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_diare" 
+                          name="laiinnya_diare"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
                     <?php elseif ($id_masalah == 7): ?>
@@ -1399,6 +1452,15 @@
                           <input type="checkbox" name="dukungan_mobilisasi[]" value="ajarkan_mobilisasi" id="dukungan_ajarkan_mobilisasi">
                           <label class="control-label" for="dukungan_ajarkan_mobilisasi">Ajarkan mobilisasi sederhana yang harus dilakukan (mis. duduk di tempat tidur, duduk di sisi tempat tidur, pindah dari tempat tidur ke kursi)</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                    <label for="laiinnya_mobilisasi" class="control-label">Lainnya</label>
+                    <textarea id="laiinnya_mobilisasi" 
+                      name="laiinnya_mobilisasi"
+                      class="form-control"
+                      rows="5"
+                      style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                  </div>
                       </div>
                     <?php elseif ($id_masalah == 8): ?>
                       <div class="form-group">
@@ -1506,6 +1568,15 @@
                           <input type="checkbox" name="hasil_penyapihan[]" value="warna_kulit_membaik" id="hasil_warna_kulit_membaik">
                           <label class="control-label" for="hasil_warna_kulit_membaik">Warna kulit membaik</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_penyapihan" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_penyapihan" 
+                          name="laiinnya_penyapihan"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
                     <?php elseif ($id_masalah == 9): ?>
@@ -1615,6 +1686,15 @@
                         <div class="radio-button radio-button-primary">
                           <input type="checkbox" name="hasil_pertukaran_gas[]" value="pemeriksaan_AGD_normal" id="hasil_pemeriksaan_AGD_normal">
                           <label class="control-label" for="hasil_pemeriksaan_AGD_normal">Pemeriksaan AGD dalam batas normal (PaO2 >80 mmHg, PaCO2 35-45 mmHg, pH 7.35-7.45)</label>
+                        </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                          <label for="laiinnya_pertukaran_gas" class="control-label">Lainnya</label>
+                          <textarea id="laiinnya_pertukaran_gas" 
+                            name="laiinnya_pertukaran_gas"
+                            class="form-control"
+                            rows="5"
+                            style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
                         </div>
                       </div>
                     <?php elseif ($id_masalah == 10): ?>
@@ -1750,7 +1830,17 @@
                           <input type="checkbox" name="dukungan_poldur[]" id="relaksasi_otot" value="relaksasi_otot">
                           <label class="control-label" for="relaksasi_otot">Ajarkan relaksasi otot autogenik atau cara nonfarmakologi lainnya</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                          <label for="laiinnya_poldur" class="control-label">Lainnya</label>
+                          <textarea id="laiinnya_poldur" 
+                            name="laiinnya_poldur"
+                            class="form-control"
+                            rows="5"
+                            style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                        </div>
                       </div>
+
 
                     <?php elseif ($id_masalah == 11): ?>
                       <!-- Resiko Jatuh -->
@@ -1897,6 +1987,15 @@
                           <input type="checkbox" name="manajemen_resiko_jatuh[]" id="fasilitas_untuk_aktivas" value="fasilitas_untuk_aktivas">
                           <label class="control-label" for="fasilitas_untuk_aktivas">Beri fasilitas yang aman dalam melakukan aktivitas</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                          <label for="laiinnya_jatuh" class="control-label">Lainnya</label>
+                          <textarea id="laiinnya_jatuh" 
+                            name="laiinnya_jatuh"
+                            class="form-control"
+                            rows="5"
+                            style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                        </div>
                       </div>
                     <?php elseif ($id_masalah == 12): ?>
                       <div class="form-group">
@@ -1933,6 +2032,15 @@
                         <div class="radio-button radio-button-primary">
                           <input type="checkbox" name="hasil_defisit_perawatan_diri[]" value="perawatan_diri_terpenuhi" id="perawatan_diri_terpenuhi">
                           <label class="control-label" for="perawatan_diri_terpenuhi">Perawatan diri (BAB/BAK, berpakaian, mandi, makan, minum) terpenuhi</label>
+                        </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                          <label for="laiinnya_perawatan_diri" class="control-label">Lainnya</label>
+                          <textarea id="laiinnya_perawatan_diri" 
+                            name="laiinnya_perawatan_diri"
+                            class="form-control"
+                            rows="5"
+                            style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
                         </div>
                       </div>
 
@@ -2089,6 +2197,15 @@
                           <input type="checkbox" name="hasil_hipovolemia[]" value="suhu_tubuh_membaik" id="suhu_tubuh_membaik">
                           <label class="control-label" for="suhu_tubuh_membaik">Suhu tubuh membaik</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                    <label for="laiinnya_hipovolemia" class="control-label">Lainnya</label>
+                    <textarea id="laiinnya_hipovolemia" 
+                      name="laiinnya_hipovolemia"
+                      class="form-control"
+                      rows="5"
+                      style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                  </div>
                       </div>
 
                     <?php elseif ($id_masalah == 14): ?>
@@ -2227,6 +2344,15 @@
                           <input type="checkbox" name="manajemen_intoleransi_aktivitas[]" id="anjuran_hubungi_perawat" value="anjuran_hubungi_perawat">
                           <label class="control-label" for="anjuran_hubungi_perawat">Anjurkan menghubungi perawat jika tanda dan gejala kelelahan tidak berkurang</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_aktivitas" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_aktivitas" 
+                          name="laiinnya_aktivitas"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -2363,6 +2489,16 @@
                           <input type="checkbox" name="perawatan_jantung[]" id="kolaborasi_antiaritma" value="kolaborasi_antiaritma">
                           <label class="control-label" for="kolaborasi_antiaritma">Kolaborasi pemberian antiaritmia, jika perlu</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                      <label for="laiinnya_perawatan_jantung" class="control-label">Lainnya</label>
+                      <textarea id="laiinnya_perawatan_jantung" 
+                        name="laiinnya_perawatan_jantung"
+                        class="form-control"
+                        rows="5"
+                        style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                    </div>
+
                       </div>
 
                     <?php elseif ($id_masalah == 16): ?>
@@ -2518,6 +2654,15 @@
                           <input type="checkbox" id="kolaborasi_pemberian_diuretik" name="manajemen_peningkatan_adaptif[]" value="kolaborasi_pemberian_diuretik">
                           <label class="control-label" for="kolaborasi_pemberian_diuretik">Kolaborasi Pemberian Diuretik Osmosis</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                    <label for="laiinnya_peningkatan_adaptif" class="control-label">Lainnya</label>
+                    <textarea id="laiinnya_peningkatan_adaptif" 
+                      name="laiinnya_peningkatan_adaptif"
+                      class="form-control"
+                      rows="5"
+                      style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                  </div>
                       </div>
 
                     <?php elseif ($id_masalah == 17): ?>
@@ -2651,6 +2796,15 @@
                           <input type="checkbox" name="hasil_perfusi_perifer[]" id="sensasi_membaik" value="sensasi_membaik">
                           <label class="control-label" for="sensasi_membaik">Sensasi Membaik</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_perfusi_perifer" class="control-label">Lainnya</label>
+                         <textarea id="laiinnya_perfusi_perifer" 
+                          name="laiinnya_perfusi_perifer"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>  
                       </div>
 
 
@@ -2894,6 +3048,15 @@
                           <input type="checkbox" id="kolaborasi_obat" name="manajamen_nafas_tidak_efektif[]" value="kolaborasi_obat">
                           <label class="control-label" for="kolaborasi_obat">Kolaborasi pemberian bronkodilator, ekspektoran, mukolitik, jika perlu</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_nafas_tidak_efektif" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_nafas_tidak_efektif" 
+                          name="laiinnya_nafas_tidak_efektif"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -3064,6 +3227,15 @@
                           <input type="checkbox" name="manajamen_resiko_defisit_nutrisi[]" value="kolaborasi_dengan_ahli_gizi" id="kolaborasi_dengan_ahli_gizi">
                           <label class="control-label" for="kolaborasi_dengan_ahli_gizi">Kolaborasi dengan ahli gizi untuk menentukan jumlah kalori dan jenis nutrien yang dibutuhkan, jika perlu</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_defisit_nutrisi" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_defisit_nutrisi" 
+                          name="laiinnya_defisit_nutrisi"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -3284,6 +3456,15 @@
                           <input type="checkbox" name="manajamen_resiko_hipovolemia[]" id="kolaborasi_pemberian_produk_darah" value="kolaborasi_pemberian_produk_darah">
                           <label class="control-label" for="kolaborasi_pemberian_produk_darah">Kolaborasi pemberian produk darah</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_resiko_hipovolemia" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_resiko_hipovolemia" 
+                          name="laiinnya_resiko_hipovolemia"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -3385,6 +3566,15 @@
                           <input type="checkbox" name="pencegahan_resiko_infeksi[]" id="kolaborasi_pemberian_imunisasi" value="kolaborasi_pemberian_imunisasi">
                           <label class="control-label" for="kolaborasi_pemberian_imunisasi">Kolaborasi pemberian imunisasi, jika perlu</label>
                         </div>
+
+                         <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_resiko_infeksi" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_resiko_infeksi" 
+                          name="laiinnya_resiko_infeksi"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -3531,7 +3721,8 @@
 
                         <div class="radio-button radio-button-primary">
                           <input type="checkbox" id="monitor_intake_output_cairan" name="manajemen_hiperglikimia[]" value="monitor_intake_output_cairan">
-                          <label class="control-label" for="monitor_intake_output_cairan">Monitor intake dan output cairan</label>
+                          <label class="control-label" for="monito
+r_intake_output_cairan">Monitor intake dan output cairan</label>
                         </div>
 
                         <div class="radio-button radio-button-primary">
@@ -3594,6 +3785,16 @@
                           <input type="checkbox" id="pertahankan_akses_IV" name="manajemen_hipoglikimia[]" value="pertahankan_akses_IV">
                           <label class="control-label" for="pertahankan_akses_IV">Pertahankan akses IV, jika perlu</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_hipoglikimia" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_hipoglikimia" 
+                          name="laiinnya_hipoglikimia"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
+
                       </div>
 
 
@@ -3725,6 +3926,15 @@
                           <input type="checkbox" id="kolaborasi_pemberian_produk_darah" name="pencegahan_resiko_perdarahan[]" value="kolaborasi_pemberian_produk_darah">
                           <label class="control-label" for="kolaborasi_pemberian_produk_darah">Kolaborasi pemberian produk darah, jika perlu</label>
                         </div>
+
+                        <div class="form-group" style="margin-top:8px; max-width:400px;">
+                        <label for="laiinnya_resiko_perdarahan" class="control-label">Lainnya</label>
+                        <textarea id="laiinnya_resiko_perdarahan" 
+                          name="laiinnya_resiko_perdarahan"
+                          class="form-control"
+                          rows="5"
+                          style="width:100%; height:200px; resize:none; border:2px solid black;"></textarea>
+                      </div>
                       </div>
 
 
@@ -3839,6 +4049,33 @@
     id_history = $("#inHis").val();
     no_rm = $("#inNoRM").val();
     inIdMasalahKep = $("#inIdMasalahKep").val();
+    var laiinnya_resiko_perdarahan = $('#laiinnya_resiko_perdarahan').val() || '';
+    var laiinnya_manajemen_hipertermia = $('#laiinnya_manajemen_hipertermia').val() || '';
+    var laiinnya_manajemen_muntah = $('#laiinnya_manajemen_muntah').val() || '';
+    var laiinnya_perawatan_jantung = $('#laiinnya_perawatan_jantung').val() || '';
+    var laiinnya_hipoglikimia = $('#laiinnya_hipoglikimia').val() || '';
+    var laiinnya_perfusi_perifer = $('#laiinnya_perfusi_perifer').val() || '';
+    var laiinnya_resiko_hipovolemia = $('#laiinnya_resiko_hipovolemia').val() || '';
+    var laiinnya_resiko_infeksi = $('#laiinnya_resiko_infeksi').val() || '';
+    var laiinnya_peningkatan_adaptif = $('#laiinnya_peningkatan_adaptif').val() || '';
+    var laiinnya_dukungan_ibadah = $('#laiinnya_dukungan_ibadah').val() || '';
+    var laiinnya_isolasi = $('#laiinnya_isolasi').val() || '';
+    var laiinnya_nyeri = $('#laiinnya_nyeri').val() || '';
+    var laiinnya_poldur = $('#laiinnya_poldur').val() || '';
+    var laiinnya_diare = $('#laiinnya_diare').val() || '';
+    var laiinnya_defisit_nutrisi = $('#laiinnya_defisit_nutrisi').val() || '';
+    var laiinnya_mobilisasi = $('#laiinnya_mobilisasi').val() || '';
+    var laiinnya_penyapihan = $('#laiinnya_penyapihan').val() || '';
+    var laiinnya_pertukaran_gas = $('#laiinnya_pertukaran_gas').val() || '';
+    var laiinnya_jatuh = $('#laiinnya_jatuh').val() || '';
+    var laiinnya_hipovolemia = $('#laiinnya_hipovolemia').val() || '';
+    var laiinnya_aktivitas = $('#laiinnya_aktivitas').val() || '';
+    var laiinnya_perawatan_diri = $('#laiinnya_perawatan_diri').val() || '';
+    var laiinnya_nafas_tidak_efektif = $('#laiinnya_nafas_tidak_efektif').val() || '';
+
+
+
+    
 
     bukti_hipertermia = getCheckedValues('bukti_hipertermia');
     hasil_hipertermia = getCheckedValues('hasil_hipertermia');
@@ -3952,84 +4189,108 @@
       '&bukti_hipertermia=' + bukti_hipertermia +
       '&hasil_hipertermia=' + hasil_hipertermia +
       '&manajemen_hipertermia=' + manajemen_hipertermia +
+      '&laiinnya_manajemen_hipertermia=' + encodeURIComponent(laiinnya_manajemen_hipertermia)+
       '&faktor_nausea=' + faktor_nausea +
       '&gejala_nausea=' + gejala_nausea +
       '&kriteria_hasil_nausea=' + kriteria_hasil_nausea +
       '&manajemen_mual=' + manajemen_mual +
       '&manajemen_muntah=' + manajemen_muntah +
+      '&laiinnya_manajemen_muntah=' + encodeURIComponent(laiinnya_manajemen_muntah) +
       '&faktor_bersihan_jalan_nafas=' + faktor_bersihan_jalan_nafas +
       '&gejala_bersihan_jalan_nafas=' + gejala_bersihan_jalan_nafas +
       '&kriteria_hasil_bersihan_jalan_nafas=' + kriteria_hasil_bersihan_jalan_nafas +
       '&kriteria_hasil_tingkat_infeksi=' + kriteria_hasil_tingkat_infeksi +
       '&manajemen_jalan_nafas=' + manajemen_jalan_nafas +
       '&manajemen_isolasi=' + manajemen_isolasi +
+      '&laiinnya_isolasi=' + encodeURIComponent(laiinnya_isolasi) +
+      '&faktor_bersihan_jalan_nafas=' + faktor_bersihan_jalan_nafas +
       '&gejala=' + gejala +
       '&hasil_ansietas=' + hasil_ansietas +
       '&reduction_ansietas=' + reduction_ansietas +
       '&dukungan_ibadah=' + dukungan_ibadah +
+      '&laiinnya_dukungan_ibadah=' + encodeURIComponent(laiinnya_dukungan_ibadah) +
       '&gejala_nyeri_akut=' + gejala_nyeri_akut +
       '&hasil_nyeri=' + hasil_nyeri +
+      '&laiinnya_nyeri=' + encodeURIComponent(laiinnya_nyeri) +
       '&gejala_diare=' + gejala_diare +
       '&hasil_diare=' + hasil_diare +
       '&manajemen_diare=' + manajemen_diare +
+      '&laiinnya_diare=' + encodeURIComponent(laiinnya_diare) +
       '&gejala_mobilitas=' + gejala_mobilitas +
       '&bukti_mobilitas=' + bukti_mobilitas +
       '&hasil_mobilitas=' + hasil_mobilitas +
       '&dukungan_mobilisasi=' + dukungan_mobilisasi +
+      '&laiinnya_mobilisasi=' + encodeURIComponent(laiinnya_mobilisasi) +
       '&gangguan_penyapihan=' + gangguan_penyapihan +
       '&buktikan_penyapihan=' + buktikan_penyapihan +
       '&hasil_penyapihan=' + hasil_penyapihan +
+      '&laiinnya_penyapihan=' + encodeURIComponent(laiinnya_penyapihan) +
       '&bukti_gangguan_pertukaran_gas=' + bukti_gangguan_pertukaran_gas +
       '&hasil_pertukaran_gas=' + hasil_pertukaran_gas +
+      '&laiinnya_pertukaran_gas=' + encodeURIComponent(laiinnya_pertukaran_gas) +
       '&gangguan_poldur=' + gangguan_poldur +
       '&bukti_gangguan_poldur=' + bukti_gangguan_poldur +
       '&hasil_gangguan_poldur=' + hasil_gangguan_poldur +
       '&dukungan_poldur=' + dukungan_poldur +
+      '&laiinnya_poldur=' + encodeURIComponent(laiinnya_poldur) +
       '&resiko_jatuh=' + resiko_jatuh +
       '&bukti_resiko_jatuh=' + bukti_resiko_jatuh +
       '&minor_resiko_jatuh=' + minor_resiko_jatuh +
       '&hasil_resiko_jatuh=' + hasil_resiko_jatuh +
       '&manajemen_resiko_jatuh=' + manajemen_resiko_jatuh +
+      '&laiinnya_jatuh=' + encodeURIComponent(laiinnya_jatuh) +
       '&defisit_perawatan_diri=' + defisit_perawatan_diri +
       '&bukti_defisit_perawatan_diri=' + bukti_defisit_perawatan_diri +
       '&hasil_defisit_perawatan_diri=' + hasil_defisit_perawatan_diri +
+      '&laiinnya_perawatan_diri=' + encodeURIComponent(laiinnya_perawatan_diri)+
       '&bukti_hipovolemia=' + bukti_hipovolemia +
       '&hasil_hipovolemia=' + hasil_hipovolemia +
+      '&laiinnya_hipovolemia=' + encodeURIComponent(laiinnya_hipovolemia)+
       '&intoleransi_aktivitas=' + intoleransi_aktivitas +
       '&bukti_intoleransi_aktivitas=' + bukti_intoleransi_aktivitas +
       '&minor_intoleransi_aktivitas=' + minor_intoleransi_aktivitas +
       '&hasil_intoleransi_aktivitas=' + hasil_intoleransi_aktivitas +
       '&manajemen_intoleransi_aktivitas=' + manajemen_intoleransi_aktivitas +
+      '&laiinnya_aktivitas=' + encodeURIComponent(laiinnya_aktivitas) +
       '&curah_jantung=' + curah_jantung +
       '&bukti_curah_jantung=' + bukti_curah_jantung +
       '&hasil_curah_jantung=' + hasil_curah_jantung +
       '&perawatan_jantung=' + perawatan_jantung +
+      '&laiinnya_perawatan_jantung=' + encodeURIComponent(laiinnya_perawatan_jantung) +
       '&bukti_penurunan_adaptif=' + bukti_penurunan_adaptif +
       '&hasil_penurunan_adaptif=' + hasil_penurunan_adaptif +
       '&manajemen_peningkatan_adaptif=' + manajemen_peningkatan_adaptif +
+      '&laiinnya_peningkatan_adaptif=' + encodeURIComponent(laiinnya_peningkatan_adaptif) +
       '&hubungan_perfusi_perifier=' + hubungan_perfusi_perifier +
       '&bukti_perfusi_perifer=' + bukti_perfusi_perifer +
       '&hasil_perfusi_perifer=' + hasil_perfusi_perifer +
+      '&laiinnya_perfusi_perifer=' + encodeURIComponent(laiinnya_perfusi_perifer) +
       '&hubungan_nafas_tidak_efektif=' + hubungan_nafas_tidak_efektif +
       '&bukti_nafas_tidak_efektif=' + bukti_nafas_tidak_efektif +
       '&hasil_nafas_tidak_efektif=' + hasil_nafas_tidak_efektif +
       '&manajamen_nafas_tidak_efektif=' + manajamen_nafas_tidak_efektif +
+      '&laiinnya_nafas_tidak_efektif=' + encodeURIComponent(laiinnya_nafas_tidak_efektif) +
       '&bukti_resiko_defisit_nutrisi=' + bukti_resiko_defisit_nutrisi +
       '&hasil_resiko_defisit_nutrisi=' + hasil_resiko_defisit_nutrisi +
       '&manajamen_resiko_defisit_nutrisi=' + manajamen_resiko_defisit_nutrisi +
+      '&laiinnya_defisit_nutrisi=' + encodeURIComponent(laiinnya_defisit_nutrisi) +
       '&bukti_resiko_hipovolemia=' + bukti_resiko_hipovolemia +
       '&hasil_resiko_hipovolemia=' + hasil_resiko_hipovolemia +
       '&manajamen_resiko_hipovolemia=' + manajamen_resiko_hipovolemia +
+      '&laiinnya_resiko_hipovolemia=' + encodeURIComponent(laiinnya_resiko_hipovolemia) +
       '&bukti_resiko_infeksi=' + bukti_resiko_infeksi +
       '&hasil_resiko_infeksi=' + hasil_resiko_infeksi +
       '&pencegahan_resiko_infeksi=' + pencegahan_resiko_infeksi +
+      '&laiinnya_resiko_infeksi=' + encodeURIComponent(laiinnya_resiko_infeksi) +
       '&bukti_resiko_ketidakstabilan_gula_darah=' + bukti_resiko_ketidakstabilan_gula_darah +
       '&hasil_resiko_ketidakstabilan_gula_darah=' + hasil_resiko_ketidakstabilan_gula_darah +
       '&manajemen_hiperglikimia=' + manajemen_hiperglikimia +
       '&manajemen_hipoglikimia=' + manajemen_hipoglikimia +
+      '&laiinnya_hipoglikimia=' + encodeURIComponent(laiinnya_hipoglikimia) +
       '&bukti_resiko_perdarahan=' + bukti_resiko_perdarahan +
       '&hasil_resiko_perdarahan=' + hasil_resiko_perdarahan +
       '&pencegahan_resiko_perdarahan=' + pencegahan_resiko_perdarahan +
+      '&laiinnya_resiko_perdarahan=' + encodeURIComponent(laiinnya_resiko_perdarahan) +
       '&inIdMasalahKep=' + inIdMasalahKep;
 
 
@@ -4067,7 +4328,32 @@
     no_rm = $("#inNoRM").val();
     inIdMasalahKep = $("#inIdMasalahKep").val();
     id = $("#id").val();
+    var laiinnya_resiko_perdarahan = $('#laiinnya_resiko_perdarahan').val() || '';
+    var laiinnya_manajemen_hipertermia = $('#laiinnya_manajemen_hipertermia').val() || '';
+    var laiinnya_manajemen_muntah = $('#laiinnya_manajemen_muntah').val() || '';
+    var laiinnya_perawatan_jantung = $('#laiinnya_perawatan_jantung').val() || '';
+    var laiinnya_hipoglikimia = $('#laiinnya_hipoglikimia').val() || '';
+    var laiinnya_perfusi_perifer = $('#laiinnya_perfusi_perifer').val() || '';
+    var laiinnya_resiko_hipovolemia = $('#laiinnya_resiko_hipovolemia').val() || '';
+    var laiinnya_resiko_infeksi = $('#laiinnya_resiko_infeksi').val() || '';
+    var laiinnya_peningkatan_adaptif = $('#laiinnya_peningkatan_adaptif').val() || '';
+    var laiinnya_dukungan_ibadah = $('#laiinnya_dukungan_ibadah').val() || '';
+    var laiinnya_isolasi = $('#laiinnya_isolasi').val() || '';
+    var laiinnya_nyeri = $('#laiinnya_nyeri').val() || '';
+    var laiinnya_poldur = $('#laiinnya_poldur').val() || '';
+    var laiinnya_diare = $('#laiinnya_diare').val() || '';
+    var laiinnya_defisit_nutrisi = $('#laiinnya_defisit_nutrisi').val() || '';
+    var laiinnya_mobilisasi = $('#laiinnya_mobilisasi').val() || '';
+    var laiinnya_penyapihan = $('#laiinnya_penyapihan').val() || '';
+    var laiinnya_pertukaran_gas = $('#laiinnya_pertukaran_gas').val() || '';
+    var laiinnya_jatuh = $('#laiinnya_jatuh').val() || '';
+    var laiinnya_hipovolemia = $('#laiinnya_hipovolemia').val() || '';
+    var laiinnya_aktivitas = $('#laiinnya_aktivitas').val() || '';
+    var laiinnya_perawatan_diri = $('#laiinnya_perawatan_diri').val() || '';
+    var laiinnya_nafas_tidak_efektif = $('#laiinnya_nafas_tidak_efektif').val() || '';
 
+
+    
     bukti_hipertermia = getCheckedValues('bukti_hipertermia');
     hasil_hipertermia = getCheckedValues('hasil_hipertermia');
     manajemen_hipertermia = getCheckedValues('manajemen_hipertermia');
@@ -4181,84 +4467,107 @@
       '&bukti_hipertermia=' + bukti_hipertermia +
       '&hasil_hipertermia=' + hasil_hipertermia +
       '&manajemen_hipertermia=' + manajemen_hipertermia +
+      '&laiinnya_manajemen_hipertermia=' + encodeURIComponent(laiinnya_manajemen_hipertermia) +
       '&faktor_nausea=' + faktor_nausea +
       '&gejala_nausea=' + gejala_nausea +
       '&kriteria_hasil_nausea=' + kriteria_hasil_nausea +
       '&manajemen_mual=' + manajemen_mual +
       '&manajemen_muntah=' + manajemen_muntah +
+      '&laiinnya_manajemen_muntah=' + encodeURIComponent(laiinnya_manajemen_muntah) +
       '&faktor_bersihan_jalan_nafas=' + faktor_bersihan_jalan_nafas +
       '&gejala_bersihan_jalan_nafas=' + gejala_bersihan_jalan_nafas +
       '&kriteria_hasil_bersihan_jalan_nafas=' + kriteria_hasil_bersihan_jalan_nafas +
       '&kriteria_hasil_tingkat_infeksi=' + kriteria_hasil_tingkat_infeksi +
       '&manajemen_jalan_nafas=' + manajemen_jalan_nafas +
       '&manajemen_isolasi=' + manajemen_isolasi +
+      '&laiinnya_isolasi=' + encodeURIComponent(laiinnya_isolasi) +
       '&gejala=' + gejala +
       '&hasil_ansietas=' + hasil_ansietas +
       '&reduction_ansietas=' + reduction_ansietas +
       '&dukungan_ibadah=' + dukungan_ibadah +
+      '&laiinnya_dukungan_ibadah=' + encodeURIComponent(laiinnya_dukungan_ibadah) +
       '&gejala_nyeri_akut=' + gejala_nyeri_akut +
       '&hasil_nyeri=' + hasil_nyeri +
+      '&laiinnya_nyeri=' + encodeURIComponent(laiinnya_nyeri) +
       '&gejala_diare=' + gejala_diare +
       '&hasil_diare=' + hasil_diare +
       '&manajemen_diare=' + manajemen_diare +
+      '&laiinnya_diare=' + encodeURIComponent(laiinnya_diare) +
       '&gejala_mobilitas=' + gejala_mobilitas +
       '&bukti_mobilitas=' + bukti_mobilitas +
       '&hasil_mobilitas=' + hasil_mobilitas +
       '&dukungan_mobilisasi=' + dukungan_mobilisasi +
+      '&laiinnya_mobilisasi=' + encodeURIComponent(laiinnya_mobilisasi) +
       '&gangguan_penyapihan=' + gangguan_penyapihan +
       '&buktikan_penyapihan=' + buktikan_penyapihan +
       '&hasil_penyapihan=' + hasil_penyapihan +
+      '&laiinnya_penyapihan=' + encodeURIComponent(laiinnya_penyapihan) +
       '&bukti_gangguan_pertukaran_gas=' + bukti_gangguan_pertukaran_gas +
       '&hasil_pertukaran_gas=' + hasil_pertukaran_gas +
+      '&laiinnya_pertukaran_gas=' + encodeURIComponent(laiinnya_pertukaran_gas) +
       '&gangguan_poldur=' + gangguan_poldur +
       '&bukti_gangguan_poldur=' + bukti_gangguan_poldur +
       '&hasil_gangguan_poldur=' + hasil_gangguan_poldur +
       '&dukungan_poldur=' + dukungan_poldur +
+      '&laiinnya_poldur=' + encodeURIComponent(laiinnya_poldur) +
       '&resiko_jatuh=' + resiko_jatuh +
       '&bukti_resiko_jatuh=' + bukti_resiko_jatuh +
       '&minor_resiko_jatuh=' + minor_resiko_jatuh +
       '&hasil_resiko_jatuh=' + hasil_resiko_jatuh +
       '&manajemen_resiko_jatuh=' + manajemen_resiko_jatuh +
+      '&laiinnya_jatuh=' + encodeURIComponent(laiinnya_jatuh) +
       '&defisit_perawatan_diri=' + defisit_perawatan_diri +
       '&bukti_defisit_perawatan_diri=' + bukti_defisit_perawatan_diri +
       '&hasil_defisit_perawatan_diri=' + hasil_defisit_perawatan_diri +
+      '&laiinnya_perawatan_diri=' + encodeURIComponent(laiinnya_perawatan_diri) +
       '&bukti_hipovolemia=' + bukti_hipovolemia +
       '&hasil_hipovolemia=' + hasil_hipovolemia +
+      '&laiinnya_hipovolemia=' + encodeURIComponent(laiinnya_hipovolemia) +
       '&intoleransi_aktivitas=' + intoleransi_aktivitas +
       '&bukti_intoleransi_aktivitas=' + bukti_intoleransi_aktivitas +
       '&minor_intoleransi_aktivitas=' + minor_intoleransi_aktivitas +
       '&hasil_intoleransi_aktivitas=' + hasil_intoleransi_aktivitas +
       '&manajemen_intoleransi_aktivitas=' + manajemen_intoleransi_aktivitas +
+      '&laiinnya_aktivitas=' + encodeURIComponent(laiinnya_aktivitas) +
       '&curah_jantung=' + curah_jantung +
       '&bukti_curah_jantung=' + bukti_curah_jantung +
       '&hasil_curah_jantung=' + hasil_curah_jantung +
       '&perawatan_jantung=' + perawatan_jantung +
+      '&laiinnya_perawatan_jantung=' + encodeURIComponent(laiinnya_perawatan_jantung) +
       '&bukti_penurunan_adaptif=' + bukti_penurunan_adaptif +
       '&hasil_penurunan_adaptif=' + hasil_penurunan_adaptif +
       '&manajemen_peningkatan_adaptif=' + manajemen_peningkatan_adaptif +
+      '&laiinnya_peningkatan_adaptif=' + encodeURIComponent(laiinnya_peningkatan_adaptif) +
       '&hubungan_perfusi_perifier=' + hubungan_perfusi_perifier +
       '&bukti_perfusi_perifer=' + bukti_perfusi_perifer +
       '&hasil_perfusi_perifer=' + hasil_perfusi_perifer +
+      '&laiinnya_perfusi_perifer=' + encodeURIComponent(laiinnya_perfusi_perifer) +
       '&hubungan_nafas_tidak_efektif=' + hubungan_nafas_tidak_efektif +
       '&bukti_nafas_tidak_efektif=' + bukti_nafas_tidak_efektif +
       '&hasil_nafas_tidak_efektif=' + hasil_nafas_tidak_efektif +
       '&manajamen_nafas_tidak_efektif=' + manajamen_nafas_tidak_efektif +
+      '&laiinnya_nafas_tidak_efektif=' + encodeURIComponent(laiinnya_nafas_tidak_efektif) +
       '&bukti_resiko_defisit_nutrisi=' + bukti_resiko_defisit_nutrisi +
       '&hasil_resiko_defisit_nutrisi=' + hasil_resiko_defisit_nutrisi +
       '&manajamen_resiko_defisit_nutrisi=' + manajamen_resiko_defisit_nutrisi +
+      '&laiinnya_defisit_nutrisi=' + encodeURIComponent(laiinnya_defisit_nutrisi) +
       '&bukti_resiko_hipovolemia=' + bukti_resiko_hipovolemia +
       '&hasil_resiko_hipovolemia=' + hasil_resiko_hipovolemia +
       '&manajamen_resiko_hipovolemia=' + manajamen_resiko_hipovolemia +
+      '&laiinnya_resiko_hipovolemia=' + encodeURIComponent(laiinnya_resiko_hipovolemia) +
       '&bukti_resiko_infeksi=' + bukti_resiko_infeksi +
       '&hasil_resiko_infeksi=' + hasil_resiko_infeksi +
       '&pencegahan_resiko_infeksi=' + pencegahan_resiko_infeksi +
+      '&laiinnya_resiko_infeksi=' + encodeURIComponent(laiinnya_resiko_infeksi) +
       '&bukti_resiko_ketidakstabilan_gula_darah=' + bukti_resiko_ketidakstabilan_gula_darah +
       '&hasil_resiko_ketidakstabilan_gula_darah=' + hasil_resiko_ketidakstabilan_gula_darah +
       '&manajemen_hiperglikimia=' + manajemen_hiperglikimia +
       '&manajemen_hipoglikimia=' + manajemen_hipoglikimia +
+      '&laiinnya_hipoglikimia=' + encodeURIComponent(laiinnya_hipoglikimia) +
       '&bukti_resiko_perdarahan=' + bukti_resiko_perdarahan +
       '&hasil_resiko_perdarahan=' + hasil_resiko_perdarahan +
       '&pencegahan_resiko_perdarahan=' + pencegahan_resiko_perdarahan +
+      '&laiinnya_resiko_perdarahan=' + encodeURIComponent(laiinnya_resiko_perdarahan) +
       '&inIdMasalahKep=' + inIdMasalahKep;
 
     $.ajax({
@@ -4410,12 +4719,16 @@
           setCheckboxValues('bukti_hipertermia', data.bukti_hipertermia);
           setCheckboxValues('hasil_hipertermia', data.hasil_hipertermia);
           setCheckboxValues('manajemen_hipertermia', data.manajemen_hipertermia);
-
+          // setCheckboxValues('laiinnya_manajemen_hipertermia', data.laiinnya_manajemen_hipertermia);
+          $('#laiinnya_manajemen_hipertermia').val(data.laiinnya_manajemen_hipertermia || '');
+          
           setCheckboxValues('faktor_nausea', data.faktor_nausea);
           setCheckboxValues('gejala_nausea', data.gejala_nausea);
           setCheckboxValues('kriteria_hasil_nausea', data.kriteria_hasil_nausea);
           setCheckboxValues('manajemen_mual', data.manajemen_mual);
           setCheckboxValues('manajemen_muntah', data.manajemen_muntah);
+          // setCheckboxValues('laiinnya_manajemen_muntah', data.laiinnya_manajemen_muntah);
+          $('#laiinnya_manajemen_muntah').val(data.laiinnya_manajemen_muntah || '');
 
           setCheckboxValues('faktor_bersihan_jalan_nafas', data.faktor_bersihan_jalan_nafas);
           setCheckboxValues('gejala_bersihan_jalan_nafas', data.gejala_bersihan_jalan_nafas);
@@ -4423,94 +4736,128 @@
           setCheckboxValues('kriteria_hasil_tingkat_infeksi', data.faktor_nausea);
           setCheckboxValues('manajemen_jalan_nafas', data.manajemen_jalan_nafas);
           setCheckboxValues('manajemen_isolasi', data.manajemen_isolasi);
+          // setCheckboxValues('laiinnya_manajemen_muntah', data.laiinnya_manajemen_muntah);
+          $('#laiinnya_isolasi').val(data.laiinnya_isolasi || '');
 
           setCheckboxValues('gejala', data.gejala);
           setCheckboxValues('hasil_ansietas', data.hasil_ansietas);
           setCheckboxValues('reduction_ansietas', data.reduction_ansietas);
           setCheckboxValues('dukungan_ibadah', data.dukungan_ibadah);
+          $('#laiinnya_dukungan_ibadah').val(data.laiinnya_dukungan_ibadah || '');
+
 
           setCheckboxValues('gejala_nyeri_akut', data.gejala_nyeri_akut);
           setCheckboxValues('hasil_nyeri', data.hasil_nyeri);
+          $('#laiinnya_nyeri').val(data.laiinnya_nyeri || '');
 
           setCheckboxValues('gejala_diare', data.gejala_diare);
           setCheckboxValues('hasil_diare', data.hasil_diare);
           setCheckboxValues('manajemen_diare', data.manajemen_diare);
+          $('#laiinnya_diare').val(data.laiinnya_diare || '');
 
           setCheckboxValues('gejala_mobilitas', data.gejala_mobilitas);
           setCheckboxValues('bukti_mobilitas', data.bukti_mobilitas);
           setCheckboxValues('hasil_mobilitas', data.hasil_mobilitas);
           setCheckboxValues('dukungan_mobilisasi', data.dukungan_mobilisasi);
+          $('#laiinnya_mobilisasi').val(data.laiinnya_mobilisasi || '');
 
           setCheckboxValues('gangguan_penyapihan', data.gangguan_penyapihan);
           setCheckboxValues('buktikan_penyapihan', data.buktikan_penyapihan);
           setCheckboxValues('hasil_penyapihan', data.hasil_penyapihan);
+          $('#laiinnya_penyapihan').val(data.laiinnya_penyapihan || '');
 
           setCheckboxValues('bukti_gangguan_pertukaran_gas', data.bukti_gangguan_pertukaran_gas);
           setCheckboxValues('hasil_pertukaran_gas', data.hasil_pertukaran_gas);
+          $('#laiinnya_pertukaran_gas').val(data.laiinnya_pertukaran_gas || '');
 
 
           setCheckboxValues('gangguan_poldur', data.gangguan_poldur);
           setCheckboxValues('bukti_gangguan_poldur', data.bukti_gangguan_poldur);
           setCheckboxValues('hasil_gangguan_poldur', data.hasil_gangguan_poldur);
           setCheckboxValues('dukungan_poldur', data.dukungan_poldur);
+          $('#laiinnya_poldur').val(data.laiinnya_poldur || '');
 
           setCheckboxValues('resiko_jatuh', data.resiko_jatuh);
           setCheckboxValues('bukti_resiko_jatuh', data.bukti_resiko_jatuh);
           setCheckboxValues('minor_resiko_jatuh', data.minor_resiko_jatuh);
           setCheckboxValues('hasil_resiko_jatuh', data.hasil_resiko_jatuh);
           setCheckboxValues('manajemen_resiko_jatuh', data.manajemen_resiko_jatuh);
+          $('#laiinnya_jatuh').val(data.laiinnya_jatuh || '');
 
           setCheckboxValues('defisit_perawatan_diri', data.defisit_perawatan_diri);
           setCheckboxValues('bukti_defisit_perawatan_diri', data.bukti_defisit_perawatan_diri);
           setCheckboxValues('hasil_defisit_perawatan_diri', data.hasil_defisit_perawatan_diri);
+          $('#laiinnya_perawatan_diri').val(data.laiinnya_perawatan_diri || '');
 
           setCheckboxValues('bukti_hipovolemia', data.bukti_hipovolemia);
           setCheckboxValues('hasil_hipovolemia', data.hasil_hipovolemia);
+          $('#laiinnya_hipovolemia').val(data.laiinnya_hipovolemia || '');
 
           setCheckboxValues('intoleransi_aktivitas', data.intoleransi_aktivitas);
           setCheckboxValues('bukti_intoleransi_aktivitas', data.bukti_intoleransi_aktivitas);
           setCheckboxValues('minor_intoleransi_aktivitas', data.minor_intoleransi_aktivitas);
           setCheckboxValues('hasil_intoleransi_aktivitas', data.hasil_intoleransi_aktivitas);
           setCheckboxValues('manajemen_intoleransi_aktivitas', data.manajemen_intoleransi_aktivitas);
+          $('#laiinnya_aktivitas').val(data.laiinnya_aktivitas || '');
 
           setCheckboxValues('curah_jantung', data.curah_jantung);
           setCheckboxValues('bukti_curah_jantung', data.bukti_curah_jantung);
           setCheckboxValues('hasil_curah_jantung', data.hasil_curah_jantung);
           setCheckboxValues('perawatan_jantung', data.perawatan_jantung);
+          // setCheckboxValues('laiinnya_perawatan_jantung', data.laiinnya_perawatan_jantung);
+          $('#laiinnya_perawatan_jantung').val(data.laiinnya_perawatan_jantung || '');
 
           setCheckboxValues('bukti_penurunan_adaptif', data.bukti_penurunan_adaptif);
           setCheckboxValues('hasil_penurunan_adaptif', data.hasil_penurunan_adaptif);
           setCheckboxValues('manajemen_peningkatan_adaptif', data.manajemen_peningkatan_adaptif);
+          $('#laiinnya_peningkatan_adaptif').val(data.laiinnya_peningkatan_adaptif || '');
 
           setCheckboxValues('hubungan_perfusi_perifier', data.hubungan_perfusi_perifier);
           setCheckboxValues('bukti_perfusi_perifer', data.bukti_perfusi_perifer);
           setCheckboxValues('hasil_perfusi_perifer', data.hasil_perfusi_perifer);
+          // setCheckboxValues('laiinnya_perfusi_perifer', data.laiinnya_perfusi_perifer);
+          $('#laiinnya_perfusi_perifer').val(data.laiinnya_perfusi_perifer || '');
 
           setCheckboxValues('hubungan_nafas_tidak_efektif', data.hubungan_nafas_tidak_efektif);
           setCheckboxValues('bukti_nafas_tidak_efektif', data.bukti_nafas_tidak_efektif);
           setCheckboxValues('hasil_nafas_tidak_efektif', data.hasil_nafas_tidak_efektif);
           setCheckboxValues('manajamen_nafas_tidak_efektif', data.manajamen_nafas_tidak_efektif);
+          // setCheckboxValues('laiinnya_nafas_tidak_efektif', data.laiinnya_nafas_tidak_efektif);
+          $('#laiinnya_nafas_tidak_efektif').val(data.laiinnya_nafas_tidak_efektif || '');
 
           setCheckboxValues('bukti_resiko_defisit_nutrisi', data.bukti_resiko_defisit_nutrisi);
           setCheckboxValues('hasil_resiko_defisit_nutrisi', data.hasil_resiko_defisit_nutrisi);
           setCheckboxValues('manajamen_resiko_defisit_nutrisi', data.manajamen_resiko_defisit_nutrisi);
+          // setCheckboxValues('laiinnya_defisit_nutrisi', data.laiinnya_defisit_nutrisi);
+          $('#laiinnya_defisit_nutrisi').val(data.laiinnya_defisit_nutrisi || '');
 
+          
           setCheckboxValues('bukti_resiko_hipovolemia', data.bukti_resiko_hipovolemia);
           setCheckboxValues('hasil_resiko_hipovolemia', data.hasil_resiko_hipovolemia);
           setCheckboxValues('manajamen_resiko_hipovolemia', data.manajamen_resiko_hipovolemia);
+          // setCheckboxValues('laiinnya_resiko_hipovolemia', data.laiinnya_resiko_hipovolemia);
+          $('#laiinnya_resiko_hipovolemia').val(data.laiinnya_resiko_hipovolemia || '');
 
           setCheckboxValues('bukti_resiko_infeksi', data.bukti_resiko_infeksi);
           setCheckboxValues('hasil_resiko_infeksi', data.hasil_resiko_infeksi);
           setCheckboxValues('pencegahan_resiko_infeksi', data.pencegahan_resiko_infeksi);
+          // setCheckboxValues('laiinnya_resiko_infeksi', data.laiinnya_resiko_infeksi);
+          $('#laiinnya_resiko_infeksi').val(data.laiinnya_resiko_infeksi || '');
 
           setCheckboxValues('bukti_resiko_ketidakstabilan_gula_darah', data.bukti_resiko_ketidakstabilan_gula_darah);
           setCheckboxValues('hasil_resiko_ketidakstabilan_gula_darah', data.hasil_resiko_ketidakstabilan_gula_darah);
           setCheckboxValues('manajemen_hiperglikimia', data.manajemen_hiperglikimia);
           setCheckboxValues('manajemen_hipoglikimia', data.manajemen_hipoglikimia);
+          // setCheckboxValues('laiinnya_hipoglikimia', data.laiinnya_hipoglikimia);
+          $('#laiinnya_hipoglikimia').val(data.laiinnya_hipoglikimia || '');
+
 
           setCheckboxValues('bukti_resiko_perdarahan', data.bukti_resiko_perdarahan);
           setCheckboxValues('hasil_resiko_perdarahan', data.hasil_resiko_perdarahan);
           setCheckboxValues('pencegahan_resiko_perdarahan', data.pencegahan_resiko_perdarahan);
+          // setCheckboxValues('laiinnya_resiko_perdarahan', data.laiinnya_resiko_perdarahan);
+
+          $('#laiinnya_resiko_perdarahan').val(data.laiinnya_resiko_perdarahan || '');
 
           window.scrollTo({
             top: 0,
