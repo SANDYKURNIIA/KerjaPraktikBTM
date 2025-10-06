@@ -1740,6 +1740,16 @@ class Logistik_farmasi extends CI_Controller
         $this->load->view('assets/_footer');
     }
 
+    // Tambahkan fungsi ini di dalam controller Logistik_farmasi 
+    public function Laporan_persediaan_dua()
+    {
+        $page_data['url'] = '';
+        $page_data['page_content'] = 'page_content/Laporan_persediaan_dua';
+        $this->load->view('assets/_header');
+        $this->load->view('Main', $page_data);
+        $this->load->view('assets/_footer');
+    }
+
     public function Tampil_laporan_persediaan()
     {
         $data_staff = $this->session->userdata('data_auth');

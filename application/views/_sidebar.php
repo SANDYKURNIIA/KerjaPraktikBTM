@@ -1421,6 +1421,9 @@ $izinAkses = $data->izin_akses;
 				<a href="<?= base_url('Logistik_farmasi/Laporan_stok'); ?>">LAPORAN KARTU STOK</a>
 			</li>
 			<li>
+                <a href="<?= base_url('Logistik_farmasi/Laporan_persediaan_dua'); ?>">LAPORAN PERSEDIAAN DUA</a>
+            </li>
+			<li>
 				<a href="<?= base_url('Logistik_farmasi/Laporan_mutasi'); ?>">LAPORAN MUTASI</a>
 			</li>
 			<li>

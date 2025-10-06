@@ -973,4 +973,8 @@ class M_Logistik_farmasi extends CI_Model
         $this->db->from('list_logistik');
         return $this->db->get()->result();
     }
+    public function getLaporanPersediaanData($mulai = null, $akhir = null, $stok = null)
+    {
+        return [];
+    }
 }
