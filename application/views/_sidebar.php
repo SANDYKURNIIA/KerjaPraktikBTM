@@ -1417,7 +1417,6 @@ $izinAkses = $data->izin_akses;
 			<!-- <li>
 				<a href="<?= base_url('Logistik_farmasi/Laporan_cetak_dp'); ?>">LAPORAN DP</a>
 			</li> -->
-			
 			<li>
 				<a href="<?= base_url('Logistik_farmasi/Laporan_stok'); ?>">LAPORAN KARTU STOK</a>
 			</li>
@@ -2120,6 +2119,11 @@ $izinAkses = $data->izin_akses;
 				<li>
 					<a href="<?= base_url('Apotik/Laporan_permintaan_obat_unit'); ?>"><i class="icon-doc mr-10 "></i>LAPORAN PERMINTAAN OBAT UNIT</a>
 				</li>
+			<li>
+					<a href="<?= base_url('Logistik_farmasi/Laporan_mutasi'); ?>"><i class="icon-hourglass mr-10"></i> LAPORAN MUTASI</a>
+	</a>
+</li>
+
 			</ul>
 		</li>
 		<li>
