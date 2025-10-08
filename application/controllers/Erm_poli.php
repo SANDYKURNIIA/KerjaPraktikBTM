@@ -258,6 +258,7 @@ class Erm_poli extends CI_Controller
     public function checkData()
     {
         $id_histori = $this->input->post('id');
+      
         // $super_ranap = $this->M_Erm_poli->checkData($id_histori, 'form_perintah_ranap');
         $asses_per_igd = $this->M_Erm_poli->checkData($id_histori, 'form_assesmen_awal_rajal');
         // $observasi = $this->M_Erm_poli->checkData($id_histori, 'form_observasi');
@@ -269,7 +270,7 @@ class Erm_poli extends CI_Controller
         // $intra = $this->M_Erm_poli->checkData($id_histori, 'form_transfer_intra_rs');
         // $antar = $this->M_Erm_poli->checkData($id_histori, 'form_transfer_antar_rs');
         // $laporan_tin_operasi = $this->M_Erm_poli->checkData($id_histori, 'form_tindakan_operasi');
-        $skrining_tbc = $this->M_Erm_poli->checkData($id_histori, 'pasien_TBC');
+        // $skrining_tbc = $this->M_Erm_poli->checkData($id_histori, 'pasien_TBC');
         $eval = $this->M_Erm_poli->checkData($id_histori, 'form_lembar_evaluasi');
          $form_fisikrehab =  $this->M_Erm_poli->checkData($id_histori, 'fr_rj_form');
         // $db['super_ranap'] = empty($super_ranap) ? 'not-found' : 'found';
@@ -287,6 +288,7 @@ class Erm_poli extends CI_Controller
         $db['eval'] = empty($eval) ? 'not-found' : 'found';
         $uji_fungsi = $this->M_Erm_poli->checkData($id_histori, 'lembar_uji_fungsi');
         echo json_encode($db);
+
         exit;
     }
 

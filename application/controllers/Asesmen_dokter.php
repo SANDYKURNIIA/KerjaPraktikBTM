@@ -102,6 +102,7 @@ class Asesmen_dokter extends CI_Controller
 		$id_pelayanan = base64_decode(urldecode($id_pel));
 		$id_history = base64_decode(urldecode($id_his));
 
+
 		$selectPasien = $this->M_Erm_poli->selectDataPasienIGDbyid($id_pelayanan, $id_history);
 		$staff = $this->session->userdata('data_auth');
 
@@ -222,10 +223,16 @@ class Asesmen_dokter extends CI_Controller
 			'andomen' => $this->input->post('andomen'),
 			'punggung' => $this->input->post('punggung'),
 			'ekstremitas' => $this->input->post('ekstremitas'),
+
+			'prosedur_tindakan' => $this->input->post('prosedur_tindakan'),
+    		'konsul' => $this->input->post('konsul'),
+    		'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+    		'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
+
 			'tindak_lanjut' => $this->input->post('tindak_lanjut'),
 			'konsul' => $this->input->post('konsul'),
 			'keadaan_pulang' => $this->input->post('kondisi_pulang'),
-			'terapi' => $this->input->post('terapi'),
+			// 'terapi' => null,
 			'paham' => $this->input->post('paham'),
 			'nama_lengkap' => strtoupper($this->input->post('nama_lengkap')),
 			'keterangan' => $this->input->post('keterangan'),
@@ -277,7 +284,7 @@ class Asesmen_dokter extends CI_Controller
 			$img = str_replace(' ', '+', $img);
 			$data = base64_decode($img);
 			$file = "assets/images/" . uniqid(time(), true) . ".png";
-			$success = file_put_contents($file, $data);
+			// $success = file_put_contents($file, $data); -> kalau diuncomment error
 		} else {
 			$file = "";
 		}
@@ -313,10 +320,15 @@ class Asesmen_dokter extends CI_Controller
 			'andomen' => $this->input->post('andomen'),
 			'punggung' => $this->input->post('punggung'),
 			'ekstremitas' => $this->input->post('ekstremitas'),
-			'tindak_lanjut' => $this->input->post('tindak_lanjut'),
+
+			'prosedur_tindakan' => $this->input->post('prosedur_tindakan'),
 			'konsul' => $this->input->post('konsul'),
+			'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+			'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
+
+			'tindak_lanjut' => $this->input->post('tindak_lanjut'),
+			// 'konsul' => $this->input->post('konsul'),
 			'keadaan_pulang' => $this->input->post('kondisi_pulang'),
-			'terapi' => $this->input->post('terapi'),
 			'paham' => $this->input->post('paham'),
 			'nama_lengkap' => strtoupper($this->input->post('nama_lengkap')),
 			'keterangan' => $this->input->post('keterangan'),
@@ -326,6 +338,7 @@ class Asesmen_dokter extends CI_Controller
 			'staff' => $staff,
 
 		);
+
 		$where = array('id_form_ass_dokter' => $this->input->post('id'));
 		$this->M_Erm_poli->update($data, $where, 'form_assesmen_dokter');
 
@@ -334,7 +347,6 @@ class Asesmen_dokter extends CI_Controller
 			'penyakit_past' => $this->input->post('penyakit_past'),
 			'penyakit_keluarga' => $this->input->post('penyakit_keluarga'),
 			'alloanamnesa' => $this->input->post('alloanamnesa'),
-
 		);
 		$where = array(
 			'id_pelayanan' => base64_decode(urldecode($this->input->post('id_pelayanan'))),
@@ -345,7 +357,6 @@ class Asesmen_dokter extends CI_Controller
 		$this->M_Erm_poli->update($data_perawat, $where, 'form_assesmen_awal_rajal');
 
 		$out['status'] = "success";
-
 
 
 		echo json_encode($out);
@@ -404,4 +415,32 @@ class Asesmen_dokter extends CI_Controller
 		$data['page_title'] = "Asesmen Dokter";
 		$this->load->view('print/asesmen_dokter', $data);
 	}
+
+// 	public function simpan()
+// {
+//     $data = [
+//         'terapi' => $this->input->post('terapi'),
+//         'konsul' => $this->input->post('konsul'),
+//         'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+//         'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
+//     ];
+
+//     $this->db->insert('form_assesmen_awal_rajal', $data);
+
+//     echo json_encode(['status' => 'success']);
+// }
+public function simpan()
+{
+    $data = array(
+        'prosedur_tindakan' => $this->input->post('prosedur_tindakan'),
+        'konsul' => $this->input->post('konsul'),
+        'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+        'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder')
+    );
+
+    $this->db->insert('form_assesmen_dokter', $data);
+
+    $this->session->set_flashdata('success', 'Data berhasil disimpan!');
+}
+
 }

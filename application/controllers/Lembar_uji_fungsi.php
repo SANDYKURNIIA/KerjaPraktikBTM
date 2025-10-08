@@ -60,8 +60,8 @@ class Lembar_uji_fungsi extends CI_Controller
         }
 
         // diagnosa per visit
-        $diag_fungsi = $this->M_Lembar_uji_fungsi->get_diagnosa_fungsi($id_pelayanan, $id_history);
-        $diag_medis  = $this->M_Lembar_uji_fungsi->get_diagnosa_medis($id_pelayanan, $id_history);
+        $diagnosis_fungsional = $this->M_Lembar_uji_fungsi->get_diagnosa_fungsi($id_pelayanan, $id_history);
+        $diagnosis_medis  = $this->M_Lembar_uji_fungsi->get_diagnosa_medis($id_pelayanan, $id_history);
 
         // lembar uji fungsi existing (by composite key)
         $lembar = $this->M_Lembar_uji_fungsi->get_lembar($id_pelayanan, $id_history);
@@ -78,8 +78,8 @@ class Lembar_uji_fungsi extends CI_Controller
             'jenis_kelamin'        => $pasien->jenis_kelamin,
             'tgl_pemeriksaan'      => $pasien->tgl_pemeriksaan,
             'dpjp_nama'            => $pasien->dpjp_nama,
-            'diagnosis_fungsional' => $diag_fungsi,
-            'diagnosis_medis'      => $diag_medis,
+            'diagnosis_fungsional' => $diagnosis_fungsional,
+            'diagnosis_medis'      => $diagnosis_medis,
             'id_pelayanan'         => $id_pelayanan,
             'id_history'           => $id_history,
             'lembar'               => $lembar,

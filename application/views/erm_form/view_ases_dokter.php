@@ -15,18 +15,18 @@
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">No.RM<span class="help"></span></label>
-                <input type="text" disabled class="form-control" value="<?= $no_rm ?>" id="inNoRM">
+                <input type="text" disabled class="form-control" value="<?php echo $no_rm ?>" id="inNoRM">
 
               </div>
             </div>
-            <input type="hidden" class="form-control" value="<?= urlencode(base64_encode($id_pelayanan)) ?>" id="inPel">
-            <input type="hidden" class="form-control" value="<?= urlencode(base64_encode($id_history)) ?>" id="inHis">
-            <input type="hidden" class="form-control" value="<?= $jenis_pelayanan ?>" id="inJenPel">
+            <input type="hidden" class="form-control" value="<?php echo urlencode(base64_encode($id_pelayanan)) ?>" id="inPel">
+            <input type="hidden" class="form-control" value="<?php echo urlencode(base64_encode($id_history)) ?>" id="inHis">
+            <input type="hidden" class="form-control" value="<?php echo $jenis_pelayanan ?>" id="inJenPel">
 
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Nama<span class="help"></span></label>
-                <input type="text" disabled class="form-control" value="<?= $nama ?>">
+                <input type="text" disabled class="form-control" value="<?php echo $nama ?>">
               </div>
             </div>
 
@@ -34,12 +34,12 @@
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Tanggal Masuk</label>
                 <input type="text" class="form-control" value="<?php
-                                                                setlocale(LC_ALL, 'id_ID');
+                                                                   setlocale(LC_ALL, 'id_ID');
 
-                                                                date_default_timezone_set('Asia/Jakarta');
-                                                                $time = strtotime($tgl_masuk);
-                                                                $date = strftime(" %d %B %Y ", $time);
-                                                                echo $date ?>" disabled>
+                                                                   date_default_timezone_set('Asia/Jakarta');
+                                                                   $time = strtotime($tgl_masuk);
+                                                               $date = strftime(" %d %B %Y ", $time);
+                                                               echo $date?>" disabled>
               </div>
             </div>
 
@@ -47,19 +47,19 @@
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Tgl Lahir / Umur<span class="help"></span></label>
                 <input type="text" disabled class="form-control" value="<?php
-                                                                        setlocale(LC_ALL, 'id_ID');
+                                                                            setlocale(LC_ALL, 'id_ID');
 
-                                                                        date_default_timezone_set('Asia/Jakarta');
-                                                                        $time = strtotime($tgl_lahir);
+                                                                            date_default_timezone_set('Asia/Jakarta');
+                                                                            $time = strtotime($tgl_lahir);
                                                                         $date = strftime(" %d %B %Y ", $time);
-                                                                        echo $date  . '(' . getAge($tgl_lahir) . ')' ?>">
+                                                                        echo $date . '(' . getAge($tgl_lahir) . ')'?>">
               </div>
             </div>
 
             <div class="form-group ">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Jenis Kelamin</label>
-                <input type="text" class="form-control" value="<?= $jenis_kelamin ?>" disabled>
+                <input type="text" class="form-control" value="<?php echo $jenis_kelamin ?>" disabled>
               </div>
             </div>
 
@@ -528,29 +528,51 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <div class="col-md-12">
-                  <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-4">
-                    <span id="terapi_error" class="text-danger"></span>
-                    <label class="control-label mb-10 text-left">Terapi/Instruksi:</label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="" id="terapi" cols="30" rows="5"></textarea>
-                    </div>
+      
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+            </div>
+
+          <!-- Baris pertama -->
+              <div class="row">
+                <div class="col-md-6">
+                  <span id="terapi_error" class="text-danger"></span>
+                  <label class="control-label mb-10 text-left">Prosedur Pembedahan/Tindakan:</label>
+                  <div class="has-success">
+                    <textarea class="form-control" name="prosedur_tindakan" id="prosedur_tindakan" cols="30" rows="5" required></textarea>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="col-md-4">
-                    <label class="control-label mb-10 text-left">Pengobatan Rutin:</label>
-                    <span id="konsul_error" class="text-danger"></span>
-                    <div class="has-success">
-                      <textarea class="form-control" name="" id="konsul" cols="30" rows="5"></textarea>
-                    </div>
+
+                <div class="col-md-6">
+                  <label class="control-label mb-10 text-left">Konsul:</label>
+                  <span id="konsul_error" class="text-danger"></span>
+                  <div class="has-success">
+                    <textarea class="form-control" name="konsul" id="konsul" cols="30" rows="5" required></textarea>
                   </div>
                 </div>
               </div>
+
+              <!-- Baris kedua -->
+              <div class="row" style="margin-top: 15px;">
+                <div class="col-md-6">
+                  <label class="control-label mb-10 text-left">Diagnosa Utama Dokter:</label>
+                  <span id="diagnosa_utama_error" class="text-danger"></span>
+                  <div class="has-success">
+                    <textarea class="form-control" name="diagnosa_utama" id="diagnosa_utama" cols="30" rows="5" required></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="control-label mb-10 text-left">Diagnosa Sekunder Do kter:</label>
+                  <span id="diagnosa_sekunder_error" class="text-danger"></span>
+                  <div class="has-success">
+                    <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+
+          </div>
 
               <div class="form-group">
                 <div class="form-group">
@@ -675,7 +697,7 @@
                     <div class="radio-button">
                       <input id="paham2" type="radio" name="paham" value="Keluarga">
                       <label class="control-label" for="paham2">
-                        Keluarga, huubungan dengan pasien :
+                        Keluarga, hubungan dengan pasien :
                       </label>
                     </div>
                     <div class="has-success">
@@ -758,19 +780,22 @@
                   </div>
                   <div class="col-md-6">
                     <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
-                    <button type="submit" class="btn btn-success mb-4" onclick="simpan()">Simpan</button>
-
+                    <button type="button" onclick="simpan()"  class="btn btn-success mb-4"><i class="fa fa-save"></i> Simpan</button>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
         </div>
-
+      </form>
       </div>
     </div>
   </div>
-  <?php $this->load->view('assets/signature_poli') ?>
+
+
+
+  <?php $this->load->view('assets/signature_poli')?>
   <style>
     canvas {
       cursor: crosshair;
@@ -968,21 +993,25 @@
         ttd = canvas1.toDataURL("image/png");
       }
       kondisi_pulang = $('input[name="kondisi_pulang"]:checked').val();
-      // terapi = $('#terapi').val();
+      prosedur_tindakan = $('#prosedur_tindakan').val();
+      diagnosa_utama = $('#diagnosa_utama').val()
+      diagnosa_sekunder = $('#diagnosa_sekunder').val();
       konsul = $('#konsul').val();
 
-      const textareaValue = document.getElementById("terapi").value;
+      const textareaValue = document.getElementById("prosedur_tindakan").value;
       //const outputElement = document.getElementById("output");
       // Mengganti karakter newline (\n) dengan tag <br>
-      terapi = textareaValue.replace(/\n/g, '<br>');
+      prosedur_tindakan = textareaValue.replace(/\n/g, '<br>');
       dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history +
         '&riwayat_alergi=' + riwayat_alergi + '&alergi_obat=' + alergi_obat + '&kepala=' + kepala +
         '&hidung=' + hidung + '&mulut=' + mulut + '&leher=' + leher + '&thorax=' + thorax +
         '&jantung=' + jantung + '&paru=' + paru + '&andomen=' + andomen + '&punggung=' + punggung +
         '&ekstremitas=' + ekstremitas + '&tindak_lanjut=' + tindak_lanjut + '&ttd=' + ttd + '&keterangan=' + keterangan + '&gambar=' + gambar +
-        '&kondisi_pulang=' + kondisi_pulang + '&terapi=' + terapi + '&konsul=' + konsul + '&paham=' + paham + '&nama_lengkap=' + nama_lengkap +
-        '&keluhan_utama=' + keluhan + '&alloanamnesa=' + riwayat_sakit_skrg + '&penyakit_past=' + riwayat_sakit_dulu + '&penyakit_keluarga=' + riwayat_sakit_fam;
+        '&kondisi_pulang=' + kondisi_pulang + '&prosedur_tindakan=' + prosedur_tindakan + '&konsul=' + konsul + '&paham=' + paham + '&nama_lengkap=' + nama_lengkap +
+        '&keluhan_utama=' + keluhan + '&alloanamnesa=' + riwayat_sakit_skrg + '&penyakit_past=' + riwayat_sakit_dulu + '&penyakit_keluarga=' + riwayat_sakit_fam + '&diagnosa_utama=' + diagnosa_utama + '&diagnosa_sekunder=' + diagnosa_sekunder  ;
       // alert(tindak_lanjut);
+
+      console.log(dataString)
 
       $.ajax({
         url: "<?php echo base_url() ?>Asesmen_dokter/insert_asses_dokter",

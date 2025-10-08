@@ -277,8 +277,8 @@ class Erm_ases_triase_ugd extends CI_Controller
 			'staff' => $staff,
 		);
 
-		$where = array('id_triase_ugd' => $this->input->post('id'));
-		if (!$this->input->post('id')) {
+		$where = array('no_rm' => $this->input->post('no_rm'));
+		if (!$this->input->post('no_rm')) {
 			// Menangani kesalahan jika ID tidak ada
 			$out['status'] = 'error';
 			$out['message'] = 'ID tidak ditemukan';

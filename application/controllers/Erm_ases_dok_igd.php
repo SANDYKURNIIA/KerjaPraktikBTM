@@ -182,6 +182,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		$paham = $this->input->post('paham');
 		$error = [];
 		$nama_lengkap = strtoupper($this->input->post('nama_lengkap'));
+		
 		// if (empty($keluhan)) {
 		// 	$error['keluhan'] = '*wajib diisi';
 		// }
@@ -267,6 +268,9 @@ class Erm_ases_dok_igd extends CI_Controller
 				'ttd' => $file1,
 				'tanggal' => $tgl,
 				'staff' => $staff,
+				// Yohanes Tambahan kolom baru
+    			'diagnosa_utama_dokter' => $this->input->post('diagnosa_utama_dokter'),
+    			'diagnosa_sekunder_dokter' => $this->input->post('diagnosa_sekunder_dokter'),
 
 			);
 			// print $success ? $file : 'Unable to save the file.';
@@ -342,6 +346,9 @@ class Erm_ases_dok_igd extends CI_Controller
 			'ttd' => $file1,
 			'tanggal' => $tgl,
 			'staff' => $staff,
+			// Yohanes Tambahan kolom baru
+    		'diagnosa_utama_dokter' => $this->input->post('diagnosa_utama_dokter'),
+    		'diagnosa_sekunder_dokter' => $this->input->post('diagnosa_sekunder_dokter'),
 
 		);
 		$where = array('id_form_ass_dokter_igd'=> $this->input->post('id'));

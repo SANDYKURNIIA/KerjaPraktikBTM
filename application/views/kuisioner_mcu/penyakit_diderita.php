@@ -105,7 +105,7 @@
 
             });
         });
-
+ 
         $.ajax({
             url: "<?= site_url('Quitioners/getPenyakitPasien/'); ?>" + id_mcu,
             type: "GET",

@@ -336,18 +336,6 @@
                                     <a class="btn btn-success col-md-5 tb" id="kirimDataTBC" data-id-pel="<?= $id_pel; ?>" data-no-rm="<?= $no_rm; ?>">
                                         Kirim Data TBC
                                     </a>
-                                     <a class="btn btn-success col-md-5 usg_kebidanan" href="<?= base_url('Erm_usg_kebidanan/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
-                                        hasil usg kebidanan
-                                    </a>
-
-                                      <a class="btn btn-success col-md-5 tb lembar_uji_fungsi"
-                                        href="<?= base_url('Lembar_uji_fungsi/form/' . $id_pelayanan . '/' . $no_rm); ?>">
-                                        Lembar Uji Fungsi Setelah Rehab
-                                    </a>
-                                    <a class="btn btn-success col-md-5 form_fisikrehab"
-                                                href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
-                                                Formulir Layanan Rehabilitasi Medik
-                                            </a>
                                     <?php if ($tipe == 'polimata') { ?>
                                         <a class="btn btn-success col-md-5 laporan_tin_operasi" href="<?= base_url('Erm_laporan_tin_operasi/form/') . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
                                             Laporan Tindakan Operasi
@@ -475,7 +463,6 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.penundaan').removeClass('btn-success').addClass('btn-danger ');
                     $('.penundaan').attr('href', '<?php echo base_url('Erm_penundaan_pelayanan_pengobatan/edit_penundaan/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
                 }
-                
                 if (data.antar == "found") {
                     $('.antar').removeClass('btn-success').addClass('btn-danger ');
                     $('.antar').attr('href', '<?php echo base_url('Erm_trans_pas_antar_rs/edit_antar_raj/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
@@ -484,27 +471,12 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.intra').removeClass('btn-success').addClass('btn-danger ');
                     $('.intra').attr('href', '<?php echo base_url('Erm_transfer_intra_rs/edit_intra/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
                 }
-                if (data.usg_kebidanan == "found") {
-                    $('.usg_kebidanan').removeClass('btn-success').addClass('btn-danger ');
-                }
-                    
-                
-                      if (data.form_fisikrehab === "found") {
-                     $('.form_fisikrehab').removeClass('btn-success').addClass('btn-danger');
-                // kalau nanti kamu punya route edit khusus, bisa sekalian ganti href di sini
-                // $('.form_fisikrehab').attr('href', '<?= base_url('Form_fisikrehab/edit/') ?>' + <?= $id_pelayanan ?> + '/<?= $id_histori ?>');
-                }
                 if (data.laporan_tin_operasi == "found") {
                     $('.laporan_tin_operasi').removeClass('btn-success').addClass('btn-danger ');
                     $('.laporan_tin_operasi').attr('href', '<?php echo base_url('Erm_laporan_tin_operasi/edit_laporan/') . $id_pelayanan .  '/' . $id_histori; ?>');
                 }
                 $('#loader').removeClass('hide')
             }
-
-              if (data.uji_fungsi == "found") {
-                    $('.lembar_uji_fungsi').removeClass('btn-success').addClass('btn-danger ');
-                    // $('.laporan_tin_operasi').attr('href', '<?php echo base_url('Erm_laporan_tin_operasi/edit_laporan/') . $id_pelayanan . '/' . $id_histori; ?>');
-                }
         });
         return false;
     });

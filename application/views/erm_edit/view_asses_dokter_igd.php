@@ -667,7 +667,7 @@
                 <div class="form-group">
                   <div class="col-md-4">
                     <span id="terapi_error" class="text-danger"></span>
-                    <label class="control-label mb-10 text-left">Terapi/Instruksi:</label>
+                    <label class="control-label mb-10 text-left">Prosedur Pembedahan/Tindakan:</label>
                     <div class="has-success">
                       <textarea class="form-control" name="" id="terapi" cols="30" rows="5"></textarea>
                     </div>
@@ -680,6 +680,23 @@
                     <div class="has-success">
                       <textarea class="form-control" name="" id="konsul" cols="30" rows="5"></textarea>
                     </div>
+                  </div>
+                </div>
+              </div>
+                  <div class="form-group">
+                <div class="col-md-4">
+                  <label class="control-label mb-10 text-left">Diagnosa Utama Dokter:<span class="text-danger">*</span></label>
+                  <span id="diagnosa_utama_dokter_error" class="text-danger"></span>
+                  <div class="has-success">
+                    <textarea class="form-control" name="diagnosa_utama_dokter" id="diagnosa_utama_dokter" cols="30" rows="5" placeholder="Masukkan diagnosa utama dokter"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="control-label mb-10 text-left">Diagnosa Sekunder Dokter:<span class="text-danger">*</span></label>
+                  <span id="diagnosa_sekunder_dokter_error" class="text-danger"></span>
+                  <div class="has-success">
+                    <textarea class="form-control" name="diagnosa_sekunder_dokter" id="diagnosa_sekunder_dokter" cols="30" rows="5" placeholder="Masukkan diagnosa sekunder dokter"></textarea>
                   </div>
                 </div>
               </div>
@@ -1131,7 +1148,10 @@
         $('#konsul').val(data.konsul);
         $('#nama_lengkap').val(data.nama_lengkap);
         $('#keterangan').val(data.keterangan);
+        $('#diagnosa_utama_dokter').val(data.diagnosa_utama_dokter);
+        $('#diagnosa_sekunder_dokter').val(data.diagnosa_sekunder_dokter);
         $('#id').val(data.id_form_ass_dokter_igd);
+        
         canvas = document.getElementById('can');
         canvas1 = document.getElementById('ttd');
         ctx = canvas.getContext("2d");
@@ -1320,6 +1340,7 @@
   });
 </script>
 
+
 <script type="text/javascript">
   function simpan() {
     id = $('#id').val();
@@ -1372,6 +1393,7 @@
     periksa_lain = $('input[name="periksa_lain"]:checked').val() ? $('#periksa_lain').val() : '-';
     diagnosa = $('#diagnosa').val();
     tindak_lanjut = $('input[name="tindak_lanjut"]:checked').val();
+
     if (tindak_lanjut == "1") {
       tindak_lanjut = "Pulang Atas Permintaan Sendiri";
     } else if (tindak_lanjut == "2") {
@@ -1389,6 +1411,7 @@
     } else {
       tindak_lanjut = '';
     }
+
     paham = $('input[name="paham"]:checked').val();
     if (paham == "Keluarga") {
       paham = $('#paham').val();
@@ -1408,18 +1431,84 @@
       canvas1 = document.getElementById('ttd');
       ttd = canvas1.toDataURL("image/png");
     }
+
     kondisi_pulang = $('input[name="kondisi_pulang"]:checked').val();
     terapi = $('#terapi').val();
     konsul = $('#konsul').val();
-    dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history + '&keluhan=' + keluhan + '&riwayat=' + riwayat +
-      '&psikologis=' + psikologis + '&ham_sos=' + ham_sos + '&riwayat_alergi=' + riwayat_alergi +
-      '&ham_eko=' + ham_eko + '&ham_spirit=' + ham_spirit + '&kepala=' + kepala +
-      '&hidung=' + hidung + '&mulut=' + mulut + '&leher=' + leher + '&thorax=' + thorax +
-      '&jantung=' + jantung + '&paru=' + paru + '&andomen=' + andomen + '&punggung=' + punggung +
-      '&ekstremitas=' + ekstremitas + '&usg=' + usg + '&ekg=' + ekg + '&ctg=' + ctg +
-      '&periksa_lain=' + periksa_lain + '&diagnosa=' + diagnosa + '&tindak_lanjut=' + tindak_lanjut + '&gambar=' + gambar + '&ttd=' + ttd + '&keterangan=' + keterangan +
-      '&kondisi_pulang=' + kondisi_pulang + '&terapi=' + terapi + '&konsul=' + konsul + '&paham=' + paham + '&nama_lengkap=' + nama_lengkap + '&id=' + id;
-    // alert(tindak_lanjut);
+
+    // 🆕 Tambahan dua kolom baru
+    diagnosa_utama_dokter = $('#diagnosa_utama_dokter').val();
+    diagnosa_sekunder_dokter = $('#diagnosa_sekunder_dokter').val();
+
+    // Validasi wajib isi dua kolom baru
+    if (diagnosa_utama_dokter.trim() === '' || diagnosa_sekunder_dokter.trim() === '') {
+      swal({
+        title: "Validasi Gagal!",
+        text: "Diagnosa utama dan sekunder dokter harus diisi sebelum menyimpan.",
+        type: "warning",
+        confirmButtonColor: "#3cb878",
+      });
+      if (diagnosa_utama_dokter.trim() === '') $('#diagnosa_utama_dokter_error').html('*wajib diisi');
+      else $('#diagnosa_utama_dokter_error').html('');
+      if (diagnosa_sekunder_dokter.trim() === '') $('#diagnosa_sekunder_dokter_error').html('*wajib diisi');
+      else $('#diagnosa_sekunder_dokter_error').html('');
+      return false;
+    } else {
+      $('#diagnosa_utama_dokter_error').html('');
+      $('#diagnosa_sekunder_dokter_error').html('');
+    }
+    // yohanes Validasi tabel Diagnosa Utama
+    var tableDiagnosaUtama = $('#tablediagnosa1').DataTable();
+    var jumlahDiagnosaUtama = tableDiagnosaUtama.rows().count();
+
+    if (jumlahDiagnosaUtama === 0) {
+      swal({
+        title: "Warning!",
+        text: "Tabel Diagnosa Utama masih kosong. Silakan tambahkan diagnosa utama terlebih dahulu sebelum menyimpan.",
+        type: "warning",
+        confirmButtonColor: "#3cb878",
+      });
+      return false;
+    }
+    // 🔗 Kirim data
+    dataString =
+      'no_rm=' + no_rm +
+      '&id_pelayanan=' + id_pelayanan +
+      '&id_history=' + id_history +
+      '&keluhan=' + keluhan +
+      '&riwayat=' + riwayat +
+      '&psikologis=' + psikologis +
+      '&ham_sos=' + ham_sos +
+      '&riwayat_alergi=' + riwayat_alergi +
+      '&ham_eko=' + ham_eko +
+      '&ham_spirit=' + ham_spirit +
+      '&kepala=' + kepala +
+      '&hidung=' + hidung +
+      '&mulut=' + mulut +
+      '&leher=' + leher +
+      '&thorax=' + thorax +
+      '&jantung=' + jantung +
+      '&paru=' + paru +
+      '&andomen=' + andomen +
+      '&punggung=' + punggung +
+      '&ekstremitas=' + ekstremitas +
+      '&usg=' + usg +
+      '&ekg=' + ekg +
+      '&ctg=' + ctg +
+      '&periksa_lain=' + periksa_lain +
+      '&diagnosa=' + diagnosa +
+      '&tindak_lanjut=' + tindak_lanjut +
+      '&gambar=' + gambar +
+      '&ttd=' + ttd +
+      '&keterangan=' + keterangan +
+      '&kondisi_pulang=' + kondisi_pulang +
+      '&terapi=' + terapi +
+      '&konsul=' + konsul +
+      '&paham=' + paham +
+      '&nama_lengkap=' + nama_lengkap +
+      '&id=' + id +
+      '&diagnosa_utama_dokter=' + diagnosa_utama_dokter +
+      '&diagnosa_sekunder_dokter=' + diagnosa_sekunder_dokter;
 
     id_pel = "<?php echo urlencode(base64_encode($id_pelayanan)); ?>";
     id_his = "<?php echo urlencode(base64_encode($id_history)); ?>";
@@ -1431,83 +1520,14 @@
       data: dataString,
       success: function(data) {
         if (data.status == "success") {
-          window.location.href = "<?php echo base_url('Erm_igd/form/') ?>" + id_pel + '/' + id_his;
           swal({
-            title: "good job!",
+            title: "Good job!",
             type: "success",
             text: "Data Berhasil diubah",
             confirmButtonColor: "#3cb878",
+          }, function() {
+            window.location.href = "<?php echo base_url('Erm_igd/form/') ?>" + id_pel + '/' + id_his;
           });
-        } else if (data.error) {
-          if (data.keluhan != '') {
-            $('#keluhan_error').html(data.keluhan);
-          } else {
-            $('#keluhan_error').html('');
-          }
-          if (data.nama_lengkap != '') {
-            $('#nama_error').html(data.nama_lengkap);
-          } else {
-            $('#nama_error').html('');
-          }
-          if (data.riwayat != '') {
-            $('#riwayat_error').html(data.riwayat);
-          } else {
-            $('#riwayat_error').html('');
-          }
-
-          if (riwayat_alergi == '' || riwayat_alergi == null) {
-            $('#alergi_error').html('*wajib diisi');
-          } else {
-            $('#alergi_error').html('');
-          }
-          if (paham == '' || paham == null) {
-            $('#paham_error').html('*wajib diisi');
-          } else {
-            $('#paham_error').html('');
-          }
-          if (psikologis == '' || psikologis == null) {
-            $('#psiko_error').html('*wajib diisi');
-          } else {
-            $('#psiko_error').html('');
-          }
-          if (ham_sos == '' || ham_sos == null) {
-            $('#hamsos_error').html('*wajib diisi');
-          } else {
-            $('#hamsos_error').html('');
-          }
-          if (ham_eko == '' || ham_eko == null) {
-            $('#hameko_error').html('*wajib diisi');
-          } else {
-            $('#hameko_error').html('');
-          }
-          if (ham_spirit == '' || ham_spirit == null) {
-            $('#hamsp_error').html('*wajib diisi');
-          } else {
-            $('#hamsp_error').html('');
-          }
-
-          if (tindak_lanjut == '' || tindak_lanjut == null) {
-            $('#tindak_lanjut_error').html('*wajib diisi');
-          } else {
-            $('#tindak_lanjut_error').html('');
-          }
-          if (kondisi_pulang == '' || kondisi_pulang == null) {
-            $('#kondisip_error').html('*wajib diisi');
-          } else {
-            $('#kondisip_error').html('');
-          }
-          if (data.konsul != '') {
-            $('#konsul_error').html(data.konsul);
-          } else {
-            $('#konsul_error').html('');
-          }
-
-          if (data.terapi != '') {
-            $('#terapi_error').html(data.terapi);
-          } else {
-            $('#terapi_error').html('');
-          }
-
         } else {
           swal({
             title: "Gagal!",
@@ -1517,10 +1537,10 @@
           });
         }
       }
-
     });
     return false;
   }
+
 
   function reload_data_diagnosa(id_pelayanan, id_history) { //nampilinn diagnosa seluruhnya utk nambah ke diagnosa pasien
     $('#tabledgns').dataTable().fnClearTable();

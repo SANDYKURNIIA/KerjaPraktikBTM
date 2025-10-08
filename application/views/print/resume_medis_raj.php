@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+_medis<!DOCTYPE html>
 <html>
 <head>
     <title>Print out <?=$page_title?></title>

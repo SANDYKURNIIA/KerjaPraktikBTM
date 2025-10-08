@@ -492,6 +492,9 @@
                 if (data.one_day_care == "found") {
                     $('.one_day_care').removeClass('btn-success').addClass('btn-danger ');
                 }
+                if (data.resume_pulang == "found") {
+                    $('.resume_pulang').removeClass('btn-success').addClass('btn-danger ');
+                }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
                 }

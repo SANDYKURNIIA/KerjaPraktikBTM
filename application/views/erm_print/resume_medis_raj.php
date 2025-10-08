@@ -97,161 +97,183 @@
 
 
             <!--batas-->
-
+            <!-- BAGIAN 1 -->
             <tr>
-                <td colspan=5>
-                    1.Anamnesa :
+                <td colspan="5" style="padding: 10; margin: 0;">
+                    1. Anamnesa:
+                    <div style="margin-left: 20px; margin-top: 0;">
+                        <table style="border-collapse: collapse; margin: 0; padding: 0;">
+                            <tr>
+                                <td style="padding: 0;">a. Keluhan Utama:</td>
+                                <td style="padding-left: 5px;"><?= $data['keluhan_utama'] ?></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0;">b. Riwayat Penyakit Dahulu:</td>
+                                <td style="padding-left: 5px;"><?= $data['penyakit_past'] ?></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0;">c. Riwayat Penyakit Sekarang:</td>
+                                <td style="padding-left: 5px;"><?= $data['alloanamnesa'] ?></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0;">d. Riwayat Penyakit Keluarga:</td>
+                                <td style="padding-left: 5px;"><?= $data['penyakit_keluarga'] ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
             </tr>
 
+            <!-- SPASI ANTAR BAGIAN -->
             <tr>
-                <td height="20" colspan=5 style="padding: 15px;">
-                    <table>
-                        <tr>
-                            <td>a. Keluhan Utama: </td>
-                            <td><?= $data['keluhan_utama'] ?></td>
-                        </tr>
-                        <tr>
-                            <td>b. Riwayat Penyakit Dahulu: </td>
-                            <td><?= $data['penyakit_past'] ?> </td>
-                        </tr>
-                        <tr>
-                            <td>c. Riwayat Penyakit Sekarang: </td>
-                            <td><?= $data['alloanamnesa'] ?></td>
-                        </tr>
-                        <tr>
-                            <td>d. Riwayat Penyakit Keluarga:</td>
-                            <td><?= $data['penyakit_keluarga'] ?> </td>
-                        </tr>
-                    </table>
-
-                </td>
+                <td colspan="5" style="height: 8px;"></td>
             </tr>
 
-
-            </tr>
+            <!-- BAGIAN 2 -->
             <tr>
-                <td colspan=5>
-                    2. Riwayat Singkat Dan Pemeriksaan Fisik :
-                </td>
-            </tr>
+                <td colspan="5" style="padding: 10; margin: 0;">
+                    2. Riwayat Singkat Dan Pemeriksaan Fisik:
+                    <div style="margin-left: 20px; margin-top: 0;">
+                        <table style="border-collapse: collapse; margin: 0; padding: 0;">
+                            <tr>
+                                <td colspan="2" style="padding: 0;">a. Tanda Vital:</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px; width: 160px;">Tekanan darah :</td>
+                                <td><?= $data['tekanan_darah'] ?> MmHg</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px; width: 160px;">Suhu :</td>
+                                <td><?= $data['suhu'] ?> &deg;C</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px; width: 160px;">Nadi :</td>
+                                <td><?= $data['frequensi_nadi'] ?> x/menit</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px; width: 160px;">Pernafasan :</td>
+                                <td><?= $data['frequensi_nafas'] ?> x/menit</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 15px; width: 160px;">Skala Nyeri :</td>
+                                <td><?= $data['skala_nyeri'] ?></td>
+                            </tr>
+                        </table>
 
-            <tr>
-                <td height="20" colspan=5 style="padding: 15px;">
-                    <table>
-                        <tr>
-                            <td>a. Tanda Vital: </td>
-                        </tr>
-                        <tr>
-                            <td>Tekanan darah : </td>
-                            <td><?= $data['tekanan_darah'] ?> MmHg</td>
-                            <td>Suhu : </td>
-                            <td><?= $data['suhu'] ?> &deg;C</td>
-                            <td>Nadi : </td>
-                            <td><?= $data['frequensi_nadi'] ?> x/menit</td>
-                            <td>Pernafasan : </td>
-                            <td><?= $data['frequensi_nafas'] ?> x/menit</td>
+                        <table style="border-collapse: collapse; margin-top: 4px;">
+                            <tr>
+                                <td style="padding: 0;">b. Pemeriksaan Fisik:</td>
+                                <?php if (
+                                    $data['kepala'] == "Dalam Batas Normal" &&
+                                    $data['hidung'] == "Dalam Batas Normal" &&
+                                    $data['mulut'] == "Dalam Batas Normal" &&
+                                    $data['leher'] == "Dalam Batas Normal" &&
+                                    $data['thorax'] == "Dalam Batas Normal" &&
+                                    $data['jantung'] == "Dalam Batas Normal" &&
+                                    $data['paru'] == "Dalam Batas Normal" &&
+                                    $data['andomen'] == "Dalam Batas Normal" &&
+                                    $data['punggung'] == "Dalam Batas Normal" &&
+                                    $data['ekstremitas'] == "Dalam Batas Normal"
+                                ) { ?>
+                                    <td>Dalam Batas Normal</td>
+                                <?php } ?>
+                            </tr>
 
-                        </tr>
-                        <tr>
-                            <td>Skala Nyeri : </td>
-                            <td><?= $data['skala_nyeri'] ?></td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td>b. Pemeriksaan Fisik: </td>
-                            <?php if ($data['kepala'] == "Dalam Batas Normal" && $data['hidung'] == "Dalam Batas Normal" && $data['mulut'] == "Dalam Batas Normal" && $data['leher'] == "Dalam Batas Normal" && $data['thorax'] == "Dalam Batas Normal" && $data['jantung'] == "Dalam Batas Normal" && $data['paru'] == "Dalam Batas Normal" && $data['andomen'] == "Dalam Batas Normal" && $data['punggung'] == "Dalam Batas Normal" && $data['ekstremitas'] == "Dalam Batas Normal") { ?>
-
-                                <td>Dalam Batas Normal</td>
-
+                            <?php if ($data['kepala'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Kepala :</td>
+                                    <td><?= $data['kepala'] ?></td>
+                                </tr>
                             <?php } ?>
-                        </tr>
+                            <?php if ($data['hidung'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Hidung :</td>
+                                    <td><?= $data['hidung'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['mulut'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Mulut :</td>
+                                    <td><?= $data['mulut'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['leher'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Leher :</td>
+                                    <td><?= $data['leher'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['thorax'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Thorax :</td>
+                                    <td><?= $data['thorax'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['jantung'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Jantung :</td>
+                                    <td><?= $data['jantung'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['paru'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Paru :</td>
+                                    <td><?= $data['paru'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['andomen'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Andomen :</td>
+                                    <td><?= $data['andomen'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['punggung'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Punggung :</td>
+                                    <td><?= $data['punggung'] ?></td>
+                                </tr>
+                            <?php } ?>
+                            <?php if ($data['ekstremitas'] != "Dalam Batas Normal") { ?>
+                                <tr>
+                                    <td style="padding-left: 15px; width: 160px;">Ekstremitas :</td>
+                                    <td><?= $data['ekstremitas'] ?></td>
+                                </tr>
+                            <?php } ?>
+                        </table>
+                    </div>
+                </td>
+            </tr>
 
-                        <?php if ($data['kepala'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Kepala : </td>
-                                <td><?= $data['kepala'] ?> </td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['hidung'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Hidung : </td>
-                                <td><?= $data['hidung'] ?> </td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['mulut'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Mulut : </td>
-                                <td><?= $data['mulut'] ?> </td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['leher'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Leher : </td>
-                                <td><?= $data['leher'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['thorax'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Thorax : </td>
-                                <td><?= $data['thorax'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['jantung'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Jantung : </td>
-                                <td><?= $data['jantung'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['paru'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Paru : </td>
-                                <td><?= $data['paru'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['andomen'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Andomen : </td>
-                                <td><?= $data['andomen'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['punggung'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Punggung : </td>
-                                <td><?= $data['punggung'] ?></td>
-                            </tr>
-                        <?php } ?>
-                        <?php if ($data['ekstremitas'] != "Dalam Batas Normal") { ?>
-                            <tr>
-                                <td>Ekstremitas : </td>
-                                <td><?= $data['ekstremitas'] ?></td>
-                            </tr>
-                        <?php } ?>
+            <!-- SPASI ANTAR BAGIAN -->
+            <tr>
+                <td colspan="5" style="height: 8px;"></td>
+            </tr>
 
-                    </table>
+            <!-- BAGIAN 3 -->
+            <tr>
+                <td colspan="5" style="padding: 10; margin: 0;">
+                    3. Pemeriksaan Penunjang/Diagnostik:
+                </td>
+            </tr>
+
+            <!-- SPASI ANTAR BAGIAN -->
+            <tr>
+                <td colspan="5" style="height: 8px;"></td>
+            </tr>
+
+            <!-- BAGIAN 4 -->
+            <tr>
+                <td colspan="5" style="padding: 10; margin: 0;">
+                    4. Diagnosa Utama: <?= $data['nama_diagnosa'] ?>
                 </td>
             </tr>
 
             <tr>
-                <td colspan=5>
-                    3 .Pemeriksaan Penunjang/Diagnostik :
-                </td>
-            </tr>
-
-
-            
-            <tr>
-                <td colspan=5>
-                    4 .Diagnosa Utama : <?= $data['nama_diagnosa'] ?>
-                </td>
-            </tr>
-
-            <tr>
-                <td height="10" colspan=5>
+                <td height="10" colspan="5">
                     <p> </p>
                 </td>
             </tr>
+
 
             <tr>
                 <td colspan=5>
@@ -307,71 +329,49 @@
             </tr>
 
             <tr>
-                <td colspan=5>
-                    7 .Ringkasan Keluar :
-                </td>
-            </tr>
-
-
-
-            <tr>
-                <td height="10" colspan=5>
-                    <p> </p>
-                </td>
-            </tr>
-
-
-
-            <tr>
-                <td width="200">&nbsp; &nbsp;Keadaan Waktu Pulang :</td>
-                <td colspan="4" width="200"> <?= $data['keadaan_pulang'] ?> </td>
-            </tr>
-
-
-
-            <tr>
-                <td width="200">&nbsp; &nbsp;Alasan Pulang :</td>
-                <td colspan="4" width="200"> <?= $data['tindak_lanjut'] ?> </td>
+                <td colspan="5" style="padding-top:8px;">7. Ringkasan Keluar :</td>
             </tr>
 
             <tr>
-                <td width="250">&nbsp; &nbsp;Hari / Tanggal Kontrol Ke RS : </td>
-                <td width="200"><?php $date = strtotime($data['tgl_masuk']);
-                                echo date('d-m-Y', $date) ?></td>
-                <td width="100">Jam :</td>
-                <td colspan="2"> <?php $date = strtotime($data['tgl_masuk']);
-                                    echo date('h:i:s', $date) ?></td>
+                <td colspan="5" style="padding-left:20px;">Keadaan Waktu Pulang : <?= !empty($data['keadaan_pulang']) ? $data['keadaan_pulang'] : '-' ?></td>
             </tr>
+
             <tr>
-                <td width="200">&nbsp; &nbsp;Poliklinik :</td>
-                <td colspan="4" width="200"> <?= $data['konsul'] ?> </td>
+                <td colspan="5" style="padding-left:20px;">Alasan Pulang : <?= !empty($data['tindak_lanjut']) ? $data['tindak_lanjut'] : '-' ?></td>
             </tr>
+
             <tr>
-                <td height="20" colspan=5>
-                    <p> </p>
+                <td colspan="5" style="padding-left:20px;">
+                    Hari / Tanggal Kontrol Ke RS :
+                    <?php if (!empty($data['tgl_masuk'])) echo date('d-m-Y', strtotime($data['tgl_masuk']));
+                    else echo '-'; ?>
                 </td>
             </tr>
 
             <tr>
-                <td width="200">&nbsp; &nbsp;Edukasi Yang Telah Diberikan </td>
-                <td width="200"></td>
-                <td width="100"></td>
-                <td width="60"> </td>
-                <td></td>
-            </tr>
-
-            <tr>
-                <td height="20" colspan=5>
-                    <p> </p>
+                <td colspan="5" style="padding-left:20px;">
+                    Jam :
+                    <?php if (!empty($data['tgl_masuk'])) echo date('H:i:s', strtotime($data['tgl_masuk']));
+                    else echo '-'; ?>
                 </td>
             </tr>
 
             <tr>
-                <td colspan="5" width="200">Terapi</td>
+                <td colspan="5" style="padding-left:20px;">Poliklinik : <?= !empty($data['konsul']) ? $data['konsul'] : '-' ?></td>
             </tr>
 
-            </td>
+            <tr>
+                <td colspan="5" style="height:6px;"></td>
             </tr>
+
+            <tr>
+                <td colspan="5" style="padding-left:20px;">Edukasi Yang Telah Diberikan :</td>
+            </tr>
+
+            <tr>
+                <td colspan="5" style="padding-left:20px;">Terapi :</td>
+            </tr>
+
 
             <!--table baru-->
         </table>
@@ -381,10 +381,10 @@
                     <center>Nama Obat</center>
                 </td>
                 <td class=gariskanan>
-                    <center>Dosis</center>
+                    <center>Jumlah</center>
                 </td>
                 <td class=gariskanan>
-                    <center>Frekuensi</center>
+                    <center>Signa</center>
                 </td>
                 <td width="90" class=gariskanan>
                     <center>Cara Pemberian</center>
@@ -394,22 +394,19 @@
             <?php if (count($terapi) > 0) {
                 foreach ($terapi as $row) { ?>
                     <tr width="90">
-                        <td class=gariskanan>
-                            <center><?= $row->nama ?></center>
+                        <td class="gariskanan" style="text-align: left; padding-left: 8px;">
+                            <?= $row->nama ?>
                         </td>
-                        <td class=gariskanan>
-                            <center><?= $row->frek ?></center>
+                        <td class="gariskanan" style="text-align: left; padding-left: 8px;">
+                            <?= $row->frek ?>
                         </td>
-                        <td class=gariskanan>
-                            <center><?= $row->tindakan ?></center>
+                        <td class="gariskanan" style="text-align: left; padding-left: 8px;">
+                            <?= $row->tindakan ?>
                         </td>
-                        <td width="90" class=gariskanan>
-                            <center><?= $row->cara_pemakaian ?></center>
+                        <td width="90" class="gariskanan" style="text-align: left; padding-left: 8px;">
+                            <?= $row->cara_pemakaian ?>
                         </td>
                     </tr>
-
-
-
                 <?php }
             } else { ?>
 
@@ -421,57 +418,33 @@
             <?php } ?>
 
         </table>
-        <!--end of table baru-->
 
-        <!--tabel akhir-->
-        <table width=100% class="table1" cellspacing=0>
-
+        <table width="100%" class="table1" cellspacing="0" style="margin-top: 20px;">
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td style="text-align: right; padding-right: 60px;">
+                    Pangkal Pinang, <?php echo date('d-m-Y') ?> jam: <?php echo date('H:i:s') ?> WIB
+                </td>
             </tr>
 
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>Pangkal Pinang, <?php echo date('d-m-Y') ?> jam: <?php echo date('H:i:s') ?> WIB</td>
+                <td style="text-align: right; padding-right: 60px;">
+                    Dokter Penanggung Jawab Pelayanan
+                </td>
             </tr>
 
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>Dokter Penanggung Jawab Pelayanan</td>
-            </tr>
-
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td><img src="<?php echo base_url() . 'assets/ttd/cap_rsbt.png'; ?>" width="100px">
+                <td style="text-align: right; padding-right: 60px;">
+                    <img src="<?php echo base_url() . 'assets/ttd/cap_rsbt.png'; ?>" width="100px">
                     <img src="<?php echo $ttd; ?>" width="100px">
                 </td>
             </tr>
 
             <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td><?= $data['dpjp'] ?></td>
+                <td style="text-align: right; padding-right: 60px;">
+                    <?= $data['dpjp'] ?>
+                </td>
             </tr>
-
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-
-            <tr>
-                <td>Lembar Putih Penagihan</td>
-                <td>Lembar Merah Muda Pasien</td>
-                <td>Lembar Kuning - Arsip RM</td>
-            </tr>
-
         </table>
-
 
         <!--end of table akhir-->
     </div>
@@ -491,3 +464,4 @@
 </body>
 
 </html>
+

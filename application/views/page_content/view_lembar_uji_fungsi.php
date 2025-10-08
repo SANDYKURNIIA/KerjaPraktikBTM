@@ -136,13 +136,13 @@ $rekomendasi = isset($lembar->rekomendasi) ? $lembar->rekomendasi : '';
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 (function ($) {
     $(function () {
         $('#formUjiFungsi').on('submit', function (e) {
             e.preventDefault();
-            $('#btnSimpan').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Menyimpan...');
+            // $('#btnSimpan').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Menyimpan...');
             $('#ajax-alert-area').empty();
 
             $.ajax({
@@ -150,20 +150,35 @@ $rekomendasi = isset($lembar->rekomendasi) ? $lembar->rekomendasi : '';
                 type: "POST",
                 data: $(this).serialize(),
                 dataType: "json",
-                success: function (res) {
-                    if (res && res.status === 'success') {
-                        popup('success', res.message || 'Berhasil menyimpan.');
+              success: function (res) {
+    if (res && res.status === 'success') {
+        // Menampilkan SweetAlert
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: res.message || 'Berhasil menyimpan.',
+            confirmButtonText: 'OK'
+        }).then(function() {
+            // Redirect setelah OK pada popup
+            if (document.referrer) {
+                window.location.href = document.referrer;
+            } else {
+                history.back();
+            }
+        });
 
-                        // set flag ke session supaya dashboard tahu tombol harus merah
-                        <?php if (isset($id_pelayanan) && isset($id_history)) : ?>
-                        sessionStorage.setItem('lembar_ujifungsi_<?= $id_pelayanan ?>', '1');
-                        <?php endif; ?>
-                    } else {
-                        var msg = (res && res.message) ? res.message : 'Gagal menyimpan data.';
-                        popup('error', msg);
-                    }
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                },
+        // set flag ke session supaya dashboard tahu tombol harus merah
+        <?php if (isset($id_pelayanan) && isset($id_history)) : ?>
+        sessionStorage.setItem('lembar_ujifungsi_<?= $id_pelayanan ?>', '1');
+        <?php endif; ?>
+    } else {
+        var msg = (res && res.message) ? res.message : 'Gagal menyimpan data.';
+        popup('error', msg);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+,
                 error: function (xhr, st, err) {
                     var msg = 'Error AJAX: ' + (err || 'unknown');
                     if (xhr && xhr.responseText) {

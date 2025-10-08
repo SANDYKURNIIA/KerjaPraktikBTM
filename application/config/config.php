@@ -24,7 +24,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $http = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http";
-$config['base_url'] = $http.'://'.$_SERVER['HTTP_HOST'].'/sibatik/';
+// $config['base_url'] = 'http://192.168.88.248:8880/'; 
+$config['base_url'] = 'http://sibatik-web.btmmagang.site/';
+
+// Mendeteksi host (domain atau IP) yang sedang diakses
+// $host = $_SERVER['HTTP_HOST'];
+
+// Logika untuk menentukan base_url
+// switch ($host) {
+//     case 'sibatik-web.btmmagang.site':
+//         // Setting untuk server production
+//         $config['base_url'] = $http . 'sibatik-web.btmmagang.site/';
+//         break;
+    
+//     case '192.168.88.248:8880':
+//         // Setting untuk server development lokal Anda
+//         $config['base_url'] = $http . '192.168.88.248:8880/';
+//         break;
+
+//     default:
+//         // Fallback jika diakses dari host lain, misalnya localhost
+//         $config['base_url'] = $http . $host . '/';
+//         break;
+// }
 
 
 /*

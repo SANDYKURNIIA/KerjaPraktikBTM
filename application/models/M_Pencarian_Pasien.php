@@ -29,6 +29,7 @@ class M_Pencarian_Pasien extends CI_Model
 	{
 		$this->db->where('no_rm', $id);
 		$query = $this->db->get('pasien')->row_array();
+		 echo $this->db->last_query();
 		return $query;
 	}
 	public function getDataPasienById($id)
@@ -47,6 +48,7 @@ class M_Pencarian_Pasien extends CI_Model
 	{
 		$this->db->where('no_rm', $no_rm);
 		$query = $this->db->get('v_pasien')->row_array();
+		 echo $this->db->last_query();
 		return $query;
 	}
 	public function getAsalPasien()
