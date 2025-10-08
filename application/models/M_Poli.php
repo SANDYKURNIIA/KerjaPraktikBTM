@@ -207,7 +207,7 @@ class M_Poli extends CI_Model
             FROM v_pasien_saraf v
             LEFT JOIN req_kasir r
             ON v.id_history = r.id_history
-            where v.status_erm = 0
+            where v.status_erm = 1
             order by v.tgl_masuk desc");
             return $query->result();
         }
