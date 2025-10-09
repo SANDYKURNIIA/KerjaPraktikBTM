@@ -487,46 +487,172 @@ class Erm_ranap_ulang_jatuh_dewasa extends CI_Controller
 
 
 
-	public function tampil_list_per_pen_rujukan()
-	{
-		$id_pelayanan = $this->input->post('id_pelayanan');
-		$page_data = $this->M_Erm_ranap->selectUlangJatuh($id_pelayanan);
-		$data = $this->session->userdata('data_auth');
-		$staff = $data->nama;
-		if ($staff == "st32") {
-			$nama = "rawatinap";
-		} else {
-			$data->nama;
-		}
+ public function tampil_list_per_pen_rujukan()
+    {
+        $id_pelayanan = $this->input->post('id_pelayanan');
+
+
+        $dataFromRanap = $this->db->get_where('form_ass_per_ranap', ['id_pelayanan' => $id_pelayanan])->row();
+       
+        $page_data = $this->M_Erm_ranap->selectUlangJatuh($id_pelayanan);
+       
+        $skor_total = $dataFromRanap->umur +
+            $dataFromRanap->jenis_kelamin +
+            $dataFromRanap->diagnosis +
+            $dataFromRanap->gangguan +
+            $dataFromRanap->faktor +
+            $dataFromRanap->anestesi;
+
+
+        $tipeResikoRanap = 'rendah';
+
+
+        if ($skor_total >= 50) {
+            $tipeResikoRanap = "tinggi";
+        }
 
 
 
-		$out = null;
-		for ($i = 0; $i < count($page_data); $i++) {
-			$no = $i + 1;
-			$tombol = "<button class='btn btn-success btn-icon-anim btn square' id='myButton' onclick='pilih(\"" . $page_data[$i]->id_asesmen . "\")'><i class='icon-rocket'></i></button>";
-			// $hapus = "<button class='btn btn-danger btn-icon-anim btn square' id='myButton' onclick='hapus(\"" . $page_data[$i]->id_asesmen . "\")'><i class='icon-trash'></i></button>";
 
-			$skor_total = $page_data[$i]->skor_total;
-			// $diagnosa = $page_data[$i]->diagnosa;
-			$tanggal = strtotime($page_data[$i]->tanggal);
-			$date = strftime("%A, %d %B %Y ", $tanggal);
-			$tipe_resiko = $page_data[$i]->tipe_resiko;
+        $new_row = (object) [
+            'skor_total' => $skor_total,
+            'id_asesmen' => $dataFromRanap->id_form,
+            'id_form' => $dataFromRanap->id_form,
+            'tanggal' => $dataFromRanap->tanggal,
+            'tipe_resiko' => $tipeResikoRanap,
+            'staff' => $dataFromRanap->staff,
+            'gaya_jalan ' => "ranap"
+        ];
 
 
-			$staff = $staff;
 
-			$out[$i] = array($no, $tombol,$skor_total, $date, $staff, $tipe_resiko);
-		}
-		if ($out == null) {
-			echo '{"data":""}';
-			exit;
-		} else {
-			$page_data['data'] = $out;
-			echo json_encode($page_data);
-			exit;
-		}
-	}
+        if($dataFromRanap->id_form){
+            $page_data[] = $new_row;
+        }
+
+
+        $data = $this->session->userdata('data_auth');
+        $staff = $data->nama;
+        if ($staff == "st32") {
+            $nama = "rawatinap";
+        } else {
+            $data->nama;
+        }
+
+
+
+
+
+
+        $out = null;
+        for ($i = 0; $i < count($page_data); $i++) {
+            $no = $i + 1;
+            $tombol = null;
+
+
+           
+            $tombol = "<button class='btn btn-success btn-icon-anim btn square' id='myButton' onclick='pilih(\"" . $page_data[$i]->id_asesmen . "\")'><i class='icon-rocket'></i></button>";
+
+
+            if (isset($page_data[$i]->id_form)) {
+                $tombol = "<button class='btn btn-success btn-icon-anim btn square' id='myButton' onclick='pilihRanap(\"" . $page_data[$i]->id_asesmen . "\")'><i class='icon-rocket'></i></button>";
+            }
+
+
+           
+            // $hapus = "<button class='btn btn-danger btn-icon-anim btn square' id='myButton' onclick='hapus(\"" . $page_data[$i]->id_asesmen . "\")'><i class='icon-trash'></i></button>";
+
+
+            $skor_total = $page_data[$i]->skor_total;
+            // $diagnosa = $page_data[$i]->diagnosa;
+            $tanggal = strtotime($page_data[$i]->tanggal);
+            $date = strftime("%A, %d %B %Y ", $tanggal);
+            $tipe_resiko = $page_data[$i]->tipe_resiko;
+
+
+
+
+            $staff = $staff;
+
+
+            $out[$i] = array($no, $tombol,$skor_total, $date, $staff, $tipe_resiko);
+        }
+        if ($out == null) {
+            echo '{"data":""}';
+            exit;
+        } else {
+            $page_data['data'] = $out;
+            echo json_encode($page_data);
+            exit;
+        }
+    }
+
+	public function get_ass_per_ranap()
+        {
+            $id = $this->input->post('id');
+           
+            // Menggabungkan data dari dua tabel menggunakan JOIN
+            $this->db->select('a.*');
+            $this->db->from('form_ass_per_ranap a');
+            $this->db->where('a.id_form', $id);
+            $db = $this->db->get()->row_array();
+           
+            if (!empty($db)) {
+                $db['status_dt'] = 'found';
+            } else {
+                $db = ['status_dt' => 'not found'];
+            }
+           
+            echo json_encode($db);
+            exit;
+        }
+		public function update_asesmen_ranap()
+    {
+        // Ambil data dari AJAX POST
+        $id_pelayanan = $this->input->post('id_pelayanan');
+        $id_history   = $this->input->post('id_history');
+        $no_rm        = $this->input->post('no_rm');
+
+
+        $jatuh        = $this->input->post('jatuh');
+        $sekunder     = $this->input->post('sekunder');
+        $bantu        = $this->input->post('bantu');
+        $infus        = $this->input->post('infus');
+        $berjalan     = $this->input->post('berjalan');
+        $mental       = $this->input->post('mental');
+
+
+        // Siapkan data untuk update
+        $data = [
+            'umur'          => $jatuh,
+            'jenis_kelamin' => $sekunder,
+            'diagnosis'     => $bantu,
+            'gangguan'      => $infus,
+            'faktor'        => $berjalan,
+            'anestesi'      => $mental,
+            'tanggal'       => date('Y-m-d H:i:s')
+        ];
+
+
+        // Jalankan query update langsung tanpa model
+        $this->db->where('id_history', $id_history);
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $update = $this->db->update('form_ass_per_ranap', $data);
+
+
+        // Kirim respon JSON ke AJAX
+        if ($update) {
+            echo json_encode(['status' => 'success', 'message' => 'Data berhasil diupdate.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal mengupdate data.']);
+        }
+    }
+
+
+
+
+
+
 
 	
 }

@@ -1,4 +1,5 @@
 
+<!-- JS only (CSS sudah terintegrasi otomatis di SweetAlert2) -->
 <div class="row">
 	<div class="col-sm-12">
 		<div class="panel panel-default card-view">
@@ -471,7 +472,7 @@
 
 										<div class="form-group">
 											<div class="col-md-6">
-												<label class="control-label mb-10 text-left"><b>Keluhan Utama:
+												<label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span>
 														<b /><span class="help"></span></label>
 												<span id="riwayat_error" class="text-danger"></span>
 												<div class="has-success">
@@ -1988,6 +1989,7 @@
 						);
 					}
 				}
+
 				// Menampilkan dan menyembunyikan teks
 				$(function() {
 					$("#alergi1").click(function() {
@@ -2307,7 +2309,466 @@
 						.val() : masalah_keperawatan.toString();
 
 
+						if (tekanan_darah.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Tekanan darah sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
 
+
+							return ;
+						}
+
+
+						if (suhu.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Suhu sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (frequensi_nadi.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Frekuensi nadi sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+
+
+						if (tinggi_badan.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Tinggi Badan sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (lingkar_kepala.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Lingkar Kepala sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+						console.log("11111111");
+
+
+						if (frequensi_nafas.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Pernafasan sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (berat_badan.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Berat Badan  sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (lingkar_lengan.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Lingkar Lengan sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+
+
+						if (keluhan_utama.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Keluhan Utama sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						// Validasi untuk Bagian WANITA HAMIL
+						if (jenis_kelamin  == "PEREMPUAN") {
+							if (usia_menstruasi.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Keluhan Utama sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+
+
+							if (siklus_menstruasi.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Siklus menstruasi sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (riwayat_obstrik1.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Riwayat Obstrik G sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (riwayat_obstrik2.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Riwayat Obstrik P sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (riwayat_obstrik3.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Riwayat Obstrik O sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (jumlah_anak.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Jumlah Anak sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (jumlah_anak1.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Jumlah Anak Laki-laki sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+
+
+							if (jumlah_anak1.trim() === '' ) {
+								swal({
+									title: "Form Belum Lengkap!",
+									text: "Pastikan Form Jumlah Anak Perempuan sudah diisi.",
+									icon: "warning",
+									confirmButtonColor: "#3cb878",
+								});
+
+
+								return ;
+							}
+						}
+
+									
+					if (tekanan_darah.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Tekanan darah sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (suhu.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Suhu sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (frequensi_nadi.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Frekuensi nadi sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+
+
+					if (tinggi_badan.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Tinggi Badan sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (lingkar_kepala.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Lingkar Kepala sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (frequensi_nafas.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Pernafasan sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (berat_badan.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Berat Badan  sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					if (lingkar_lengan.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Lingkar Lengan sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+
+
+					if (keluhan_utama.trim() === '' ) {
+						swal({
+							title: "Form Belum Lengkap!",
+							text: "Pastikan Form Keluhan Utama sudah diisi.",
+							icon: "warning",
+							confirmButtonColor: "#3cb878",
+						});
+
+
+						return ;
+					}
+
+
+					// Validasi untuk Bagian WANITA HAMIL
+					if (jenis_kelamin  == "PEREMPUAN") {
+						if (usia_menstruasi.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Keluhan Utama sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+
+
+						if (siklus_menstruasi.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Siklus menstruasi sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (riwayat_obstrik1.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Riwayat Obstrik G sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (riwayat_obstrik2.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Riwayat Obstrik P sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (riwayat_obstrik3.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Riwayat Obstrik O sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (jumlah_anak.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Jumlah Anak sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (jumlah_anak1.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Jumlah Anak Laki-laki sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+
+
+						if (jumlah_anak1.trim() === '' ) {
+							swal({
+								title: "Form Belum Lengkap!",
+								text: "Pastikan Form Jumlah Anak Perempuan sudah diisi.",
+								icon: "warning",
+								confirmButtonColor: "#3cb878",
+							});
+
+
+							return ;
+						}
+					}
 					dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' +
 						id_history + '&kebutuhan_khusus=' + kebutuhan_khusus +
 						'&tekanan_darah=' + tekanan_darah + '&suhu=' + suhu +

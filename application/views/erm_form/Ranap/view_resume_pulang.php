@@ -184,16 +184,16 @@
               <div class="col-md-10">
                 <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
               </div>
-              <!-- <div class="form-group">
-                                <div class="col-md-4">
-                                    <label class="control-label mb-10 text-left">Alasan / Indikasi Masuk RS :<span class="help"></span></label>
-                                    <span id="keluhan_error" class="text-danger"></span>
-                                    <div class="has-success">
-                                        <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="3"></textarea>
-                                        <span class="help-block text-danger"></span>
-                                    </div>
-                                </div>
-                            </div> -->
+              <div class="form-group">
+                <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Alasan / Indikasi Masuk RS :<span class="help"></span></label>
+                    <span id="keluhan_error" class="text-danger"></span>
+                    <div class="has-success">
+                        <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="3"></textarea>
+                        <span class="help-block text-danger"></span>
+                    </div>
+                </div>
+                </div>
 
               <div class="row">
                 <div class="col-sm-12">
@@ -241,7 +241,7 @@
                       const ketContainer = document.getElementById("keterangan_container");
 
                       function toggleKeterangan() {
-                        if (ya && ya.checked) {
+                        if (ya && ya.checked || ) {
                           ketContainer.style.display = "block";
                         } else {
                           ketContainer.style.display = "none";
@@ -745,64 +745,88 @@
     }
   </script>
   <script>
-    $(document).ready(function() {
-      id_pelayanan = $('#inPel').val();
-      id_history = $('#inHis').val();
-      $('#loading').show();
-      $.ajax({
-        url: "<?php echo base_url() ?>Erm_resume_pulang/get_data_resume",
-        method: "POST",
-        dataType: 'json',
-        data: {
-          id: id_pelayanan,
-          id_history: id_history
-        },
-        success: function(data) {
+   $(document).ready(function () {
+  // NEW: hindari global leak, pakai const
+  const id_pelayanan = $('#inPel').val();
+  const id_history   = $('#inHis').val();
 
-          $('#keluhan_utama').val(data.alasan);
-          $('#riwayat').val(data.resume['riwayat_sekarang']);
-          $('#diagnosa').val(data.diagnosa);
-          $('#prosedur_terapi').val(data.resume['terapi']);
-          $('#edukasi').val(data.resume['konsul']);
-          $('#keadaan').val(data.resume['keadaan_pulang']).change();
-          var html = "<table id='t_fisik'>" +
-            "<tr><td>a. Tanda Vital: </td></tr>" +
-            "<tr>" +
-            "<td>GCS : " + data.resume['gcs'] + " </td>" +
-            "<td>E : " + data.resume['e'] + " </td>" +
-            "<td>M : " + data.resume['m'] + " </td>" +
-            "<td>V : " + data.resume['v'] + " </td>" +
-            "</tr>" +
-            "<tr>" +
-            "<td>Tekanan darah : " + data.resume['tekanan_darah'] + " MmHg</td>" +
-            "<td>Suhu : " + data.resume['suhu'] + " &deg;C</td>" +
-            "<td>Nadi : " + data.resume['frequensi_nadi'] + " x/menit</td>" +
-            "<td>Pernafasan : " + data.resume['frequensi_nafas'] + " x/menit</td>" +
-            "</tr>" +
-            "<tr>" +
-            "<td>SPO2 : " + data.resume['spo2'] + " </td>" +
-            "<td>Berat Badan : " + data.resume['berat_badan'] + " kg</td>" +
-            "<td>Tinggi Badan : " + data.resume['tinggi_badan'] + " cm</td>" +
-            "<td></td>" +
-            "</tr>" +
-            "</table>";
-          $('#p_fisik').html(html).attr("style", "color:black");
-          const tabelHTML = generatePemeriksaanFisikTable(data.resume);
-          $('#p_fisik_2').html(tabelHTML).attr("style", "color:black");
+  $('#loading').show();
 
+  $.ajax({
+    url: "<?php echo base_url() ?>Erm_resume_pulang/get_data_resume",
+    method: "POST",
+    dataType: "json",
+    data: { id: id_pelayanan, id_history: id_history },
+    success: function (data) {
+      // nilai dasar
+      $('#keluhan_utama').val(data.alasan);
+      // NEW: fallback dua sumber riwayat, ambil yang tersedia
+      $('#riwayat').val(
+        (data.resume && data.resume.riwayat_sekarang)
+          ? data.resume.riwayat_sekarang
+          : (data.riwayat_sekarang || "")
+      );
+      const ketContainer = document.getElementById("keterangan_container");
 
-          let htmlDiagnosa = generateDiagnosa(data.diagnosa_ranap);
-          $('#diagnosa_ranap').html(htmlDiagnosa).attr("style", "color:black");
-          diagnose_arry = data.diagnosa_ranap;
-          console.log("Data diagnose_arry dari AJAX pertama:", diagnose_arry);
+      $('#ket').val(data.resume.riwayat_sekarang);
 
-          reload_data_terapi_id_pel(id_pelayanan);
-          $('#loading').hide();
+      if (data.resume.riwayat_sekarang) {
+        $('input[id="riwayat_ya"]').prop('checked', true);
+        ketContainer.style.display = 'block';
+      }
 
-        }
+      $('#diagnosa').val(data.diagnosa);
+      $('#prosedur_terapi').val(data.resume ? data.resume['terapi'] : "");
+      $('#edukasi').val(data.resume ? data.resume['konsul'] : "");
+      $('#keadaan').val(data.resume ? data.resume['keadaan_pulang'] : "").change();
 
-      });
-    });
+      // rakit tabel fisik
+      var html =
+        "<table id='t_fisik'>" +
+        "<tr><td>a. Tanda Vital: </td></tr>" +
+        "<tr>" +
+        "<td>GCS : " + (data.resume ? data.resume['gcs'] : "") + " </td>" +
+        "<td>E : " + (data.resume ? data.resume['e'] : "") + " </td>" +
+        "<td>M : " + (data.resume ? data.resume['m'] : "") + " </td>" +
+        "<td>V : " + (data.resume ? data.resume['v'] : "") + " </td>" +
+        "</tr>" +
+        "<tr>" +
+        "<td>Tekanan darah : " + (data.resume ? data.resume['tekanan_darah'] : "") + " MmHg</td>" +
+        "<td>Suhu : " + (data.resume ? data.resume['suhu'] : "") + " &deg;C</td>" +
+        "<td>Nadi : " + (data.resume ? data.resume['frequensi_nadi'] : "") + " x/menit</td>" +
+        "<td>Pernafasan : " + (data.resume ? data.resume['frequensi_nafas'] : "") + " x/menit</td>" +
+        "</tr>" +
+        "<tr>" +
+        "<td>SPO2 : " + (data.resume ? data.resume['spo2'] : "") + " </td>" +
+        "<td>Berat Badan : " + (data.resume ? data.resume['berat_badan'] : "") + " kg</td>" +
+        "<td>Tinggi Badan : " + (data.resume ? data.resume['tinggi_badan'] : "") + " cm</td>" +
+        "<td></td>" +
+        "</tr>" +
+        "</table>";
+
+      $('#p_fisik').html(html).attr("style", "color:black");
+
+      // NEW: aman jika resume null
+      const tabelHTML = generatePemeriksaanFisikTable(data.resume || {});
+      $('#p_fisik_2').html(tabelHTML).attr("style", "color:black");
+
+      let htmlDiagnosa = generateDiagnosa(data.diagnosa_ranap || []);
+      $('#diagnosa_ranap').html(htmlDiagnosa).attr("style", "color:black");
+
+      // NEW: hindari global leak
+      const diagnose_arry = data.diagnosa_ranap || [];
+      console.log("Data diagnose_arry dari AJAX pertama:", diagnose_arry);
+
+      reload_data_terapi_id_pel(id_pelayanan);
+      $('#loading').hide();
+    },
+    // NEW: pastikan loading disembunyikan saat error
+    error: function (xhr, status, err) {
+      console.error("Gagal get_data_resume:", status, err);
+      $('#loading').hide();
+    }
+  });
+});
 
     function generatePemeriksaanFisikTable(data) {
       let html = `

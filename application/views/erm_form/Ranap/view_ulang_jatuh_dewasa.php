@@ -14,6 +14,8 @@
           <div class="form-wrap">
 
 
+
+
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">No.RM<span class="help"></span></label>
@@ -22,8 +24,10 @@
                 <input type="hidden" class="form-control" value="<?= $id_pelayanan ?>" id="inPel">
                 <input type="hidden" class="form-control" value="<?= $id_history ?>" id="inHis">
                 <input type="hidden" class="form-control" id="id">
+               
               </div>
             </div>
+
 
             <div class="form-group">
               <div class="col-md-3">
@@ -33,11 +37,13 @@
               </div>
             </div>
 
+
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Tgl Lahir / Umur<span class="help"></span></label>
                 <input type="text" disabled class="form-control" value="<?php
                                                                         setlocale(LC_ALL, 'id_ID');
+
 
                                                                         date_default_timezone_set('Asia/Jakarta');
                                                                         $time = strtotime($tgl_lahir);
@@ -47,6 +53,7 @@
               </div>
             </div>
 
+
             <div class="form-group ">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Jenis Kelamin</label>
@@ -54,6 +61,7 @@
                 <input type="text" disabled class="form-control" value="<?= $jenis_kelamin ?>" id="inJk">
               </div>
             </div>
+
 
             <div class="form-group">
               <div class="col-md-3 text-left">
@@ -63,7 +71,9 @@
             </div>
 
 
-            <!-- 
+
+
+            <!--
                               --bagian ASESMEN AWAL KEPERAWATAN/KEBIDANAN
                             -->
             <div class="form-group" id="spirit">
@@ -103,13 +113,13 @@
                   </label>
                   <span id="jatuh_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="jatuh1" type="radio" name="jatuh" value="Tidak" data-exclude="true">
+                    <input id="jatuh0" type="radio" name="jatuh" value="Tidak" data-exclude="true">
                     <label class="control-label" for="jatuh1">
                       Tidak(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="jatuh2" type="radio" name="jatuh" value="Ya" data-exclude="true">
+                    <input id="jatuh25" type="radio" name="jatuh" value="Ya" data-exclude="true">
                     <label class="control-label" for="jatuh2">
                       Ya(25)
                     </label>
@@ -123,13 +133,13 @@
                   </label>
                   <span id="sekunder_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="sekunder1" type="radio" name="sekunder" value="Tidak" data-exclude="true">
+                    <input id="sekunder0" type="radio" name="sekunder" value="Tidak" data-exclude="true">
                     <label class="control-label" for="sekunder1">
                       Tidak(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="sekunder2" type="radio" name="sekunder" value="Ya" data-exclude="true">
+                    <input id="sekunder15" type="radio" name="sekunder" value="Ya" data-exclude="true">
                     <label class="control-label" for="sekunder2">
                       Ya(15)
                     </label>
@@ -143,19 +153,19 @@
                   </label>
                   <span id="bantu_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="bantu1" type="radio" name="bantu" value="Tidak Ada" data-exclude="true">
+                    <input id="bantu0" type="radio" name="bantu" value="Tidak Ada" data-exclude="true">
                     <label class="control-label" for="bantu1">
                       Tidak Ada/Bedrest/Dibantu Perawat(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="bantu2" type="radio" name="bantu" value="Tongkat" data-exclude="true">
+                    <input id="bantu15" type="radio" name="bantu" value="Tongkat" data-exclude="true">
                     <label class="control-label" for="bantu2">
                       Kruk/Tongkat(15)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="bantu3" type="radio" name="bantu" value="Kursi" data-exclude="true">
+                    <input id="bantu30" type="radio" name="bantu" value="Kursi" data-exclude="true">
                     <label class="control-label" for="bantu3">
                       Kursi/Perabot(30)
                     </label>
@@ -169,13 +179,13 @@
                   </label>
                   <span id="infus_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="infus1" type="radio" name="infus" value="Tidak" data-exclude="true">
+                    <input id="infus0" type="radio" name="infus" value="Tidak" data-exclude="true">
                     <label class="control-label" for="infus1">
                       Tidak(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="infus2" type="radio" name="infus" value="Ya" data-exclude="true">
+                    <input id="infus20" type="radio" name="infus" value="Ya" data-exclude="true">
                     <label class="control-label" for="infus2">
                       Ya(20)
                     </label>
@@ -189,25 +199,26 @@
                   </label>
                   <span id="berjalan_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="berjalan1" type="radio" name="berjalan" value="Normal" data-exclude="true">
+                    <input id="berjalan0" type="radio" name="berjalan" value="Normal" data-exclude="true">
                     <label class="control-label" for="berjalan1">
                       Normal/Bedrest/Kursi Roda(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="berjalan2" type="radio" name="berjalan" value="Lemah" data-exclude="true">
+                    <input id="berjalan10" type="radio" name="berjalan" value="Lemah" data-exclude="true">
                     <label class="control-label" for="berjalan2">
                       Lemah(10)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="berjalan3" type="radio" name="berjalan" value="Terganggu" data-exclude="true">
+                    <input id="berjalan20" type="radio" name="berjalan" value="Terganggu" data-exclude="true">
                     <label class="control-label" for="berjalan3">
                       Terganggu(20)
                     </label>
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -216,13 +227,13 @@
                   </label>
                   <span id="mental_error" class="text-danger"></span>
                   <div class="radio-button radio-button-primary">
-                    <input id="mental1" type="radio" name="mental" value="Menyadari" data-exclude="true">
+                    <input id="mental0" type="radio" name="mental" value="Menyadari" data-exclude="true">
                     <label class="control-label" for="mental1">
                       Menyadari Kemampuan(0)
                     </label>
                   </div>
                   <div class="radio-button radio-button-primary">
-                    <input id="mental2" type="radio" name="mental" value="Pelupa" data-exclude="true">
+                    <input id="mental15" type="radio" name="mental" value="Pelupa" data-exclude="true">
                     <label class="control-label" for="mental2">
                       Lupa akan keterbatasan/Pelupa(15)
                     </label>
@@ -230,6 +241,7 @@
                 </div>
               </div>
             </div>
+
 
             <div class="col-md-6">
               <button type="submit" class="btn btn-success mb-4" onclick="sumScore()">Skor Risiko</button>
@@ -239,9 +251,11 @@
               </div>
             </div>
 
+
             <script>
               document.addEventListener("DOMContentLoaded", function() {
                 const observasiYes = document.getElementById("observasi1");
+
 
                 observasiYes.addEventListener("change", function() {
                   if (observasiYes.checked) {
@@ -249,6 +263,7 @@
                     const radioButtons = document.querySelectorAll(
                       'input[type="radio"][value="Ya"]'
                     );
+
 
                     // Select all "Ya" options except those with data-exclude
                     radioButtons.forEach((radio) => {
@@ -261,6 +276,7 @@
               });
             </script>
 
+
             <!-- Formulir resiko rendah -->
             <div id="formResikoRendah" class="risk-form" style="display:none;">
               <div class="col-md-12">
@@ -269,6 +285,7 @@
                   </strong>
                 </h5>
               </div>
+
 
               <div class="form-group">
                 <div class="col-md-4">
@@ -284,6 +301,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -306,6 +324,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-4">
                   <label class="control-label mb-10 text-left">
@@ -326,6 +345,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -348,6 +368,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-4">
                   <label class="control-label mb-5 mt-10 text-left">
@@ -368,6 +389,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -390,6 +412,7 @@
                 </div>
               </div>
 
+
               <div class="form-group">
                 <div class="col-md-4">
                   <label class="control-label mb-10 mt-5 text-left">
@@ -406,6 +429,7 @@
                         <label class="control-label" for="lokasi_kamar_mandi_tidak">Tidak</label>
                       </div>
 
+
                       <label class="control-label mb-5 mt-5">b. Jika pasien linglung orientasi dilaksanakan bertahap</label>
                       <div class="radio-button radio-button-primary">
                         <input id="orientasi_bertahap_iya" type="radio" name="orientasi_bertahap" value="Ya">
@@ -417,6 +441,7 @@
                       </div>
                     </div>
 
+
                     <div class="col-md-6">
                       <label class="control-label mb-5">c. Tempatkan bel ditempat yang mudah dicapai</label>
                       <div class="radio-button radio-button-primary">
@@ -427,6 +452,7 @@
                         <input id="tempat_bel_tidak" type="radio" name="tempat_bel" value="Tidak">
                         <label class="control-label" for="tempat_bel_tidak">Tidak</label>
                       </div>
+
 
                       <label class="control-label mb-5 mt-5">d. Instruksikan meminta bantuan perawat sebelum turun dari tempat tidur</label>
                       <div class="radio-button radio-button-primary">
@@ -440,6 +466,7 @@
                     </div>
                   </div>
                 </div>
+
 
                 <div class="col-md-4">
                   <label class="control-label mb-15 mt-10 text-left">
@@ -455,10 +482,13 @@
                   </div>
                 </div>
 
+
               </div>
+
 
             </div>
             <!-- Ending formulir resiko rendah -->
+
 
             <!-- Formulir resiko sedang -->
             <div id="formResikoSedang" class="risk-form" style="display:none;">
@@ -468,6 +498,7 @@
                   </strong>
                 </h5>
               </div>
+
 
               <div class="form-group">
                 <div class="col-md-4">
@@ -483,6 +514,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -505,6 +537,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-4">
                   <label class="control-label mb-10 text-left">
@@ -525,6 +558,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -547,6 +581,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-4">
                   <label class="control-label mb-5 mt-10 text-left">
@@ -567,6 +602,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -589,6 +625,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-5">
                   <label class="control-label mb-5 mt-10 text-left">
@@ -610,9 +647,12 @@
                 </div>
               </div>
 
+
             </div>
 
+
             <!-- Ending formulir resiko sedang -->
+
 
             <!-- Formulir resiko tinggi -->
             <div id="formResikoTinggi" class="risk-form" style="display:none;">
@@ -622,6 +662,7 @@
                   </strong>
                 </h5>
               </div>
+
 
               <div class="form-group">
                 <div class="col-md-4">
@@ -637,6 +678,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="form-group ">
                 <div class="col-md-4">
@@ -659,6 +701,7 @@
                 </div>
               </div>
 
+
               <div class="form-group ">
                 <div class="col-md-4">
                   <label class="control-label mb-10 text-left">
@@ -680,8 +723,11 @@
                 </div>
               </div>
 
+
             </div>
             <!-- Ending formulir resiko tinggi -->
+
+
 
 
             <div class="col-md-3">
@@ -711,6 +757,12 @@
 
 
 
+
+
+
+
+
+
             <div class="form-group text-center" style="margin-top: 30px;">
               <div class="col-md-12">
                 <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
@@ -719,6 +771,7 @@
                 <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left">
                   </i><span class="btn-text">KEMBALI</span></a>
 
+
                 <button id="simpan" onclick="simpan()" type="submit" class="btn btn-success mb-4">Simpan</button>
                 <button style="display: none;" id="edit" type="submit" class="btn btn-warning mb-4" onclick="edit()">Edit</button>
                 <!-- <button style="display: none;" id="cetak" type="submit" class="btn btn-primary mb-4" onclick="cetak()">Cetak</button> -->
@@ -726,9 +779,12 @@
               <canvas id="can" style="display:none;"></canvas>
 
 
+
+
             </div>
           </div>
         </div>
+
       </div>
 
 
@@ -1356,4 +1412,284 @@
       return false;
 
     }
+  </script>
+
+  <<script>
+ function pilihRanap(id) {
+      // $('#id').val(id);
+      $.ajax({
+        url: "<?php echo base_url() ?>Erm_ranap_ulang_jatuh_dewasa/get_ass_per_ranap",
+        method: "POST",
+        dataType: 'json',
+        data: {
+          id: id
+        },
+
+
+        success: function(data) {
+          if (data.status_dt == "found") {
+            const { umur, jenis_kelamin, diagnosis, gangguan, faktor, anestesi } = data;
+
+
+            const total =
+                (+umur || 0) +
+                (+jenis_kelamin || 0) +
+                (+diagnosis || 0) +
+                (+gangguan || 0) +
+                (+faktor || 0) +
+                (+anestesi || 0);
+              const map = {
+              jatuh: data.umur,
+              sekunder: data.jenis_kelamin,
+              bantu: data.diagnosis,
+              infus: data.gangguan,
+              berjalan: data.faktor,
+              mental: data.anestesi
+            };
+
+
+            $('#edit').attr('onclick', 'editRanap()');
+
+
+          // 2️⃣ Loop tiap pasangan name:value
+            $.each(map, function(name, value) {
+              // Pastikan value tidak undefined/null
+              if (value !== undefined && value !== null && value !== 'undefined') {
+                // Coba check radio dengan value yang sesuai
+                $(`input[name="${name}"][id="${name+value}"]`).prop('checked', true);
+              }
+            });
+
+
+            // smooth scroll
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+
+
+            $('#inTotal').val(total);
+            $('#edit').show();
+            $('#cetak').show();
+            $('#simpan').hide();
+
+
+
+
+            //  const skorMap = {
+            //   // Jatuh
+            //   "jatuh0": 0,
+            //   "jatuh25": 25,
+
+
+            //   // Sekunder
+            //   "sekunder0": 0,
+            //   "sekunder15": 15,
+
+
+            //   // Bantu
+            //   "bantu0": 0,
+            //   "bantu15": 15,
+            //   "bantu30": 30,
+
+
+            //   // Infus
+            //   "infus0": 0,
+            //   "infus20": 20,
+
+
+            //   // Berjalan
+            //   "berjalan0": 0,
+            //   "berjalan10": 10,
+            //   "berjalan20": 20,
+
+
+            //   // Mental
+            //   "mental0": 0,
+            //   "mental15": 15
+            // };
+
+
+            // // setiap kali ada radio berubah, update value-nya
+            // $('input[type="radio"]').on('change', function() {
+            //   const id = $(this).attr('id'); // contoh: "sekunder15"
+            //   const skor = skorMap[id] || 0; // ambil skor dari mapping
+            //   $(this).val(skor); // ubah value input jadi angka skor
+
+
+            //   console.log('Input', $(this).attr('name'), 'sekarang bernilai:', skor);
+            // });
+
+
+          } else {
+            swal({
+              title: "Gagal!",
+              type: "warning",
+              text: "Data Kosong",
+              confirmButtonColor: "#3cb878",
+            });
+          }
+        }
+
+
+      });
+      return false;
+
+
+    }
+
+
+    function editRanap() {
+      let id = $("#id").val();
+      let id_pelayanan = $('#inPel').val();
+      let id_history = $('#inHis').val();
+      let no_rm = $('#inNoRM').val();
+
+
+      // Ambil semua nilai radio
+      let jatuh = $('input[name="jatuh"]:checked').val() || "";
+      let sekunder = $('input[name="sekunder"]:checked').val() || "";
+      let bantu = $('input[name="bantu"]:checked').val() || "";
+      let infus = $('input[name="infus"]:checked').val() || "";
+      let berjalan = $('input[name="berjalan"]:checked').val() || "";
+      let mental = $('input[name="mental"]:checked').val() || "";
+
+
+      // ✅ Gunakan mapping objek (lebih cepat, mudah dibaca)
+      const nilaiMap = {
+        jatuh: { "Ya": 25, "Tidak": 0 },
+        sekunder: { "Ya": 15, "Tidak": 0 },
+        bantu: { "Tongkat": 15, "Kursi": 30, "Tidak Ada": 0 },
+        infus: { "Ya": 20, "Tidak": 0 },
+        berjalan: { "Lemah": 10, "Terganggu": 20, "Normal": 0 },
+        mental: { "Pelupa": 15, "Menyadari": 0 }
+      };
+
+
+      // 🧠 Otomatis ubah semua berdasarkan mapping
+      jatuh = nilaiMap.jatuh[jatuh] ?? 0;
+      sekunder = nilaiMap.sekunder[sekunder] ?? 0;
+      bantu = nilaiMap.bantu[bantu] ?? 0;
+      infus = nilaiMap.infus[infus] ?? 0;
+      berjalan = nilaiMap.berjalan[berjalan] ?? 0;
+      mental = nilaiMap.mental[mental] ?? 0;
+
+
+      const dataString = {
+        id,
+        id_pelayanan,
+        id_history,
+        no_rm,
+        jatuh,
+        sekunder,
+        bantu,
+        infus,
+        berjalan,
+        mental
+      };
+
+
+      console.log("Data dikirim:", dataString);
+
+
+      $.ajax({
+        url: "<?php echo base_url() ?>Erm_ranap_ulang_jatuh_dewasa/update_asesmen_ranap",
+        method: "POST",
+        dataType: 'json',
+        data: dataString,
+        success: function (data) {
+          console.log("Berhasil:", data);
+          location.reload();
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", error);
+          swal({
+            title: "Error!",
+            text: "Terjadi kesalahan saat mengirim data.",
+            icon: "error",
+            confirmButtonColor: "#3cb878",
+          });
+        }
+      });
+
+
+      return false;
+    }
+ function sumScore() {
+      var score = 0,
+        score1 = 0,
+        score2 = 0,
+        score3 = 0,
+        score4 = 0,
+        score5 = 0;
+
+
+      // Logika perhitungan skor yang sama seperti sebelumnya
+      if ($('#jatuh0').is(":checked")) score = 0;
+      else if ($('#jatuh25').is(":checked")) score = 25;
+
+
+      if ($('#sekunder0').is(":checked")) score1 = 0;
+      else if ($('#sekunder15').is(":checked")) score1 = 15;
+
+
+      if ($('#bantu0').is(":checked")) score2 = 0;
+      else if ($('#bantu15').is(":checked")) score2 = 15;
+      else if ($('#bantu30').is(":checked")) score2 = 30;
+
+
+      if ($('#infus0').is(":checked")) score3 = 0;
+      else if ($('#infus20').is(":checked")) score3 = 20;
+
+
+      if ($('#berjalan0').is(":checked")) score4 = 0;
+      else if ($('#berjalan10').is(":checked")) score4 = 10;
+      else if ($('#berjalan20').is(":checked")) score4 = 20;
+
+
+      if ($('#mental0').is(":checked")) score5 = 0;
+      else if ($('#mental15').is(":checked")) score5 = 15;
+
+
+      // Total skor
+      var sum = score + score1 + score2 + score3 + score4 + score5;
+      $('#inTotal').val(sum);
+
+
+      // Penentuan tipe resiko berdasarkan skor
+      var tipe_resiko = '';
+      if (sum <= 24) {
+        tipe_resiko = 'Rendah';
+      } else if (sum <= 44) {
+        tipe_resiko = 'Sedang';m
+      } else {
+        tipe_resiko = 'Tinggi';
+      }
+
+
+      console.log('Total Score:', sum);
+      console.log('Tipe Resiko:', tipe_resiko);
+
+
+      // Simpan tipe_resiko ke variabel global atau input tersembunyi untuk diambil saat simpan
+      $('#tipeResikoHidden').val(tipe_resiko); // Misalnya menggunakan input hidden
+
+
+      // Logika menampilkan form berdasarkan tipe risiko
+      let formToShow = [];
+      if (sum <= 24) {
+        formToShow.push('formResikoRendah');
+      } else if (sum <= 44) {
+        formToShow.push('formResikoRendah', 'formResikoSedang');
+      } else {
+        formToShow.push('formResikoRendah', 'formResikoSedang', 'formResikoTinggi');
+      }
+      $('.risk-form').hide();
+      formToShow.forEach(function(form) {
+        $('#' + form).show();
+      });
+    }
+
+
+
   </script>

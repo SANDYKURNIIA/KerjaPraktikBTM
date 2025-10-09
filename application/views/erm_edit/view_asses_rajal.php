@@ -466,7 +466,8 @@
 
 										<div class="form-group">
 											<div class="col-md-6">
-												<label class="control-label mb-10 text-left"><b>Keluhan Utama:
+												<label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color: red;">*</span>
+
 														<b /><span class="help"></span></label>
 												<span id="riwayat_error" class="text-danger"></span>
 												<div class="has-success">
@@ -2251,262 +2252,536 @@
 
 
 	function simpan() {
-		id = $('#id').val();
-		id_pelayanan = $('#inPel').val();
-		id_history = $('#inHis').val();
-		no_rm = $('#inNoRM').val();
-		inJenPel = $('#inJenPel').val();
-
-
-
-		kebutuhan_khusus = $('input[name="kebutuhan_khusus"]').val();
-		tekanan_darah = $('input[name="tekanan_darah"]').val();
-		suhu = $('input[name="suhu"]').val();
-		frequensi_nadi = $('input[name="frequensi_nadi"]').val();
-		berat_badan = $('input[name="berat_badan"]').val();
-		frequensi_nafas = $('input[name="frequensi_nafas"]').val();
-		tinggi_badan = $('input[name="tinggi_badan"]').val();
-		berat_lahir = $('input[name="berat_lahir"]').val();
-		lingkar_kepala = $('input[name="lingkar_kepala"]').val();
-		lingkar_lengan = $('input[name="lingkar_lengan"]').val();
-
-		bicara = $('input[name="bicara"]').val();
-		komunikasi = $('input[name="komunikasi"]').val();
-		psikologis = $('input[name="psikologis"]').val();
-		sosiologi = $('input[name="sosiologi"]').val();
-		ekonomi = $('input[name="ekonomi"]').val();
-
-		keluhan_utama = $('#keluhan_utama').val();
-		var penyakit_past = [];
-		$('input[name="penyakit_past"]').each(function() {
-			if ($(this).is(":checked")) {
-				penyakit_past.push($(this).val());
-			}
-		});
-		penyakit_past = $('#penyakit_past0').is(":checked") ? penyakit_past.toString() + ', ' + $(
-				'#penyakit_past').val() :
-			penyakit_past.toString();
-
-		var penyakit_keluarga = [];
-		$('input[name="penyakit_keluarga"]').each(function() {
-			if ($(this).is(":checked")) {
-				penyakit_keluarga.push($(this).val());
-			}
-		});
-		penyakit_keluarga = $('#keluarga_dm').is(":checked") ? penyakit_keluarga.toString() + ', ' + $(
-				'#penyakit_keluarga')
-			.val() : penyakit_keluarga.toString();
-
-		riwayat_penggunaobat = $('#riwayat_penggunaobat').val();
-		alloanamnesa = $('#riwayat_Alloanamnesa').val();
-		alergi = $('input[name="alergi"]').val();
-
-		skor_nyeri = $('#slide').val();
-		if (skor_nyeri >= 0 && skor_nyeri < 1) {
-			skala_nyeri = 'Tidak Nyeri';
-		} else if (skor_nyeri >= 1 && skor_nyeri < 3) {
-			skala_nyeri = 'Ringan';
-		} else if (skor_nyeri >= 3 && skor_nyeri < 5) {
-			skala_nyeri = ' Sedang';
-		} else if (skor_nyeri >= 5 && skor_nyeri < 7) {
-			skala_nyeri = 'Sedang';
-		} else if (skor_nyeri >= 7 && skor_nyeri < 9) {
-			skala_nyeri = 'Berat';
-		} else if (skor_nyeri >= 9 && skor_nyeri <= 10) {
-			skala_nyeri = 'Sangat Berat';
-		}
-		jatuh = $('input[name="jatuh"]:checked').val();
-		gangguan_ba = $('input[name="gangguan_ba"]:checked').val();
-		bingung = $('input[name="bingung"]:checked').val();
-		depresi = $('input[name="depresi"]:checked').val();
-		pusing = $('input[name="pusing"]:checked').val();
-		jalan = $('input[name="jalan"]:checked').val();
-		pikun = $('input[name="pikun"]:checked').val();
-		obat = $('input[name="obat"]:checked').val();
-		perawatan = $('input[name="perawatan"]:checked').val();
-
-		penurunan_bb = $('input[name="penurunan_bb"]:checked').val();
-		kurang_makan = $('input[name="kurang_makan"]:checked').val();
-		kurus = $('input[name="kurus"]:checked').val();
-		turun_bb = $('input[name="turun_bb"]:checked').val();
-		diare = $('input[name="diare"]:checked').val();
-		makan_kurang = $('input[name="makan_kurang"]:checked').val();
-		malnutrisi = $('input[name="malnutrisi"]:checked').val();
-
-
-		harilahir = $('input[name="harilahir"]').val();
-		di_lahir = $('input[name="di_lahir"]').val();
-		tolonglahir = $('input[name="tolonglahir"]').val();
-		anaklahir = $('input[name="anaklahir"]').val();
-		berat_badan_lahir = $('input[name="berat_badan_lahir"]').val();
-		tinggi_badan_lahir = $('input[name="tinggi_badan_lahir"]').val();
-		berat_tinggi_lahir = $('input[name="berat_tinggi_lahir"]').val();
-		Kelainan_lahir = $('input[name="Kelainan_lahir"]').val();
-
-		var Anak_mendapat = [];
-		$('input[name="Anak_mendapat"]').each(function() {
-			if ($(this).is(":checked")) {
-				Anak_mendapat.push($(this).val());
-			}
-		});
-		Anak_mendapat = $('#Makanan_tambahan').is(":checked") ? Anak_mendapat.toString() + ', ' + $(
-				'#Anak_mendapat')
-			.val() : Anak_mendapat.toString();
-
-
-
-		imunisasi_dasar = $('#imunisasi_dasar').val();
-		imunisasi_ulang = $('#imunisasi_ulang').val();
-
-		umur_membalikan = $('input[name="umur_membalikan"]').val()
-		umur_duduk = $('input[name="umur_duduk"]').val()
-		umur_berdiri = $('input[name="umur_berdiri"]').val()
-		umur_berjalan = $('input[name="umur_berjalan"]').val()
-		umur_mengoceh = $('input[name="umur_mengoceh"]').val()
-		umur_berbicara = $('input[name="umur_berbicara"]').val()
-
-
-		usia_menstruasi = $('input[name="usia_menstruasi"]').val()
-		siklus_menstruasi = $('input[name="siklus_menstruasi"]').val()
-		jumlah_darah = $('input[name="jumlah_darah"]').val();
-		nyeri_haid = $('input[name="nyeri_haid"]').val();
-		riwayat_obstrik1 = $('input[name="riwayat_obstrik1"]').val();
-		riwayat_obstrik2 = $('input[name="riwayat_obstrik2"]').val();
-		riwayat_obstrik3 = $('input[name="riwayat_obstrik3"]').val();
-		jumlah_anak = $('input[name="jumlah_anak"]').val();
-		jumlah_anak1 = $('input[name="jumlah_anak1"]').val();
-		jumlah_anak2 = $('input[name="jumlah_anak2"]').val();
-		riwayat_kb = $('input[name="riwayat_kb"]').val();
-		riwayat_hamil = $('input[name="riwayat_hamil"]').val();
-		keluhan_hamil = $('input[name="keluhan_hamil"]').val();
-		obat_hamil = $('input[name="obat_hamil"]').val();
-		riwayat_pakai_obat = $('#riwayat_pakai_obat').val();
-		riwayat_pakai_obat1 = $('#riwayat_pakai_obat1').val();
-		riwayat_pakai_obat2 = $('#riwayat_pakai_obat2').val();
+        const id = $('#id').val();
+        const id_pelayanan = $('#inPel').val();
+        const id_history = $('#inHis').val();
+        const no_rm = $('#inNoRM').val();
+        const inJenPel = $('#inJenPel').val();
+        let jenis_kelamin = $('input[name="jenis_kelamin"]').val()
 
 
 
 
 
-		presentasi_ni = $('input[name="presentasi_ni"]').val();
-
-		var masalah_keperawatan = [];
-		$('input[name="masalah_keperawatan"]').each(function() {
-			if ($(this).is(":checked")) {
-				masalah_keperawatan.push($(this).val());
-			}
-		});
-		masalah_keperawatan = $('#masalah_keperawatan7').is(":checked") ? masalah_keperawatan.toString() + ', ' + $(
-				'#masalah_keperawatan')
-			.val() : masalah_keperawatan.toString();
 
 
 
-
-		dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' +
-			id_history + '&kebutuhan_khusus=' + kebutuhan_khusus +
-			'&id=' + id +
-			'&tekanan_darah=' + tekanan_darah + '&suhu=' + suhu +
-			'&frequensi_nadi=' + frequensi_nadi +
-			'&berat_badan=' + berat_badan + '&berat_lahir=' + berat_lahir +
-			'&frequensi_nafas=' + frequensi_nafas +
-			'&tinggi_badan=' + tinggi_badan + '&skala_nyeri=' + skala_nyeri +
-			'&lingkar_kepala=' + lingkar_kepala +
-			'&lingkar_lengan=' + lingkar_lengan +
-			'&bicara=' + bicara + '&komunikasi=' + komunikasi +
-			'&psikologis=' + psikologis +
-			'&sosiologi=' + sosiologi +
-			'&ekonomi=' + ekonomi +
-			'&keluhan_utama=' + keluhan_utama +
-			'&penyakit_past=' + penyakit_past + '&alloanamnesa=' + alloanamnesa +
-			'&riwayat_penggunaobat=' + riwayat_penggunaobat +
-			'&alergi=' + alergi +
-			'&penyakit_keluarga=' + penyakit_keluarga +
-			'&skor_nyeri=' + skor_nyeri +
-			'&jatuh=' + jatuh + '&gangguan_ba=' + gangguan_ba +
-			'&bingung=' + bingung +
-			'&depresi=' + depresi +
-			'&pusing=' + pusing + '&jalan=' + jalan +
-			'&pikun=' + pikun + '&obat=' + obat +
-			'&perawatan=' + perawatan +
-			'&penurunan_bb=' + penurunan_bb + '&kurang_makan=' + kurang_makan +
-			'&kurus=' + kurus + '&turun_bb=' + turun_bb +
-			'&diare=' + diare + '&makan_kurang=' + makan_kurang +
-			'&malnutrisi=' + malnutrisi +
-
-			'&harilahir=' + harilahir +
-			'&di_lahir=' + di_lahir +
-			'&tolonglahir=' + tolonglahir +
-			'&anaklahir=' + anaklahir +
-			'&tinggi_badan_lahir=' + tinggi_badan_lahir +
-			'&berat_badan_lahir=' + berat_badan_lahir +
-			'&berat_tinggi_lahir=' + berat_tinggi_lahir +
-			'&Kelainan_lahir=' + Kelainan_lahir +
-			'&Anak_mendapat=' + Anak_mendapat +
-
-			'&imunisasi_dasar=' + imunisasi_dasar +
-			'&imunisasi_ulang=' + imunisasi_ulang +
-			'&umur_membalikan=' + umur_membalikan +
-			'&umur_duduk=' + umur_duduk +
-			'&umur_berdiri=' + umur_berdiri +
-			'&umur_berjalan=' + umur_berjalan +
-			'&umur_mengoceh=' + umur_mengoceh +
-			'&umur_berbicara=' + umur_berbicara +
-
-			'&usia_menstruasi=' + usia_menstruasi +
-			'&siklus_menstruasi=' + siklus_menstruasi +
-			'&jumlah_darah=' + jumlah_darah +
-			'&nyeri_haid=' + nyeri_haid +
-			'&riwayat_obstrik1=' + riwayat_obstrik1 +
-			'&riwayat_obstrik2=' + riwayat_obstrik2 +
-			'&riwayat_obstrik3=' + riwayat_obstrik3 +
-			'&jumlah_anak=' + jumlah_anak +
-			'&jumlah_anak1=' + jumlah_anak1 +
-			'&jumlah_anak2=' + jumlah_anak2 +
-			'&riwayat_kb=' + riwayat_kb +
-			'&riwayat_hamil=' + riwayat_hamil +
-			'&keluhan_hamil=' + keluhan_hamil +
-			'&obat_hamil=' + obat_hamil +
-			'&riwayat_pakai_obat=' + riwayat_pakai_obat +
-			'&riwayat_pakai_obat1=' + riwayat_pakai_obat1 +
-			'&riwayat_pakai_obat2=' + riwayat_pakai_obat2 +
+        kebutuhan_khusus = $('input[name="kebutuhan_khusus"]').val();
+        tekanan_darah = $('input[name="tekanan_darah"]').val();
+        suhu = $('input[name="suhu"]').val();
+        frequensi_nadi = $('input[name="frequensi_nadi"]').val();
+        berat_badan = $('input[name="berat_badan"]').val();
+        frequensi_nafas = $('input[name="frequensi_nafas"]').val();
+        tinggi_badan = $('input[name="tinggi_badan"]').val();
+        berat_lahir = $('input[name="berat_lahir"]').val();
+        lingkar_kepala = $('input[name="lingkar_kepala"]').val();
+        lingkar_lengan = $('input[name="lingkar_lengan"]').val();
 
 
+        bicara = $('input[name="bicara"]').val();
+        komunikasi = $('input[name="komunikasi"]').val();
+        psikologis = $('input[name="psikologis"]').val();
+        sosiologi = $('input[name="sosiologi"]').val();
+        ekonomi = $('input[name="ekonomi"]').val();
 
-			'&presentasi_ni=' + presentasi_ni +
-			'&masalah_keperawatan=' + masalah_keperawatan;
 
-		// alert(kurus);
+        keluhan_utama = $('#keluhan_utama').val();
+        var penyakit_past = [];
+        $('input[name="penyakit_past"]').each(function() {
+            if ($(this).is(":checked")) {
+                penyakit_past.push($(this).val());
+            }
+        });
+        penyakit_past = $('#penyakit_past0').is(":checked") ? penyakit_past.toString() + ', ' + $(
+                '#penyakit_past').val() :
+            penyakit_past.toString();
 
-		$.ajax({
-			url: "<?php echo base_url() ?>Erm_asesmen_awal/update_asses_perawat",
-			method: "POST",
-			dataType: 'json',
-			data: dataString,
-			success: function(data) {
-				if (data.status == "success") {
-					window.location.href =
-						"<?= $url ?>";
-				} else if (data.error) {
 
-					swal({
-						title: "Gagal!",
-						type: "warning",
-						text: data.status,
-						confirmButtonColor: "#3cb878",
-					});
+        var penyakit_keluarga = [];
+        $('input[name="penyakit_keluarga"]').each(function() {
+            if ($(this).is(":checked")) {
+                penyakit_keluarga.push($(this).val());
+            }
+        });
+        penyakit_keluarga = $('#keluarga_dm').is(":checked") ? penyakit_keluarga.toString() + ', ' + $(
+                '#penyakit_keluarga')
+            .val() : penyakit_keluarga.toString();
 
-				} else {
-					swal({
-						title: "Gagal!",
-						type: "warning",
-						text: data.status,
-						confirmButtonColor: "#3cb878",
-					});
-				}
-			}
 
-		});
-		return false;
-	}
+        riwayat_penggunaobat = $('#riwayat_penggunaobat').val();
+        alloanamnesa = $('#riwayat_Alloanamnesa').val();
+        alergi = $('input[name="alergi"]').val();
+
+
+        skor_nyeri = $('#slide').val();
+        if (skor_nyeri >= 0 && skor_nyeri < 1) {
+            skala_nyeri = 'Tidak Nyeri';
+        } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
+            skala_nyeri = 'Ringan';
+        } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
+            skala_nyeri = ' Sedang';
+        } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
+            skala_nyeri = 'Sedang';
+        } else if (skor_nyeri >= 7 && skor_nyeri < 9) {
+            skala_nyeri = 'Berat';
+        } else if (skor_nyeri >= 9 && skor_nyeri <= 10) {
+            skala_nyeri = 'Sangat Berat';
+        }
+        jatuh = $('input[name="jatuh"]:checked').val();
+        gangguan_ba = $('input[name="gangguan_ba"]:checked').val();
+        bingung = $('input[name="bingung"]:checked').val();
+        depresi = $('input[name="depresi"]:checked').val();
+        pusing = $('input[name="pusing"]:checked').val();
+        jalan = $('input[name="jalan"]:checked').val();
+        pikun = $('input[name="pikun"]:checked').val();
+        obat = $('input[name="obat"]:checked').val();
+        perawatan = $('input[name="perawatan"]:checked').val();
+
+
+        penurunan_bb = $('input[name="penurunan_bb"]:checked').val();
+        kurang_makan = $('input[name="kurang_makan"]:checked').val();
+        kurus = $('input[name="kurus"]:checked').val();
+        turun_bb = $('input[name="turun_bb"]:checked').val();
+        diare = $('input[name="diare"]:checked').val();
+        makan_kurang = $('input[name="makan_kurang"]:checked').val();
+        malnutrisi = $('input[name="malnutrisi"]:checked').val();
+
+
+
+
+        harilahir = $('input[name="harilahir"]').val();
+        di_lahir = $('input[name="di_lahir"]').val();
+        tolonglahir = $('input[name="tolonglahir"]').val();
+        anaklahir = $('input[name="anaklahir"]').val();
+        berat_badan_lahir = $('input[name="berat_badan_lahir"]').val();
+        tinggi_badan_lahir = $('input[name="tinggi_badan_lahir"]').val();
+        berat_tinggi_lahir = $('input[name="berat_tinggi_lahir"]').val();
+        Kelainan_lahir = $('input[name="Kelainan_lahir"]').val();
+
+
+        var Anak_mendapat = [];
+        $('input[name="Anak_mendapat"]').each(function() {
+            if ($(this).is(":checked")) {
+                Anak_mendapat.push($(this).val());
+            }
+        });
+        Anak_mendapat = $('#Makanan_tambahan').is(":checked") ? Anak_mendapat.toString() + ', ' + $(
+                '#Anak_mendapat')
+            .val() : Anak_mendapat.toString();
+
+
+
+
+
+
+        imunisasi_dasar = $('#imunisasi_dasar').val();
+        imunisasi_ulang = $('#imunisasi_ulang').val();
+
+
+        umur_membalikan = $('input[name="umur_membalikan"]').val()
+        umur_duduk = $('input[name="umur_duduk"]').val()
+        umur_berdiri = $('input[name="umur_berdiri"]').val()
+        umur_berjalan = $('input[name="umur_berjalan"]').val()
+        umur_mengoceh = $('input[name="umur_mengoceh"]').val()
+        umur_berbicara = $('input[name="umur_berbicara"]').val()
+
+
+
+
+        usia_menstruasi = $('input[name="usia_menstruasi"]').val()
+        siklus_menstruasi = $('input[name="siklus_menstruasi"]').val()
+        jumlah_darah = $('input[name="jumlah_darah"]').val();
+        nyeri_haid = $('input[name="nyeri_haid"]').val();
+        riwayat_obstrik1 = $('input[name="riwayat_obstrik1"]').val();
+        riwayat_obstrik2 = $('input[name="riwayat_obstrik2"]').val();
+        riwayat_obstrik3 = $('input[name="riwayat_obstrik3"]').val();
+        jumlah_anak = $('input[name="jumlah_anak"]').val();
+        jumlah_anak1 = $('input[name="jumlah_anak1"]').val();
+        jumlah_anak2 = $('input[name="jumlah_anak2"]').val();
+        riwayat_kb = $('input[name="riwayat_kb"]').val();
+        riwayat_hamil = $('input[name="riwayat_hamil"]').val();
+        keluhan_hamil = $('input[name="keluhan_hamil"]').val();
+        obat_hamil = $('input[name="obat_hamil"]').val();
+        riwayat_pakai_obat = $('#riwayat_pakai_obat').val();
+        riwayat_pakai_obat1 = $('#riwayat_pakai_obat1').val();
+        riwayat_pakai_obat2 = $('#riwayat_pakai_obat2').val();
+
+
+
+
+
+
+
+
+
+
+        presentasi_ni = $('input[name="presentasi_ni"]').val();
+
+
+        var masalah_keperawatan = [];
+        $('input[name="masalah_keperawatan"]').each(function() {
+            if ($(this).is(":checked")) {
+                masalah_keperawatan.push($(this).val());
+            }
+        });
+        masalah_keperawatan = $('#masalah_keperawatan7').is(":checked") ? masalah_keperawatan.toString() + ', ' + $(
+                '#masalah_keperawatan')
+            .val() : masalah_keperawatan.toString();
+
+
+
+
+
+
+        if (tekanan_darah.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Tekanan darah sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (suhu.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Suhu sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (frequensi_nadi.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Frekuensi nadi sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+
+
+        if (tinggi_badan.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Tinggi Badan sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (lingkar_kepala.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Lingkar Kepala sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (frequensi_nafas.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Pernafasan sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (berat_badan.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Berat Badan  sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        if (lingkar_lengan.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Lingkar Lengan sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+
+
+        if (keluhan_utama.trim() === '' ) {
+            swal({
+                title: "Form Belum Lengkap!",
+                text: "Pastikan Form Keluhan Utama sudah diisi.",
+                icon: "warning",
+                confirmButtonColor: "#3cb878",
+            });
+
+
+            return ;
+        }
+
+
+        // Validasi untuk Bagian WANITA HAMIL
+        if (jenis_kelamin  == "PEREMPUAN") {
+            if (usia_menstruasi.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Keluhan Utama sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+
+
+            if (siklus_menstruasi.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Siklus menstruasi sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (riwayat_obstrik1.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Riwayat Obstrik G sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (riwayat_obstrik2.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Riwayat Obstrik P sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (riwayat_obstrik3.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Riwayat Obstrik O sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (jumlah_anak.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Jumlah Anak sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (jumlah_anak1.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Jumlah Anak Laki-laki sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+
+
+            if (jumlah_anak1.trim() === '' ) {
+                swal({
+                    title: "Form Belum Lengkap!",
+                    text: "Pastikan Form Jumlah Anak Perempuan sudah diisi.",
+                    icon: "warning",
+                    confirmButtonColor: "#3cb878",
+                });
+
+
+                return ;
+            }
+        }
+       
+
+
+
+
+        dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' +
+            id_history + '&kebutuhan_khusus=' + kebutuhan_khusus +
+            '&id=' + id +
+            '&tekanan_darah=' + tekanan_darah + '&suhu=' + suhu +
+            '&frequensi_nadi=' + frequensi_nadi +
+            '&berat_badan=' + berat_badan + '&berat_lahir=' + berat_lahir +
+            '&frequensi_nafas=' + frequensi_nafas +
+            '&tinggi_badan=' + tinggi_badan + '&skala_nyeri=' + skala_nyeri +
+            '&lingkar_kepala=' + lingkar_kepala +
+            '&lingkar_lengan=' + lingkar_lengan +
+            '&bicara=' + bicara + '&komunikasi=' + komunikasi +
+            '&psikologis=' + psikologis +
+            '&sosiologi=' + sosiologi +
+            '&ekonomi=' + ekonomi +
+            '&keluhan_utama=' + keluhan_utama +
+            '&penyakit_past=' + penyakit_past + '&alloanamnesa=' + alloanamnesa +
+            '&riwayat_penggunaobat=' + riwayat_penggunaobat +
+            '&alergi=' + alergi +
+            '&penyakit_keluarga=' + penyakit_keluarga +
+            '&skor_nyeri=' + skor_nyeri +
+            '&jatuh=' + jatuh + '&gangguan_ba=' + gangguan_ba +
+            '&bingung=' + bingung +
+            '&depresi=' + depresi +
+            '&pusing=' + pusing + '&jalan=' + jalan +
+            '&pikun=' + pikun + '&obat=' + obat +
+            '&perawatan=' + perawatan +
+            '&penurunan_bb=' + penurunan_bb + '&kurang_makan=' + kurang_makan +
+            '&kurus=' + kurus + '&turun_bb=' + turun_bb +
+            '&diare=' + diare + '&makan_kurang=' + makan_kurang +
+            '&malnutrisi=' + malnutrisi +
+
+
+            '&harilahir=' + harilahir +
+            '&di_lahir=' + di_lahir +
+            '&tolonglahir=' + tolonglahir +
+            '&anaklahir=' + anaklahir +
+            '&tinggi_badan_lahir=' + tinggi_badan_lahir +
+            '&berat_badan_lahir=' + berat_badan_lahir +
+            '&berat_tinggi_lahir=' + berat_tinggi_lahir +
+            '&Kelainan_lahir=' + Kelainan_lahir +
+            '&Anak_mendapat=' + Anak_mendapat +
+
+
+            '&imunisasi_dasar=' + imunisasi_dasar +
+            '&imunisasi_ulang=' + imunisasi_ulang +
+            '&umur_membalikan=' + umur_membalikan +
+            '&umur_duduk=' + umur_duduk +
+            '&umur_berdiri=' + umur_berdiri +
+            '&umur_berjalan=' + umur_berjalan +
+            '&umur_mengoceh=' + umur_mengoceh +
+            '&umur_berbicara=' + umur_berbicara +
+
+
+            '&usia_menstruasi=' + usia_menstruasi +
+            '&siklus_menstruasi=' + siklus_menstruasi +
+            '&jumlah_darah=' + jumlah_darah +
+            '&nyeri_haid=' + nyeri_haid +
+            '&riwayat_obstrik1=' + riwayat_obstrik1 +
+            '&riwayat_obstrik2=' + riwayat_obstrik2 +
+            '&riwayat_obstrik3=' + riwayat_obstrik3 +
+            '&jumlah_anak=' + jumlah_anak +
+            '&jumlah_anak1=' + jumlah_anak1 +
+            '&jumlah_anak2=' + jumlah_anak2 +
+            '&riwayat_kb=' + riwayat_kb +
+            '&riwayat_hamil=' + riwayat_hamil +
+            '&keluhan_hamil=' + keluhan_hamil +
+            '&obat_hamil=' + obat_hamil +
+            '&riwayat_pakai_obat=' + riwayat_pakai_obat +
+            '&riwayat_pakai_obat1=' + riwayat_pakai_obat1 +
+            '&riwayat_pakai_obat2=' + riwayat_pakai_obat2 +
+
+
+
+
+
+
+            '&presentasi_ni=' + presentasi_ni +
+            '&masalah_keperawatan=' + masalah_keperawatan;
+
+
+        // alert(kurus);
+
+
+        $.ajax({
+            url: "<?php echo base_url() ?>Erm_asesmen_awal/update_asses_perawat",
+            method: "POST",
+            dataType: 'json',
+            data: dataString,
+            success: function(data) {
+                if (data.status == "success") {
+                    window.location.href =
+                        "<?= $url ?>";
+                } else if (data.error) {
+
+
+                    swal({
+                        title: "Gagal!",
+                        type: "warning",
+                        text: data.status,
+                        confirmButtonColor: "#3cb878",
+                    });
+
+
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        type: "warning",
+                        text: data.status,
+                        confirmButtonColor: "#3cb878",
+                    });
+                }
+            }
+
+
+        });
+        return false;
+    }
+
 </script>

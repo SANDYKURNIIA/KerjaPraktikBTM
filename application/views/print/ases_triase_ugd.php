@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 15px;
-            font-size: 10.5px;
+            font-size: 10.5px;  
             color: #232323;
             line-height: 1.2;
         }
@@ -150,12 +150,16 @@
         }
 
         .skala-nyeri-table .info-cell {
+            /* Style tambahan agar konten terlihat lebih rapi */
             text-align: center;
+            /* Ganti ke 'left' jika ingin rata kiri */
         }
 
         .skala-nyeri-table .nyeri-img {
+            /* Membuat gambar sejajar dengan teks */
             vertical-align: middle;
             width: 150px;
+            /* Atur ukuran gambar agar tidak terlalu besar */
             margin-left: 250px;
         }
 

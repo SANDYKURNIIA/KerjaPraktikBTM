@@ -144,115 +144,66 @@ class Erm_resume_pulang extends CI_Controller
         echo json_encode(['status' => 'success']);
     }
 
-
     public function get_data_resume()
     {
         $id = $this->input->post('id');
         $id_history = $this->input->post('id_history');
 
-        $poli = $this->db->query("SELECT keluhan_utama, u.kode,u.nama_diagnosa from diagnosa_utama u
-        left join form_assesmen_dokter d on u.id_history = d.id_history 
-        left join  form_assesmen_awal_rajal f on f.id_history = u.id_history 
-        where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) !='ranap'")->row();
+
+        $poli = $this->db->query("SELECT d_ranap.keluhan_utama, d_ranap.riwayat_sekarang,u.kode,u.nama_diagnosa from diagnosa_utama u
+        left join form_assesmen_dokter d on u.id_history = d.id_history
+        left join  form_assesmen_awal_rajal f on f.id_history = u.id_history
+        left join form_ass_dokter_ranap d_ranap on u.id_history = d_ranap.id_history
+        where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) ='ranap'")->row();
+
+
+        // Jika tidak ada history ranap
+        if(!$poli){
+            $poli = $this->db->query("SELECT keluhan_utama, u.kode,u.nama_diagnosa from diagnosa_utama u
+            left join form_assesmen_dokter d on u.id_history = d.id_history
+            left join  form_assesmen_awal_rajal f on f.id_history = u.id_history
+            where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) !='ranap'")->row();
+        }
+
+
+
+
+
+
+
+
         $igd = $this->db->query("SELECT keluhan, u.kode,u.nama_diagnosa from diagnosa_utama u
         left join form_ass_dokter_igd d on u.id_history = d.id_history
-        left join  form_ass_per_igd f  on f.id_history = u.id_history 
+        left join  form_ass_per_igd f  on f.id_history = u.id_history
         where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) !='ranap'")->row();
+
+
 
 
         $resume = $this->M_Erm_ranap->getResumePulangById($id, $id_history);
+
+
         if (!empty($resume)) {
             $resume = $resume;
             $diagnosa = json_decode($resume->diagnosa);
         } else {
             $resume = $this->M_Erm_ranap->getResumePulang($id, $id_history);
             $diagnosa = $this->db->query("SELECT concat(d.kode,' - ',d.nama_diagnosa) diagnosa,'Primer' ket
-        from diagnosa_utama d 
+        from diagnosa_utama d
         where d.id_history='$id_history'
         UNION ALL
         SELECT concat(e.kode,' - ',e.nama_diagnosa) diagnosa, 'Sekunder' ket
-        from erm_diagnosa_dokter e 
+        from erm_diagnosa_dokter e
         where e.id_history='$id_history'")->result();
         }
-
-
-
-
-        // ambil langsung kolom 'alasan' dari resume_pulang
-        // ambil alasan pasien saat pulang langsung dari tabel resume_pulang
-        $alasanRow = $this->db->select('alasan')
-            ->from('resume_pulang')
-            ->where('id_pelayanan', $id)
-            ->where('id_history', $id_history)
-            ->order_by('id', 'DESC')
-            ->limit(1)
-            ->get()
-            ->row();
-
-        $alasanPulang = $alasanRow ? ($alasanRow->alasan ?? '') : '';
-
-        $poliklinikRow = $this->db->select('p.nama_panjang')
-    ->from('resume_pulang r')
-    ->join('list_poli p', 'p.id_list_poli = r.id_list_poli', 'left')
-    ->where('r.id_pelayanan', $id)
-    ->where('r.id_history',   $id_history)
-    ->order_by('r.id', 'DESC')
-    ->limit(1)
-    ->get()
-    ->row();
-
-$poliklinikNama = $poliklinikRow->nama_panjang ?? '';
-
-$penunjangRow = $this->db->select('diagnostik')
-    ->from('resume_pulang')
-    ->where('id_pelayanan', $id)
-    ->where('id_history', $id_history)
-    ->order_by('id', 'DESC')
-    ->limit(1)
-    ->get()
-    ->row();
-
-$penunjang_diagnostik = $penunjangRow ? ($penunjangRow->diagnostik ?? '') : '';
-
-    $tglRow = $this->db->select('tgl_kontrol')
-    ->from('resume_pulang')
-    ->where('id_pelayanan', $id)
-    ->where('id_history', $id_history)
-    ->order_by('id','DESC')
-    ->limit(1)->get()->row();
-
-$tgl_kontrol = $tglRow ? $tglRow->tgl_kontrol : (isset($resume->tgl_kontrol) ? $resume->tgl_kontrol : null);
-
-// --- Ambil Alasan/Indikasi Masuk RS dari form_assesmen_dokter ---
-$alasanRow = $this->db->select('keluhan')
-    ->from('form_assesmen_dokter')
-    ->where('id_pelayanan', $id)
-    ->get()
-    ->row();
-
-// Pastikan tidak error kalau null
-$alasan_masuk = $alasanRow->keluhan ?? '';
-
-
-
-        // $alasanPulang = '';
-        // if (!empty($resume) && isset($resume->alasan)) {
-        //     $alasanPulang = $resume->alasan;
-        // }
-
-
         if (isset($poli) || (isset($poli) && isset($igd))) {
             $db = [
                 'alasan' => $poli->keluhan_utama,
                 'diagnosa' => $poli->kode . ' - ' . $poli->nama_diagnosa,
                 'resume' => $resume,
                 'diagnosa_ranap' => $diagnosa,
-                'alasan_pulang' => $alasanPulang,
-                'poliklinik_nama' => $poliklinikNama, 
-                'penunjang_diagnostik' => $penunjang_diagnostik,
-                'tgl_kontrol' => $tgl_kontrol,
-                'alasan_masuk'       => $alasan_masuk
-                
+                'riwayat_sekarang' => $poli->riwayat_sekarang
+
 
             ];
         } else {
@@ -262,12 +213,6 @@ $alasan_masuk = $alasanRow->keluhan ?? '';
                     'diagnosa' => $igd->kode . ' - ' . $igd->nama_diagnosa,
                     'resume' => $resume,
                     'diagnosa_ranap' => $diagnosa,
-                    'alasan_pulang' => $alasanPulang,
-                    'poliklinik_nama' => $poliklinikNama, 
-                    'penunjang_diagnostik' => $penunjang_diagnostik,
-                    'tgl_kontrol' => $tgl_kontrol,
-                    'alasan_masuk'       => $alasan_masuk
-
                 ];
             } else {
                 $db = null;
@@ -282,6 +227,9 @@ $alasan_masuk = $alasanRow->keluhan ?? '';
             exit;
         }
     }
+
+
+
 
 
     public function print_out($id_pelayanan, $id_history)

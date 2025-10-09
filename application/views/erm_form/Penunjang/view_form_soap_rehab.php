@@ -119,7 +119,9 @@
                 <a class="btn btn-default btn-anim btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
                 <button id="simpan" onclick="simpan()" type="submit" class="btn btn-success mb-4">Simpan</button>
                 <button style="display: none;" id="edit" type="submit" class="btn btn-warning mb-4" onclick="edit()">Edit</button>
-                <button style="display: none;" id="cetak" type="submit" class="btn btn-primary mb-4" onclick="cetak()">Cetak</button>
+                <button style="display: none;" id="cetak" type="submit" class="btn btn-primary mb-4" onclick="cetak()">Cetak</button> 
+
+
               </div>
             </div>
           </div>
@@ -327,7 +329,7 @@
             success: function(data) {
               if (data.status_dt == "found") {
                 $('#edit').show();
-                // $('#cetak').show();
+                $('#cetak').show();
                 $('#simpan').hide();
                 $("#inTgl").val(data.tanggal);
                 $("#inS").val(data.S);
@@ -402,4 +404,23 @@
           });
           return false;
         }
-      </script>
+</script>
+<script>
+  // ✅ INI YA BANG)
+  function cetak() {
+    let id = $("#id").val();
+
+    if (!id) {
+      swal({
+        title: "Peringatan!",
+        text: "Silakan pilih data terlebih dahulu sebelum mencetak.",
+        type: "warning",
+        confirmButtonColor: "#3cb878",
+      });
+      return;
+    }
+
+    window.open("<?= base_url('Form_soap_rehab/print_soap/') ?>" + id, "_blank");
+  }
+</script>
+

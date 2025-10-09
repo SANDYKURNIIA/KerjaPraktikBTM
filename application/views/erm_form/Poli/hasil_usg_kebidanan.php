@@ -53,6 +53,7 @@ $initial_print_href = $prefill_id
             <!-- Hidden relasi -->
             <input type="hidden" name="id_pelayanan" value="<?= htmlspecialchars($id_pelayanan, ENT_QUOTES) ?>">
             <input type="hidden" name="id_history"   value="<?= htmlspecialchars($id_history,   ENT_QUOTES) ?>">
+            <input type="hidden" name="no_rm"   value="<?= htmlspecialchars($no_rm,   ENT_QUOTES) ?>">
 
             <!-- Header pasien -->
             <div class="row">
@@ -167,9 +168,9 @@ $initial_print_href = $prefill_id
   var $form = $('#formUsg');
   var submitUrl = '<?= site_url('Erm_usg_kebidanan/insert_usg') ?>';
 
-  function enablePrint(id) {
-    if (!id) return;
-    var printUrl = "<?= site_url('Erm_usg_kebidanan/print_out?id=') ?>" + encodeURIComponent(id);
+  function enablePrint(no_rm) {
+    if (!no_rm) return;
+    var printUrl = "<?= site_url('Erm_usg_kebno_rmanan/print_out?no_rm=') ?>" + encodeURIComponent(no_rm);
     var $btnPrint = $('.btn-print-usg');
     if ($btnPrint.length) {
       $btnPrint

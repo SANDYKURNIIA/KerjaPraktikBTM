@@ -1062,7 +1062,7 @@
   }
 </style>
 <script type="text/javascript">
-  $(document).ready(function() {
+ $(document).ready(function() {
     no_rm = $('#inNoRM').val();
     $.ajax({
       url: "<?php echo base_url() ?>Erm_ases_dok_igd/get_ass_dok",
@@ -1073,12 +1073,19 @@
       },
       success: function(data) {
         if (data.status_dt == 'found') {
-          $('#riwayat_sakit_dulu').val(data.riwayat).attr('disabled', true);
+          $('#riwayat_sakit_dulu').val(data.riwayat_dulu).attr('disabled', true);
+          $('#alergi_obat').val(data.alergi_obat);
+          $('#riwayat_sakit_skrg').val(data.riwayat);
+          $('#keluhan').val(data.keluhan);
+
+
         }
       }
 
+
     });
   });
+
   $(document).ready(function() {
     id_pelayanan = $('#inPel').val();
     $.ajax({

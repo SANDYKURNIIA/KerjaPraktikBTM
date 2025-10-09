@@ -49,9 +49,9 @@ class Erm_usg_kebidanan extends CI_Controller
     /* =========================================================
      * FORM EDIT (1 record by primary id e.g. 'usg12')
      * ========================================================= */
-    public function edit($id)
+    public function edit($no_rm)
     {
-        $row = $this->M_Erm_usg_kebidanan->getById($id);
+        $row = $this->M_Erm_usg_kebidanan->getById($no_rm);
         if (!$row) show_404();
 
         $page_data = [
@@ -182,12 +182,12 @@ class Erm_usg_kebidanan extends CI_Controller
      * ========================================================= */
     public function print_out()
     {
-        $id           = trim((string)$this->input->get('id', true));
+        // $id           = trim((string)$this->input->get('id', true));
         $id_pelayanan = trim((string)$this->input->get('id_pelayanan', true));
         $no_rm        = trim((string)$this->input->get('no_rm', true));
 
         $row = null;
-        if ($id !== '')                    $row = $this->M_Erm_usg_kebidanan->getById($id);
+        // if ($id !== '')                    $row = $this->M_Erm_usg_kebidanan->getById($id);
         if (!$row && $id_pelayanan !== '') $row = $this->M_Erm_usg_kebidanan->getLatestByPelayanan($id_pelayanan);
         if (!$row && $no_rm !== '')        $row = $this->M_Erm_usg_kebidanan->getLatestByNoRM($no_rm);
 

@@ -100,6 +100,7 @@ class Erm_ases_triase_ugd extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function riwayat_asses_perawat_igd($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm->selectDataPasienIGDbyid($id_pelayanan, $id_history);
@@ -134,7 +135,6 @@ class Erm_ases_triase_ugd extends CI_Controller
 	public function insert_asses_triase_ugd()
 	{
 		$data = $this->session->userdata('data_auth');
-
 		$tgl = date("Y-m-d H:i:s");
 		$staff = $data->id_staff;
 		$this->form_validation->set_rules('pRujuk', 'Pasien Rujuk', 'required');
@@ -198,8 +198,14 @@ class Erm_ases_triase_ugd extends CI_Controller
 				'staff' => $staff,
 			);
 
-			$this->M_Erm->insert($data, 'form_ass_triase_ugd');
-			$out['status'] = "success";
+			$insert_id = $this->M_Erm->insert_and_get_id($data, 'form_ass_triase_ugd'); 
+			if ($insert_id) {
+				$out['status'] = "success";
+				$out['id'] = $insert_id; 
+			} else {
+				$out['status'] = "error";
+				$out['message'] = "Gagal menyimpan data.";
+			}
 		} else {
 			$out = array(
 				'error' => true,
@@ -231,110 +237,77 @@ class Erm_ases_triase_ugd extends CI_Controller
 				'skala_nyeri' => form_error('skala_nyeri'),
 			);
 		}
-
 		echo json_encode($out);
 	}
-
 
 	public function update_asses_triase_ugd()
 	{
-		$data = $this->session->userdata('data_auth');
+		
+		$id_triase_ugd = $this->input->post('id');		
+		$update_data = array(
+			'id_pelayanan'      => $this->input->post('id_pelayanan'),
+			'id_history'        => $this->input->post('id_history'),
+			'no_rm'             => $this->input->post('no_rm'),
+			'pRujuk'            => $this->input->post('pRujuk'),
+			'asal_rujuk'        => $this->input->post('asal_rujuk'),
+			'keluhan_utama'     => $this->input->post('keluhan_utama'),
+			'gcs'               => $this->input->post('gcs'),
+			'tekanan_darah'     => $this->input->post('tekanan_darah'),
+			'suhu'              => $this->input->post('suhu'),
+			'spo2'              => $this->input->post('spo2'),
+			'frequensi_nadi'    => $this->input->post('frequensi_nadi'),
+			'berat_badan'       => $this->input->post('berat_badan'),
+			'frequensi_nafas'   => $this->input->post('frequensi_nafas'),
+			'tinggi_badan'      => $this->input->post('tinggi_badan'),
+			'kebutuhan_khusus'  => $this->input->post('kebutuhan_khusus'),
+			'mata'              => $this->input->post('mata'),
+			'verbal'            => $this->input->post('verbal'),
+			'motorik'           => $this->input->post('motorik'),
+			'pemeriksaan'       => $this->input->post('pemeriksaan'),
+			'airway'       		=> $this->input->post('airway'),
+			'resutasi'          => $this->input->post('resutasi'),
+			'breathing'         => $this->input->post('breathing'),
+			'cyrculation'       => $this->input->post('cyrculation'),
+			'disability'        => $this->input->post('disability'),
+			'exposure'          => $this->input->post('exposure'),
+			'emergency' 		=> $this->input->post('emergency'),
+			'urgent' 			=> $this->input->post('urgent'),
+			'tidak_darurat' 	=> $this->input->post('tidak_darurat'),
+			'skor_nyeri'        => $this->input->post('skor_nyeri'),
+			'skala_nyeri'       => $this->input->post('skala_nyeri'),
+			'tanggal'           => date("Y-m-d H:i:s"),
+			'staff'             => $this->session->userdata('data_auth')->id_staff,
+		);	
 
-		$tgl = date("Y-m-d H:i:s");
-		$staff = $data->id_staff;
-
-		$data = array(
-			'id_pelayanan' => $this->input->post('id_pelayanan'),
-			'id_history' => $this->input->post('id_history'),
-			'no_rm' => $this->input->post('no_rm'),
-			'pRujuk' => $this->input->post('pRujuk'),
-			'asal_rujuk' => $this->input->post('asal_rujuk'),
-			'keluhan_utama' => $this->input->post('keluhan_utama'),
-			'gcs' => $this->input->post('gcs'),
-			'tekanan_darah' => $this->input->post('tekanan_darah'),
-			'suhu' => $this->input->post('suhu'),
-			'spo2' => $this->input->post('spo2'),
-			'frequensi_nadi' => $this->input->post('frequensi_nadi'),
-			'berat_badan' => $this->input->post('berat_badan'),
-			'frequensi_nafas' => $this->input->post('frequensi_nafas'),
-			'tinggi_badan' => $this->input->post('tinggi_badan'),
-			'kebutuhan_khusus' => $this->input->post('kebutuhan_khusus'),
-			'mata' => $this->input->post('mata'),
-			'verbal' => $this->input->post('verbal'),
-			'motorik' => $this->input->post('motorik'),
-			'pemeriksaan' => $this->input->post('pemeriksaan'),
-			'resutasi' => $this->input->post('resutasi'),
-			'breathing' => $this->input->post('breathing'),
-			'cyrculation' => $this->input->post('cyrculation'),
-			'disability' => $this->input->post('disability'),
-			'exposure' => $this->input->post('exposure'),
-			'emergency' => $this->input->post('emergency'),
-			'urgent' => $this->input->post('urgent'),
-			'tidak_darurat' => $this->input->post('tidak_darurat'),
-			'skor_nyeri' => $this->input->post('skor_nyeri'),
-			'skala_nyeri' => $this->input->post('skala_nyeri'),
-			'tanggal' => $tgl,
-			'staff' => $staff,
-		);
-
-		$where = array('no_rm' => $this->input->post('no_rm'));
-		if (!$this->input->post('no_rm')) {
-			// Menangani kesalahan jika ID tidak ada
+		$where = array('id_triase_ugd' => $id_triase_ugd);
+		if (empty($id_triase_ugd)) {
 			$out['status'] = 'error';
-			$out['message'] = 'ID tidak ditemukan';
+			$out['message'] = 'ID untuk update tidak ditemukan di dalam payload.';
 			echo json_encode($out);
 			return;
 		}
-		// print $success ? $file : 'Unable to save the file.';
-		// print $success1 ? $file1 : 'Unable to save the file.';
-		$this->M_Erm->update($data, $where, 'form_ass_triase_ugd');
+		
+		$this->M_Erm->update($update_data, $where, 'form_ass_triase_ugd');
 		$out['status'] = "success";
-
-		echo json_encode($out);
+   		echo json_encode($out);
 	}
 
-	// 
-// 	public function get_ass_per()
-// {
-//     $id = $this->input->post('id'); // no_rm
-
-//     $this->db->select('tekanan_darah, suhu, frequensi_nadi, frequensi_nafas, tinggi_badan, berat_badan, spo2');
-//     $this->db->from('form_ass_per_igd');
-//     $this->db->where('no_rm', $id);
-//     $query = $this->db->get();
-
-//     if ($query->num_rows() > 0) {
-//         $data = $query->row_array();
-//         $data['status_dt'] = 'found';
-//     } else {
-//         $data = ['status_dt' => 'not found'];
-//     }
-
-//     echo json_encode($data);
-// }
-
-
-// 	public function get_ass_triase()
-// {
-//     $id = $this->input->post('id'); 
-//     $db = $this->db->get_where('form_ass_triase_ugd', ['no_rm' => $id])->result();
-
-//     if (count($db) > 0) {
-//         $db = $db[0];
-//         $db->status_dt = 'found';
-//     } else {
-//         $db = null;
-//         $db['status_dt'] = 'not found';
-//     }
-
-//     echo json_encode($db);
-// }
-
-public function get_ass_per()
+	public function get_ass_per()
 	{
 		$id = $this->input->post('id');
-
 		$this->db->select('
+		form_ass_triase_ugd.id_triase_ugd, 
+		form_ass_triase_ugd.kebutuhan_khusus,
+		form_ass_triase_ugd.mata,
+		form_ass_triase_ugd.verbal,
+		form_ass_triase_ugd.motorik,
+		form_ass_triase_ugd.pemeriksaan,
+		form_ass_triase_ugd.airway,
+		form_ass_triase_ugd.breathing,
+		form_ass_triase_ugd.cyrculation,
+		form_ass_triase_ugd.disability,
+		form_ass_triase_ugd.exposure,
+		form_ass_triase_ugd.skala_nyeri,
         form_ass_dokter_igd.keluhan,
         form_ass_per_igd.tekanan_darah,
         form_ass_per_igd.suhu,
@@ -342,26 +315,21 @@ public function get_ass_per()
         form_ass_per_igd.frequensi_nafas,
         form_ass_per_igd.tinggi_badan,
         form_ass_per_igd.berat_badan,
-        form_ass_per_igd.spo2
+        form_ass_per_igd.spo2,
+        form_ass_per_igd.gcs
     ');
 		$this->db->from('form_ass_dokter_igd');
-
-		// join triase agar tetap konsisten id_history
 		$this->db->join(
 			'form_ass_triase_ugd',
 			'form_ass_triase_ugd.id_history = form_ass_dokter_igd.id_history',
 			'left'
 		);
-
-		// join ke form_ass_per_igd (vital sign)
 		$this->db->join(
 			'form_ass_per_igd',
 			'form_ass_dokter_igd.id_history = form_ass_per_igd.id_history',
 			'left'
 		);
-
 		$this->db->where('form_ass_dokter_igd.id_history', $id);
-
 		$db = $this->db->get()->row_array();
 
 		if ($db) {
@@ -369,6 +337,7 @@ public function get_ass_per()
 		} else {
 			$db = [
 				"status_dt"       => "not_found",
+				"id_triase_ugd"   => "",
 				"keluhan"         => "",
 				"tekanan_darah"   => "",
 				"suhu"            => "",
@@ -376,12 +345,28 @@ public function get_ass_per()
 				"frequensi_nafas" => "",
 				"tinggi_badan"    => "",
 				"berat_badan"     => "",
-				"spo2"            => ""
+				"spo2"            => "",
+				"gcs"             => "",
+				"kebutuhan_khusus"=> "",
+				"skala_nyeri"	  => "",
+				"mata"  		  => "",
+				"verbal"  		  => "",
+				"motorik"  		  => "",
+				"pemeriksaan"     => "",
+				"airway"     	  => "",
+				"breathing"       => "",
+				"cyrculation"     => "",
+				"disability"      => "",
+				"exposure"        => ""
 			];
 		}
-
 		echo json_encode($db);
 		exit;
 	}
 
+	public function print_triase($id_pelayanan)
+	{
+		$data['data'] = $this->M_Erm->get_triase($id_pelayanan);
+		$this->load->view('print/ases_triase_ugd', $data);
+	}
 }
