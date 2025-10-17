@@ -225,7 +225,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="control-label mb-10 text-left"><b>Keluhan Utama:<b /><span class="help"></span></label>
+                  <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span><b /><span class="help"></span></label>
                   <span id="keluhan_error" class="text-danger"></span>
                   <div class="has-success">
                     <textarea class="form-control" name="" id="keluhan" cols="30" rows="3"></textarea>
@@ -235,7 +235,7 @@
 
               <div class="form-group">
                 <div class="col-md-4">
-                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang: <b /><span class="help"></span></label>
+                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang <span style="color:red;">*</span> <b /><span class="help"></span></label>
                   <span id="riwayat_error" class="text-danger"></span>
                   <div class="has-success">
                     <textarea class="form-control" name="" id="riwayat_sakit_skrg" cols="30" rows="3"></textarea>
@@ -247,7 +247,7 @@
               </div>
               <div class="form-group">
                 <div class="col-md-8">
-                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Dahulu: <b /><span class="help"></span></label>
+                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Dahulu <span style="color:red;">*</span> <b /><span class="help"></span></label>
                   <div class="has-success">
                     <textarea class="form-control" name="" id="riwayat_sakit_dulu" cols="30" rows="3"></textarea>
                   </div>
@@ -1355,6 +1355,40 @@
       riwayat_alergi = riwayat_alergi;
     }
     riwayat = $('#riwayat_sakit_skrg').val();
+
+    $('#keluhan').removeClass('is-invalid');
+    $('#keluhan_error').text('');
+
+    $('#riwayat_sakit_skrg').removeClass('is-invalid');
+    $('#riwayat_error').text('');
+
+    if (keluhan === '') {
+      $('html, body').animate({
+        scrollTop: $('#keluhan').offset().top - 100
+      }, 500);
+      $('#keluhan').focus();
+
+
+      $('#keluhan').addClass('is-invalid');
+      $('#keluhan_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (riwayat === '') {
+      $('html, body').animate({
+        scrollTop: $('#riwayat_sakit_skrg').offset().top - 100
+      }, 500);
+      $('#riwayat_sakit_skrg').focus();
+
+
+      $('#riwayat_sakit_skrg').addClass('is-invalid');
+      $('#riwayat_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
 
     var psikologis = [];
     $('input[name="psikologis"]').each(function() {

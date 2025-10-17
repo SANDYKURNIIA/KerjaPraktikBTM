@@ -89,7 +89,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="control-label mb-10 text-left"><b>Keluhan Utama:<b /><span class="help"></span></label>
+                    <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span><b /><span class="help"></span></label>
                     <span id="keluhan_error" class="text-danger"></span>
                     <div class="has-success">
                       <textarea class="form-control" name="keluhan" id="keluhan" cols="30" rows="3"></textarea>
@@ -99,7 +99,7 @@
 
                 <div class="form-group">
                   <div class="col-md-4">
-                    <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang: <b /><span class="help"></span></label>
+                    <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang <span style="color:red;">*</span><b /><span class="help"></span></label>
                     <span id="riwayat_error" class="text-danger"></span>
                     <div class="has-success">
                       <textarea class="form-control" name="riwayat_sakit_skrg" id="riwayat_sakit_skrg" cols="30" rows="3"></textarea>
@@ -543,6 +543,23 @@
                 </div>
               </div>
             </div>
+            <div class="form-group">
+                    <div class="col-md-4">
+                      <label class="control-label mb-10 text-left">Diagnosa Utama:</label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="diagnosa_utama" id="diagnosa_utama" cols="30" rows="5"><?= isset($data['diagnosa_utama']) ? $data['diagnosa_utama'] : '' ?></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-4" style="margin-top:10px;">
+                      <label class="control-label mb-10 text-left">Diagnosa Sekunder:</label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"><?= isset($data['diagnosa_sekunder']) ? $data['diagnosa_sekunder'] : '' ?></textarea>
+                      </div>
+                    </div>
+                  </div>
             <div class="col-md-12">
               <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
             </div>
@@ -767,6 +784,8 @@
     konsul = $("#konsul").val();
     lama = $("#lama").val();
     prognosa = $("#prognosa").val();
+    diagnosa_utama = $("#diagnosa_utama").val();
+    diagnosa_sekunder = $("#diagnosa_sekunder").val();
 
     if ($('#can').css("display") == "none") {
       gambar = "";
@@ -787,22 +806,67 @@
       '&thorax=' + thorax + '&jantung=' + jantung + '&paru=' + paru + '&andomen=' + andomen + '&punggung=' + punggung + '&ekstremitas=' + ekstremitas +
       '&genetalia=' + genetalia + '&keterangan=' + keterangan +
       '&terapi=' + terapi + '&konsul=' + konsul + '&lama=' + lama + '&prognosa=' + prognosa + '&gambar=' + gambar +
-      '&ttd=' + ttd;
+      '&ttd=' + ttd + '&diagnosa_utama=' + diagnosa_utama + '&diagnosa_sekunder=' + diagnosa_sekunder;
     // alert(tindak_lanjut);
 
+    $('#keluhan').removeClass('is-invalid');
+    $('#keluhan_error').text('');
+
+    $('#riwayat_sakit_skrg').removeClass('is-invalid');
+    $('#riwayat_error').text('');
+
+    if (keluhan === '') {
+      $('html, body').animate({
+        scrollTop: $('#keluhan').offset().top - 100
+      }, 500);
+      $('#keluhan').focus();
+
+
+      $('#keluhan').addClass('is-invalid');
+      $('#keluhan_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (riwayat_sekarang === '') {
+      $('html, body').animate({
+        scrollTop: $('#riwayat_sakit_skrg').offset().top - 100
+      }, 500);
+      $('#riwayat_sakit_skrg').focus();
+
+
+      $('#riwayat_sakit_skrg').addClass('is-invalid');
+      $('#riwayat_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
     $.ajax({
-      url: "<?php echo base_url() ?>Erm_ranap_asesmen_dokter/insert_asses_dokter_ranap",
+      url: "<?php echo base_url('Erm_ranap_asesmen_dokter/insert_asses_dokter_ranap'); ?>",
       method: "POST",
-      dataType: 'json',
+      dataType: "json",
       data: dataString,
       success: function(data) {
-        if (data.status == "success") {
-          window.location.href = "<?php echo base_url('Erm_ranap/form/') ?>" + '<?= urlencode(base64_encode($id_pelayanan)) ?>' + '/' + '<?= urlencode(base64_encode($id_history)) ?>';
+        if (data.status === "success") {
           swal({
-            title: "good job!",
+            title: "Good job!",
             type: "success",
-            text: "Data Berhasil diinputkan",
+            text: data.message || "Data berhasil diinputkan!",
             confirmButtonColor: "#3cb878",
+          }).then(function() {
+            window.location.href =
+              "<?php echo base_url('Erm_ranap/form/'); ?>" +
+              "<?= urlencode(base64_encode($id_pelayanan)) ?>/" +
+              "<?= urlencode(base64_encode($id_history)) ?>";
+          });
+        } else if (data.status === "error") {
+          swal({
+            title: "Validasi!",
+            type: "warning",
+            text: data.message || "Diagnosa Utama dan Diagnosa Sekunder wajib diisi!",
+            confirmButtonColor: "#f39c12",
           });
           // } else if (data.error) {
           //   if (data.keluhan != '') {
@@ -877,14 +941,22 @@
         } else {
           swal({
             title: "Gagal!",
-            type: "warning",
-            text: data.status,
-            confirmButtonColor: "#3cb878",
+            type: "error",
+            text: "Terjadi kesalahan.",
+            confirmButtonColor: "#e74c3c",
           });
         }
-      }
-
+      },
+      error: function() {
+        swal({
+          title: "Oops...",
+          type: "error",
+          text: "Terjadi kesalahan koneksi ke server!",
+          confirmButtonColor: "#e74c3c",
+        });
+      },
     });
+
     return false;
   }
 
@@ -1259,7 +1331,7 @@
 
   // function upload_file() {
   //   $('#btnUpload').text('uploading...'); //change button text
-  //   $('#btnUpload').attr('disabled', true); //set button disable 
+  //   $('#btnUpload').attr('disabled', true); //set button disable
 
 
   //   // ajax adding data to database
@@ -1294,7 +1366,7 @@
   //         $('#formUploadModal').modal('hide');
   //       }
   //       $('#btnUpload').text('upload'); //change button text
-  //       $('#btnUpload').attr('disabled', false); //set button enable 
+  //       $('#btnUpload').attr('disabled', false); //set button enable
 
 
 

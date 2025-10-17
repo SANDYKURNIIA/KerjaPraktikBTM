@@ -358,7 +358,7 @@
           no_rm = $('#inNoRM').val();
           tanggal = $("#inTgl").val();
           s = $('#inS').val();
-          o = $('#diagnosa').val();
+          o = $('#inO').val();
           a = $('#inA').val();
           p = $('#inP').val();
 

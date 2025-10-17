@@ -199,16 +199,15 @@ class Form_soap_rehab extends CI_Controller
 		echo json_encode($out);
 	}
 	
-	//NII YA BANGGGG//
 	public function print_soap($id)
-{
-    // Panggil dari model
-    $data = $this->M_Erm_poli->get_data_print_soap($id);
-    if (!$data) {
-        show_error("Data SOAP tidak ditemukan.", 404);
-        return;
-    }
-    $this->load->view('erm_print/view_print_soap_rehab', $data);
-}
+	{
+		// Panggil dari model
+		$data = $this->M_Erm_poli->get_data_print_soap($id);
+		if (!$data) {
+			show_error("Data SOAP tidak ditemukan.", 404);
+			return;
+		}
+		$this->load->view('erm_print/view_print_soap_rehab', $data);
+	}
 	
 }

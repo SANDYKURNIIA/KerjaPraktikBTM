@@ -66,6 +66,27 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
         $data = $this->session->userdata('data_auth');
         $tgl = date("Y-m-d H:i:s");
         $staff = $data->id_staff;
+
+        $diagnosa_utama = $this->input->post('diagnosa_utama');
+		$diagnosa_sekunder = $this->input->post('diagnosa_sekunder');
+
+
+		if (empty($diagnosa_utama) || empty($diagnosa_sekunder)) {
+			$out['status'] = "error";
+			$out['message'] = "Diagnosa Utama dan Diagnosa Sekunder wajib diisi!";
+			echo json_encode($out);
+			return;
+		}
+		$this->form_validation->set_rules('diagnosa_utama', 'Diagnosa Utama', 'required|trim');
+		$this->form_validation->set_rules('diagnosa_sekunder', 'Diagnosa Sekunder', 'required|trim');
+
+		if ($this->form_validation->run() == FALSE) {
+			$out['status'] = "error";
+			$out['message'] = validation_errors();
+			echo json_encode($out);
+			return;
+		}
+
         $img = $this->input->post('gambar');
         if ($img != "") {
             $img = str_replace('data:image/png;base64,', '', $img);
@@ -155,6 +176,8 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
             'konsul' => $this->input->post('konsul'),
             'lama' => $this->input->post('lama'),
             'prognosa' => $this->input->post('prognosa'),
+            'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+			'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
 
 
             'gambar' => $file,
@@ -229,7 +252,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
         } else {
             $file = "";
         }
-       
+
 
 
         $data = array(
@@ -265,6 +288,8 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
             'konsul' => $this->input->post('konsul'),
             'lama' => $this->input->post('lama'),
             'prognosa' => $this->input->post('prognosa'),
+            'diagnosa_utama' => $this->input->post('diagnosa_utama'),
+			'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
 
 
             // 'gambar' => $file,
@@ -300,19 +325,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
         echo json_encode($db);
     }
 
-	public function get_ass_per_ranap()
-	{
-		$id = $this->input->post('id');
-		$db = $this->db->get_where('form_ass_per_ranap', ['id_pelayanan' => $id])->result();
-		if (count($db) > 0) {
-			$db = $db[0];
-			$db->status_dt = 'found';
-		} else {
-			$db = null;
-			$db['status_dt'] = 'not found';
-		}
-		echo json_encode($db);
-	}
+
 	// public function get_ass_dok()
 	// {
 	// 	$id = $this->input->post('id');

@@ -186,7 +186,7 @@
               </div>
               <div class="form-group">
                 <div class="col-md-4">
-                    <label class="control-label mb-10 text-left">Alasan / Indikasi Masuk RS :<span class="help"></span></label>
+                    <label class="control-label mb-10 text-left">Alasan / Indikasi Masuk RS <span style="color:red;">*</span><span class="help"></span></label>
                     <span id="keluhan_error" class="text-danger"></span>
                     <div class="has-success">
                         <textarea class="form-control" name="keluhan_utama" id="keluhan_utama" cols="30" rows="3"></textarea>
@@ -212,28 +212,29 @@
                   <!-- RIWAYAT -->
                   <div class="form-group">
                     <div class="col-md-4">
-                      <label class="control-label mb-10 text-left">Riwayat :</label>
+                      <label class="control-label mb-5 text-left">Riwayat <span style="color:red;">*</span></label>
+                      <span id="ket_error" class="text-danger"></span>
+
                       <div class="has-success">
                         <!-- Radio Button Ya/Tidak -->
-                        <div class="form-check">
+                        <div class="form-check" hidden>
                           <input class="form-check-input" type="radio" name="riwayat" value="Tidak" id="riwayat_tidak">
                           <label class="form-check-label" for="riwayat_tidak" style="color: black;">Tidak</label>
                         </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="riwayat" value="Ya" id="riwayat_ya">
-                          <label class="form-check-label" for="riwayat_ya" style="color: black;">Ya</label>
+                        <div class="form-check" hidden>
+                          <input class="form-check-input" type="radio" name="riwayat" value="Ya" id="riwayat_ya" checked>
+                          <label class="form-check-label" for="riwayat_ya" style="color: black;" >Ya</label>
                         </div>
 
                         <!-- Kolom Keterangan (disembunyikan default) -->
-                        <div id="keterangan_container" style="display: none; margin-top:10px;">
-                          <label class="control-label" for="ket">Keterangan :</label>
+                        <div id="keterangan_container" >
                           <textarea class="form-control" id="ket" name="ket" rows="2" placeholder="Isi keterangan di sini..."></textarea>
                           <span class="help-block text-danger"></span>
                         </div>
                       </div>
                     </div>
                   </div>
-
+<!-- 
                   <script>
                     document.addEventListener("DOMContentLoaded", function() {
                       const ya = document.getElementById("riwayat_ya");
@@ -253,7 +254,7 @@
                       if (ya) ya.addEventListener("change", toggleKeterangan);
                       if (tidak) tidak.addEventListener("change", toggleKeterangan);
                     });
-                  </script>
+                  </script> -->
 
                   <!-- PEMERIKSAAN FISIK (full width) -->
                   <div class="form-group">
@@ -1249,16 +1250,53 @@
     const id_history   = $('#inHis, #id_history').val() || '';
     const no_rm        = $('#inNoRM, #no_rm').val() || '';
     const id_list_poli = ($('#id_list_poli').val() || '').trim();
+    const keluhan = ($('#keluhan_utama').val() || '').trim();
+
+    $('#keluhan_utama').removeClass('is-invalid');
+    $('#keluhan_error').text('');
+
+    if (keluhan === '') {
+      $('html, body').animate({
+        scrollTop: $('#keluhan_utama').offset().top - 100
+      }, 500);
+      $('#keluhan').focus();
+
+
+      $('#keluhan_utama').addClass('is-invalid');
+      $('#keluhan_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+    
+    const k = ($('#ket').val() || '').trim();
 
     // 1) RIWAYAT (radio + keterangan)
     const riwayatVal = $('input[name="riwayat"]:checked').val() || '';
     let riwayat = riwayatVal;
     if (riwayatVal === 'Ya') {
-      const k = ($('#ket').val() || '').trim();
       riwayat = k ? `Ya: ${k}` : 'Ya';
     } else if (riwayatVal === 'Tidak') {
       riwayat = 'Tidak';
     }
+
+    $('#ket').removeClass('is-invalid');
+    $('#ket_error').text('');
+
+    if (k === '') {
+      $('html, body').animate({
+        scrollTop: $('#ket').offset().top - 100
+      }, 500);
+      $('#ket').focus();
+
+
+      $('#ket').addClass('is-invalid');
+      $('#ket_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
 
     // 2) DIAGNOSTIK dari checkbox (=> kolom 'diagnostik')
     const diagnostik = buildDiagnostik();

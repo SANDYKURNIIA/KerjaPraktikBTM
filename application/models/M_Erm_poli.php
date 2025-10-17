@@ -697,20 +697,20 @@ class M_Erm_poli extends CI_Model
         $this->db->where('f.id_pelayanan', $id_pelayanan);
         return $this->db->get()->result();
     }
- //YANG NI YA BANG, AMPE BWAWAAHHHHH//
-        public function get_data_print_soap($id_catatan)
-        {
-            $soap = $this->db->get_where('form_soap_rehab', ['id_catatan' => $id_catatan])->row();
 
-            if (!$soap) {
-                return null;
-            }
+    public function get_data_print_soap($id_catatan)
+    {
+        $soap = $this->db->get_where('form_soap_rehab', ['id_catatan' => $id_catatan])->row();
 
-            // 🔹 Ambil data pasien
+        if (!$soap) {
+            return null;
+        }
+
             $pasien = $this->db
-                ->select('no_rm, nama AS nama_pasien, jenis_kelamin')
-                ->from('pasien')
-                ->where('no_rm', $soap->no_rm)
+                ->select('p.no_rm, p.nama AS nama_pasien, p.jenis_kelamin, pl.tgl_masuk')
+                ->from('pasien p, pelayanan pl')
+                ->where('p.no_rm', $soap->no_rm)
+                ->where('pl.id_pelayanan', $soap->id_pelayanan)
                 ->get()
                 ->row();
 
@@ -721,30 +721,31 @@ class M_Erm_poli extends CI_Model
                 ];
             }
 
-            $history_pelayanan = $this->db->select("h.dpjp, h.id_pelayanan")
-            ->from('history_pelayanan h')
+            $history_pelayanan = $this->db->select("h.dpjp, h.id_pelayanan, h.nama_poli")
+            ->from('history_pelayanan h, list_poli p')
             ->where('h.id_pelayanan', $soap->id_pelayanan)
             ->get()
             ->row();
-            
 
-            // 🔹 Ambil nama dokter (DPJP) dari tabel staff lewat id_staff di tabel pelayanan
+            $poli = $this->db->select("spes")
+            ->from("list_poli")
+            ->where("id_list_poli", $history_pelayanan->nama_poli)
+            ->get()
+            ->row();
+
             $dokter = $this->db
                 ->select('d.nama AS nama_dokter')
                 ->from('dokter d')
                 ->where('id_dokter', $history_pelayanan->dpjp)
+                ->where('dokter_spes', $poli->spes)
                 ->get()
                 ->row();
 
-            // if (!$dokter) {
-            //     $dokter = (object)['nama_dokter' => '-'];
-            // }
-
-            // 🔹 Return semua data ke controller
             return [
                 'soap' => $soap,
                 'pasien' => $pasien,
-                'dokter' => $dokter
+                'dokter' => $dokter,
+                'poli' => $poli->spes
             ];
         }
 }

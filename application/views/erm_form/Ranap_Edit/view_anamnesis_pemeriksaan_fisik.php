@@ -100,7 +100,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="control-label mb-10 text-left"><b>Keluhan Utama:<b /><span
+                  <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span><b /><span
                         class="help"></span></label>
                   <span id="keluhan_error" class="text-danger"></span>
                   <div class="has-success">
@@ -111,7 +111,7 @@
 
               <div class="form-group">
                 <div class="col-md-4">
-                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang: <b /><span
+                  <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang <span style="color:red;">*</span><b /><span
                         class="help"></span></label>
                   <span id="riwayat_error" class="text-danger"></span>
                   <div class="has-success">
@@ -953,6 +953,40 @@
       '&thorax=' + thorax + '&jantung=' + jantung + '&paru=' + paru + '&andomen=' + andomen + '&punggung=' + punggung + '&ekstremitas=' + ekstremitas +
       '&genetalia=' + genetalia + '&keterangan=' + keterangan +
       '&terapi=' + terapi + '&konsul=' + konsul + '&lama=' + lama + '&prognosa=' + prognosa + '&gambar=' + gambar + '&id=' + id;
+
+    $('#keluhan').removeClass('is-invalid');
+    $('#keluhan_error').text('');
+
+    $('#riwayat_sakit_skrg').removeClass('is-invalid');
+    $('#riwayat_error').text('');
+
+    if (keluhan === '') {
+      $('html, body').animate({
+        scrollTop: $('#keluhan').offset().top - 100
+      }, 500);
+      $('#keluhan').focus();
+
+
+      $('#keluhan').addClass('is-invalid');
+      $('#keluhan_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (riwayat_sekarang === '') {
+      $('html, body').animate({
+        scrollTop: $('#riwayat_sakit_skrg').offset().top - 100
+      }, 500);
+      $('#riwayat_sakit_skrg').focus();
+
+
+      $('#riwayat_sakit_skrg').addClass('is-invalid');
+      $('#riwayat_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
 
 
     $.ajax({

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-  
 <head>
     <meta charset="UTF-8">
     <style>
@@ -28,12 +27,12 @@
             height: auto;
         }
 
-        h4 {
-            text-align: center;
-            font-size: 18px;
+        h1 {
+            font-size: 20px;
             font-weight: bold;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            text-align: right;
+            margin: 0;
         }
 
         hr {
@@ -72,7 +71,7 @@
         }
 
         .isi {
-            min-height: 80px;
+            min-height: 70px;
             border: 1px solid #000;
             padding: 8px;
             border-radius: 4px;
@@ -82,7 +81,8 @@
 
         .footer {
             margin-top: 30px;
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
             font-size: 13px;
         }
 
@@ -95,18 +95,37 @@
                 display: none;
             }
         }
+
+        .title {
+            font-weight: bold;
+            text-size: 14px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="logo-container">
-        <img src="<?= base_url('assets/dist/img/rsbt_ihc.png');  ?>" alt="Logo RSBT" style="width: 200px;">
-    </div>
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 20%;">
+                <img src="<?= base_url('assets/dist/img/rsbt_ihc.png') ?>" alt="Logo RS" style="width: 180px;">
+            </td>
+            <td style="width: 80%; text-align: left;">
+                <p><b>RS. Bakti Timah</b></p>
+                <p>Jalan Bukit Baru No. 1, Pangkalpinang, Taman Bunga, Kec. Gerunggang</p>
+                <p>Kabupaten Bangka, Kepulauan Bangka Belitung, Indonesia</p>
+                <p>Telp. 0717 9100844, Fax. 0715 32165</p>
+            </td>
+        </tr>
+    </table>
 
-    <h4>Rawat Jalan</h4>
     <hr>
 
+    <h3 class="title">Lembar Program Terapi/Pendampingan/Sebelum dan Sesudah Sesi Rehabilitas</h3>
+
+    <br>
+    
     <table class="info-table">
         <tr>
             <td class="label">Nomor Rekam Medis</td>
@@ -122,11 +141,11 @@
         </tr>
         <tr>
             <td class="label">Dokter DPJP</td>
-              <td>: <?= $dokter->nama_dokter ?? '-' ?></td>
+            <td>: <?= $dokter->nama_dokter ?? '-' ?></td>
         </tr>
         <tr>
             <td class="label">Tanggal</td>
-            <td>: <?= $soap->tanggal ?? '-' ?></td>
+            <td>: <?= isset($pasien->tgl_masuk) ? date('d F Y', strtotime($pasien->tgl_masuk)) : '-' ?></td>
         </tr>
     </table>
 
@@ -143,19 +162,25 @@
     <div class="isi"><?= nl2br($soap->P ?? '-') ?></div>
 
     <div class="footer">
-        <p>Tempat: ..................., Tanggal: ...................</p>
-        <br><br><br>
-        <b>(<?= $dokter->nama_dokter ?? 'Dokter Penanggung Jawab' ?>)</b>
+        <div>
+            <p>Pangkalpinang, <?= isset($pasien->tgl_masuk) ? date('d F Y', strtotime($pasien->tgl_masuk)) : '-' ?>.</p>
+            <br><br><br>
+            <p>(Tandatangan Dokter)</p>
+            <b>(<?= $dokter->nama_dokter ?? 'Dokter Penanggung Jawab' ?>)</b>
+        </div>
+        <div style="text-align: right;">
+            <p>&nbsp;</p>
+            <br><br><br>
+            <p>(Tandatangan Tim Rehabilitas Medik)</p>
+            <b>(<?= $this->session->userdata('data_auth')->nama ?? 'Petugas Rekam Medis' ?>)</b>
+        </div>
     </div>
-        
+
     <script>
         window.onload = function () {
             window.print();
         };
     </script>
 
-
 </body>
 </html>
-
-            

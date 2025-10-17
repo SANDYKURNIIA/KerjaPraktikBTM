@@ -45,9 +45,9 @@ class M_Erm_usg_kebidanan extends CI_Model
 
     public function getDataById($id_pelayanan){ return $this->getLatestByPelayanan($id_pelayanan); }
 
-    public function getById($no_rm)
+    public function getById($id)
     {
-        $row = $this->db->get_where($this->table, ['no_rm' => (string)$no_rm])->row_array();
+        $row = $this->db->get_where($this->table, ['id' => (string)$id])->row_array();
         return $this->normalize_row_after_fetch($row);
     }
 

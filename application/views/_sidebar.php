@@ -1176,11 +1176,10 @@ $izinAkses = $data->izin_akses;
 		<a href="<?= base_url('stok_obat_ok') ?>"><i class="ti-package mr-10 "></i>STOCK OBAT </a>
 	</li>
 <?php } elseif (($datatipe == 'labor' || $datatipe == 'laboratorium') && $status == 'aktif') { ?>
-
 	<!-- LABOR -->
 	<?php if ($datatipe == 'laboratorium' || $datatipe == 'labor') { ?>
 		<li>
-			<a href="<?= base_url('Pencarian_pasien') ?>"><i class="icon-magnifier mr-10"></i>PASIEN BARU</a>
+			<a href="<?= base_url('Pencarian_pasien') ?>"><i class="icon-magnifier mr-10"></i>PASIEN BARUUUUUU</a>
 		</li>
 		<li>
 			<a href="<?= base_url('Penunjang_RM/Pasien_labor') ?>"><i class="icon-user-following mr-10"></i>PASIEN LABOR</a>

@@ -265,6 +265,9 @@ class Erm_poli extends CI_Controller
         // $sebab_kematian = $this->M_Erm_poli->checkData($id_histori, 'form_sebab_kematian');
         // $lembar_rujukan = $this->M_Erm_poli->checkData($id_histori, 'form_lembar_rujukan');
         $asses_dokter_igd = $this->M_Erm_poli->checkData($id_histori, 'form_assesmen_dokter');
+        $assesmen_rehab = $this->db
+        ->get_where('assesmen_rehab', ['id_histori' => $id_histori])
+        ->num_rows();
         // // $peng_khusus = $this->M_Erm->checkData( $id_pelayanan, 'form_peng_khusus' );
         // $penundaan = $this->M_Erm_poli->checkData($id_histori, 'form_penundaan_pelayanan_obat');
         // $intra = $this->M_Erm_poli->checkData($id_histori, 'form_transfer_intra_rs');
@@ -276,6 +279,7 @@ class Erm_poli extends CI_Controller
         // $db['super_ranap'] = empty($super_ranap) ? 'not-found' : 'found';
         $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
         $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';
+        $db['assesmen_rehab'] = empty($assesmen_rehab) ? 'not-found' : 'found';
         $db['form_fisikrehab'] = empty($form_fisikrehab) ? 'not-found' : 'found';
         // $db['observasi'] = empty($observasi) ? 'not-found' : 'found';
         // $db['sebab_kematian'] = empty($sebab_kematian) ? 'not-found' : 'found';

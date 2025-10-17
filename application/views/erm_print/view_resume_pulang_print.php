@@ -449,7 +449,7 @@
             },
             success: function(data) {
                 // Alasan/Indikasi Masuk RS (bukan alasan pulang)
-                $('#keluhan_utama').text((data.alasan_masuk ?? '').toString().trim() || '-');
+                $('#keluhan_utama').text((data.alasan ?? '').toString().trim() || '-');
 
                 // Diagnosa masuk & terapi
                 $('#diagnosa').text((data.diagnosa ?? '').toString().trim());
@@ -469,7 +469,7 @@
 
 
                 const penunjangDiagnostikVal = (
-                    data.penunjang_diagnostik ?? r.diagnostik ?? ''
+                    data.terlampir ?? r.diagnostik ?? ''
                 ).toString().trim();
                 $('#penunjang_diagnostik').text(penunjangDiagnostikVal || '-');
 
@@ -496,7 +496,7 @@
                 const rawTglKontrol = (data.tgl_kontrol ?? (data.resume && data.resume.tgl_kontrol) ?? '').toString().trim();
                 $('#tgl_kontrol_text').text(rawTglKontrol ? formatTanggalID(rawTglKontrol) : '-');
 
-                $('#poliklinik').text(data.poliklinik_nama || '-');
+                $('#poliklinik').text(data.nama_panjang || '-');
 
 
                 console.log('alasan debug =>', {
@@ -707,5 +707,7 @@
         return html;
     }
 </script>
+
+
 
 </html>

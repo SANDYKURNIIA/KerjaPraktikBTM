@@ -344,6 +344,12 @@
                                         href="<?= base_url('Lembar_uji_fungsi/form/' . $id_pelayanan . '/' . $no_rm); ?>">
                                         Lembar Uji Fungsi Setelah Rehab
                                     </a>
+
+                                    <a class="btn btn-success col-md-5 form_assesmen_rehab"
+                                        href="<?= base_url('Assesmen_Rehab/form/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>">
+                                        Assesmen Rehab
+                                    </a>
+
                                     <a class="btn btn-success col-md-5 form_fisikrehab"
                                                 href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
                                                 Formulir Layanan Rehabilitasi Medik
@@ -471,6 +477,12 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.eval').removeClass('btn-success').addClass('btn-danger ');
                     $('.eval').attr('href', '<?php echo base_url('Erm_dpjp/edit_eval/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
                 }
+             if (data.assesmen_rehab == "found") {
+                  $('.form_assesmen_rehab')
+                  .removeClass('btn-success')
+                  .addClass('btn-danger')
+                  .attr('href', '<?php echo base_url('Assesmen_Rehab/form_edit/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
+        }
                 if (data.penundaan == "found") {
                     $('.penundaan').removeClass('btn-success').addClass('btn-danger ');
                     $('.penundaan').attr('href', '<?php echo base_url('Erm_penundaan_pelayanan_pengobatan/edit_penundaan/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');

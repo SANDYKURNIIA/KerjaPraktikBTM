@@ -156,12 +156,18 @@ class Erm_resume_pulang extends CI_Controller
         left join form_ass_dokter_ranap d_ranap on u.id_history = d_ranap.id_history
         where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) ='ranap'")->row();
 
+        $dataResumePulang = $this->db->query("SELECT u.alasan , u.diagnostik , u.tgl_kontrol ,u.id_list_poli , d.nama_panjang from resume_pulang u
+        left join list_poli d on u.id_list_poli = d.id_list_poli
+
+        where u.id_history = '$id_history'")->row();
+
 
         // Jika tidak ada history ranap
         if(!$poli){
-            $poli = $this->db->query("SELECT keluhan_utama, u.kode,u.nama_diagnosa from diagnosa_utama u
+            $poli = $this->db->query("SELECT rp.alasan as alasan_pulang , keluhan_utama, u.kode,u.nama_diagnosa from diagnosa_utama u
             left join form_assesmen_dokter d on u.id_history = d.id_history
             left join  form_assesmen_awal_rajal f on f.id_history = u.id_history
+            left join resume_pulang rp on  rp.id_history = u.id_history
             where u.id_pelayanan = '$id'  and SUBSTRING_INDEX(u.id_history, '_', 1) !='ranap'")->row();
         }
 
@@ -202,7 +208,11 @@ class Erm_resume_pulang extends CI_Controller
                 'diagnosa' => $poli->kode . ' - ' . $poli->nama_diagnosa,
                 'resume' => $resume,
                 'diagnosa_ranap' => $diagnosa,
-                'riwayat_sekarang' => $poli->riwayat_sekarang
+                'alasan_pulang' => $dataResumePulang->alasan,
+                'riwayat_sekarang' => $poli->riwayat_sekarang,
+                'terlampir' => $dataResumePulang->diagnostik,
+                'tgl_kontrol' => $dataResumePulang->tgl_kontrol,
+                'nama_panjang' => $dataResumePulang->nama_panjang,
 
 
             ];
