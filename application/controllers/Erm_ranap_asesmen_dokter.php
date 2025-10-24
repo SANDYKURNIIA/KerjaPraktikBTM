@@ -42,6 +42,8 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 	{
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
 		$staff = $this->session->userdata('data_auth');
+        $db = $this->db->get_where('form_ass_dokter_ranap', ['id_pelayanan' => $id_pelayanan , 'id_history' => $id_history])->row();
+
 
 		$page_data['nama'] = $selectPasien->nama;
 		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
@@ -53,7 +55,9 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 		$page_data['id_pelayanan'] = $id_pelayanan;
 		$page_data['id_history'] = $id_history;
 		$page_data['agama'] = $selectPasien->agama;
+		$page_data['id'] = $db->id_form;
 		$page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
+        
 
 		$this->load->view('assets/_header');
 		$page_data['page_content'] = 'erm_form/Ranap_Edit/view_anamnesis_pemeriksaan_fisik';
@@ -303,6 +307,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 
 
         // $this->M_Erm_ranap->update_ass_dokter($data, 'form_ass_dokter_ranap');
+
         $this->M_Erm_ranap->update_ass_dokter($id, $data);
         $out['status'] = "success";
 
@@ -311,6 +316,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 
         echo json_encode($out);
     }
+
     public function get_ass_per_ranap()
     {
         $id = $this->input->post('id');
@@ -339,10 +345,12 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 	// 	}
 	// 	echo json_encode($db);
 	// }
-public function get_ass_dok()
+
+    public function get_ass_dok()
     {
         $id = $this->input->post('id');
         $idPelayanan = $this->input->post('idPelayanan');
+
         $db = $this->db->get_where('form_ass_dokter_ranap', ['id_history' => $id])->row();
         if ($db == null) {
             $db = $this->db->get_where('form_ass_dokter_igd', ['id_pelayanan' => $idPelayanan])->row();

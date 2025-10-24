@@ -538,7 +538,7 @@
               <div class="col-md-6">
                 <span id="terapi_error" class="text-danger"></span>
                 <label class="control-label mb-10 text-left">Prosedur Pembedahan/Tindakan:</label>
-                <div class="has-success">
+                <div class="has-success"> 
                   <textarea class="form-control" name="prosedur_tindakan" id="prosedur_tindakan" cols="30" rows="5" required></textarea>
                 </div>
               </div>

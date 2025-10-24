@@ -365,6 +365,9 @@
                                             <a class="btn btn-success col-md-5  one_day_care" href="<?= base_url('OneDayCare/decer/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                                 One Day Care
                                             </a>
+                                             <a class="btn btn-success col-md-5  status_respirasi" href="<?= base_url('StatusRespirasi/form/'.$id_pelayanan.'/'.$id_histori) ?>">
+                                                Status Respirasi
+                                            </a>
 
                                             <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
@@ -494,6 +497,9 @@
                 }
                 if (data.resume_pulang == "found") {
                     $('.resume_pulang').removeClass('btn-success').addClass('btn-danger ');
+                }
+                 if (data.status_respirasi == "found") {
+                    $('.status_respirasi').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');

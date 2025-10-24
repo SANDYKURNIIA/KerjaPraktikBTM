@@ -639,7 +639,7 @@ class Erm_ranap_asesmen_perawat extends CI_Controller
 	{
 		$id = $this->input->post('id');
 
-		$poli = $this->db->query("SELECT f.id_pelayanan,f.id_history,tekanan_darah,suhu,frequensi_nadi,berat_badan,frequensi_nafas,tinggi_badan,riwayat,riwayat_dulu,skala_nyeri, d.riwayat_alergi from form_assesmen_awal_rajal f left join form_assesmen_dokter d on f.id_history = d.id_history having id_pelayanan = '$id'")->row();
+		$poli = $this->db->query("SELECT f.keluhan_utama, f.id_pelayanan,f.id_history,tekanan_darah,suhu,frequensi_nadi,berat_badan,frequensi_nafas,tinggi_badan,riwayat,riwayat_dulu,skala_nyeri, d.riwayat_alergi from form_assesmen_awal_rajal f left join form_assesmen_dokter d on f.id_history = d.id_history having id_pelayanan = '$id'")->row();
 		$igd = $this->db->query("SELECT f.id_pelayanan,f.id_history,tekanan_darah,suhu,frequensi_nadi,berat_badan,frequensi_nafas,tinggi_badan,gcs,spo2,keluhan,riwayat, riwayat_dulu, skala_nyeri, d.riwayat_alergi from form_ass_per_igd f left join form_ass_dokter_igd d on f.id_history = d.id_history and d.id_pelayanan = f.id_pelayanan 
 		having id_pelayanan = '$id'")->row();
 		$diagnosa = $this->db->query("SELECT * from diagnosa_utama where id_pelayanan='$id' and SUBSTRING_INDEX(id_history, '_', 1) = 'ranap'")->row_array();
@@ -661,7 +661,7 @@ class Erm_ranap_asesmen_perawat extends CI_Controller
 				'berat_badan' => $poli->berat_badan,
 				'frequensi_nafas' => $poli->frequensi_nafas,
 				'tinggi_badan' => $poli->tinggi_badan,
-				// 'keluhan' => $poli->keluhan_utama,
+				'keluhan' => $poli->keluhan_utama,
 				'riwayat' => $poli->riwayat,
 				'riwayat_dulu' => $poli->riwayat_dulu,
 				'riwayat_alergi' => $poli->riwayat_alergi,

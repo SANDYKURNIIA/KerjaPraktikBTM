@@ -251,6 +251,7 @@ class Erm_ranap extends CI_Controller
 		$resume_pasien_pulang = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_pasien_pulang');
 		$ass_bayi_baru_lahir = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'ass_bayi_baru_lahir');
 		$resume_pulang = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_pulang');
+		$status_respirasi = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'status_respirasi');
 		$resume_bayi_tabung = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_bayi_tabung');
 		$discharge_planning = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'discharger');
 
@@ -287,6 +288,7 @@ class Erm_ranap extends CI_Controller
 		$db['resume_pasien_pulang'] = empty($resume_pasien_pulang) ? 'not-found' : 'found';
 		$db['ass_bayi_baru_lahir'] = empty($ass_bayi_baru_lahir) ? 'not-found' : 'found';
 		$db['resume_pulang'] = empty($resume_pulang) ? 'not-found' : 'found';
+		$db['status_respirasi'] = empty($status_respirasi) ? 'not-found' : 'found';
 		$db['resume_bayi_tabung'] = empty($resume_bayi_tabung) ? 'not-found' : 'found';
 		$db['discharge_planning'] = empty($discharge_planning) ? 'not-found' : 'found';
 

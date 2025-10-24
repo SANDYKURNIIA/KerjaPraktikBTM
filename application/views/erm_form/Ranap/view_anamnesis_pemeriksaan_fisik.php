@@ -89,7 +89,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span><b /><span class="help"></span></label>
+                    <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span></b><span class="help"></span></label>
                     <span id="keluhan_error" class="text-danger"></span>
                     <div class="has-success">
                       <textarea class="form-control" name="keluhan" id="keluhan" cols="30" rows="3"></textarea>
@@ -544,17 +544,19 @@
               </div>
             </div>
             <div class="form-group">
-                    <div class="col-md-4">
-                      <label class="control-label mb-10 text-left">Diagnosa Utama:</label>
-                      <div class="has-success">
-                        <textarea class="form-control" name="diagnosa_utama" id="diagnosa_utama" cols="30" rows="5"><?= isset($data['diagnosa_utama']) ? $data['diagnosa_utama'] : '' ?></textarea>
-                      </div>
-                    </div>
-                  </div>
+              <div class="col-md-4">
+                <label class="control-label mb-10 text-left">Diagnosa Utama <b style="color:red;">*</b></label>
+                <span id="diagnosa_utama_error" class="text-danger"></span>
+                <div class="has-success">
+                  <textarea class="form-control" name="diagnosa_utama" id="diagnosa_utama" cols="30" rows="5"><?= isset($data['diagnosa_utama']) ? $data['diagnosa_utama'] : '' ?></textarea>
+                </div>
+              </div>
+            </div>
 
-                  <div class="form-group">
+            <div class="form-group">
                     <div class="col-md-4" style="margin-top:10px;">
-                      <label class="control-label mb-10 text-left">Diagnosa Sekunder:</label>
+                      <label class="control-label mb-10 text-left">Diagnosa Sekunder <b style="color:red;">*</b></label>
+                      <span id="diagnosa_sekunder_error" class="text-danger"></span>
                       <div class="has-success">
                         <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"><?= isset($data['diagnosa_sekunder']) ? $data['diagnosa_sekunder'] : '' ?></textarea>
                       </div>
@@ -784,8 +786,8 @@
     konsul = $("#konsul").val();
     lama = $("#lama").val();
     prognosa = $("#prognosa").val();
-    diagnosa_utama = $("#diagnosa_utama").val();
-    diagnosa_sekunder = $("#diagnosa_sekunder").val();
+    let diagnosa_utama = $("#diagnosa_utama").val();
+    let diagnosa_sekunder = $("#diagnosa_sekunder").val();
 
     if ($('#can').css("display") == "none") {
       gambar = "";
@@ -815,6 +817,13 @@
     $('#riwayat_sakit_skrg').removeClass('is-invalid');
     $('#riwayat_error').text('');
 
+    $('#diagnosa_sekunder').removeClass('is-invalid');
+    $('#diganos_sekunder_error').text('');
+
+    $('#diagnosa_utama').removeClass('is-invalid');
+    $('#diganos_utama_error').text('');
+
+
     if (keluhan === '') {
       $('html, body').animate({
         scrollTop: $('#keluhan').offset().top - 100
@@ -842,6 +851,38 @@
 
       return false;
     }
+
+    if (diagnosa_utama === '') {
+      $('html, body').animate({
+        scrollTop: $('#diagnosa_utama').offset().top - 100
+      }, 500);
+      $('#diagnosa_utama').focus();
+
+
+      $('#diagnosa_utama').addClass('is-invalid');
+      $('#diagnosa_utama_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (diagnosa_sekunder === '') {
+      $('html, body').animate({
+        scrollTop: $('#diagnosa_sekunder').offset().top - 100
+      }, 500);
+      $('#diagnosa_sekunder').focus();
+
+
+      $('#diagnosa_sekunder').addClass('is-invalid');
+      $('#diagnosa_sekunder_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+
+
+    
 
     $.ajax({
       url: "<?php echo base_url('Erm_ranap_asesmen_dokter/insert_asses_dokter_ranap'); ?>",

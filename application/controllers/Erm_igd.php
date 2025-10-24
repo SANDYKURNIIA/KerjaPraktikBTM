@@ -68,6 +68,8 @@ class Erm_igd extends CI_Controller
 		$page_data['page_content'] = 'erm_form/IGD/view_erm';
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
+		$this->load->view('modal_mcu/modal_surat_keterangan_sakit', $page_data);
+
 	}
 	public function form_riwayat($id_pel, $id_his)
 	{

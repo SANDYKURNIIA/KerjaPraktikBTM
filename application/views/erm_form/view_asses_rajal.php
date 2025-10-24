@@ -1435,8 +1435,11 @@
 											</div>
 										</div>
 									</div>
-
-									<div class="form-group" id="ibu_hamil" style="display: block;">
+									
+									<?php
+									if(strtolower($jenis_kelamin)  == "perempuan")
+									echo
+									'<div class="form-group" id="ibu_hamil" style="display: block;">
 										<div class="col-md-12">
 											<h5 style="margin-top: 30px;"><strong>
 													<label class="control-label mb-10 text-left"><b>KESEHATAN
@@ -1868,7 +1871,8 @@
 											</div>
 										</div>
 
-									</div>
+									</div>';
+									?>
 
 									<div class="col-md-12">
 										<div class="row">

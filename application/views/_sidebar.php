@@ -1547,7 +1547,7 @@ $izinAkses = $data->izin_akses;
 
 	<li>
 		<a href="<?= base_url('mcu') ?>"><i class="fa fa-ambulance mr-10"></i>MCU</a>
-	</li>
+</li>
 	<li>
 		<a href="<?= base_url('mcu/DataMCU') ?>"><i class="icon-notebook mr-10"></i>Data MCU</a>
 	</li>

@@ -69,6 +69,16 @@
 		}
 	}
 </style>
+<?php if ($this->session->flashdata('swal')): ?>
+<script>
+Swal.fire({
+    icon: '<?= $this->session->flashdata('swal')['type']; ?>',
+    title: '<?= $this->session->flashdata('swal')['title']; ?>',
+    html: '<?= $this->session->flashdata('swal')['text']; ?>',
+    confirmButtonText: 'OK'
+});
+</script>
+<?php endif; ?>
 <div class="row" onload="checkData()">
 	<div class="col-lg-3 col-md-12">
 		<div class="panel panel-success card-view  pa-0">
@@ -263,6 +273,9 @@
                                             BUKU MCU
                                         </a>";
 											?>
+											<a disabled class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
+												Surat Keterangan Sakit
+											</a>
 											<div class="clearfix"></div>
 
 										</div>
@@ -413,4 +426,11 @@
 		slides[slideIndex - 1].style.display = "block";
 		// dots[slideIndex - 1].className += " active";
 	}
+
+	function toggleSuratKeteranganSakit() {
+	    const no_rm = $('#noRM').val();
+    	$('#no_rm').val(no_rm); 
+		$('#modal_medic_sertif').modal('toggle');
+	}
+
 </script>

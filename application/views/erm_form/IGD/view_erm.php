@@ -292,7 +292,9 @@
                                             href="<?php echo base_url('Erm_edukasi_igd/edukasi_pendaftaran_igd/' . urlencode($no_rm));?>">
                                             Form Edukasi Pasien
                                         </a>
-
+                                        <a   class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
+												Surat Keterangan Sakit
+                                        </a>
 
                                     </div>
                                 </div>
@@ -576,4 +578,10 @@
         });
         return false;
     }
+
+    function toggleSuratKeteranganSakit() {
+	    const no_rm = $('#noRM').val();
+    	$('#no_rm').val(no_rm); 
+		$('#modal_medic_sertif').modal('toggle');
+	}
 </script>

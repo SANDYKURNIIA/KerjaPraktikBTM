@@ -590,4 +590,41 @@ class M_mcu extends CI_Model
       }
   }
 
+  public function selectNamaDokterById($id_dokter)
+  {
+      $this->db->select('nama, id_dokter');
+      $this->db->from('dokter');
+      $this->db->where('id_dokter', $id_dokter);
+      $this->db->where('status', 'AKTIF');
+      $this->db->order_by('nama', 'ASC');
+
+      return $this->db->get()->row(); // row() karena hanya 1 data
+  }
+
+  public function insertSurat($data)
+  {
+      $data['id_surat'] = $this->generateUUID();
+      // Insert langsung ke tabel (karena id_surat auto UUID di MySQL)
+      $this->db->insert('surat_keterangan_sakit', $data);
+      return $data['id_surat'];
+  }
+
+  private function generateUUID()
+  {
+      return sprintf(
+          '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+          mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+          mt_rand(0, 0xffff),
+          mt_rand(0, 0x0fff) | 0x4000,
+          mt_rand(0, 0x3fff) | 0x8000,
+          mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+      );
+  }
+
+  public function selectDataSuratKeteranganSakitByIdSurat($id_surat)
+  {
+      $this->db->where('id_surat', $id_surat);
+      return $this->db->get('surat_keterangan_sakit')->row();
+  }
+
 }

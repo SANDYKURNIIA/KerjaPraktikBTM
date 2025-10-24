@@ -1431,7 +1431,10 @@
 										</div>
 									</div>
 
-									<div class="form-group" id="ibu_hamil" style="display: block;">
+									<?php
+									if(strtolower($jenis_kelamin)  == "perempuan")
+									echo
+									'<div class="form-group" id="ibu_hamil" style="display: block;">
 										<div class="col-md-12">
 											<h5 style="margin-top: 30px;"><strong>
 													<label class="control-label mb-10 text-left"><b>KESEHATAN
@@ -1609,14 +1612,14 @@
 															</strong>
 														</h10>
 														<div class="checkbox checkbox-primary">
-															<input id="riwayat_penyakit00" type="checkbox" name="riwayat_kb" value="Tidak Ada">
-															<label class="control-label" for="riwayat_penyakit00">
+															<input id="riwayat_penyakit" type="checkbox" name="riwayat_kb" value="Tidak Ada" checked>
+															<label class="control-label" for="riwayat_penyakit">
 																Tidak Ada
 															</label>
 														</div>
 														<div class="checkbox checkbox-primary">
-															<input id="riwayat_penyakit0" type="checkbox" name="riwayat_kb" value="Pil KB">
-															<label class="control-label" for="riwayat_penyakit0">
+															<input id="riwayat_penyakit" type="checkbox" name="riwayat_kb" value="Pil KB">
+															<label class="control-label" for="riwayat_penyakit">
 																Pil KB
 															</label>
 														</div>
@@ -1666,13 +1669,13 @@
 															</strong>
 														</h10>
 														<div class="checkbox checkbox-primary">
-															<input id="riwayat_penyakit_past000" type="checkbox" name="riwayat_hamil" value="Tidak Ada">
-															<label class="control-label" for="riwayat_penyakit_past000">
+															<input id="riwayat_penyakit_past00" type="checkbox" name="riwayat_hamil" value="Tidak Ada">
+															<label class="control-label" for="riwayat_hamil">
 																Tidak Ada
 															</label>
 														</div>
 														<div class="checkbox checkbox-primary">
-															<input id="riwayat_penyakit_past00" type="checkbox" name="riwayat_hamil" value="Hypertensi">
+															<input id="riwayat_penyakit_past00" type="checkbox" name="riwayat_hamil" value="Hypertensi" checked>
 															<label class="control-label" for="riwayat_hamil">
 																Hypertensi
 															</label>
@@ -1837,13 +1840,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="checkbox checkbox-primary">
-													<input id="Presentasi1" type="checkbox" name="presentasi_ni" value="Tidak Ada">
-													<label class="control-label" for="presentasi_ni">
-														Tidak Ada
-													</label>
-												</div>
-												<div class="checkbox checkbox-primary">
-													<input id="Presentasi1" type="checkbox" name="presentasi_ni" value="Kepala">
+													<input id="Presentasi1" type="checkbox" name="presentasi_ni" value="Kepala" checked>
 													<label class="control-label" for="presentasi_ni">
 														Kepala
 													</label>
@@ -1869,7 +1866,8 @@
 											</div>
 										</div>
 
-									</div>
+									</div>';
+									?>
 
 									<div class="col-md-12">
 										<div class="row">

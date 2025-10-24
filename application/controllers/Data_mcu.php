@@ -43,6 +43,8 @@ class Data_mcu extends CI_Controller
 		$page_data['page_content'] = 'page_content/Data_tindakan_mcu';
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
+		$this->load->view('modal_mcu/modal_surat_keterangan_sakit', $page_data);
+
 	}
 	public function getNamaTindakan()
 	{

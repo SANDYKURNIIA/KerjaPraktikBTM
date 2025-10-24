@@ -4,7 +4,7 @@
     <div class="panel panel-default card-view">
       <div class="panel-heading">
         <div class="pull-left">
-          <h6 class="panel-title txt-dark">Anamnesis dan Pemeriksaan Fisik</h6>
+          <h6 class="panel-title txt-dark">ASESMEN AWAL MEDIS RAWAT INAP</h6>
         </div>
         <div class="clearfix"></div>
       </div>
@@ -20,9 +20,9 @@
                 <!-- <input type="text" disabled class="form-control" id="inNoRM"> -->
               </div>
             </div>
-            <input type="hidden" class="form-control" value="<?= $id_pelayanan ?>" id="inPel">
-            <input type="hidden" class="form-control" value="<?= $id_history ?>" id="inHis">
-            <input type="hidden" class="form-control" id="id">
+            <input type="hidden" class="form-control" value="<?= $id_pelayanan ?>" id="inPel" name="inPel">
+            <input type="hidden" class="form-control" value="<?= $id_history ?>" id="inHis" name="inHis">
+            <input type="hidden" class="form-control" id="id" value="<?= $id ?>" name="id">
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Nama<span class="help"></span></label>
@@ -34,10 +34,17 @@
             <div class="form-group">
               <div class="col-md-3">
                 <label class="control-label mb-10 text-left">Tgl Lahir / Umur<span class="help"></span></label>
-                <input type="text" disabled class="form-control" value="<?= $tgl_lahir ?>">
-                <!-- <input type="text" disabled class="form-control"> -->
+                <input type="text" disabled class="form-control" value="<?php
+                                                                        setlocale(LC_ALL, 'id_ID');
+
+                                                                        date_default_timezone_set('Asia/Jakarta');
+                                                                        $time = strtotime($tgl_lahir);
+                                                                        $date = strftime(" %d %B %Y ", $time);
+                                                                        echo $date  . '(' . getAge($tgl_lahir) . ')' ?>">
+                <span class="help-block"></span>
               </div>
             </div>
+
 
             <div class="form-group ">
               <div class="col-md-3">
@@ -47,27 +54,6 @@
               </div>
             </div>
 
-
-            <!-- <div class="form-group">
-              <div class="col-md-12">
-                <h5 style="margin-top: 30px;"><strong>
-                    <label class="control-label mb-10 text-left">
-                      PENGKAJIAN DOKTER
-                      <span class="help"></span>
-                    </label></strong>
-                </h5>
-              </div>
-
-              <div class="form-group">
-                <div class="col-md-12">
-                  <strong>
-                    <label class="control-label mb-10 text-left">
-                      <p><br>Data Fisik</p>
-                    </label>
-                  </strong>
-
-                </div>
-              </div> -->
 
             <div class="form-group">
               <div class="col-md-12">
@@ -100,7 +86,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span><b /><span
+                  <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span></b><span
                         class="help"></span></label>
                   <span id="keluhan_error" class="text-danger"></span>
                   <div class="has-success">
@@ -412,288 +398,462 @@
 
 
                 <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Hidung: </b><span class="help"></span></label>
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Riwayat Alergi</label>
+                    <span id="alergi_error" class="text-danger"></span>
+                    <div class="radio-button radio-button-primary">
+                      <input id="riwayat_alergi1" type="radio" name="riwayat_alergi" value="Ada">
+                      <label class="control-label" for="riwayat_alergi1">
+                        Ada
+                      </label>
+                      <div class="has-success">
+                        <input type="text" class="form-control" value="" id="riwayat_alergi" style="display: none;">
+                      </div>
+                    </div>
+                    <div class="radio-button radio-button-primary">
+                      <input id="riwayat_alergi2" type="radio" name="riwayat_alergi" value="Tidak ada" checked>
+                      <label class="control-label" for="riwayat_alergi2">
+                        Tidak Ada
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Keluhan Utama:<b /><span class="help"></span></label>
+                    <span id="keluhan_error" class="text-danger"></span>
                     <div class="has-success">
-                      <textarea class="form-control" name="hidung" id="hidung" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                      <textarea class="form-control" name="keluhan" id="keluhan" cols="30" rows="3"></textarea>
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Leher: </b><span class="help"></span></label>
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Sekarang <span style="color: red;">*</span> <b /><span class="help"></span></label>
+                    <span id="riwayat_error" class="text-danger"></span>
                     <div class="has-success">
-                      <textarea class="form-control" name="leher" id="leher" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                      <textarea class="form-control" name="riwayat_sakit_skrg" id="riwayat_sakit_skrg" cols="30" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Dahulu: <b /><span class="help"></span></label>
+                    <div class="has-success">
+                      <textarea class="form-control" name="riwayat_sakit_dulu" id="riwayat_sakit_dulu" cols="30" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Riwayat Penyakit Menular: <b /><span class="help"></span></label>
+                    <div class="has-success">
+                      <textarea class="form-control" name="riwayat_sakit_menular" id="riwayat_sakit_menular" cols="30" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Keadaan Sosial : <b /><span class="help"></span></label>
+                    <div class="has-success">
+                      <textarea class="form-control" name="keadaan_sosial" id="keadaan_sosial" cols="30" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left"><b>Keadaan Fisik : <b /><span class="help"></span></label>
+                    <div class="has-success">
+                      <textarea class="form-control" name="keadaan_fisik" id="keadaan_fisik" cols="30" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-12">
+                  <h5 style="margin-top: 30px;"><strong>
+                      <label class="control-label mb-10 text-left">
+                        PEMERIKSAAN FISIK
+                        <span class="help"></span>
+                      </label></strong>
+                  </h5>
+                </div>
+
+                <div class="col-md-12">
+                  <strong>
+                    <label class="control-label mb-10 text-left">
+                      <p><br>Keadaan Umum</p>
+                    </label>
+                  </strong>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Tekanan Darah<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="text" class="form-control" disabled id="tekanan_darah" placeholder="mmHg" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Nadi<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="number" class="form-control" disabled id="frequensi_nadi" placeholder="x/menit" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Pernafasan<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="number" class="form-control" disabled id="frequensi_nafas" placeholder="x/menit" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Suhu<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="number" class="form-control" id="suhu" disabled placeholder="&deg;C" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Skala Nyeri<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="text" class="form-control" id="skala_nyeri" disabled value="">
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Mulut: </b><span class="help"></span></label>
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">GCS<span class="help"></span></label>
                     <div class="has-success">
-                      <textarea class="form-control" name="mulut" id="mulut" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                      <input type="number" disabled class="form-control" id="gcs" value="">
+                    </div>
+                    <span class="help-block"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Kondisi Umum<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="text" class="form-control" disabled id="kondisi_umum" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Berat Badan<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="text" class="form-control" disabled id="berat_badan" value="">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Tinggi Badan<span class="help"></span></label>
+                    <div class="has-success">
+                      <input type="text" class="form-control" disabled id="tinggi_badan" value="">
                     </div>
                   </div>
                 </div>
 
 
+                <div class="col-md-12">
+                  <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                </div>
 
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Thorax : </b><span class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="thorax" id="thorax" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                <div class="col-md-7">
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Kepala: </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="kepala" id="kepala" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Hidung: </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="hidung" id="hidung" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Mulut: </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="mulut" id="mulut" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Leher: </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="leher" id="leher" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>THORAX : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="thorax" id="thorax" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Jantung : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="jantung" id="jantung" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Paru : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="paru" id="paru" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Andomen dan Pelvis : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="andomen" id="andomen" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Punggung dan Pinggang : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="punggung" id="punggung" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Ekstremitas : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="ekstremitas" id="ekstremitas" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-10">
+                      <label class="control-label mb-10 text-left"><b>Genetalia : </b><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="genetalia" id="genetalia" cols="30" rows="2">Dalam Batas Normal</textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Jantung : </b><span class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="jantung" id="jantung" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Paru : </b><span class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="paru" id="paru" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Andomen dan Pelvis : </b><span
-                        class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="andomen" id="andomen" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
-                    </div>
-                  </div>
+                <div class="col-md-12">
+                  <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
                 </div>
-
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Punggung dan Pinggang : </b><span
-                        class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="punggung" id="punggung" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
-                    </div>
-                  </div>
+                <div class="col-md-12">
+                  <strong>
+                    <label class="control-label mb-10 text-left">
+                      <p><br>Pemeriksaan Khusus/Status Lokalis/Obstetrik/Ginekologis</p>
+                    </label>
+                  </strong>
                 </div>
+                <div class="col-md-5">
 
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Ekstremitas : </b><span
-                        class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="ekstremitas" id="ekstremitas" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                  <button data-toggle="modal" data-target="#modal_gambar" aria-expanded="false" aria-controls="poli_sore" class="btn btn-primary btn-anim btn-sm"><i class="icon-rocket"></i><span class="btn-text">GAMBAR</span></button>
+                  <button class="btn btn-default" id="sig-clearBtn3">Clear Signature</button>
+                  <canvas id="can" width="500" height="700" style="display: none;"></canvas>
+
+                  <div class="form-group">
+                    <div class="modal fade" id="modal_gambar" role="dialog" aria-labelledby="newPeternakModallabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="newPeternakModallabel"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+
+                          <div class="modal-body">
+                            <div class="form-group row" style="margin-left: 30px;">
+
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <canvas id="can1" width="500" height="700">
+                                  </canvas>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <button class="btn btn-primary" id="sig-submitBtn1">Submit Signature</button>
+                                  <button class="btn btn-default" id="sig-clearBtn1">Clear Signature</button>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+
+
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="form-group">
-                  <div class="col-md-10">
-                    <label class="control-label mb-10 text-left"><b>Genetalia : </b><span class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="genetalia" id="genetalia" cols="30"
-                        rows="2">Dalam Batas Normal</textarea>
+                  <div class="form-group">
+                    <div class="col-md-12">
+                      <label class="control-label mb-10 text-left"><b>Keterangan : <b /><span class="help"></span></label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="2"></textarea>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
 
               <div class="col-md-12">
                 <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
               </div>
-              <div class="col-md-12">
-                <strong>
-                  <label class="control-label mb-10 text-left">
-                    <p><br>Pemeriksaan Khusus/Status Lokalis/Obstetrik/Ginekologis</p>
-                  </label>
-                </strong>
-              </div>
+              <div class="form-group">
+                <div class="form-group">
+                  <div class="col-md-8">
+                    <strong>
+                      <label class="control-label mb-10 text-left">
+                        <b>Diagnosa: </b><span class="help"></span>
+                      </label>
+                    </strong>
+                    <div class="table-wrap" style="width: 70%; margin: auto ">
+                      <!-- <p id="notif_load" style="color:red;">Loading data, Please wait</p> -->
+                      <div class="table-responsive">
+                        <table class="table table-hover display  pb-60" id="tabledgns">
+                          <thead>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>NAMA DIAGNOSA</th>
+                              <th>TAMBAH</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>NAMA DIAGNOSA</th>
+                              <th>TAMBAH</th>
+                            </tr>
+                          </tfoot>
+                          <tbody style="color: black">
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <strong>
+                      <label class="control-label mb-10 text-left">
+                        <b>Diagnosa Utama: </b><span class="help"></span>
+                      </label>
+                    </strong>
+                    <div class="table-wrap" style="width: 70%; margin: auto ">
+                      <div class="table-responsive">
+                        <table class="table table-hover display  pb-60" id="tablediagnosa1">
+                          <thead>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>KODE</th>
+                              <th>NAMA</th>
+                              <th>HAPUS</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>KODE</th>
+                              <th>NAMA</th>
+                              <th>HAPUS</th>
+                            </tr>
+                          </tfoot>
+                          <tbody style="color: black">
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <strong>
+                      <label class="control-label mb-10 text-left">
+                        <b>Diagnosa Sekunder: </b><span class="help"></span>
+                      </label>
+                    </strong>
+                    <div class="table-wrap" style="width: 70%; margin: auto ">
+                      <div class="table-responsive">
+                        <table class="table table-hover display  pb-60" id="tablediagnosa">
+                          <thead>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>KODE</th>
+                              <th>NAMA</th>
+                              <th>HAPUS</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr class="bg-success">
+                              <th>ID DIAGNOSA</th>
+                              <th>KODE</th>
+                              <th>NAMA</th>
+                              <th>HAPUS</th>
+                            </tr>
+                          </tfoot>
+                          <tbody style="color: black">
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
 
-              <div class="col-md-5">
-
-                <button data-toggle="modal" data-target="#modal_gambar" aria-expanded="false" aria-controls="poli_sore" class="btn btn-primary btn-anim btn-sm"><i class="icon-rocket"></i><span class="btn-text">GAMBAR</span></button>
-                <button class="btn btn-default" id="sig-clearBtn3">Clear Signature</button>
-                <canvas id="can" width="500" height="700" style="display: none;"></canvas>
+                  </div>
+                </div>
 
                 <div class="form-group">
-                  <div class="modal fade" id="modal_gambar" role="dialog" aria-labelledby="newPeternakModallabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="newPeternakModallabel"></h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-
-                        <div class="modal-body">
-                          <div class="form-group row" style="margin-left: 30px;">
-
-                            <div class="row">
-                              <div class="col-md-12">
-                                <canvas id="can1" width="500" height="700">
-                                </canvas>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12">
-                                <button class="btn btn-primary" id="sig-submitBtn1">Submit Signature</button>
-                                <button class="btn btn-default" id="sig-clearBtn1">Clear Signature</button>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-
-
+                  <div class="col-md-12">
+                    <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-4">
+                      <span id="terapi_error" class="text-danger"></span>
+                      <label class="control-label mb-10 text-left">Terapi/Instruksi:</label>
+                      <div class="has-success">
+                        <textarea class="form-control" name="terapi" id="terapi" cols="30" rows="5"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="control-label mb-10 text-left">Usul Pemeriksaan:</label>
+                      <span id="konsul_error" class="text-danger"></span>
+                      <div class="has-success">
+                        <textarea class="form-control" name="" id="konsul" cols="30" rows="5"></textarea>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="col-md-12">
-                    <label class="control-label mb-10 text-left"><b>Keterangan : <b /><span class="help"></span></label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="2"></textarea>
-                    </div>
-                  </div>
-                </div>
 
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="form-group">
-                <div class="col-md-8">
-                  <strong>
-                    <label class="control-label mb-10 text-left">
-                      <b>Diagnosa: </b><span class="help"></span>
-                    </label>
-                  </strong>
-                  <div class="table-wrap" style="width: 70%; margin: auto ">
-                    <!-- <p id="notif_load" style="color:red;">Loading data, Please wait</p> -->
-                    <div class="table-responsive">
-                      <table class="table table-hover display  pb-60" id="tabledgns">
-                        <thead>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>NAMA DIAGNOSA</th>
-                            <th>TAMBAH</th>
-                          </tr>
-                        </thead>
-                        <tfoot>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>NAMA DIAGNOSA</th>
-                            <th>TAMBAH</th>
-                          </tr>
-                        </tfoot>
-                        <tbody style="color: black">
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <strong>
-                    <label class="control-label mb-10 text-left">
-                      <b>Diagnosa Utama: </b><span class="help"></span>
-                    </label>
-                  </strong>
-                  <div class="table-wrap" style="width: 70%; margin: auto ">
-                    <div class="table-responsive">
-                      <table class="table table-hover display  pb-60" id="tablediagnosa1">
-                        <thead>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>KODE</th>
-                            <th>NAMA</th>
-                            <th>HAPUS</th>
-                          </tr>
-                        </thead>
-                        <tfoot>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>KODE</th>
-                            <th>NAMA</th>
-                            <th>HAPUS</th>
-                          </tr>
-                        </tfoot>
-                        <tbody style="color: black">
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <strong>
-                    <label class="control-label mb-10 text-left">
-                      <b>Diagnosa Sekunder: </b><span class="help"></span>
-                    </label>
-                  </strong>
-                  <div class="table-wrap" style="width: 70%; margin: auto ">
-                    <div class="table-responsive">
-                      <table class="table table-hover display  pb-60" id="tablediagnosa">
-                        <thead>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>KODE</th>
-                            <th>NAMA</th>
-                            <th>HAPUS</th>
-                          </tr>
-                        </thead>
-                        <tfoot>
-                          <tr class="bg-success">
-                            <th>ID DIAGNOSA</th>
-                            <th>KODE</th>
-                            <th>NAMA</th>
-                            <th>HAPUS</th>
-                          </tr>
-                        </tfoot>
-                        <tbody style="color: black">
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="col-md-12">
-                  <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-4">
-                    <span id="terapi_error" class="text-danger"></span>
-                    <label class="control-label mb-10 text-left">Terapi/Instruksi:</label>
-                    <div class="has-success">
-                      <textarea class="form-control" name="terapi" id="terapi" cols="30" rows="5"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-md-4">
-                    <label class="control-label mb-10 text-left">Usul Pemeriksaan:</label>
-                    <span id="konsul_error" class="text-danger"></span>
-                    <div class="has-success">
-                      <textarea class="form-control" name="" id="konsul" cols="30" rows="5"></textarea>
-                    </div>
-                  </div>
-                </div>
                 <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Lama Perawatan:</label>
@@ -702,8 +862,6 @@
                       <input id="lama" type="number" class="form-control" name="lama" placeholder="">
                     </div>
                   </div>
-                </div>
-                <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Prognosa:</label>
                     <span id="prognosa_error" class="text-danger"></span>
@@ -714,23 +872,105 @@
                 </div>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-md-4">
+                <label class="control-label mb-10 text-left">Diagnosa Utama <b style="color:red;">*</b></label>
+                <span id="diagnosa_utama_error" class="text-danger"></span>
+                <div class="has-success">
+                  <textarea class="form-control" name="diagnosa_utama" id="diagnosa_utama" cols="30" rows="5"><?= isset($data['diagnosa_utama']) ? $data['diagnosa_utama'] : '' ?></textarea>
+                </div>
+              </div>
+            </div>
 
-          </div>
-
-
-
-          <div class="form-group text-center" style="margin-top: 30px;">
+            <div class="form-group">
+                    <div class="col-md-4" style="margin-top:10px;">
+                      <label class="control-label mb-10 text-left">Diagnosa Sekunder <b style="color:red;">*</b></label>
+                      <span id="diagnosa_sekunder_error" class="text-danger"></span>
+                      <div class="has-success">
+                        <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"><?= isset($data['diagnosa_sekunder']) ? $data['diagnosa_sekunder'] : '' ?></textarea>
+                      </div>
+                    </div>
+                  </div>
             <div class="col-md-12">
               <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
             </div>
-            <!-- Button -->
-            <div class="col-md-6">
-              <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)"
-                style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span
-                  class="btn-text">KEMBALI</span></a>
-              <button type="submit" class="btn btn-success mb-4" onclick="simpan()">Simpan</button>
-              <button type="submit" class="btn btn-success mb-4" onclick="cetak()">Cetak</button>
+            <div class="col-md-12">
+              <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
             </div>
+
+            <!-- <div class="form-group">
+                  <div class="col-md-4">
+                    <label class="control-label mb-10 text-left">Nama Lengkap TTD<span class="help"></span></label>
+                    <span id="nama_error" class="text-danger"></span>
+                    <div class="has-success">
+                      <input type="text" class="form-control" id="nama_lengkap" value="">
+                    </div>
+                  </div>
+                </div> -->
+            <div class="col-md-12">
+              <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-4">
+                <button style="display: none;" data-toggle="modal" data-target="#modal_ttd" aria-expanded="false" aria-controls="poli_sore" class="btn btn-primary btn-anim btn-sm"><i class="icon-rocket"></i><span class="btn-text">TANDA TANGAN DOKTER</span></button>
+                <button style="display: none;" class="btn btn-default" id="sig-clearBtn2">Clear Signature</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4">
+              <canvas id="ttd" width="400" height="400" style="display: none;">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="modal fade" id="modal_ttd" role="dialog" aria-labelledby="newPeternakModallabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="newPeternakModallabel">TANDA TANGAN</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+
+                  <div class="modal-body">
+                    <div class="form-group row" style="margin-left: 30px;">
+
+                      <div class="row">
+                        <div class="col-md-12">
+                          <canvas id="tandatangan" width="300" height="300">
+                          </canvas>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button class="btn btn-primary" id="sig-submitBtn">Submit Signature</button>
+                          <button class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="form-group text-center" style="margin-top: 30px;">
+          <div class="col-md-12">
+            <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+          </div>
+          <!-- Button -->
+          <div class="col-md-6">
+            <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
+            <button type="submit" class="btn btn-success mb-4" onclick="simpan()">Simpan</button>
+            <button style="display:none;" type="submit" class="btn btn-success mb-4" onclick="cetak()">Cetak</button>
           </div>
         </div>
       </div>
@@ -740,7 +980,7 @@
 
 <!--batas-->
 
-<?php $this->load->view('assets/gambar_org') ?>
+<?php $this->load->view('assets/signature') ?>
 <style>
   canvas {
     cursor: crosshair;
@@ -748,122 +988,26 @@
   }
 </style>
 <script type="text/javascript">
-  $(document).ready(function(e) {
+  // $(document).ready(function() {
+  //   no_rm = $('#inNoRM').val();
+  //   $.ajax({
+  //     url: "<?php echo base_url() ?>Erm_ases_dok_igd/get_ass_dok",
+  //     method: "POST",
+  //     dataType: 'json',
+  //     data: {
+  //       id: no_rm
+  //     },
+  //     success: function(data) {
+  //       if (data.status_dt == 'found') {
+  //         $('#riwayat_sakit_dulu').val(data.riwayat).attr('disabled', true);
+  //       }else{
+  //         $('#riwayat_sakit_dulu').val(data.riwayat_dulu).attr('disabled', true);
+  //       }
+  //     }
 
-    id_pelayanan = $('#inPel').val();
-    id_history = $('#inHis').val();
-    reload_data_diagnosa(id_pelayanan, id_history);
-    reload_data_diagnosa_id_pel(id_history);
-    reload_data_diagnosa1_id_pel1(id_history);
-  });
-  $(document).ready(function() {
-    id_history = $('#inHis').val();
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ranap_asesmen_dokter/get_ass_dok",
-      method: "POST",
-      dataType: 'json',
-      data: {
-        id: id_history
-      },
-      success: function(data) {
-        if (data.riwayat_alergi == "Tidak Ada") {
-          $('input[name="riwayat_alergi"][value="' + data.riwayat_alergi + '"]').prop("checked", true);
-        } else {
-          $('input[name="riwayat_alergi"][value="Ada"]').prop("checked", true);
-          $('#riwayat_alergi').val(data.riwayat_alergi);
-          $('#riwayat_alergi').show();
-        }
-        $('#id').val(data.id_form);
-        $('#inHis').val(data.id_history);
-        $('#no_rm').val(data.no_rm);
-        $('#keluhan').val(data.keluhan_utama);
-        $('#riwayat_sakit_skrg').val(data.riwayat_sekarang);
-        $('#riwayat_sakit_dulu').val(data.riwayat_dahulu);
-        $('#riwayat_sakit_menular').val(data.riwayat_menular);
-        $('#keadaan_sosial').val(data.keadaan_sosial);
-        $('#keadaan_fisik').val(data.keadaan_fisik);
-        $('#mulai_labor').val(data.labor_mulai);
-        $('#selesai_labor').val(data.labor_selesai);
-        $('#mulai_rontgen').val(data.rontgen_mulai);
-        $('#selesai_rontgen').val(data.rontgen_selesai);
-        $('#mulai_konsul').val(data.konsul_mulai);
-        $('#selesai_konsul').val(data.konsul_selesai);
-        $('#mulai_resep').val(data.resep_mulai);
-        $('#selesai_resep').val(data.resep_selesai);
-        $('#mulai_transfer').val(data.transfer_mulai);
-        $('#selesai_transfer').val(data.transfer_selesai);
+  //   });
+  // });
 
-        $('#kepala').val(data.kepala);
-        $('#hidung').val(data.hidung);
-        $('#leher').val(data.leher);
-        $('#mulut').val(data.mulut);
-        $('#thorax').val(data.thorax);
-        $('#jantung').val(data.jantung);
-        $('#paru').val(data.paru);
-        $('#andomen').val(data.andomen);
-        $('#punggung').val(data.punggung);
-        $('#ekstremitas').val(data.ekstremitas);
-        $('#genetalia').val(data.genetalia);
-
-
-        $('#keterangan').val(data.keterangan);
-        $('#terapi').val(data.terapi);
-        $('#konsul').val(data.konsul);
-        $('#lama').val(data.lama);
-        $('#prognosa').val(data.prognosa);
-        $('#dokter_pemeriksa').val(data.dokter_pemeriksa);
-        $('#tglpemeriksaan').val(data.tanggal_pemeriksaan);
-
-        if (data.gambar != '') {
-          canvas = document.getElementById('can');
-          ctx = canvas.getContext("2d");
-
-          var img = new Image();
-          img.onload = function() {
-            ctx.drawImage(img, 0, 0, 500, 400);
-            steps.length = 0;
-            steps[no] = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          }
-          img.src = "<?php echo base_url(); ?>" + data.gambar;
-
-          $('#can').show();
-        }
-      }
-
-    });
-  });
-  $(document).ready(function() {
-    id_pelayanan = $('#inPel').val();
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ranap_asesmen_dokter/get_ass_per_ranap",
-      method: "POST",
-      dataType: 'json',
-      data: {
-        id: id_pelayanan
-      },
-      success: function(data) {
-        if (data.status_dt == 'found') {
-          $('#tekanan_darah').val(data.tekanan_darah);
-          $('#frequensi_nadi').val(data.frequensi_nadi);
-          $('#frequensi_nafas').val(data.frequensi_nafas);
-          $('#suhu').val(data.suhu);
-          $('#skala_nyeri').val(data.skala_nyeri);
-          $('#gcs').val(data.gcs);
-          $('#kondisi_umum').val(data.kondisi_umum);
-          $('#berat_badan').val(data.berat_badan);
-          $('#tinggi_badan').val(data.tinggi_badan);
-          $('#keluhan').val(data.keluhan_utama);
-          /*---------------*/
-          $('input[name="riwayat_alergi"][value="' + data.alergi + '"]').prop("checked", true);
-
-          // $('#kebutuhan_khusus').val(data.kebutuhan_khusus);
-          // $('#asesment_triase').val(data.asesment_triase);
-
-        }
-      }
-
-    });
-  });
 </script>
 <script type="text/javascript">
   $(document).ready(function() {
@@ -878,35 +1022,52 @@
       }
     });
   });
+  $(document).ready(function(e) {
+
+    id_pelayanan = $('#inPel').val();
+    id_history = $('#inHis').val();
+    reload_data_diagnosa(id_pelayanan, id_history);
+    reload_data_diagnosa_id_pel(id_history);
+    reload_data_diagnosa1_id_pel1(id_history);
+  });
 </script>
 
 <script type="text/javascript">
+  // function isCanvasBlank(canvas) {
+  //   var blank = document.createElement('can');
+
+  //   blank.width = canvas.width;
+  //   blank.height = canvas.height;
+
+  //   return canvas.toDataURL() === blank.toDataURL();
+  // }
+  // function isCanvasBlank(canvas) {
+  //   var context = canvas.getContext('2d');
+
+  //    pixelBuffer = new Uint32Array(
+  //     context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  //   );
+
+  //   return !pixelBuffer.some(color => color !== 0);
+  // }
   function simpan() {
-    id = $('#id').val();
+    // var blank = isCanvasBlank(document.getElementById('can'));
+    // alert(blank ? 'blank' : 'not blank');
+
     id_pelayanan = $('#inPel').val();
     id_history = $('#inHis').val();
+    id = $('#id').val();
     no_rm = $('#inNoRM').val();
-    keluhan = $('#keluhan').val();
+    const keluhan = $('#keluhan').val().trim();
     riwayat_alergi = $('input[name="riwayat_alergi"]:checked').val();
     if (riwayat_alergi == "Ada") {
       riwayat_alergi = $('#riwayat_alergi').val();
     }
-    riwayat_sekarang = $('#riwayat_sakit_skrg').val();
+    const riwayat_sekarang = $('#riwayat_sakit_skrg').val().trim();
     riwayat_dahulu = $('#riwayat_sakit_dulu').val();
     riwayat_menular = $('#riwayat_sakit_menular').val();
     keadaan_sosial = $('#keadaan_sosial').val();
     keadaan_fisik = $('#keadaan_fisik').val();
-
-    // mulai_labor = $("#mulai_labor").val();
-    // selesai_labor = $("#selesai_labor").val();
-    // mulai_rontgen = $("#mulai_rontgen").val();
-    // selesai_rontgen = $("#selesai_rontgen").val();
-    // mulai_konsul = $("#mulai_konsul").val();
-    // selesai_konsul = $("#selesai_konsul").val();
-    // mulai_resep = $("#mulai_resep").val();
-    // selesai_resep = $("#selesai_resep").val();
-    // mulai_transfer = $("#mulai_transfer").val();
-    // selesai_transfer = $("#selesai_transfer").val();
 
     kepala = $('#kepala').val();
     hidung = $('#hidung').val();
@@ -920,16 +1081,14 @@
     ekstremitas = $('#ekstremitas').val();
     genetalia = $('#genetalia').val();
 
+
     keterangan = $("#keterangan").val();
     terapi = $("#terapi").val();
     konsul = $("#konsul").val();
     lama = $("#lama").val();
     prognosa = $("#prognosa").val();
-
-    // keterangan = $("#keterangan").val();
-    // terapi = $("#terapi").val();
-    // dokter_pemeriksa = $("#dokter_pemeriksa").val();
-    // tglpemeriksaan = $("#tglpemeriksaan").val();
+    let diagnosa_utama = $("#diagnosa_utama").val();
+    let diagnosa_sekunder = $("#diagnosa_sekunder").val();
 
     if ($('#can').css("display") == "none") {
       gambar = "";
@@ -937,28 +1096,39 @@
       canvas = document.getElementById('can');
       gambar = canvas.toDataURL("image/png");
     }
-    // if ($('#ttd').css("display") == "none") {
-    //   ttd = "";
-    // } else {
-    //   canvas1 = document.getElementById('ttd');
-    //   ttd = canvas1.toDataURL("image/png");
-    // }
+    if ($('#ttd').css("display") == "none") {
+      ttd = "";
+    } else {
+      canvas1 = document.getElementById('ttd');
+      ttd = canvas1.toDataURL("image/png");
+    }
 
-    // canvas1 = document.getElementById('ttd');
-    // ttd = canvas1.toDataURL("image/png");
+
 
     dataString = 'no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history + '&keluhan=' + keluhan + '&riwayat_alergi=' + riwayat_alergi +
       '&riwayat_sekarang=' + riwayat_sekarang + '&riwayat_dahulu=' + riwayat_dahulu + '&riwayat_menular=' + riwayat_menular +
       '&keadaan_sosial=' + keadaan_sosial + '&keadaan_fisik=' + keadaan_fisik + '&kepala=' + kepala + '&hidung=' + hidung + '&leher=' + leher + '&mulut=' + mulut +
       '&thorax=' + thorax + '&jantung=' + jantung + '&paru=' + paru + '&andomen=' + andomen + '&punggung=' + punggung + '&ekstremitas=' + ekstremitas +
       '&genetalia=' + genetalia + '&keterangan=' + keterangan +
-      '&terapi=' + terapi + '&konsul=' + konsul + '&lama=' + lama + '&prognosa=' + prognosa + '&gambar=' + gambar + '&id=' + id;
+      '&terapi=' + terapi + '&konsul=' + konsul + '&lama=' + lama + '&prognosa=' + prognosa + '&gambar=' + gambar +
+      '&ttd=' + ttd + '&diagnosa_utama=' + diagnosa_utama + '&diagnosa_sekunder=' + diagnosa_sekunder + '&id=' + id;
+    // alert(tindak_lanjut);
+
+    
 
     $('#keluhan').removeClass('is-invalid');
     $('#keluhan_error').text('');
 
     $('#riwayat_sakit_skrg').removeClass('is-invalid');
     $('#riwayat_error').text('');
+
+    
+    $('#diagnosa_sekunder').removeClass('is-invalid');
+    $('#diganos_sekunder_error').text('');
+
+    $('#diagnosa_utama').removeClass('is-invalid');
+    $('#diganos_utama_error').text('');
+
 
     if (keluhan === '') {
       $('html, body').animate({
@@ -983,6 +1153,34 @@
 
       $('#riwayat_sakit_skrg').addClass('is-invalid');
       $('#riwayat_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (diagnosa_utama === '') {
+      $('html, body').animate({
+        scrollTop: $('#diagnosa_utama').offset().top - 100
+      }, 500);
+      $('#diagnosa_utama').focus();
+
+
+      $('#diagnosa_utama').addClass('is-invalid');
+      $('#diagnosa_utama_error').text('Kolom ini wajib diisi!');
+
+
+      return false;
+    }
+
+    if (diagnosa_sekunder === '') {
+      $('html, body').animate({
+        scrollTop: $('#diagnosa_sekunder').offset().top - 100
+      }, 500);
+      $('#diagnosa_sekunder').focus();
+
+
+      $('#diagnosa_sekunder').addClass('is-invalid');
+      $('#diagnosa_sekunder_error').text('Kolom ini wajib diisi!');
 
 
       return false;
@@ -1116,7 +1314,8 @@
         "url": '<?php echo base_url('Erm_igd/tampil_listdata_diagnosa'); ?>',
         "type": 'POST',
         "data": {
-          id_pelayanan: id_pelayanan
+          id_pelayanan: id_pelayanan,
+          id_history: id_history
         },
       },
 
@@ -1135,6 +1334,10 @@
     $('#tablediagnosa').dataTable().fnClearTable();
     $('#tablediagnosa').dataTable().fnDestroy();
     $('#tablediagnosa').DataTable({
+      "scrollX": false,
+      "scrollY": false,
+      "pageLength": 3,
+      "searching": false,
       "language": {
         "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
         "sProcessing": "Sedang memproses...",
@@ -1176,6 +1379,10 @@
     $('#tablediagnosa1').dataTable().fnClearTable();
     $('#tablediagnosa1').dataTable().fnDestroy();
     $('#tablediagnosa1').DataTable({
+      "scrollX": false,
+      "scrollY": false,
+      "pageLength": 3,
+      "searching": false,
       "language": {
         "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
         "sProcessing": "Sedang memproses...",
@@ -1198,7 +1405,7 @@
         "url": '<?php echo base_url('Erm_ranap_asesmen_dokter/tampil_list_diagnosa1'); ?>',
         "type": 'POST',
         "data": {
-          id_pelayanan: id_pelayanan
+          id_pelayanan: id_pelayanan,
         },
       },
 
@@ -1349,11 +1556,10 @@
     return false;
   }
 
-  function cetak() {
-    id = $('#inPel').val();
-    // id2 = $('#inPel').val();
-    window.location.href = "<?php echo base_url('Erm_ranap/print_ass_dok_ranap/') ?>" + id;
-  }
+  // function cetak() {
+  //   id = $('#inPel').val();
+  //   window.location.href = "<?php echo base_url('Erm_igd_edit/print_ass_dok_igd/') ?>" + id;
+  // }
 
   // function reload_data_penunjang(id_pelayanan) { //nampilinn diagnosa seluruhnya utk nambah ke diagnosa pasien
   //   $('#tabel_penunjang').dataTable().fnClearTable();
@@ -1450,7 +1656,7 @@
 
   // function upload_file() {
   //   $('#btnUpload').text('uploading...'); //change button text
-  //   $('#btnUpload').attr('disabled', true); //set button disable
+  //   $('#btnUpload').attr('disabled', true); //set button disable 
 
 
   //   // ajax adding data to database
@@ -1485,7 +1691,7 @@
   //         $('#formUploadModal').modal('hide');
   //       }
   //       $('#btnUpload').text('upload'); //change button text
-  //       $('#btnUpload').attr('disabled', false); //set button enable
+  //       $('#btnUpload').attr('disabled', false); //set button enable 
 
 
 
@@ -1493,4 +1699,91 @@
   //     }
   //   });
   // }
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    id_pelayanan = $('#inPel').val();
+    id_history = $('#inHis').val();
+    $.ajax({
+      url: "<?php echo base_url() ?>Erm_ranap_asesmen_dokter/get_ass_dok",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id: id_history,
+        idPelayanan : id_pelayanan
+      },
+      success: function(data) {
+        // data.keluhan_utama = data.keluhan;
+		    // data.riwayat_sekarang = data.riwayat;
+        if (data.riwayat_alergi == "Tidak Ada") {
+          $('input[name="riwayat_alergi"][value="' + data.riwayat_alergi + '"]').prop("checked", true);
+        } else {
+          $('input[name="riwayat_alergi"][value="Ada"]').prop("checked", true);
+          $('#riwayat_alergi').val(data.riwayat_alergi);
+          $('#riwayat_alergi').show();
+        }
+        console.log(data);
+        $('#id').val(data.id_form);
+        $('#inHis').val(data.id_history);
+        $('#no_rm').val(data.no_rm);
+        $('#keluhan').val(data.keluhan_utama);
+        console.log(data.keluhan_utama);
+        $('#riwayat_sakit_skrg').val(data.riwayat_sekarang);
+        $('#riwayat_sakit_dulu').val(data.riwayat_dahulu);
+        $('#riwayat_sakit_menular').val(data.riwayat_menular);
+        $('#keadaan_sosial').val(data.keadaan_sosial);
+        $('#keadaan_fisik').val(data.keadaan_fisik);
+        $('#mulai_labor').val(data.labor_mulai);
+        $('#selesai_labor').val(data.labor_selesai);
+        $('#mulai_rontgen').val(data.rontgen_mulai);
+        $('#selesai_rontgen').val(data.rontgen_selesai);
+        $('#mulai_konsul').val(data.konsul_mulai);
+        $('#selesai_konsul').val(data.konsul_selesai);
+        $('#mulai_resep').val(data.resep_mulai);
+        $('#selesai_resep').val(data.resep_selesai);
+        $('#mulai_transfer').val(data.transfer_mulai);
+        $('#selesai_transfer').val(data.transfer_selesai);
+
+        $('#kepala').val(data.kepala);
+        $('#hidung').val(data.hidung);
+        $('#leher').val(data.leher);
+        $('#mulut').val(data.mulut);
+        $('#thorax').val(data.thorax);
+        $('#jantung').val(data.jantung);
+        $('#paru').val(data.paru);
+        $('#andomen').val(data.andomen);
+        $('#punggung').val(data.punggung);
+        $('#ekstremitas').val(data.ekstremitas);
+        $('#genetalia').val(data.genetalia);
+
+
+        $('#keterangan').val(data.keterangan);
+        $('#terapi').val(data.terapi);
+        $('#konsul').val(data.konsul);
+        $('#lama').val(data.lama);
+        $('#prognosa').val(data.prognosa);
+        $('#dokter_pemeriksa').val(data.dokter_pemeriksa);
+        $('#tglpemeriksaan').val(data.tanggal_pemeriksaan);
+        $('#diagnosa_sekunder').val(data.diagnosa_sekunder);
+        $('#diagnosa_utama').val(data.diagnosa_utama);
+
+        if (data.gambar != '') {
+          canvas = document.getElementById('can');
+          ctx = canvas.getContext("2d");
+
+          var img = new Image();
+          img.onload = function() {
+            ctx.drawImage(img, 0, 0, 500, 400);
+            steps.length = 0;
+            steps[no] = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          }
+          img.src = "<?php echo base_url(); ?>" + data.gambar;
+
+          $('#can').show();
+        }
+      }
+
+    });
+  });
 </script>

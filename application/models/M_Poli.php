@@ -340,7 +340,7 @@ class M_Poli extends CI_Model
         if ($tipe == 'poliinternis') {
             if ($data_staff->username == "4020191016") {
                 $dok = $this->db->get_where('dokter', ['username' => $data_staff->username])->row()->id_dokter;
-                $query = $this->db->query("SELECT v.*, r.tindakan,r.tindakan_labor, r.tindakan_radiologi, r.tindakan_farmasi,r.status 
+                $query = $this->db->query("SELECT v.*, r.tindakan,r.tindakan_labor, r.tindakan_radiologi, r.tindakan_farmasi,r.status status_kasir
             FROM v_pasien_internis v
             LEFT JOIN req_kasir r
             ON v.id_history = r.id_history
@@ -348,7 +348,7 @@ class M_Poli extends CI_Model
             order by v.tgl_masuk desc");
                 return $query->result();
             }
-            $query = $this->db->query("SELECT v.*, r.tindakan,r.tindakan_labor, r.tindakan_radiologi, r.tindakan_farmasi,r.status 
+            $query = $this->db->query("SELECT v.*, r.tindakan,r.tindakan_labor, r.tindakan_radiologi, r.tindakan_farmasi,r.status status_kasir
             FROM v_pasien_internis v
             LEFT JOIN req_kasir r
             ON v.id_history = r.id_history
@@ -1879,7 +1879,7 @@ class M_Poli extends CI_Model
         $tgl = date("Y-m-d");
         $query = $this->db->query("SELECT v.*,d.nama_diagnosa,d.kode
         FROM v_erm_poli v
-        left join diagnosa_utama d on v.id_history = d.id_history
+        left join diagnosa_u    a d on v.id_history = d.id_history
         where v.tipe_staff = '$poli' and v.status_erm=1
         and v.tgl_masuk like '$tgl%'
         ORDER BY v.tgl_masuk desc");
