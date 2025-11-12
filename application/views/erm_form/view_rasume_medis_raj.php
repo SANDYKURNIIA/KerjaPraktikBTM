@@ -89,6 +89,30 @@
                 <div class="col-md-12">
                   <label class="control-label mb-10 text-left">Pemeriksaan Penunjang/Diagnostik :</label>
 
+                  <div class="data-pemeriksaan">
+                    <p class="">
+                      A. Tindakan Poli :
+                    </p>
+                    <ul id="list_tindakan_poli">
+
+                    </ul>
+                  </div>
+                  <div class="data-pemeriksaan">
+                    <p class="">
+                      B. Radiologi :
+                    </p>
+                    <ul id="list_radiologi">
+
+                    </ul>
+                  </div>
+                  <div class="data-pemeriksaan">
+                    <p class="">
+                      C. Labor :
+                    </p>
+                    <ul id="list_labor">
+
+                    </ul>
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -291,6 +315,33 @@
     100% {
       transform: rotate(360deg);
     }
+  }
+
+   .table_pemeriksaan {
+    color: black;
+    width: 65%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+
+  .data-pemeriksaan {
+    display: flex;
+    align-items: start;
+    color: black;
+    line-height: 25px;
+    margin-bottom: 3px;
+  }
+
+  .data-pemeriksaan p {
+    margin: 0;
+  }
+
+  .data-pemeriksaan ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-left: 5px;
   }
 </style>
 <script type="text/javascript">
@@ -550,4 +601,87 @@
   `;
     return html;
   }
+</script>
+
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: "<?php echo base_url() ?>Erm_resume_medis_raj/tampil_list_tindakan",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama_tindakan}
+            </li>
+          `;
+          });
+        }else{
+          html += `<li>Tidak ada data</li>`;
+        }
+        $("#list_tindakan_poli").html(html);
+      }
+    });
+
+
+    $.ajax({
+      url: "<?php echo base_url('Erm_resume_medis_raj/tampil_list_radiologi'); ?>",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          console
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama}
+            </li>
+          `;
+          });
+        }else{
+          html += `<li>Tidak ada data</li>`;
+        }
+        $("#list_radiologi").html(html);
+      }
+
+    });
+
+
+    $.ajax({
+      url: "<?php echo base_url('Erm_resume_medis_raj/tampil_list_labor'); ?>",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          console
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama_tindakan}
+            </li>
+          `;
+          });
+        }else{
+          html += `<li>Tidak ada data</li>`;
+        }
+        $("#list_labor").html(html);
+      }
+
+    });
+
+  });
 </script>

@@ -291,6 +291,7 @@ class Erm_poli extends CI_Controller
         $db['skrining_tbc'] = empty($skrining_tbc) ? 'not-found' : 'found';
         $db['eval'] = empty($eval) ? 'not-found' : 'found';
         $uji_fungsi = $this->M_Erm_poli->checkData($id_histori, 'lembar_uji_fungsi');
+        $db['lembar_uji_fungsi'] = empty($uji_fungsi) ? 'not-found' : 'found';
         echo json_encode($db);
 
         exit;

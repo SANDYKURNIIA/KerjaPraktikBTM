@@ -28,106 +28,87 @@ class Erm_laporan_operasi extends CI_Controller
     }
 
 
-    public function simpan()
-	{
-		$staff = $this->session->userdata('data_auth');
-		$id = $this->input->post('id_pelayanan');
-		$db = $this->db->query("SELECT count(*) count from laporan_operasi where id_pelayanan ='$id'")->row();
-		if ($db->count == 0) {
-			$db = [
-                // 'Ruang' => $this->input->post('Ruang'),
-                'no_rm' => $this->input->post('no_rm'),
-                'id_pelayanan' => $this->input->post('id_pelayanan'),
-                'id_history' => $this->input->post('id_history'),
-                // 'kelas' => $this->input->post('kelas'),
-                // 'nama_pasien' => $this->input->post('nama_pasien'),
-                // 'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-                // 'tanggal_lahir' => $this->input->post('tanggal_lahir'),
-                'nama_ahli_bedah' => $this->input->post('nama_ahli_bedah'),
-                'nama_perawat_instrumen' => $this->input->post('nama_perawat_instrumen'),
-                'nama_asisten1' => $this->input->post('nama_asisten1'),
-                'nama_asisten2' => $this->input->post('nama_asisten2'),
-                'diagnosa_pra_operasi' => $this->input->post('diagnosa_pra_operasi'),
-                'tindakan_operasi' => $this->input->post('tindakan_operasi'),
-                'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
-                'indikasi_operasi' => $this->input->post('indikasi_operasi'),
-                'jenis_operasi' => $this->input->post('jenis_operasi'),
-                'tanggal_operasi' => $this->input->post('tanggal_operasi'),
-                'operasi_dimulai' => $this->input->post('operasi_dimulai'),
-                'operasi_selesai' => $this->input->post('operasi_selesai'),
-                'jaringan_eksisi' => $this->input->post('jaringan_eksisi'),
-                'bahan_dikirim_laboratorium' => $this->input->post('bahan_dikirim_laboratorium'),
-                'pemeriksaan_pathologie' => $this->input->post('pemeriksaan_pathologie'),
-                'untuk_pemeriksaan' => $this->input->post('untuk_pemeriksaan'),
-                'antiseptik' => $this->input->post('antiseptik'),
-                'jumlah_pendarahan' => $this->input->post('jumlah_pendarahan'),
-                'jumlah_transfusi' => $this->input->post('jumlah_transfusi'),
-                'penyulit_operasi' => $this->input->post('penyulit_operasi'),
-                'komplikasi_operasi' => $this->input->post('komplikasi_operasi'),
-                'nomor_pendaftaran' => $this->input->post('nomor_pendaftaran'),
-                'staff' => $staff->id_staff,
-            ];
-			$this->M_laporan_operasi_model->update_data_pasien($db, 'laporan_operasi');
-		} else {
-			$db = [
-                // 'Ruang' => $this->input->post('Ruang'),
-                // 'no_rm' => $this->input->post('no_rm'),
-                // 'id_pelayanan' => $this->input->post('id_pelayanan'),
-                // 'id_history' => $this->input->post('id_history'),
-                // 'kelas' => $this->input->post('kelas'),
-                // 'nama_pasien' => $this->input->post('nama_pasien'),
-                // 'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-                // 'tanggal_lahir' => $this->input->post('tanggal_lahir'),
-                'nama_ahli_bedah' => $this->input->post('nama_ahli_bedah'),
-                'nama_perawat_instrumen' => $this->input->post('nama_perawat_instrumen'),
-                'nama_asisten1' => $this->input->post('nama_asisten1'),
-                'nama_asisten2' => $this->input->post('nama_asisten2'),
-                'diagnosa_pra_operasi' => $this->input->post('diagnosa_pra_operasi'),
-                'tindakan_operasi' => $this->input->post('tindakan_operasi'),
-                'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
-                'indikasi_operasi' => $this->input->post('indikasi_operasi'),
-                'jenis_operasi' => $this->input->post('jenis_operasi'),
-                'tanggal_operasi' => $this->input->post('tanggal_operasi'),
-                'operasi_dimulai' => $this->input->post('operasi_dimulai'),
-                'operasi_selesai' => $this->input->post('operasi_selesai'),
-                'jaringan_eksisi' => $this->input->post('jaringan_eksisi'),
-                'bahan_dikirim_laboratorium' => $this->input->post('bahan_dikirim_laboratorium'),
-                'pemeriksaan_pathologie' => $this->input->post('pemeriksaan_pathologie'),
-                'untuk_pemeriksaan' => $this->input->post('untuk_pemeriksaan'),
-                'antiseptik' => $this->input->post('antiseptik'),
-                'jumlah_pendarahan' => $this->input->post('jumlah_pendarahan'),
-                'jumlah_transfusi' => $this->input->post('jumlah_transfusi'),
-                'penyulit_operasi' => $this->input->post('penyulit_operasi'),
-                'komplikasi_operasi' => $this->input->post('komplikasi_operasi'),
-                'nomor_pendaftaran' => $this->input->post('nomor_pendaftaran'),
-                'staff' => $staff->id_staff,
-            ];
-			$where = array('id_pelayanan' => $this->input->post('id_pelayanan'));
-			$this->M_laporan_operasi_model->update($db, $where, 'form_laporan');
-		}
-		$out['status'] = "success";
-		echo json_encode($out);
-	}
-      
+public function simpan()
+{
+    $staff = $this->session->userdata('data_auth');
+    $id_pelayanan = $this->input->post('id_pelayanan');
+    $id_history = $this->input->post('id_history');
+
+    // Cek apakah data laporan_operasi untuk id_pelayanan ini sudah ada
+    $cek = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $id_pelayanan])->row();
+
+    // Data yang akan disimpan (insert/update)
+    $data = [
+        'no_rm' => $this->input->post('no_rm'),
+        'id_pelayanan' => $id_pelayanan,
+        'id_history' => $id_history,
+        'kamar_ok' => $this->input->post('kamar_ok'),
+
+        'nama_ahli_bedah' => $this->input->post('nama_ahli_bedah'),
+        'nama_perawat_instrumen' => $this->input->post('nama_perawat_instrumen'),
+        'nama_asisten1' => $this->input->post('nama_asisten1'),
+        'nama_asisten2' => $this->input->post('nama_asisten2'),
+        'diagnosa_pra_operasi' => $this->input->post('diagnosa_pra_operasi'),
+        'tindakan_operasi' => $this->input->post('tindakan_operasi'),
+        'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
+        'indikasi_operasi' => $this->input->post('indikasi_operasi'),
+        'jenis_operasi' => $this->input->post('jenis_operasi'),
+        'jenis_pembiusan' => $this->input->post('jenis_pembiusan'),
+        'posisi_operasi' => $this->input->post('posisi_operasi'),
+        'tanggal_operasi' => $this->input->post('tanggal_operasi'),
+        'operasi_dimulai' => $this->input->post('operasi_dimulai'),
+        'operasi_selesai' => $this->input->post('operasi_selesai'),
+        'lama_operasi' => $this->input->post('lama_operasi'),
+
+        'jaringan_eksisi' => $this->input->post('jaringan_eksisi'),
+        'bahan_dikirim_laboratorium' => $this->input->post('bahan_dikirim_laboratorium'),
+        'pemeriksaan_pathologie' => $this->input->post('pemeriksaan_pathologie'),
+        'untuk_pemeriksaan' => $this->input->post('untuk_pemeriksaan'),
+        'antiseptik' => $this->input->post('antiseptik'),
+        'jumlah_pendarahan' => $this->input->post('jumlah_pendarahan'),
+        'jumlah_transfusi' => $this->input->post('jumlah_transfusi'),
+        'penyulit_operasi' => $this->input->post('penyulit_operasi'),
+        'komplikasi_operasi' => $this->input->post('komplikasi_operasi'),
+        'nomor_pendaftaran' => $this->input->post('nomor_pendaftaran'),
+
+        'sirkuler' => $this->input->post('sirkuler'),
+        'nama_dokter_anestesi' => $this->input->post('nama_dokter_anestesi'),
+        'nama_perawat_anestesi' => $this->input->post('nama_perawat_anestesi'),
+
+        'staff' => $staff->id_staff,
+    ];
+
+    // Jika belum ada data → INSERT
+    if (!$cek) {
+        $this->M_laporan_operasi_model->insert('laporan_operasi', $data);
+    } else {
+        // Jika sudah ada data → UPDATE
+        $where = ['id_pelayanan' => $id_pelayanan];
+        $this->M_laporan_operasi_model->update('laporan_operasi', $data, $where);
+    }
+
+    // Redirect kembali ke halaman form laporan operasi agar data tetap tampil
+    redirect(base_url('Erm_laporan_operasi/form/' . $id_pelayanan . '/' . $id_history));
+}
 
 
     public function print_out($id_pelayanan, $id_history)
-	{
-		// $data['data'] = $this->M_laporan_operasi_model->getData($id_pelayanan);
+    {
+        // $data['data'] = $this->M_laporan_operasi_model->getData($id_pelayanan);
         $data['data'] = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
         $data['laporan_operasi'] = $this->db->get_where("laporan_operasi", ["id_pelayanan" => $id_pelayanan])->row();
         // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
-		 // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
-		$this->load->view('erm_form/Ranap/view_laporan_operasi_print', $data);
-        
-	}
+        // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
+        $this->load->view('erm_form/Ranap/view_laporan_operasi_print', $data);
+
+    }
 
     public function store()
     {
         $this->load->model('M_laporan_operasi_model');
         $id_pelayanan = $this->input->post('id_pelayanan');
         $existing_data = $this->M_laporan_operasi_model->CekId($id_pelayanan);
-		$staff = $this->session->userdata('data_auth');
+        $staff = $this->session->userdata('data_auth');
         // Menangani pengiriman data dari form ke database
         {
             $data = array(
@@ -139,19 +120,31 @@ class Erm_laporan_operasi extends CI_Controller
                 // 'nama_pasien' => $this->input->post('nama_pasien'),
                 // 'jenis_kelamin' => $this->input->post('jenis_kelamin'),
                 // 'tanggal_lahir' => $this->input->post('tanggal_lahir'),
+                // tambah
+                'kamar_ok' => $this->input->post('kamar_ok'),
+
                 'nama_ahli_bedah' => $this->input->post('nama_ahli_bedah'),
                 'nama_perawat_instrumen' => $this->input->post('nama_perawat_instrumen'),
                 'nama_asisten1' => $this->input->post('nama_asisten1'),
                 'nama_asisten2' => $this->input->post('nama_asisten2'),
+
+                'sirkuler' => $this->input->post('sirkuler'),
+                'nama_dokter_anestesi' => $this->input->post('nama_dokter_anestesi'),
+                'nama_perawat_anestesi' => $this->input->post('nama_perawat_anestesi'),
+
                 'diagnosa_pra_operasi' => $this->input->post('diagnosa_pra_operasi'),
                 'tindakan_operasi' => $this->input->post('tindakan_operasi'),
                 'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
                 'indikasi_operasi' => $this->input->post('indikasi_operasi'),
                 'jenis_operasi' => $this->input->post('jenis_operasi'),
-                'kategori_operasi' => $this->input->post('kategori_operasi'),
+                // tambah
+                'jenis_pembiusan' => $this->input->post('jenis_pembiusan'),
+                'posisi_operasi' => $this->input->post('posisi_operasi'),
+
                 'tanggal_operasi' => $this->input->post('tanggal_operasi'),
                 'operasi_dimulai' => $this->input->post('operasi_dimulai'),
                 'operasi_selesai' => $this->input->post('operasi_selesai'),
+                'lama_operasi' => $this->input->post('lama_operasi'),
                 'jaringan_eksisi' => $this->input->post('jaringan_eksisi'),
                 'bahan_dikirim_laboratorium' => $this->input->post('bahan_dikirim_laboratorium'),
                 'pemeriksaan_pathologie' => $this->input->post('pemeriksaan_pathologie'),
@@ -164,7 +157,7 @@ class Erm_laporan_operasi extends CI_Controller
                 'nomor_pendaftaran' => $this->input->post('nomor_pendaftaran'),
                 'laporan_operasi' => $this->input->post('laporan_operasi'),
                 'staff' => $staff->id_staff,
-            );   
+            );
             // var_dump($data);
             // die;
             // log_message('debug', 'Data yang diterima: ' . print_r($data, true)); 
@@ -182,7 +175,7 @@ class Erm_laporan_operasi extends CI_Controller
         echo json_encode($out);
     }
 
-    
+
     public function formlaporanoperasi($id_pelayanan, $id_history)
     {
         $selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
@@ -199,7 +192,11 @@ class Erm_laporan_operasi extends CI_Controller
         $page_data['id_history'] = $id_history;
         $page_data['dokter'] = $this->M_Rawatinap->selectNamaDPJP();
         $page_data['staff'] = $this->M_Rawatinap->selectNamaStaff();
-        
+
+        $this->db->where('dokter_spes', 'ANT');
+        $this->db->where('status', 'AKTIF');
+        $page_data['dokter_anestesi'] = $this->db->get('dokter')->result();
+
         $this->load->view('assets/_header');
         $page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
         $page_data['page_content'] = 'erm_form/Ranap/view_laporan_operasi';
@@ -298,7 +295,7 @@ class Erm_laporan_operasi extends CI_Controller
         for ($i = 0; $i < count($page_data); $i++) {
 
             // $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-            $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
+            $tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
 
 
             $nama_dokter = $page_data[$i]->no_diagnosa;
@@ -328,7 +325,7 @@ class Erm_laporan_operasi extends CI_Controller
         for ($i = 0; $i < count($page_data); $i++) {
 
             // $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-            $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\""  . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
+            $tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
 
 
             $nama_dokter = $page_data[$i]->no_diagnosa;
@@ -395,7 +392,7 @@ class Erm_laporan_operasi extends CI_Controller
             $out['status'] = "success";
         } else {
             $out = array(
-                'error'   => true,
+                'error' => true,
                 'nama_ibu' => form_error('nama_ibu'),
                 'waktu_mulai' => form_error('waktu_mulai'),
                 'jenis_persalinan' => form_error('jenis_persalinan'),

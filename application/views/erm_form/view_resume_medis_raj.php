@@ -78,8 +78,7 @@
 
               <div class="form-group ">
                 <div class="col-md-12">
-                  <label class="control-label mb-10 text-left">Pemeriksaan Penunjang/Diagnostik :</label>
-
+                  <label class="control-label mb-10 text-left">Pemeriksaan Penunjang/Diagnostik :</label> 
                 </div>
 
                 <div class="form-group">
@@ -385,4 +384,81 @@
       }, ],
     });
   }
+</script>
+
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: "<?php echo base_url() ?>Erm_resume_medis_raj/tampil_list_tindakan",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama_tindakan}
+            </li>
+          `;
+          });
+        }
+        $("#list_tindakan_poli").html(html);
+      }
+    });
+
+
+    $.ajax({
+      url: "<?php echo base_url('Erm_resume_medis_raj/tampil_list_radiologi'); ?>",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          console
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama}
+            </li>
+          `;
+          });
+        }
+        $("#list_radiologi").html(html);
+      }
+
+    });
+
+
+    $.ajax({
+      url: "<?php echo base_url('Erm_resume_medis_raj/tampil_list_labor'); ?>",
+      method: "POST",
+      dataType: 'json',
+      data: {
+        id_pelayanan: id_pelayanan,
+      },
+      success: function(response) {
+        let html = ''
+        if (response.data && response.data.length > 0) {
+          console
+          response.data.forEach((item, index) => {
+            html += `
+            <li>
+              ${item.nama_tindakan}
+            </li>
+          `;
+          });
+        }
+        $("#list_labor").html(html);
+      }
+
+    });
+
+  });
 </script>

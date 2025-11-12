@@ -108,6 +108,17 @@ class M_Pasien extends CI_Model
     return $query->row_array();
   }
 
+
+  public function getByPelayanan($id_pelayanan)
+  {
+    $this->db->select('p.nama, p.no_rm, p.tgl_lahir, p.jenis_kelamin');
+    $this->db->from('pelayanan pel');
+    $this->db->join('pasien p', 'p.no_rm = pel.id_pasien');
+    $this->db->where('pel.id_pelayanan', $id_pelayanan);
+    $query = $this->db->get();
+    return $query->row();
+  }
+
   //KAMAR KARTU
   public function getPasienById($no_rm)
   {

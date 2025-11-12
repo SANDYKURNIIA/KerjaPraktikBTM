@@ -59,6 +59,42 @@
         .inline {
             display: inline;
         }
+
+        
+        .table_pemeriksaan {
+            color: black;
+            width: 65%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+
+        .data-pemeriksaan {
+            display: flex;
+            align-items: start;
+            color: black;
+            margin-bottom: 4px;
+        }
+
+        .data-pemeriksaan p {
+            margin: 0;
+        }
+
+        .data-pemeriksaan li{
+            width: auto;
+            border: none;
+            padding: 0;
+        }
+        
+        .data-pemeriksaan ul {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding-left: 5px;
+            gap: 3px;
+            width: auto;
+            border: none;
+        }
     </style>
 </head>
 
@@ -253,6 +289,60 @@
             <tr>
                 <td colspan="5" style="padding: 10; margin: 0;">
                     3. Pemeriksaan Penunjang/Diagnostik:
+                </td>
+            </tr>
+
+            <tr>
+                <td height="10" colspan=10 style="padding: 0px 15px;">
+                    <div class="data-pemeriksaan">
+                        <p class="">
+                            A. Tindakan Poli :
+                        </p>
+                        <ul id="list_tindakan_poli">
+                            <?php if (!empty($tindakan_poli)) : ?>
+                                <?php
+                                foreach ($tindakan_poli as $item) : ?>
+                                    <li><?=$item->nama_tindakan;?></li>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                Tidak ada data
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="data-pemeriksaan">
+                        <p class="">
+                            B. Radiologi :
+                        </p>
+                        <ul id="list_radiologi">
+                            <?php if (!empty($radiologi)) : ?>
+                                <?php
+                                foreach ($radiologi as $item) : ?>
+                                    <li>
+                                        <?= $item->nama; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                Tidak ada data
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <div class="data-pemeriksaan">
+                        <p class="">
+                            C. Labor :
+                        </p>
+                        <ul id="list_radiologi">
+                            <?php if (!empty($labor)) : ?>
+                                <?php
+                                foreach ($labor as $item) : ?>
+                                <li>
+                                    <?= $item->nama_tindakan; ?>
+                                </li>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                Tidak ada data
+                            <?php endif; ?>
+                        </ul>
+                    </div>
                 </td>
             </tr>
 

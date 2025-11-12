@@ -872,6 +872,21 @@ class M_Poli extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function selectDataLaborByIdAndStatus1($id_pelayanan)
+    {
+        $this->db->select('t.*, l.nama, s.nama staff, pa.tgl_lahir, f.status');
+        $this->db->from('tindakan_labor t, list_tindakan_labor l, pelayanan p, staff s, pasien pa, form_labor f');
+        $this->db->where('t.id_list_tindakan=l.id_daftar_tindakan');
+        $this->db->where('pa.no_rm=p.id_pasien');
+        $this->db->where('s.id_staff=t.id_staff');
+        $this->db->where('f.status', '1');
+        $this->db->where('f.id_form_labor=t.id_form_labor');
+        $this->db->where('p.id_pelayanan=t.id_pelayanan');
+        $this->db->where('t.id_pelayanan', $id_pelayanan);
+        $this->db->order_by('t.tanggal', 'desc');
+        return $this->db->get()->result();
+    }
+
     public function Total_Labor_Byid($id_pelayanan)
     {
         $this->db->select_sum('total');

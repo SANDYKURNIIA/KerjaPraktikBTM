@@ -365,8 +365,27 @@
                                             <a class="btn btn-success col-md-5  one_day_care" href="<?= base_url('OneDayCare/decer/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                                 One Day Care
                                             </a>
+                                            <a class="btn btn-success col-md-5  pengisian_awal_mcu" href="<?= base_url('PengisianAwalMCU/awalMCU/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                                Pengisian Awal MCU
+                                            </a>
                                              <a class="btn btn-success col-md-5  status_respirasi" href="<?= base_url('StatusRespirasi/form/'.$id_pelayanan.'/'.$id_histori) ?>">
                                                 Status Respirasi
+                                            </a>
+                                            <a class="btn btn-success col-md-5 formulir_medikasi_pasien_icu" href="<?= base_url('Medikasi_pasien_icu/formMedikasi/'.$id_pelayanan.'/'.$id_histori) ?>">
+                                                Medikasi Pasien ICU
+                                            </a>
+                                            <a class="btn btn-success col-md-5  pemantauan_pasien_icu" href="<?= base_url('Erm_pemantauan_pasien_icu/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                                Pemantauan Pasien ICU 
+                                            </a>
+                                            <a class="btn btn-success col-md-5 pemakaian_cairan_icu" href="<?php echo base_url('Form_pemakaian_cairan_icu/form/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                                Pemakaian Cairan Pasien ICU
+                                            </a>
+                                            <a class="btn btn-success col-md-5 catatan_keperawatan" href="<?php echo base_url('catatan_keperawatan/form/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                                Catatan Keperawatan
+                                            </a>
+                                            <a class="btn btn-success col-md-5  status_kesadaran_icu"
+                                                href="<?= base_url('Erm_status_kesadaran_icu/formstatus/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                                Status Kesadaran Pasien ICU
                                             </a>
 
                                             <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
@@ -376,16 +395,16 @@
 
 
 
-                                        </div>
-                                        <div class="row pull-right">
-                                            <button class="btn btn-default btn-anim" onclick="window.location.href='javascript:history.go(-1)';" type="submit" style="margin-right: 40px; margin-top:40px;padding: 10px 24px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></button>
-                                            <!-- </?php if ($simpan == 0) { ?>
-                                                <button class="btn btn-primary btn-anim" onclick="simpan()" type="submit" style="margin-right: 100px; margin-top:40px" id="simpanKunjungan"><i class="icon-rocket"></i><span class="btn-text">SIMPAN ERM</span></button>
-                                            </?php } ?> -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        <div class="row text-right mt-4">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-default btn-anim"
+                                                        onclick="window.location.href='javascript:history.go(-1)';"
+                                                        type="button"
+                                                        style="margin-top: 20px; padding: 10px 24px;">
+                                                        <i class="fa fa-arrow-left"></i> <span class="btn-text">KEMBALI</span>
+                                                    </button>
+                                                </div>
+                                            </div>
 
                         </div>
                     </div>
@@ -457,8 +476,7 @@
                     $('.bayi_gabung').attr('href', '<?php echo base_url('Erm_ranap_bayi_gabung/edit_bayi_gabung/') . $id_pelayanan . '/' . $id_histori; ?>');
                 }
                 if (data.catatan_perkembangan == "found") {
-                    $('.catatan_perkembangan').removeClass('btn-success').addClass('btn-danger ');
-                    $('.catatan_perkembangan').attr('href', '<?php echo base_url('Erm_ranap_catatan_perkembangan/formcppt/') . $id_pelayanan . '/' . $id_histori; ?>');
+                    $('.pemantauan_pasien_icu').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.persetujuan_kedokteran == "found") {
                     $('.persetujuan_kedokteran').removeClass('btn-success').addClass('btn-danger ');
@@ -480,8 +498,17 @@
                     $('.discharge_planning').removeClass('btn-success').addClass('btn-danger ');
                     $('.discharge_planning').attr('href', '<?php echo base_url('Discharge_planning/edit_discharger/') . $id_pelayanan . '/' . $id_histori; ?>');
                 }
+
+                if (data.discharge_planning == "found") {
+                    $('.discharge_planning').removeClass('btn-success').addClass('btn-danger ');
+                    $('.discharge_planning').attr('href', '<?php echo base_url('Discharge_planning/edit_discharger/') . $id_pelayanan . '/' . $id_histori; ?>');
+                }
+
                 if (data.one_day_care == "found") {
                     $('.one_day_care').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.pengisian_awal_mcu == "found") {
+                    $('.pengisian_awal_mcu').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.pengobatan_sakit == "found") {
                     $('.pengobatan_sakit').removeClass('btn-success').addClass('btn-danger ');
@@ -498,8 +525,17 @@
                 if (data.resume_pulang == "found") {
                     $('.resume_pulang').removeClass('btn-success').addClass('btn-danger ');
                 }
+                if (data.laporan_operasi == "found") {
+                    $('.laporan_operasi').removeClass('btn-success').addClass('btn-danger ');
+                }
                  if (data.status_respirasi == "found") {
                     $('.status_respirasi').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.formulir_medikasi_pasien_icu == "found") {
+                    $('.formulir_medikasi_pasien_icu').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.catatan_keperawatan == "found") {
+                    $('.catatan_keperawatan').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');

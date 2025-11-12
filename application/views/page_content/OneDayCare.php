@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>One Day Care & One Day Surgery</title>
+  <title><b>One Day Care & One Day Surgery</b></title>
   <!-- jQuery + SweetAlert2 -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -11,6 +11,22 @@
     .mt-20 { margin-top: 20px; }
     .mb-10 { margin-bottom: 10px; }
     .mb-20 { margin-bottom: 20px; }
+    .title {
+      font-weight: bold;
+      color: #000;
+    }
+    label {
+      font-weight: bold;
+      color: #000;
+    }
+    h4 {
+      font-weight: bold;
+      color: #000;
+    }
+    .btn-text {
+      font-weight: bold;
+      color: #000;
+    }
   </style>
 </head>
 
@@ -21,7 +37,7 @@
       <div class="panel panel-default card-view">
         <div class="panel-heading">
           <div class="pull-left">
-            <div class="title">ONE DAY CARE & ONE DAY SURGERY</div>
+            <div class="title"><b>ONE DAY CARE & ONE DAY SURGERY</b></div>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -41,57 +57,57 @@
                 <!-- Identitas Pasien -->
                 <div class="form-group row">
                   <div class="col-md-3 mb-10">
-                    <label>No. RM</label>
+                    <label><b>No. RM</b></label>
                     <input type="text" class="form-control" value="<?= $data->no_rm ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Nama Pasien</label>
+                    <label><b>Nama Pasien</b></label>
                     <input type="text" class="form-control" value="<?= $data->nama ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Tanggal Lahir</label>
+                    <label><b>Tanggal Lahir</b></label>
                     <input type="text" class="form-control" value="<?= $data->tgl_lahir ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Jenis Kelamin</label>
+                    <label><b>Jenis Kelamin</b></label>
                     <input type="text" class="form-control" value="<?= $data->jenis_kelamin ?? '-' ?>" disabled>
                   </div>
                 </div>
 
                 <div class="form-group row">
                   <div class="col-md-3 mb-10">
-                    <label>Pekerjaan</label>
+                    <label><b>Pekerjaan</b></label>
                     <input type="text" class="form-control" value="<?= $data->pekerjaan ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Pendidikan</label>
+                    <label><b>Pendidikan</b></label>
                     <input type="text" class="form-control" value="<?= $data->pendidikan ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Status Perkawinan</label>
+                    <label><b>Status Perkawinan</b></label>
                     <input type="text" class="form-control" value="<?= $data->status ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Alamat</label>
+                    <label><b>Alamat</b></label>
                     <input type="text" class="form-control" value="<?= $data->alamat ?? '-' ?>" disabled>
                   </div>
                 </div>
 
                 <div class="form-group row">
                   <div class="col-md-3 mb-10">
-                    <label>Ruang Rawat</label>
+                    <label><b>Ruang Rawat</b></label>
                     <input type="text" class="form-control" value="<?= $data->jenis_pelayanan ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Kelas</label>
+                    <label><b>Kelas</b></label>
                     <input type="text" class="form-control" value="<?= $data->kelas ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Agama</label>
+                    <label><b>Agama</b></label>
                     <input type="text" class="form-control" value="<?= $data->agama ?? '-' ?>" disabled>
                   </div>
                   <div class="col-md-3 mb-10">
-                    <label>Tanggal Masuk</label>
+                    <label><b>Tanggal Masuk</b></label>
                     <input type="text" class="form-control"
                       value="<?= isset($data->tgl_masuk) ? date('d-m-Y', strtotime($data->tgl_masuk)) : '-' ?>" disabled>
                   </div>
@@ -99,7 +115,7 @@
 
                 <div class="form-group row">
                   <div class="col-md-3 mb-20">
-                    <label>Jam</label>
+                    <label><b>Jam</b></label>
                     <input type="text" class="form-control"
                       value="<?= isset($data->tgl_masuk) ? date('H:i', strtotime($data->tgl_masuk)) : '-' ?>" disabled>
                   </div>
@@ -123,40 +139,40 @@
                   </div>
 
                   <!-- === PEMERIKSAAN VITALS === -->
-                  <div class="col-md-12"><h4>Pemeriksaan Vitals</h4></div>
+                  <div class="col-md-12"><h4><b>Pemeriksaan Vitals</b></h4></div>
 
                   <div class="col-md-4 mb-10">
-                    <label>Tekanan Darah</label>
+                    <label><b>Tekanan Darah</b></label>
                     <input type="text" class="form-control" name="tekanan_darah" placeholder="Contoh: 120/80"
                       value="<?= $pemeriksaan_fisik->tekanan_darah ?? '' ?>">
                   </div>
 
                   <div class="col-md-4 mb-10">
-                    <label>Suhu (°C)</label>
+                    <label><b>Suhu (°C)</b></label>
                     <input type="number" step="0.1" class="form-control" name="suhu" placeholder="Contoh: 36.7"
                       value="<?= $pemeriksaan_fisik->suhu ?? '' ?>">
                   </div>
 
                   <div class="col-md-4 mb-10">
-                    <label>Frekuensi Nadi (x/menit)</label>
+                    <label><b>Frekuensi Nadi (x/menit)</b></label>
                     <input type="text" class="form-control" name="nadi" placeholder="Contoh: 80"
                       value="<?= $pemeriksaan_fisik->nadi ?? '' ?>">
                   </div>
 
                   <div class="col-md-4 mb-10">
-                    <label>Berat Badan (Kg)</label>
+                    <label><b>Berat Badan (Kg)</b></label>
                     <input type="text" class="form-control" name="berat_badan" placeholder="Contoh: 70"
                       value="<?= $pemeriksaan_fisik->berat_badan ?? '' ?>">
                   </div>
 
                   <div class="col-md-4 mb-10">
-                    <label>Frekuensi Nafas (x/menit)</label>
+                    <label><b>Frekuensi Nafas (x/menit)</b></label>
                     <input type="text" class="form-control" name="pernapasan" placeholder="Contoh: 20"
                       value="<?= $pemeriksaan_fisik->pernapasan ?? '' ?>">
                   </div>
 
                   <div class="col-md-4 mb-20">
-                    <label>Tinggi Badan (cm)</label>
+                    <label><b>Tinggi Badan (cm)</b></label>
                     <input type="text" class="form-control" id="tinggi_badan" name="tinggi_badan" placeholder="Contoh: 170"
                       value="<?= $pemeriksaan_fisik->tinggi_badan ?? '' ?>">
                   </div>
@@ -192,14 +208,14 @@
                 <!-- Tombol Aksi -->
                 <div class="col-md-12 mt-20">
                   <a class="btn btn-default btn-anim btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;">
-                    <i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span>
+                    <i class="fa fa-arrow-left"></i><span class="btn-text"><b>KEMBALI</b></span>
                   </a>
-                  <button type="button" class="btn btn-success mb-4" id="btnSimpan">Simpan</button>
+                  <button type="button" class="btn btn-success mb-4" id="btnSimpan"><b>Simpan</b></button>
 
                   <!-- Tombol Cetak -->
                   <a href="<?= base_url('OneDayCare/cetak/' . $id_pelayanan . '/' . $id_history) ?>"
                     target="_blank" class="btn btn-primary mb-4">
-                    <i class="fa fa-print"></i> Cetak
+                    <i class="fa fa-print"></i> <b>Cetak</b>
                   </a>
                 </div>
 
@@ -238,7 +254,7 @@
           data: $form.serialize(),
           success: function() {
             Swal.fire({
-              title: "Good job!",
+              title: "<b>Good job!</b>",
               text: "Data One Day Care berhasil disimpan!",
               icon: "success"
             }).then(() => {
@@ -252,7 +268,7 @@
           },
           error: function(xhr, s, err) {
             Swal.fire({
-              title: "Gagal!",
+              title: "<b>Gagal!</b>",
               text: "Terjadi kesalahan saat menyimpan. " + (err || ""),
               icon: "error"
             });
@@ -265,7 +281,7 @@
   <?php if ($this->session->flashdata('success')): ?>
     <script>
       Swal.fire({
-        title: "Good job!",
+        title: "<b>Good job!</b>",
         text: "<?= $this->session->flashdata('success'); ?>",
         icon: "success"
       });

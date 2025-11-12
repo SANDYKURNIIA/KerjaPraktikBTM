@@ -896,12 +896,8 @@
             type: "success",
             text: data.message || "Data berhasil diinputkan!",
             confirmButtonColor: "#3cb878",
-          }).then(function() {
-            window.location.href =
-              "<?php echo base_url('Erm_ranap/form/'); ?>" +
-              "<?= urlencode(base64_encode($id_pelayanan)) ?>/" +
-              "<?= urlencode(base64_encode($id_history)) ?>";
-          });
+          })
+          window.location.assign("<?= base_url('Erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) . '/' . urlencode(base64_encode($id_history)) ?>");
         } else if (data.status === "error") {
           swal({
             title: "Validasi!",

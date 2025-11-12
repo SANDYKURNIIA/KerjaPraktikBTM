@@ -93,6 +93,7 @@ Swal.fire({
 							<div class="profile-image-overlay"></div>
 						</div>
 						<input type="hidden" class="form-control" value="<?= $id_pelayanan ?>" id="inPel">
+						<input type="hidden" class="form-control" value="<?= $pasien['no_rm'] ?>" id="noRM">
 					</div>
 				</div>
 			</div>
@@ -273,7 +274,7 @@ Swal.fire({
                                             BUKU MCU
                                         </a>";
 											?>
-											<a disabled class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
+											<a class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
 												Surat Keterangan Sakit
 											</a>
 											<div class="clearfix"></div>

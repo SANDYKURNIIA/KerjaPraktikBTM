@@ -792,4 +792,55 @@ class M_Rawatinap extends CI_Model
         $this->db->where($where);
         $this->db->update($table, $page_data);
     }
+
+    public function get_pemantauanTd_by_historyNpelayanan($id_history, $id_pelayanan)
+    {
+        return $this->db->get_where('catatan_tekanan_darah', ['id_history' => $id_history , 'id_pelayanan' => $id_pelayanan])->result();
+    }
+
+    public function get_pemantauanTd_by_id($id)
+    {
+        return $this->db->get_where('catatan_tekanan_darah', ['id_catatan_tekanan_darah' => $id])->result();
+    }
+
+    public function get_pemantauanTd_Today($id_history , $id_pelayanan, $date)
+    {
+       return $this->db
+        ->where('id_history', $id_history)
+        ->where('id_pelayanan', $id_pelayanan)
+        ->where('DATE(tgl_input)', $date)  // filter untuk tanggal hari ini
+        ->get('catatan_tekanan_darah')
+        ->result_array();
+    }
+
+    public function update_pemantauanTd($id, $data)
+    {
+        $this->db->where('id_catatan_tekanan_darah', $id);
+        return $this->db->update('catatan_tekanan_darah', $data);
+    }
+
+    public function insert_pemantauanTd($data)
+    {
+        return $this->db->insert('catatan_tekanan_darah', $data);
+    }
+
+    public function hapus_pematauanTd($id)
+    {
+        // Pastikan parameter tidak kosong
+        if (empty($id)) {
+            return false;
+        }
+
+        $this->db->where('id_catatan_tekanan_darah', $id);
+        $query = $this->db->delete('catatan_tekanan_darah');
+
+        // Mengembalikan true/false sesuai hasil
+        if ($query) {
+            return true;
+        } else {
+            log_message('error', 'Gagal menghapus data catatan_tekanan_darah untuk id_pelayanan: '.$id_pelayanan.' dan id_history: '.$id_history);
+            return false;
+        }
+    }
+
 }

@@ -19,7 +19,7 @@
 
                                 <div class="row">
 
-                                    <input type="hidden" id="no_rm" name="surat_no_rm">
+                                    <input type="hidden" id="no_rm" name="surat_no_rm" >
                                     <input type="hidden" id="id_mcu" name="surat_id_mcu" value="<?php echo $id_pelayanan ?>">
                                    
  

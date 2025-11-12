@@ -75,7 +75,7 @@
                             <?= date('d-m-Y', strtotime($row->tanggal)) ?><br>
                             <?= $row->mulai_pukul ?>
                         </td>
-                        <td align="center"><?= $row->nama_dokter ?></td>
+                        <td align="center"><?= $row->dokter_verif ? $row->dokter_verif : '-'  ?></td>
                         <td>
                             <p><b>S:</b> <?= $row->S ?></p>
                             <p><b>O:</b> <?= $row->O ?></p>
@@ -86,7 +86,7 @@
                         <td align="center"><?= $row->nama_staff ?></td>
                         <td align="center">
                             <?php if (!empty($row->ttd)): ?>
-                                <img src="<?= base_url('assets/ttd/' . $row->ttd); ?>" alt="TTD" width="100px">
+                                <?= $row->ttd;?>
                             <?php else: ?>
                                 <p style="font-size:12px; color:gray;">tanda tangan belum tersedia</p>
                             <?php endif; ?>

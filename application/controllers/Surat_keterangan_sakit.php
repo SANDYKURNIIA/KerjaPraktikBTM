@@ -2,12 +2,9 @@
 defined( 'BASEPATH' ) OR exit( 'No direct script access allowed' );
 
 
-// require 'application/third_party/dompdf/autoload.inc.php';
 
-// use Dompdf\Dompdf;
-require_once APPPATH . 'libraries/dompdf-master/autoload.inc.php';
 use Dompdf\Dompdf;
-use Dompdf\Options;
+
 
 class Surat_keterangan_sakit extends CI_Controller {
     function __construct()
@@ -193,11 +190,10 @@ class Surat_keterangan_sakit extends CI_Controller {
             $data = $this->M_mcu->selectDataSuratKeteranganSakitByIdSurat($id_surat);
             $email = urldecode($email);
             $isStartWithPL = false;
-
             if (substr($data->id_mcu, 0, 2) === 'pl') {
                 $isStartWithPL = true;
             }
-
+            
             $data_history = "";
             if ($isStartWithPL) {
                 $query = $this->db->get_where('history_pelayanan_ugd', ['id_pelayanan' => $id_mcu]);
@@ -257,8 +253,6 @@ class Surat_keterangan_sakit extends CI_Controller {
             $berapaHariIstirahatString = isset($angkaKeTeks[$berapaHariIstirahat])
                 ? $angkaKeTeks[$berapaHariIstirahat]
                 : $berapaHariIstirahat;
-
-            
 
            $html = '
                     <!DOCTYPE html>
@@ -438,7 +432,7 @@ class Surat_keterangan_sakit extends CI_Controller {
                     <p><b>Manajemen Rumah Sakit Bakti Timah Pangkalpinang</b></p>
                     <p style="font-size: 13px; color: #666;">
                         Jalan Bukit Baru No. 1, Pangkalpinang<br>
-                        Telp. +62(717)421091, +62(717)433027<br>
+                        Telp. +62 (717) 9100844 || +62 (0717) 433026 <br>
                         Email: <a href="mailto:rsbtpnp@gmail.com">rsbtpnp@gmail.com</a>
                     </p>
                     <hr style="border: 0; border-top: 1px solid #ddd; margin-top: 20px;">

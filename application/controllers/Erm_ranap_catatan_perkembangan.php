@@ -57,6 +57,8 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 		// $this->form_validation->set_rules('hasil_analisis', 'Hasil Analisis', 'required');
 		$this->form_validation->set_rules('tanggal_rencana', 'Tanggal Rencana', 'required');
 		if ($this->form_validation->run()) {
+			$verif_input = $this->input->post('verif');
+    		$verif_value = ($verif_input === 'Ya') ? 'Belum' : 'Tidak';
 			$data = array(
 				'id_pelayanan' => $this->input->post('id_pelayanan'),
 				'id_history' => $this->input->post('id_history'),
@@ -69,7 +71,7 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 				'P' => $this->input->post('p'),
 				'instruksi' => $this->input->post('instruksi'),
 				'mulai_pukul' => $this->input->post('mulai_pukul'),
-				'verif' => $this->input->post('verif'),
+				'verif' => $verif_value,
 				'tgl_verif' => $this->input->post('tgl_verifikasi'),
 				'dokter_verif' => $this->input->post('nama_dokter'),
 				// 'profesi' => $this->input->post('profesi'),
@@ -111,6 +113,22 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 			$hapus = "<button class='btn btn-danger btn-icon-anim btn square' id='myButton' onclick='hapus(\"" . $page_data[$i]->id_catatan . "\")'><i class='icon-trash'></i></button>";
 			$checkbox = "<div class='checkbox checkbox-success'><input type='checkbox' name='check[]' value='" . $page_data[$i]->id_catatan . "'><label></label></div>";
 
+			$auth = $this->session->userdata('data_auth');
+			$username = $auth->username;
+			$dokter = $page_data[$i]->dokter_verif;
+			$dbdokter = $this->db->get_where('dokter', ['nama' => $dokter])->row();
+
+			if ($page_data[$i]->verif == 'Belum' && $username == $dbdokter->username) {
+				$verif = "<button class='btn btn-primary btn-icon-anim btn square' id='myButton' onclick='verif(\"" . $page_data[$i]->id_catatan . "\")'>
+                <i class='icon-check'> </i>
+              </button>";
+			} else if ($page_data[$i]->verif == 'Belum' && $username !== $dbdokter->username) {
+				$verif = "<span class='badge badge-warning'>Menunggu verifikasi</span>";
+			} elseif ($page_data[$i]->verif == 'Ya') {
+				$verif = "<span class='badge badge-success'>Terverifikasi</span>";
+			} elseif ($page_data[$i]->verif == 'Tidak') {
+				$verif = "<span class='badge badge-default'>Tidak memerlukan verifikasi</span>";
+			}
 
 			$S = $page_data[$i]->S;
 			$O = $page_data[$i]->O;
@@ -122,12 +140,12 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 			$mulai_pukul = $page_data[$i]->mulai_pukul;
 			$date = strftime("%A, %d %B %Y ", $tanggal);
 			$staff = $page_data[$i]->nama;
-			$dokter = $page_data[$i]->dokter_verif;
+			// $dokter = $page_data[$i]->dokter_verif;
 			$tgl_verif = ($page_data[$i]->tgl_verif != null) ? indo_date2($page_data[$i]->tgl_verif) . ' ' . date('H:i:s', strtotime($page_data[$i]->tgl_verif)) : '-';
 			$dbdokter = $this->db->get_where('dokter', ['nama' => $dokter])->row();
 			$ttd = (empty($dbdokter) || $page_data[$i]->verif!='Ya')?'':'<img src="' . base_url() . 'assets/ttd/' . $dbdokter->foto . '" style="width: 80px; ">';
 
-			$out[$i] = array($checkbox, $no, $tombol, $lanjut, $hapus, $S, $O, $A, $P, $instruksi, $date, $mulai_pukul, $tgl_verif, $dokter, $ttd, $staff);
+			$out[$i] = array($checkbox, $no, $tombol, $lanjut, $hapus, $S, $O, $A, $P, $instruksi, $date, $mulai_pukul, $verif, $tgl_verif, $dokter, $ttd, $staff);
 		}
 		if ($out == null) {
 			echo '{"data":""}';
@@ -163,8 +181,8 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 				'P' => $this->input->post('p'),
 				'instruksi' => $this->input->post('instruksi'),
 				'mulai_pukul' => $this->input->post('mulai_pukul'),
-				'verif' => $this->input->post('verif'),
-				'tgl_verif' => $this->input->post('tgl_verifikasi'),
+				// 'verif' => $this->input->post('verif'),
+				// 'tgl_verif' => $this->input->post('tgl_verifikasi'),
 				'dokter_verif' => $this->input->post('nama_dokter'),
 				// 'profesi' => $this->input->post('profesi'),
 				// 'ttd' => $file,
@@ -231,7 +249,26 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 			return;
 		}
 		$id_array = explode(',', $ids_string);
-		$data['data'] = $this->M_Erm_ranap->get_perkembangan($id_array);
+		$dataPrint = $this->M_Erm_ranap->get_perkembangan($id_array);
+		for ($i = 0; $i < count($dataPrint); $i++) {
+			$dokter = $dataPrint[$i]->dokter_verif;
+			$dbdokter = $this->db->get_where('dokter', ['nama' => $dokter])->row();
+			$ttd = (empty($dbdokter) || $dataPrint[$i]->verif!='Ya')?'':'<img src="' . base_url() . 'assets/ttd/' . $dbdokter->foto . '" style="width: 80px; ">';
+			$dataPrint[$i]->ttd = $ttd;
+		}
+		$data['data'] = $dataPrint;
 		$this->load->view('erm_ranap_print/print_perkembangan', $data);
+	}
+
+	public function verif_catatan()
+	{
+		$id = $this->input->post('id');
+		$data = array(
+			'verif' => 'Ya',
+			'tgl_verif' => date("Y-m-d h:i:s"),
+		);
+		$this->M_Erm_ranap->update_catatan($id, $data);
+		$out['status'] = "success";
+		echo json_encode($out);
 	}
 }

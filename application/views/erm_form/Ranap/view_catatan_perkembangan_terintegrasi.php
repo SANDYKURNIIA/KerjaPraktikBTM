@@ -179,7 +179,7 @@
             </div>
 
             <div id="detail_verifikasi" style="display: none;">
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label col-md-4 pt-5">Tanggal dan Jam:</label>
                   <div class="col-md-8 has-success">
@@ -187,7 +187,7 @@
                     <span class="help-block"></span>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label col-md-4 pt-5">Nama Dokter:</label>
@@ -257,6 +257,7 @@
                     <th>INSTRUKSI</th>
                     <th>TANGGAL</th>
                     <th>MULAI PUKUL</th>
+                    <th>VERIFIKASI</th>
                     <th>TANGGAL VERIFIKASI</th>
                     <th>DOKTER VERIFIKASI</th>
                     <th>TTD DOKTER</th>
@@ -278,6 +279,7 @@
                     <th>INSTRUKSI</th>
                     <th>TANGGAL</th>
                     <th>MULAI PUKUL</th>
+                    <th>VERIFIKASI</th>
                     <th>TANGGAL VERIFIKASI</th>
                     <th>DOKTER</th>
                     <th>TTD DOKTER</th>
@@ -557,7 +559,8 @@
           $('#o').val(data.O);
           $('#a').val(data.A);
           $('#p').val(data.P);
-          $('input[name="verifikasi_dokter"][value="' + data.verif + '"]').prop("checked", true).change();
+          $('input[name="verifikasi_dokter"]').prop('disabled', true);
+          $('#nama_dokter').prop('disabled', true);
           $('#tgl_verifikasi').val(data.tgl_verif).change();
           $('#nama_dokter').val(data.dokter_verif).change();
 
@@ -755,4 +758,48 @@
     form.submit();
     document.body.removeChild(form);
   }
+</script>
+
+<script>
+function verif(id){
+    swal({
+      title: "Warning?",
+      text: "Apakah kamu yakin memverifikasi data ini?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3cb878",
+      confirmButtonText: "Yakin",
+      cancelButtonText: "Batal",
+      closeOnConfirm: false
+    }, function() {
+      $().ready(function() {
+        $.ajax({
+          url: "<?php echo base_url() ?>Erm_ranap_catatan_perkembangan/verif_catatan",
+          method: "POST",
+          dataType: 'json',
+          data: {
+            id: id,
+          },
+          success: function(data) {
+            if (data.status == "success") {
+              swal({
+                title: "good job!",
+                type: "success",
+                text: "Data Berhasil diverifikasi",
+                confirmButtonColor: "#3cb878",
+              });
+              $('#tabel_terapi').DataTable().ajax.reload();
+            } else {
+              swal({
+                title: "Gagal!",
+                type: "warning",
+                confirmButtonColor: "#3cb878",
+              });
+            }
+          }
+        });
+      });
+    });
+  }
+
 </script>

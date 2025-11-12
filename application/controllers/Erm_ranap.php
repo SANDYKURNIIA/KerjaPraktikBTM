@@ -16,6 +16,8 @@ class Erm_ranap extends CI_Controller
 		$this->load->model('M_Apelkes');
 		$this->load->model('OneDayCare_model');
 		$this->load->model('M_Pencarian_Pasien');
+		$this->load->model('M_PengisianAwalMCU');
+
 	}
 
 	public function index()
@@ -252,10 +254,13 @@ class Erm_ranap extends CI_Controller
 		$ass_bayi_baru_lahir = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'ass_bayi_baru_lahir');
 		$resume_pulang = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_pulang');
 		$status_respirasi = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'status_respirasi');
+		$formulir_medikasi_pasien_icu = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'formulir_medikasi_pasien_icu');
+		$catatan_keperawatan = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'catatan_keperawatan');
 		$resume_bayi_tabung = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_bayi_tabung');
 		$discharge_planning = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'discharger');
 
 		$one_day_care = $this->OneDayCare_model->checkData(['no_rm' => $id_histori], 'onedaycare');
+		$pengisian_awal_mcu = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pengisianawalmcu');
 
 		// $asses_per_igd = $this->M_Erm->checkData($id_pelayanan, 'form_ass_per_igd');
 		// $observasi = $this->M_Erm->checkData($id_pelayanan, 'form_observasi');
@@ -288,12 +293,14 @@ class Erm_ranap extends CI_Controller
 		$db['resume_pasien_pulang'] = empty($resume_pasien_pulang) ? 'not-found' : 'found';
 		$db['ass_bayi_baru_lahir'] = empty($ass_bayi_baru_lahir) ? 'not-found' : 'found';
 		$db['resume_pulang'] = empty($resume_pulang) ? 'not-found' : 'found';
+		$db['formulir_medikasi_pasien_icu'] = empty($formulir_medikasi_pasien_icu) ? 'not-found' : 'found';
+		$db['catatan_keperawatan'] = empty($catatan_keperawatan) ? 'not-found' : 'found';
 		$db['status_respirasi'] = empty($status_respirasi) ? 'not-found' : 'found';
 		$db['resume_bayi_tabung'] = empty($resume_bayi_tabung) ? 'not-found' : 'found';
 		$db['discharge_planning'] = empty($discharge_planning) ? 'not-found' : 'found';
 
 		$db['one_day_care'] = empty($one_day_care) ? 'not-found' : 'found';
-		
+		$db['pengisian_awal_mcu'] = empty($pengisian_awal_mcu) ? 'not-found' : 'found';
 
 		// $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
 		// $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';

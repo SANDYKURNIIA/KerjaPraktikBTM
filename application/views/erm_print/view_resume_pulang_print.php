@@ -12,7 +12,7 @@
 
         }
 
-        .table2 {
+        .table2 { 
             color: #232323;
             border-collapse: collapse;
             border: 1px solid;
@@ -224,7 +224,6 @@
             </tr>
             <tr>
                 <td>Pemeriksaan Fisik :</td>
-
             </tr>
             <tr>
                 <td>
@@ -260,8 +259,6 @@
             <tr>
                 <td>Diagnosa Utama Yang Ditegakkan : <font id="diagnosa_utama"></font>
                 </td>
-
-
             </tr>
             <tr>
                 <td>Diagnosa Sekunder :</td>
@@ -269,8 +266,6 @@
             <tr>
                 <td>
                     <table width=100% class="table1" id="diagnosa_ranap" cellspacing=0>
-
-
                     </table>
                 </td>
             </tr>

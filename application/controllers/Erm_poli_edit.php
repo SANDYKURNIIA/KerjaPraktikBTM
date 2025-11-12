@@ -12,6 +12,7 @@ class Erm_poli_edit extends CI_Controller
 		$this->load->model('M_Erm_poli');
 		$this->load->model('M_Assembling');
 		$this->load->model('M_Pencarian_Pasien');
+		$this->load->model('M_Poli');
 	}
 
 	// Get Data
@@ -1386,6 +1387,82 @@ class Erm_poli_edit extends CI_Controller
 
 		$data['ttd'] = base_url() . 'assets/ttd/' . $data['data']['foto'];
 		$data['terapi'] = $this->M_Erm->selectTerapiByIdPel($id);
+
+		//tindakan poli
+		$dataUser = $this->session->userdata('data_auth');
+		$tipe = $dataUser->tipe;
+		if ($tipe == 'poliinternis' || $tipe == 'poli') {
+			$table = 'v_tindakan_poli_internis';
+		} elseif ($tipe == 'poliobgyne' || $tipe == 'poli') {
+			$table = 'v_tindakan_poli_obgyne';
+		} elseif ($tipe == 'politht') {
+			$table = 'v_tindakan_poli_tht';
+		} elseif ($tipe == 'polimata') {
+			$table = 'v_tindakan_poli_mata';
+		} elseif ($tipe == 'polikulit') {
+			$table = 'v_tindakan_poli_kulit';
+		} elseif ($tipe == 'poliumum') {
+			$table = 'v_tindakan_poli_umum';
+		} elseif ($tipe == 'polianak') {
+			$table = 'v_tindakan_poli_anak';
+		} elseif ($tipe == 'poligigi' || $tipe == 'poliorthodonti') {
+			$table = 'v_tindakan_poli_gigi';
+		} elseif ($tipe == 'polijantung') {
+			$table = 'v_tindakan_poli_jantung';
+		} elseif ($tipe == 'polibedah') {
+			$table = 'v_tindakan_poli_bedah';
+		} elseif ($tipe == 'polifisio' || $tipe == 'rekam medis' || $tipe == 'rawatinap' || $tipe == 'icu' || $tipe == 'rehab') {
+			$table = 'v_tindakan_poli_fisio';
+		} elseif ($tipe == 'poliakupuntur') {
+			$table = 'v_tindakan_poli_akupuntur';
+		} elseif ($tipe == 'polibedahmulut') {
+			$table = 'v_tindakan_poli_bedah_mulut';
+		} elseif ($tipe == 'polikesjiwa') {
+			$table = 'v_tindakan_poli_kes_jiwa';
+		} elseif ($tipe == 'poliorthopedi') {
+			$table = 'v_tindakan_poli_orthopedi';
+		} elseif ($tipe == 'poliparu') {
+			$table = 'v_tindakan_poli_paru';
+		} elseif ($tipe == 'polisaraf') {
+			$table = 'v_tindakan_poli_saraf';
+		} elseif ($tipe == 'poliurologi') {
+			$table = 'v_tindakan_poli_urologi';
+		} elseif ($tipe == 'polipenyakitmulut') {
+			$table = 'v_tindakan_poli_penyakit_mulut';
+		} elseif ($tipe == 'poliginjal') {
+			$table = 'v_tindakan_poli_ginjal';
+		} elseif ($tipe == 'polipsikolog') {
+			$table = 'v_tindakan_poli_psikolog';
+		} elseif ($tipe == 'poligizi') {
+			$table = 'v_tindakan_poli_gizi';
+		} elseif ($tipe == 'terapiwicara') {
+			$table = 'v_tindakan_poli_terapi_wicara';
+		} elseif ($tipe == 'polihemodialisa') {
+			$table = 'v_tindakan_poli_hd';
+		} elseif ($tipe == 'kemoterapi') {
+			$table = 'v_tindakan_poli_kemo';
+		} elseif ($tipe == 'polistifin') {
+			$table = 'v_tindakan_poli_stifin';
+		} elseif ($tipe == 'poliorthodonti') {
+			$table = 'v_tindakan_orthodenti';
+		} elseif ($tipe == 'konservasigigi') {
+			$table = 'v_tindakan_konservasi_gigi';
+		} elseif ($tipe == 'okupasi') {
+			$table = 'v_tindakan_okupasi';
+		} else {
+			//dinamis
+			if ($row = $this->db->get_where('list_poli', ['tipe_staff' => $tipe])->row()) {
+				//table tindakan
+				$table = "v_" . $row->tindakan;
+			}
+		}
+		$list_tindakan = $this->M_Poli->selectDataTindakanByIdPel($id, $table);
+		$data['tindakan_poli'] = $list_tindakan;
+		//radiologi
+		$data['radiologi'] = $this->M_Poli->selectDataRadiologiById($id);
+		//labor
+		$data['labor'] = $this->M_Poli->selectDataLaborByIdAndStatus1($id);
+		
 		$this->load->view('erm_print/resume_medis_raj', $data);
 	}
 	public function print_observasi($id)

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    
     <meta charset="UTF-8">
     <title>Surat Keterangan Sakit</title>
     <style>
@@ -55,6 +56,15 @@
             font-size: 16px;
         }
     </style>
+    <script>
+        window.onload = function() {
+            window.print(); // langsung buka dialog print
+        };
+
+        // window.onafterprint = function() {
+        //     window.history.back();
+        // };
+    </script>
 </head>
 <body>
 
@@ -64,7 +74,7 @@
             <strong>RUMAH SAKIT BAKTI TIMAH</strong><br>
             Jalan Bukit Baru No. 1, Pangkalpinang, Taman Bunga, Kec. Gerunggang<br>
             Kabupaten Bangka, Prov. Kepulauan Bangka Belitung - Indonesia<br>
-            Telp. +62(717)421091, +62(717)433027, Fax. +62(717)424212
+            Telp. +62 (717) 9100844, +62 (0717) 433026
         </div>
     </div>
 
@@ -115,11 +125,6 @@
         <p><b><u>(<?= strtoupper($dokter->nama); ?>)</u></b></p>
     </div>
 
-    <script>
-        window.onafterprint = function() {
-            window.history.back();
-        };
-    </script>
 
 </body>
 </html>

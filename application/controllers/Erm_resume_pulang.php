@@ -213,19 +213,23 @@ class Erm_resume_pulang extends CI_Controller
                 'terlampir' => $dataResumePulang->diagnostik,
                 'tgl_kontrol' => $dataResumePulang->tgl_kontrol,
                 'nama_panjang' => $dataResumePulang->nama_panjang,
-
-
+                'status' => 'success'
             ];
         } else {
             if (isset($igd)) {
                 $db = [
                     'alasan' => $igd->keluhan,
                     'diagnosa' => $igd->kode . ' - ' . $igd->nama_diagnosa,
+                    'riwayat_sekarang' => 'coba',
                     'resume' => $resume,
                     'diagnosa_ranap' => $diagnosa,
+                    'status' => 'success'
                 ];
             } else {
-                $db = null;
+                $db = [
+                    'status' => 'failed',
+                    'message' => 'tidak ada data Resume '
+                ];
             }
         }
         if ($db == null) {
