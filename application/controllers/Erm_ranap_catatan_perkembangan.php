@@ -120,7 +120,7 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 
 			if ($page_data[$i]->verif == 'Belum' && $username == $dbdokter->username) {
 				$verif = "<button class='btn btn-primary btn-icon-anim btn square' id='myButton' onclick='verif(\"" . $page_data[$i]->id_catatan . "\")'>
-                <i class='icon-check'> </i>
+                <i class='icon-check'> </i>		
               </button>";
 			} else if ($page_data[$i]->verif == 'Belum' && $username !== $dbdokter->username) {
 				$verif = "<span class='badge badge-warning'>Menunggu verifikasi</span>";
@@ -252,6 +252,7 @@ class Erm_ranap_catatan_perkembangan extends CI_Controller
 		$dataPrint = $this->M_Erm_ranap->get_perkembangan($id_array);
 		for ($i = 0; $i < count($dataPrint); $i++) {
 			$dokter = $dataPrint[$i]->dokter_verif;
+			$nama = $dataPrint[$i]->nama;
 			$dbdokter = $this->db->get_where('dokter', ['nama' => $dokter])->row();
 			$ttd = (empty($dbdokter) || $dataPrint[$i]->verif!='Ya')?'':'<img src="' . base_url() . 'assets/ttd/' . $dbdokter->foto . '" style="width: 80px; ">';
 			$dataPrint[$i]->ttd = $ttd;

@@ -15,7 +15,15 @@
   .table-balance th, .table-balance td { border:1px solid #999; padding:4px; vertical-align:middle; background-color:#fff; }
   .table-balance th { background-color:#f0f0f0; font-weight:600; }
   .sticky-col { position:sticky; left:0; background:#fff; z-index:5; width:160px; min-width:160px; text-align:left; }
-  .small-input { width:48px; text-align:center; border:1px solid #ccc; border-radius:4px; padding:2px; font-size:12px; }
+  .small-input {
+  width: 64px;      /* sebelumnya 48px → dilebarkan biar muat -13.5/-13.5 */
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 12px;
+}
+
   .jenis-cairan-input { width:150px; border:1px solid #ccc; border-radius:4px; padding:3px; font-size:12px; }
   .mt-3{margin-top:14px}
 </style>
@@ -116,7 +124,7 @@
                           <td>
                             <input type="text" class="small-input per js-per"
                                    placeholder="0/0" inputmode="text"
-                                   pattern="^\s*\d+(?:[.,]\d+)?\s*\/\s*\d+(?:[.,]\d+)?\s*$"
+                             
                                    name="parenteral_<?= $r ?>_<?= $c ?>"
                                    value="<?= htmlspecialchars($parenteral[$r-1][$c-1] ?? '', ENT_QUOTES) ?>">
                           </td>
@@ -176,7 +184,7 @@
                         <td>
                           <input type="text" class="small-input per js-per"
                                  placeholder="0/0" inputmode="text"
-                                 pattern="^\s*\d+(?:[.,]\d+)?\s*\/\s*\d+(?:[.,]\d+)?\s*$"
+                                
                                  name="total_<?= $c ?>"
                                  value="<?= htmlspecialchars($total[$c-1] ?? '', ENT_QUOTES) ?>">
                         </td>
@@ -217,37 +225,78 @@
   function setCaret(el, pos){ if (el.setSelectionRange){ el.focus(); el.setSelectionRange(pos,pos); } }
   function getCaret(el){ return ('selectionStart' in el) ? el.selectionStart : 0; }
 
-  // === Normalisasi ===
+  // === Normalisasi angka & per untuk submit ===
   function normNum(v){ return (v||'').toString().trim().replace(',', '.'); }
-  function normPer(v){
-    v = (v||'').toString().trim().replace(/,/g,'.').replace(/\s+/g,'');
-    if (v === '' || v === '/') return '';            // <-- JANGAN kirim "/" kosong
+
+  // normPer untuk submit: terima "a/b", "a", "b". Hilangkan hanya "/" kosong.
+  function normPerForSubmit(v){
+    v = (v||'').toString().trim().replace(/,/g, '.').replace(/\s+/g,'');
+    if (!v || v === '/') return '';
+    if (v.indexOf('/') === -1) {
+      // hanya angka
+      return v;
+    }
     const parts = v.split('/');
-    // kalau belum lengkap (hanya a/ atau /b) anggap kosong
-    if (parts.length !== 2 || parts[0] === '' || parts[1] === '') return '';
-    return parts[0] + '/' + parts[1];
+    // kalau hanya satu sisi kosong, kembalikan sisi yg ada
+    if (parts.length === 2) {
+      const a = parts[0].trim();
+      const b = parts[1].trim();
+      if (a === '' && b === '') return '';
+      if (a === '') return b; // "/b" -> "b"
+      if (b === '') return a; // "a/" -> "a"
+      // keduanya ada
+      return a + '/' + b;
+    }
+    return '';
   }
 
-  // === Per input behavior: auto "/" + tak bisa dihapus, tapi kosongkan saat blur jika tetap "/" ===
+  // parse per to numeric value for calculations:
+  // - "a/b" -> a / b (if b==0 -> treat as 0)
+  // - "a" or "/a" or "a/" -> parse available side as number
+  // - empty -> 0
+  function parsePerToNumber(v){
+    v = (v||'').toString().trim().replace(/,/g,'.').replace(/\s+/g,'');
+    if (!v || v === '/') return 0;
+    if (v.indexOf('/') === -1) {
+      const n = parseFloat(v);
+      return isFinite(n) ? n : 0;
+    }
+    const parts = v.split('/');
+    const a = parts[0] ? parseFloat(parts[0]) : NaN;
+    const b = parts[1] ? parseFloat(parts[1]) : NaN;
+    if (!isNaN(a) && !isNaN(b)) {
+      if (b === 0) return 0; // aman
+      return a / b;
+    }
+    if (!isNaN(a)) return a;
+    if (!isNaN(b)) return b;
+    return 0;
+  }
+
+  // init per input behavior: tetap tampilkan slash, tapi blur -> konversi jika hanya satu sisi
   function initPerInput(inp){
     inp.addEventListener('focus', function(){
-      if (!this.value.trim()) { this.value = '/'; setCaret(this, 0); }
-      else {
-        // rapikan jadi satu slash
-        let v = this.value.replace(/,/g,'.').replace(/\s+/g,'');
-        const first = v.indexOf('/');
-        if (first === -1) v += '/';
-        else v = v.slice(0, first+1) + v.slice(first+1).replace(/\//g,'');
-        this.value = v;
-      }
+      if (!this.value.trim()) { this.value = '/'; setCaret(this, 0); return; }
+      // rapikan jadi satu slash, jangan hilangkan nilai
+      let v = this.value.replace(/,/g,'.').replace(/\s+/g,'');
+      const first = v.indexOf('/');
+      if (first === -1) v += '/';
+      else v = v.slice(0, first+1) + v.slice(first+1).replace(/\//g,'');
+      this.value = v;
     });
 
-    // saat blur: jika masih "/" atau tidak lengkap -> kosongkan
     inp.addEventListener('blur', function(){
-      const v = this.value.replace(/\s+/g,'');
-      const parts = v.split('/');
-      if (v === '/' || parts.length !== 2 || parts[0] === '' || parts[1] === '') {
-        this.value = ''; // biar tidak tersimpan
+      let v = this.value.replace(/\s+/g,'').replace(/,/g,'.');
+      if (!v || v === '/') { this.value = ''; return; }
+      // jika bentuk a/ atau /b -> ubah jadi a atau b (hilangkan slash)
+      if (v.indexOf('/') !== -1) {
+        const parts = v.split('/');
+        const a = parts[0].trim();
+        const b = parts[1].trim();
+        if (a === '' && b === '') { this.value = ''; return; }
+        if (a === '') this.value = b;
+        else if (b === '') this.value = a;
+        else this.value = a + '/' + b;
       }
     });
 
@@ -255,38 +304,161 @@
       const v = this.value;
       const pos = getCaret(this);
       const slashIdx = v.indexOf('/');
-
-      if (e.key === 'Backspace' && pos === slashIdx + 1) { e.preventDefault(); setCaret(this, slashIdx); return; }
-      if (e.key === 'Delete' && pos === slashIdx)       { e.preventDefault(); setCaret(this, slashIdx + 1); return; }
-
       const allowed = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Home','End','Backspace','Delete','Enter'];
       if (!allowed.includes(e.key) && !/[\d.\/]/.test(e.key)) { e.preventDefault(); return; }
 
       if (e.key === '/') {
         e.preventDefault();
-        if (pos <= slashIdx) setCaret(this, slashIdx + 1);
-        else setCaret(this, slashIdx);
+        // letakkan caret di sisi lain slash jika perlu
+        const s = this.value.indexOf('/');
+        if (s === -1) {
+          this.value = v + '/';
+          setCaret(this, v.length); 
+        } else {
+          if (pos <= s) setCaret(this, s+1); else setCaret(this, s);
+        }
       }
     });
 
     inp.addEventListener('input', function(){
-      let v = this.value.replace(/\s+/g,'').replace(/,/g,'.').replace(/[^\d./]/g,'');
+      // hanya izinkan digit, titik, slash
+      let v = this.value.replace(/[^\d.\/]/g,'').replace(/,{1}/g,'.');
+      // satu slash saja
       const first = v.indexOf('/');
-      if (first === -1) v = v + '/';
-      else v = v.slice(0, first + 1) + v.slice(first + 1).replace(/\//g, '');
+      if (first === -1) v = v;
+      else v = v.slice(0, first+1) + v.slice(first+1).replace(/\//g,'');
       this.value = v;
+      // setelah input ubah kalkulasi
+      recalcAll();
     });
   }
 
+  // init semua per inputs
   document.querySelectorAll('input.js-per').forEach(initPerInput);
+
+  // init num inputs recalc when changed
+  document.querySelectorAll('input.num').forEach(function(inp){
+    inp.addEventListener('input', function(){ this.value = this.value.replace(/[^0-9.,-]/g,''); recalcAll(); });
+    inp.addEventListener('blur', function(){ this.value = (this.value||'').toString().trim().replace(',', '.'); });
+  });
+
+  // Recalc logic:
+  // - sum parenteral rows (1..7) per column → update input[name="total_input_X"]
+  // - sum keluar rows (0..5) per column → update keluar_6_X (Total Output)
+  // - final = total_input - total_output → set input[name="total_X"] (format per: "value/1")
+function recalcAll() {
+  try {
+
+    // =============================
+    // 1. HITUNG TOTAL INPUT (ENTERAL + PARENTERAL)
+    // =============================
+    for (let c = 1; c <= 25; c++) {
+      let sumTotalInput = 0;
+
+      // ENTERAL (5 baris)
+      for (let r = 1; r <= 5; r++) {
+        const el = document.querySelector(`input[name="enteral_${r}_${c}"]`);
+        if (!el) continue;
+        const v = normNum(el.value);
+        const n = v === '' ? 0 : parseFloat(v);
+        sumTotalInput += isFinite(n) ? n : 0;
+      }
+
+      // PARENTERAL (7 baris)
+      for (let r = 1; r <= 7; r++) {
+        const el = document.querySelector(`input[name="parenteral_${r}_${c}"]`);
+        if (!el) continue;
+        sumTotalInput += parsePerToNumber(el.value);
+      }
+
+      const outEl = document.querySelector(`input[name="total_input_${c}"]`);
+      if (outEl) {
+        const rounded = Math.round((sumTotalInput + Number.EPSILON) * 100) / 100;
+        outEl.value = rounded.toString();
+      }
+    }
+
+
+
+    // =============================
+    // 2. HITUNG TOTAL OUTPUT (KELUAR)
+    // =============================
+    for (let c = 1; c <= 25; c++) {
+      let sumKel = 0;
+
+      for (let r = 0; r <= 5; r++) {
+        const el = document.querySelector(`input[name="keluar_${r}_${c}"]`);
+        if (!el) continue;
+        const v = normNum(el.value);
+        const n = v === '' ? 0 : parseFloat(v);
+        sumKel += isFinite(n) ? n : 0;
+      }
+
+      const totalOutEl = document.querySelector(`input[name="keluar_6_${c}"]`);
+      if (totalOutEl) {
+        const rounded = Math.round((sumKel + Number.EPSILON) * 100) / 100;
+        totalOutEl.value = rounded.toString();
+      }
+    }
+
+
+
+ // =============================
+// 3. PERHITUNGAN FINAL (INPUT - OUTPUT)
+// =============================
+let akumulasi = 0;
+
+for (let c = 1; c <= 25; c++) {
+
+  const inEl = document.querySelector(`input[name="total_input_${c}"]`);
+  const outEl = document.querySelector(`input[name="keluar_6_${c}"]`);
+  const finalEl = document.querySelector(`input[name="total_${c}"]`);
+
+  const inVal = inEl ? parseFloat(inEl.value || 0) : 0;
+  const outVal = outEl ? parseFloat(outEl.value || 0) : 0;
+
+  // total atas
+  let totalKolom = (isFinite(inVal)? inVal : 0) - (isFinite(outVal)? outVal : 0);
+  totalKolom = Math.round((totalKolom + Number.EPSILON) * 100) / 100;
+
+  // Cek: apakah semua kolom atas kosong (belum ada input sebenarnya)
+  const allInputEmpty =
+      (!inEl || inEl.value === "" || inEl.value === "0") &&
+      (!outEl || outEl.value === "" || outEl.value === "0");
+
+  // hanya tambahkan akumulasi kalau ada angka nyata
+  if (!allInputEmpty) {
+    akumulasi += totalKolom;
+    akumulasi = Math.round((akumulasi + Number.EPSILON) * 100) / 100;
+  }
+
+  if (finalEl) {
+    if (allInputEmpty) {
+      finalEl.value = "0/0";   // <<< sesuai permintaan
+    } else {
+      finalEl.value = `${totalKolom}/${akumulasi}`;
+    }
+  }
+}
+
+
+  } catch (err) {
+    console.error('recalcAll error', err);
+  }
+}
+
+
+  // Hitung saat load
+  document.addEventListener('DOMContentLoaded', function(){ recalcAll(); });
 
   // === Submit ===
   $(document).on('submit', '#form-cairan-icu', function(e){
     e.preventDefault();
 
     const $form = $(this);
+    // normalisasi angka dan per (tetap terima single-side)
     $form.find('input.num').each(function(){ this.value = normNum(this.value); });
-    $form.find('input.per').each(function(){ this.value = normPer(this.value); }); // "/" -> '' di sini
+    $form.find('input.per').each(function(){ this.value = normPerForSubmit(this.value); });
 
     const invalid = $form[0].querySelector(':invalid');
     if (invalid) { invalid.reportValidity(); return; }

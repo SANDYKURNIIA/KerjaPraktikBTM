@@ -16,6 +16,7 @@
                             <tr class="bg-success">
                                 <th>NO</th>
                                 <th>NON RACIKAN</th>
+                                 <th>EDUKASI PENDAFTARAN</th>
                                 <!-- 												 <th>RACIKAN</th>  -->
                                 <th>TANGGAL PELAYANAN</th>
                                 <th>TANGGAL REQ</th>
@@ -38,6 +39,7 @@
                             <tr class="bg-success">
                                 <th>NO</th>
                                 <th>NON RACIKAN</th>
+                                 <th>EDUKASI PENDAFTARAN</th>
                                 <!-- 												 <th>RACIKAN</th>  -->
                                 <th>TANGGAL PELAYANAN</th>
                                 <th>TANGGAL REQ</th>

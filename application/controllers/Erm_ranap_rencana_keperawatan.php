@@ -202,7 +202,7 @@ class Erm_ranap_rencana_keperawatan extends CI_Controller
 				'bukti_resiko_perdarahan' => str_replace('"', '', json_encode($this->input->post('bukti_resiko_perdarahan'))),
 				'hasil_resiko_perdarahan' => str_replace('"', '', json_encode($this->input->post('hasil_resiko_perdarahan'))),
 				'pencegahan_resiko_perdarahan' => str_replace('"', '', json_encode($this->input->post('pencegahan_resiko_perdarahan'))),
-'laiinnya_resiko_perdarahan' => $this->input->post('laiinnya_resiko_perdarahan', true),
+				'laiinnya_resiko_perdarahan' => $this->input->post('laiinnya_resiko_perdarahan', true),
 				'laiinnya_manajemen_hipertermia' => $this->input->post('laiinnya_manajemen_hipertermia', true),
 				'laiinnya_manajemen_muntah' => $this->input->post('laiinnya_manajemen_muntah', true),
 				'laiinnya_perawatan_jantung' => $this->input->post('laiinnya_perawatan_jantung', true),

@@ -2103,6 +2103,68 @@
     id_pel = "<?php echo urlencode(base64_encode($id_pelayanan)); ?>";
     id_his = "<?php echo urlencode(base64_encode($id_history)); ?>";
 
+
+    if (!pRujuk) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap isi apakah pasien rujukan atau tidak.",
+            type: "warning",
+            button: "OK",
+        });
+        return; 
+    }
+
+    if (!gcs || !kondisi_umum || !tekanan_darah || !suhu || !frequensi_nadi || !frequensi_nafas || !tinggi_badan || !asesment_triase || !kebutuhan_khusus || !spo2 || !berat_badan) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap lengkapi keadaan umum pasien.",
+            type: "warning",
+            button: "OK",
+        });
+        return; 
+    }
+
+     if (!faktor_nyeri || !efek_nyeri || !kualitas_nyeri || !lokasi_nyeri || !durasi || !faktor_peringan) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap lengkapi Assesmen Nyeri.",
+            type: "warning",
+            button: "OK",
+        });
+        return; 
+    }
+
+
+    if (!karakter_feces || !warna_feces || !frek_bak || !keluhan_bak || !warna_bak || !keluhan_bab || !frek_bab) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap lengkapi Kebutuhan Eliminasi",
+            type: "warning",
+            button: "OK",
+        });
+        return; 
+    }
+
+    if (!masalah) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap pilih masalah keperawatan / kebidanan pasien.",
+            type: "warning",
+            button: "OK",
+        });
+        return;
+    }
+
+     if (!rencana) {
+        swal({
+            title: "Peringatan!",
+            text: "Harap isi rencana tindakan keperawatan.",
+            type: "warning",
+            button: "OK",
+        });
+        return; 
+    }
+
     $.ajax({
       url: "<?php echo base_url() ?>Erm_ases_per_igd/update_asses_perawat_igd",
       method: "POST",

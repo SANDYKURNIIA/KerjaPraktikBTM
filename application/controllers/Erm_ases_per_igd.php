@@ -20,7 +20,7 @@ class Erm_ases_per_igd extends CI_Controller
 
 		$page_data['nama'] = $selectPasien->nama;
 		$page_data['no_hp'] = $selectPasien->no_hp;
-		$page_data['alamat'] = $selectPasien->alamat . ', ' . $selectPasien->kelurahan . ', ' . $selectPasien->kecamatan . ', ' . $selectPasien->provinsi;
+		$page_data['alamat'] = $selectPasien->alamat ;
 		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
 		$page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
 		$page_data['cara_bayar'] = $selectPasien->cara_bayar;
@@ -49,7 +49,7 @@ class Erm_ases_per_igd extends CI_Controller
 
 		$page_data['nama'] = $selectPasien->nama;
 		$page_data['no_hp'] = $selectPasien->no_hp;
-		$page_data['alamat'] = $selectPasien->alamat . ', ' . $selectPasien->kelurahan . ', ' . $selectPasien->kecamatan . ', ' . $selectPasien->provinsi;
+		$page_data['alamat'] = $selectPasien->alamat ;
 		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
 		$page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
 		$page_data['cara_bayar'] = $selectPasien->cara_bayar;
@@ -78,7 +78,7 @@ class Erm_ases_per_igd extends CI_Controller
 
 		$page_data['nama'] = $selectPasien->nama;
 		$page_data['no_hp'] = $selectPasien->no_hp;
-		$page_data['alamat'] = $selectPasien->alamat . ', ' . $selectPasien->kelurahan . ', ' . $selectPasien->kecamatan . ', ' . $selectPasien->provinsi;
+		$page_data['alamat'] = $selectPasien->alamat;
 		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
 		$page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
 		$page_data['cara_bayar'] = $selectPasien->cara_bayar;

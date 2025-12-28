@@ -414,7 +414,7 @@
 
             <tr>
                 <td height="10" colspan=5>
-                    <p><?= $data['terapi'] ?> </p>
+                    <p><?= $data['prosedur_tindakan'] ?? "-" ?> </p>
                 </td>
             </tr>
 

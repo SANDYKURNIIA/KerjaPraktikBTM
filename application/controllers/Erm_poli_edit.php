@@ -1465,6 +1465,13 @@ class Erm_poli_edit extends CI_Controller
 		
 		$this->load->view('erm_print/resume_medis_raj', $data);
 	}
+
+	// 	public function print_resume_medis($id,$id_history)
+	// {
+	// 	$data['data'] = $this->M_Erm_poli->cetakResumeMed($id_history);
+	// 	$data['terapi'] = $this->M_Erm->selectTerapiByIdPel($id,$id_history);
+	// 	$this->load->view('erm_print/resume_medis_raj', $data);
+	// }
 	public function print_observasi($id)
 	{
 		$data['data'] = $this->M_Erm->cetakObservasi($id);

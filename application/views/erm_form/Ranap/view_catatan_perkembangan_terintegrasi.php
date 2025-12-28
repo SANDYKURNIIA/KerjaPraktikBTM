@@ -3,7 +3,7 @@
     <div class="panel panel-default card-view">
       <div class="panel-heading">
         <div class="pull-left">
-          <h6 class="panel-title txt-dark">CATATAN PERKEMBANGAN PASIEN TERINTEGRASI</h6>
+          <h6 class="panel-title txt-dark">Form SBAR</h6>
         </div>
         <div class="clearfix"></div>
       </div>
@@ -108,7 +108,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <label class="control-label mb-10 text-left">O: <span class="text-danger"></span></label>
+                <label class="control-label mb-10 text-left">B: <span class="text-danger"></span></label>
                 <span id="o_error" class="text-danger"></span>
                 <div class="has-success">
                   <textarea class="form-control" cols="10" rows="10" id="o" name="o" required></textarea>
@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="col-md-4">
-                <label class="control-label mb-10 text-left">P: <span class="text-danger"></span></label>
+                <label class="control-label mb-10 text-left">R: <span class="text-danger"></span></label>
                 <span id="p_error" class="text-danger"></span>
                 <div class="has-success">
                   <textarea class="form-control" cols="10" rows="10" id="p" name="p" required></textarea>
@@ -231,7 +231,7 @@
 <div class="panel panel-default card-view">
   <div class="panel-heading">
     <div class="pull-left">
-      <h6 class="panel-title txt-dark">CATATAN PERKEMBANGAN</h6>
+      <h6 class="panel-title txt-dark">Form SBAR</h6>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -250,9 +250,9 @@
                     <th>LANJUTKAN</th>
                     <th>HAPUS</th>
                     <th>S</th>
-                    <th>O</th>
+                    <th>B</th>
                     <th>A</th>
-                    <th>P</th>
+                    <th>R</th>
                     <!-- <th>HASIL</th> -->
                     <th>INSTRUKSI</th>
                     <th>TANGGAL</th>
@@ -272,18 +272,18 @@
                     <th>LANJUTKAN</th>
                     <th>HAPUS</th>
                     <th>S</th>
-                    <th>O</th>
+                    <th>B</th>
                     <th>A</th>
-                    <th>P</th>
+                    <th>R</th>
                     <!-- <th>HASIL</th> -->
-                    <th>INSTRUKSI</th>
-                    <th>TANGGAL</th>
-                    <th>MULAI PUKUL</th>
-                    <th>VERIFIKASI</th>
-                    <th>TANGGAL VERIFIKASI</th>
-                    <th>DOKTER</th>
-                    <th>TTD DOKTER</th>
-                    <th>STAFF</th>
+                    <th>NO</th>
+                    <th>PILIH</th>
+                    <th>LANJUTKAN</th>
+                    <th>HAPUS</th>
+                    <th>S</th>
+                    <th>B</th>
+                    <th>A</th>
+                    <th>R</th>
                   </tr>
                 </tfoot>
                 <tbody style="color: black">
@@ -559,8 +559,18 @@
           $('#o').val(data.O);
           $('#a').val(data.A);
           $('#p').val(data.P);
+
+          if (data.verif === 'Belum') {
+            $('input[name="verifikasi_dokter"][value="Ya"]').prop("checked", true).change();
+          } else {
+            $('input[name="verifikasi_dokter"][value="' + data.verif + '"]').prop("checked", true).change();
+          }
           $('input[name="verifikasi_dokter"]').prop('disabled', true);
-          $('#nama_dokter').prop('disabled', true);
+          if (data.verif !== 'Belum') {
+            $('#nama_dokter').prop('disabled', true);
+          } else {
+            $('#nama_dokter').prop('disabled', false);
+          }
           $('#tgl_verifikasi').val(data.tgl_verif).change();
           $('#nama_dokter').val(data.dokter_verif).change();
 

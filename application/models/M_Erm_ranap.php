@@ -81,7 +81,7 @@ class M_Erm_ranap extends CI_Model
     public function selectDataPasienRanapby_id($id_pelayanan, $id_history)
     {
         $this->db->select('v.*, p.pekerjaan, p.agama, p.status perkawinan, p.alamat');
-        $this->db->from('v_perawat_ranap v, pasien p'); //total bayar 1
+        $this->db->from('v_kunjungan v, pasien p'); //total bayar 1
         $this->db->where('v.no_rm = p.no_rm');
         $this->db->where(array('v.id_pelayanan' => $id_pelayanan, 'id_history' => $id_history));
 
@@ -699,4 +699,108 @@ class M_Erm_ranap extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function get_last_total_ews_by_pel_id($id_pelayanan)
+    {
+        $this->db->select('total_ews');
+        $this->db->from('data_pemantauan_vital');
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->order_by('tanggal', 'DESC');
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+        return $query->row(); // row() karena hanya 1 data
+    }
+    
+    public function get_last_total_pews_by_pel_id($id_pelayanan)
+    {
+        $this->db->select('skor');
+        $this->db->from('pews_anak');
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->order_by('id', 'DESC'); // ambil data paling baru
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row(); // return skor terakhir
+        }
+
+        return null; // jika tidak ada data
+    }
+
+    public function getRiwayatAsesmenAnak($id_pelayanan, $id_history)
+    {
+        return $this->db
+            ->where('id_pelayanan', $id_pelayanan)
+            ->where('id_history', $id_history)
+            ->order_by('id_asesmen', 'DESC')
+            ->get('asesmen_ulang_anak')
+            ->result();
+    }
+
+    public function update_ulang_anak($id, $data)
+    {
+        $this->db->where('id_asesmen', $id);
+        return $this->db->update('asesmen_ulang_anak', $data);
+    }
+
+    public function update_resiko_ulang_jatuh_anak($id, $data)
+    {
+        $this->db->where('id_asesmen', $id);
+        return $this->db->update('resiko_ulang_jatuh_anak', $data);
+    }
+
+    public function selectUlangJatuhAnak($id_pelayanan)
+{
+    $this->db->select('*');
+    $this->db->from('asesmen_ulang_anak');
+    $this->db->where('id_pelayanan', $id_pelayanan);
+    $this->db->group_by('skor_resiko');
+    $this->db->order_by('tanggal', 'DESC');
+
+    return $this->db->get()->result();
+}
+
+public function update_resiko_ulang_jatuh_lansia($id_asesmen, $data)
+    {
+        $this->db->where('id_asesmen', $id_asesmen);
+        return $this->db->update('resiko_ulang_jatuh_lansia', $data);
+    }
+
+    // INSERT DATA ASESMENT ULANG LANSIA (UNTUK CONTROLLER INSERT)
+    public function insert_asesmen_ulang_lansia($data)
+    {
+        $this->db->insert('asesmen_ulang_lansia', $data);
+        return $this->db->insert_id();
+    }
+
+    // INSERT DATA RESIKO ULANG JATUH LANSIA (SETELAH INSERT ASESMENT)
+    public function insert_resiko_ulang_jatuh_lansia($data)
+    {
+        return $this->db->insert('resiko_ulang_jatuh_lansia', $data);
+    }
+
+    // SELECT LIST DATA ULANG JATUH LANSIA
+    // UNTUK DATATABLE VIEW (VIEW_ULANG_JATUH_LANSIA)
+    public function selectUlangJatuhLansia($id_pelayanan)
+    {
+        $this->db->select('*');
+        $this->db->from('asesmen_ulang_lansia');
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->order_by('id_asesmen', 'DESC');
+        return $this->db->get()->result();
+    }
+
+    // GET DETAIL DATA ASESMENT + RESIKO (JOIN UNTUK EDIT / PRINT)
+    public function getDetailUlangJatuhLansia($id_asesmen)
+    {
+        $this->db->select('a.*, b.*');
+        $this->db->from('asesmen_ulang_lansia a');
+        $this->db->join('resiko_ulang_jatuh_lansia b', 'a.id_asesmen = b.id_asesmen', 'left');
+        $this->db->where('a.id_asesmen', $id_asesmen);
+
+        return $this->db->get()->row_array();
+    }
+
 }

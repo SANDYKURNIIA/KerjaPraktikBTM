@@ -42,7 +42,7 @@
             <div class="panel panel-default card-view">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="title control-label">Pengisian Awal MCU</div>
+                        <div class="title control-label">Pengisian Awal ICU</div>
                     </div>
                     <div class="clearfix"></div>
                 </div>

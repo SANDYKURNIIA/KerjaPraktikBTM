@@ -111,8 +111,12 @@ class Form_soap_rehab extends CI_Controller
 		$this->form_validation->set_rules('a', 'A', 'required');
 		$this->form_validation->set_rules('p', 'P', 'required');
 		$this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
+		$this->form_validation->set_rules('status_kunjungan', 'Status Kunjungan', 'required');
+		// yang status kunjungan semua ya bang
+
 
 		if ($this->form_validation->run()) {
+
 			$data = array(
 				'id_pelayanan' => $this->input->post('id_pelayanan'),
 				'id_history' => $this->input->post('id_history'),
@@ -122,6 +126,7 @@ class Form_soap_rehab extends CI_Controller
 				'a' => $this->input->post('a'),
 				'p' => $this->input->post('p'),
 				'tanggal' => $this->input->post('tanggal'),
+				'status_kunjungan' => $this->input->post('status_kunjungan'),
 				'staff' => $staff
 			);
 			// $data2 = array(
@@ -139,7 +144,8 @@ class Form_soap_rehab extends CI_Controller
 				'o' => form_error('o'),
 				'a' => form_error('a'),
 				'p' => form_error('p'),
-				'tanggal' => form_error('tanggal')
+				'tanggal' => form_error('tanggal'),
+				'status_kunjungan' => form_error('status_kunjungan')
 			);
 		}
 		echo json_encode($out);
@@ -169,6 +175,8 @@ class Form_soap_rehab extends CI_Controller
 		$this->form_validation->set_rules('a', 'A', 'required');
 		$this->form_validation->set_rules('p', 'P', 'required');
 		$this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
+		$this->form_validation->set_rules('status_kunjungan', 'Status Kunjungan', 'required');
+
 
 		if ($this->form_validation->run()) {
 			$data = array(
@@ -180,9 +188,11 @@ class Form_soap_rehab extends CI_Controller
 				'a' => $this->input->post('a'),
 				'p' => $this->input->post('p'),
 				'tanggal' => $tgl,
+				'status_kunjungan' => $this->input->post('status_kunjungan'),
 				'staff' => $staff,
 			);
 
+			
 			// $this->M_Erm_poli->update_soap($id, $data);
 			$this->M_Erm_poli->update($data, ['id_catatan' => $id], 'form_soap_rehab');
 			$out['status'] = "success";
@@ -193,21 +203,24 @@ class Form_soap_rehab extends CI_Controller
 				'o' => form_error('o'),
 				'a' => form_error('a'),
 				'p' => form_error('p'),
-				'tanggal' => form_error('tanggal')
+				'tanggal' => form_error('tanggal'),
+				'status_kunjungan' => form_error('status_kunjungan')
 			);
 		}
 		echo json_encode($out);
 	}
-	
+
+	//NII YA BANGGGG//
 	public function print_soap($id)
-	{
-		// Panggil dari model
-		$data = $this->M_Erm_poli->get_data_print_soap($id);
-		if (!$data) {
-			show_error("Data SOAP tidak ditemukan.", 404);
-			return;
-		}
-		$this->load->view('erm_print/view_print_soap_rehab', $data);
-	}
-	
+{
+    // Panggil dari model
+    $data = $this->M_Erm_poli->get_data_print_soap($id);
+    if (!$data) {
+        show_error("Data SOAP tidak ditemukan.", 404);
+        return;
+    }
+    $this->load->view('erm_print/view_print_soap_rehab', $data);
+}
+
+
 }

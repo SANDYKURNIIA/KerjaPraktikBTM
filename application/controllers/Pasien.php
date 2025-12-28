@@ -614,8 +614,7 @@ class Pasien extends CI_Controller
         );
         $where = array(
             'id_pelayanan' => $idp,
-            'status!=' => 'PINDAH',
-            'status!=' => 'BATAL',
+            'status'       => 'AKTIF'
         );
         $this->M_Pasien->Update_ruangan($where, $data3, 'riwayat_kamar');
 

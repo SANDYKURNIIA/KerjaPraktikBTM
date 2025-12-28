@@ -292,6 +292,20 @@ class Erm_poli extends CI_Controller
         $db['eval'] = empty($eval) ? 'not-found' : 'found';
         $uji_fungsi = $this->M_Erm_poli->checkData($id_histori, 'lembar_uji_fungsi');
         $db['lembar_uji_fungsi'] = empty($uji_fungsi) ? 'not-found' : 'found';
+
+        $hasil_usg_kebidanan = $this->M_Erm_poli->checkData($id_histori, 'hasil_usg_kebidanan');
+        $db['hasil_usg_kebidanan'] = empty($hasil_usg_kebidanan) ? 'not-found' : 'found';
+
+        $intradialitik = $this->M_Erm_poli->checkData($id_histori, 'pemantauan_intradialitik');
+        $db['intradialitik'] = empty($intradialitik) ? 'not-found' : 'found';
+        
+        $lembar_rujukan = $this->M_Erm_poli->checkData($id_histori, 'form_lembar_rujukan');
+        
+        $db['lembar_rujukan'] = empty($lembar_rujukan) ? 'not-found' : 'found';
+
+        $hd_harian = $this->M_Erm_poli->checkData($id_histori, 'pemantauan_hd_harian');
+        $db['hd_harian'] = empty($hd_harian) ? 'not-found' : 'found';
+
         echo json_encode($db);
 
         exit;

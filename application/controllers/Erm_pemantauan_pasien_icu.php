@@ -116,7 +116,8 @@ class Erm_pemantauan_pasien_icu extends CI_Controller
 	{
 		$id_pelayanan = $this->input->post('id_pelayanan');
 		$id_history = $this->input->post('id_history');
-		$page_data = $this->M_Rawatinap->get_pemantauanTd_by_historyNpelayanan($id_history,$id_pelayanan);
+		$tgl_data = $this->input->post('tgl_data');
+		$page_data = $this->M_Rawatinap->get_pemantauanTd_by_hisNPelNTgl($id_history,$id_pelayanan , $tgl_data);
 
 		$out = null;
 		for ($i = 0; $i < count($page_data); $i++) {

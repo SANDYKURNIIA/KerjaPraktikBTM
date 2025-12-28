@@ -312,6 +312,7 @@ class M_Pencarian_Pasien extends CI_Model
 	{
 		return $this->db->query('select generate_id_history() as id from dual')->row()->id;
 	}
+	
 	public function get_ai_tbl_history_ranap()
 	{
 		return $this->db->query('select generate_id_history_ranap() as id from dual')->row()->id;

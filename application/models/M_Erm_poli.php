@@ -8,6 +8,7 @@ class M_Erm_poli extends CI_Model
         date_default_timezone_set('Asia/Jakarta');
         setlocale(LC_ALL, 'id_ID');
     }
+
     public function insert($data, $table)
     {
         $this->db->insert($table, $data);
@@ -73,7 +74,7 @@ class M_Erm_poli extends CI_Model
     }
     public function selectDataPasienPoliby_id($id_pelayanan, $id_history)
     {
-        $this->db->select('b.id_pelayanan,h.id_history ,c.id_cara_bayar ,h.tgl_masuk ,p.no_rm ,p.nama ,p.jenis_kelamin ,p.tgl_lahir ,dok.nama AS nama_dokter,b.no_sep ,b.diagnosa,c.nama AS cara_bayar,b.status,l.nama AS poli,h.jenis_pelayanan ,h.status_erm ,h.dpjp ,h.nama_poli , p.pekerjaan, p.agama,p.no_hp,p.alamat,p.kelurahan, p.kecamatan, p.provinsi,h.tgl_keluar,b.total_bayar');
+        $this->db->select('b.id_pelayanan,h.id_history ,c.id_cara_bayar ,h.tgl_masuk ,p.no_rm ,p.nama ,p.jenis_kelamin ,p.no_bpjs,p.tgl_lahir ,dok.nama AS nama_dokter,b.no_sep ,b.diagnosa,c.nama AS cara_bayar,b.status,l.nama AS poli,h.jenis_pelayanan ,h.status_erm ,h.dpjp ,h.nama_poli , p.pekerjaan, p.agama,p.no_hp,p.alamat,p.kelurahan, p.kecamatan, p.provinsi,h.tgl_keluar,b.total_bayar');
         $this->db->from('pelayanan b');
         $this->db->join('pasien p','b.id_pasien = p.no_rm');
         $this->db->join('history_pelayanan h','b.id_pelayanan = h.id_pelayanan');
@@ -698,19 +699,20 @@ class M_Erm_poli extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function get_data_print_soap($id_catatan)
-    {
-        $soap = $this->db->get_where('form_soap_rehab', ['id_catatan' => $id_catatan])->row();
+        //YANG NI YA BANG, AMPE BWAWAAHHHHH//
+        public function get_data_print_soap($id_catatan)
+        {
+            $soap = $this->db->get_where('form_soap_rehab', ['id_catatan' => $id_catatan])->row();
 
-        if (!$soap) {
-            return null;
-        }
+            if (!$soap) {
+                return null;
+            }
 
+            // 🔹 Ambil data pasien
             $pasien = $this->db
-                ->select('p.no_rm, p.nama AS nama_pasien, p.jenis_kelamin, pl.tgl_masuk')
-                ->from('pasien p, pelayanan pl')
-                ->where('p.no_rm', $soap->no_rm)
-                ->where('pl.id_pelayanan', $soap->id_pelayanan)
+                ->select('no_rm, nama AS nama_pasien, jenis_kelamin')
+                ->from('pasien')
+                ->where('no_rm', $soap->no_rm)
                 ->get()
                 ->row();
 
@@ -721,31 +723,239 @@ class M_Erm_poli extends CI_Model
                 ];
             }
 
-            $history_pelayanan = $this->db->select("h.dpjp, h.id_pelayanan, h.nama_poli")
-            ->from('history_pelayanan h, list_poli p')
+            $history_pelayanan = $this->db->select("h.dpjp, h.id_pelayanan")
+            ->from('history_pelayanan h')
             ->where('h.id_pelayanan', $soap->id_pelayanan)
             ->get()
             ->row();
+            
 
-            $poli = $this->db->select("spes")
-            ->from("list_poli")
-            ->where("id_list_poli", $history_pelayanan->nama_poli)
-            ->get()
-            ->row();
-
+            // 🔹 Ambil nama dokter (DPJP) dari tabel staff lewat id_staff di tabel pelayanan
             $dokter = $this->db
                 ->select('d.nama AS nama_dokter')
                 ->from('dokter d')
                 ->where('id_dokter', $history_pelayanan->dpjp)
-                ->where('dokter_spes', $poli->spes)
                 ->get()
                 ->row();
 
+            // if (!$dokter) {
+            //     $dokter = (object)['nama_dokter' => '-'];
+            // }
+
+            // 🔹 Return semua data ke controller
             return [
                 'soap' => $soap,
                 'pasien' => $pasien,
-                'dokter' => $dokter,
-                'poli' => $poli->spes
+                'dokter' => $dokter
             ];
         }
+
+    public function get_data_form_awal($id_history)
+    {
+        $this->db->select("d.nama_diagnosa,d.kode, f.terapi, f.riwayat, f.keluhan");
+        $this->db->from("diagnosa_utama d, form_assesmen_dokter f");
+        $this->db->where("f.id_history", $id_history);
+        $this->db->where("d.id_history", $id_history);
+        return $this->db->get()->row();
+    }
+
+    public function get_form_lembar_rujukan_by_pelayanan($id_pelayanan)
+    {
+        $this->db->select("f.*, l.nama_panjang AS nama_poli, d.nama AS nama_dokter, p.nama, p.tgl_lahir");
+        $this->db->from("form_lembar_rujukan f");
+        $this->db->join("list_poli l", "f.id_list_poli = l.id_list_poli", "left");
+        $this->db->join("dokter d", "f.id_dokter = d.id_dokter", "left");
+        $this->db->join("pasien p", "f.no_rm = p.no_rm", "left");
+        $this->db->where("f.id_pelayanan", $id_pelayanan);
+        $this->db->where("f.status", 1);
+
+        return $this->db->get()->result();
+    }
+    public function get_form_lembar_rujukan_by_pelayanan_for_dokter($id_pelayanan, $id_dokter)
+    {
+        $this->db->select("f.*, l.nama_panjang AS nama_poli, d.nama AS nama_dokter, p.nama, p.tgl_lahir");
+        $this->db->from("form_lembar_rujukan f");
+        $this->db->join("list_poli l", "f.id_list_poli = l.id_list_poli", "left");
+        $this->db->join("dokter d", "f.id_dokter = d.id_dokter", "left");
+        $this->db->join("pasien p", "f.no_rm = p.no_rm", "left");
+        $this->db->where("f.id_pelayanan", $id_pelayanan);
+        $this->db->where("f.id_dokter", $id_dokter);
+        $this->db->where("f.status", 1);
+
+        return $this->db->get()->result();
+    }
+
+    public function get_form_lembar_rujukan_by_id_form($id_form)
+    {
+        $this->db->select("
+        h.dpjp,
+        f.*, 
+        l.nama_panjang AS nama_poli, 
+        d_tujuan.nama AS dokter_tujuan, 
+        d_pengirim.nama AS dokter_pengirim, 
+        p.nama AS nama_pasien, 
+        p.tgl_lahir
+    ");
+        $this->db->from("form_lembar_rujukan f");
+        $this->db->join("list_poli l", "f.id_list_poli = l.id_list_poli", "left");
+        $this->db->join("dokter d_tujuan", "f.id_dokter = d_tujuan.id_dokter", "left");
+        $this->db->join("history_pelayanan h", "f.id_history = h.id_history", "left");
+        $this->db->join("dokter d_pengirim", "h.dpjp = d_pengirim.id_dokter", "left");
+        $this->db->join("pasien p", "f.no_rm = p.no_rm", "left");
+        $this->db->where("f.id_form_lembar_rujukan", $id_form);
+
+        return $this->db->get()->row();
+    }
+
+    public function tambah_history_rujukan($data)
+    {
+        return $this->db->insert('history_pelayanan', $data);
+    }
+
+    public function hapus_lembar_konsul($id_lembar_konsul, $keterangan_input)
+    {
+        $lembar = $this->db->get_where('form_lembar_rujukan', [
+            'id_form_lembar_rujukan' => $id_lembar_konsul
+        ])->row();
+
+        if (!$lembar) {
+            return [
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
+
+        $id_history = $lembar->id_history_form;
+
+        // Simpan keterangan dari user
+        $update_data_form = [
+            'status' => 0,
+            'keterangan' => $keterangan_input,
+            'tanggal_hapus' => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->where('id_form_lembar_rujukan', $id_lembar_konsul);
+        $this->db->update('form_lembar_rujukan', $update_data_form);
+
+        // Update history
+        $update_data = [
+            'status' => 0,
+            'ket' => $lembar->staff,
+            'tgl_hapus' => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->where(['id_history' => $id_history, 'status' => 1]);
+        $this->db->update('history_pelayanan', $update_data);
+
+        return [
+            'status' => true,
+            'message' => 'Berhasil menghapus data'
+        ];
+    }
+
+    public function get_all_diagnosa()
+    {
+        $this->db->select('id_diagnosa,nama_diagnosa');
+        $this->db->from('list_diagnosa');
+        return $this->db->get()->result();
+    }
+
+    public function upsert_pemantauan($data)
+    {
+        $table = 'pemantauan_intradialitik';
+
+        $this->db->where('id_pelayanan', $data['id_pelayanan']);
+        $this->db->where('tanggal', $data['tanggal']);
+        $q = $this->db->get($table);
+
+        $this->db->trans_start();
+
+        if ($q->num_rows() > 0) {
+            $existing_id = $q->row()->id;
+
+            $this->db->where('id', $existing_id);
+            $this->db->update($table, $data);
+
+            $result = [
+                'status' => true,
+                'action' => 'update',
+                'id'     => $existing_id
+            ];
+        } else {
+            $this->db->insert($table, $data);
+
+            $result = [
+                'status' => true,
+                'action' => 'insert',
+                'id'     => $this->db->insert_id()
+            ];
+        }
+
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+            return ['status' => false, 'message' => 'Gagal menyimpan ke database (Transaction Error).'];
+        }
+
+        return $result;
+    }
+
+    public function get_pemantauan($id_pelayanan, $tanggal)
+    {
+        $table = 'pemantauan_intradialitik';
+
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->where('tanggal', $tanggal);
+        $query = $this->db->get($table);
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row_array();
+            $row['data_pemantauan'] = json_decode($row['json_data'], true);
+            return $row;
+        }
+
+        return null;
+    }
+
+    public function get_pemantauan_by_history($id_pelayanan, $id_history)
+    {
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->where('id_history', $id_history);
+        $query = $this->db->get('pemantauan_intradialitik');
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row_array();
+            $row['data_pemantauan'] = json_decode($row['json_data'], true);
+            return $row;
+        }
+
+        return null;
+    }
+
+    public function getListPerawat()
+    {
+        $query = $this->db->select('nama')->get_where('staff', [
+            'status'   => 'aktif',
+            'tipe'     => 'polihemodialisa',
+            'nama !='  => 'polihemodialisa'
+        ])->result_array();
+
+        return array_column($query, 'nama');
+    }
+
+    public function get_ttd_dokter_staff($id_dokter, $id_staff)
+    {
+        $this->db->select('
+            d.nama AS nama_dokter,
+            d.foto AS ttd_dokter,
+            s.nama AS nama_perawat,
+            s.qr_code AS ttd_perawat
+        ');
+        $this->db->from('dokter d, staff s');
+        $this->db->where('d.id_dokter', $id_dokter);
+        $this->db->where('s.id_staff', $id_staff);
+        
+        return $this->db->get()->row_array();
+    }
+
 }

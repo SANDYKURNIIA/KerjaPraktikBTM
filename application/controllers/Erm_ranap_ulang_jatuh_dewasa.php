@@ -491,7 +491,6 @@ class Erm_ranap_ulang_jatuh_dewasa extends CI_Controller
     {
         $id_pelayanan = $this->input->post('id_pelayanan');
 
-
         $dataFromRanap = $this->db->get_where('form_ass_per_ranap', ['id_pelayanan' => $id_pelayanan])->row();
        
         $page_data = $this->M_Erm_ranap->selectUlangJatuh($id_pelayanan);
@@ -510,9 +509,6 @@ class Erm_ranap_ulang_jatuh_dewasa extends CI_Controller
         if ($skor_total >= 50) {
             $tipeResikoRanap = "tinggi";
         }
-
-
-
 
         $new_row = (object) [
             'skor_total' => $skor_total,

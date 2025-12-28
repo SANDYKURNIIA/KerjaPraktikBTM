@@ -37,6 +37,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		}
 		echo json_encode($db);
 	}
+	
 	public function form($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm->selectDataPasienIGDby_id($id_pelayanan, $id_history);
@@ -60,6 +61,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+	
 	public function form_riwayat($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm->selectDataPasienIGDby_id($id_pelayanan, $id_history);
@@ -83,6 +85,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function edit_asses_dok_igd($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm->selectDataPasienIGDbyid($id_pelayanan, $id_history);
@@ -107,6 +110,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function riwayat_asses_dok_igd($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm->selectDataPasienIGDbyid($id_pelayanan, $id_history);
@@ -130,6 +134,7 @@ class Erm_ases_dok_igd extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function insert_asses_dokter_igd()
 	{
 		$data = $this->session->userdata('data_auth');

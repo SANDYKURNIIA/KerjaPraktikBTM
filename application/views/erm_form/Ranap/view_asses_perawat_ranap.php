@@ -1,5 +1,5 @@
 <!-- Row -->
-<div class="row">
+  <div class="row">
   <div class="col-sm-12">
     <div class="panel panel-default card-view">
       <div class="panel-heading">
@@ -4714,6 +4714,37 @@
 </script>
 
 <script type="text/javascript">
+
+  function displayErrors(response) {
+      const errorMappings = [
+          { spanId: 'berat_badan_error', responseKey: 'berat_badan' },
+          { spanId: 'nafas_error', responseKey: 'frequensi_nafas' },
+          { spanId: 'tinggi_badan_error', responseKey: 'tinggi_badan' },
+          { spanId: 'spo2_error', responseKey: 'spo2' },
+          { spanId: 'suhu_error', responseKey: 'suhu' },
+          { spanId: 'e_error', responseKey: 'e' },
+          { spanId: 'gcs_error', responseKey: 'gcs' }
+      ];
+
+      errorMappings.forEach(mapping => {
+          let errorMessage = response[mapping.responseKey];
+          const errorSpan = document.getElementById(mapping.spanId);
+
+          if (!errorSpan) return;
+
+          // Jika ada pesan error seperti "<p>*wajib diisi</p>"
+          if (errorMessage) {
+              // Hapus tag HTML <p> dan </p>
+              errorMessage = errorMessage.replace(/<\/?p>/g, '').trim();
+
+              errorSpan.textContent = errorMessage;
+              $('#'+ mapping.spanId)[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+              errorSpan.textContent = '';
+          }
+      });
+  }
+
   function simpan() {
     id_pelayanan = $('#inPel').val();
     id_history = $('#inHis').val();
@@ -5037,7 +5068,8 @@
 
     if (!id_masalah_kep && isValid) {
       $('#idMasalahKep_error').html('*wajib diisi');
-      $('input[name="keperawatan"]:first').focus();
+      $('#idMasalahKep_error').focus();
+      $('#idMasalahKep_error')[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
       isValid = false;
     } else {
       $('#idMasalahKep_error').html('');
@@ -5148,12 +5180,14 @@
         if (data.status == "success") {
           window.location.href = "<?php echo base_url('Erm_ranap/form/') ?>" + '<?= urlencode(base64_encode($id_pelayanan)) ?>' + '/' + '<?= urlencode(base64_encode($id_history)) ?>';
         } else if (data.error) {
-          swal({
-            title: "Gagal!",
-            type: "warning",
-            text: data.status,
-            confirmButtonColor: "#3cb878",
-          });
+          // swal({
+          //   title: "Gagal!",
+          //   type: "warning",
+          //   text: data.status,
+          //   confirmButtonColor: "#3cb878",
+          // });
+          displayErrors(data);
+
         }
       }
 
@@ -5221,4 +5255,7 @@
 
     });
   });
+
+
+
 </script>

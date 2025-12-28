@@ -90,6 +90,7 @@ class Erm_ranap_asesmen_perawat extends CI_Controller
 		} else {
 			$file = "";
 		}
+
 		$this->form_validation->set_rules('cMasuk', 'Cara Masuk', 'required');
 		$this->form_validation->set_rules('gcs', 'GCS', 'required');
 		$this->form_validation->set_rules('e', 'E', 'required');
@@ -258,7 +259,6 @@ class Erm_ranap_asesmen_perawat extends CI_Controller
 				'error'   => true,
 				'cara_masuk' => form_error('cara_masuk'),
 				// 'kondisi_masuk' => form_error('kondisi'),
-				'gcs' => form_error('gcs'),
 				'e' => form_error('e'),
 				'm' => form_error('m'),
 				'v' => form_error('v'),
@@ -282,6 +282,11 @@ class Erm_ranap_asesmen_perawat extends CI_Controller
 				'pemuka_agama' => form_error('pemuka_agama'),
 				'id_masalah_kep' => form_error('id_masalah_kep'),
 			);
+
+			if (form_error('gcs')) {
+				$out['gcs'] =  "Wajib isi & isi Form Bawah ini E , M , V";
+			}
+
 		}
 
 		echo json_encode($out);

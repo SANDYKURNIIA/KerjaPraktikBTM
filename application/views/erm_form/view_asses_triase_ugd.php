@@ -57,10 +57,9 @@
                   <label class="control-label mb-10 text-left">Jam/ Tanggal Masuk <span class="help"></span></label>
                   <input type="text" id="inTglMasuk" disabled class="form-control" value="<?php
                                                                                           setlocale(LC_ALL, 'id_ID');
-
                                                                                           date_default_timezone_set('Asia/Jakarta');
                                                                                           $time = strtotime($tgl_masuk);
-                                                                                          $date = strftime(" %d %B %Y ", $time);
+                                                                                          $date = strftime("%H:%M/ %d %B %Y ", $time);
                                                                                           echo $date ?>">
                 </div>
               </div>
@@ -72,15 +71,15 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <div class="col-md-4">
                   <label class="control-label mb-10 text-left">Keluhan Utama<span class="help"></span></label>
                   <span id="td_error" class="text-danger">*</span>
                   <div class="has-success">
-                    <input type="text" disabled class="form-control" id="keluhan_utama" name="keluhan_utama">
+                    <input type="text" disabled class="form-control" name="keluhan_utama">
                   </div>
                 </div>
-              </div>
+              </div> -->
 
 
 
@@ -108,17 +107,193 @@
                     <div class="has-success">
                       <input type="text" class="form-control" id="inAsalRujuk">
                     </div>
-
                   </div>
                 </div> -->
 
+              <div class="form-group">
+                <div class="col-md-4">
+                  <label class="control-label mb-10 text-left">Cara Datang :</label>
+                  <span id="caraDatang_error" class="text-danger"></span>
 
-              <br>
-              <br>
+                  <div class="radio-button radio-button-primary">
+                    <input id="caraDatang_sendiri" type="radio" name="cara_datang" value="Sendiri">
+                    <label class="control-label" for="caraDatang_sendiri">Sendiri</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="caraDatang_ambulan" type="radio" name="cara_datang" value="Ambulan">
+                    <label class="control-label" for="caraDatang_ambulan">Ambulan</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="caraDatang_keluarga" type="radio" name="cara_datang" value="Diantar keluarga">
+                    <label class="control-label" for="caraDatang_keluarga">Diantar Keluarga</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="caraDatang_polisi" type="radio" name="cara_datang" value="Diantar Polisi">
+                    <label class="control-label" for="caraDatang_polisi">Diantar Polisi</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="caraDatang_rujukan" type="radio" name="cara_datang" value="Rujukan">
+                    <label class="control-label" for="caraDatang_rujukan">Rujukan</label>
+
+                    <div class="has-success">
+                      <input type="text" class="form-control" id="asal_rujuk" name="asal_rujukan" style="display: none">
+                      <span class="help-block"></span>
+                    </div>
+                  </div>
+                  <script>
+                    $('input[name="cara_datang"]').change(function() {
+                      if ($('#caraDatang_rujukan').is(':checked')) {
+                        $('#asal_rujuk').show();
+                      } else {
+                        $('#asal_rujuk').hide().val('');
+                      }
+                    });
+                  </script>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-4">
+                  <label class="control-label mb-10 text-left">Alat Bantu :</label>
+                  <span id="alatBantu_error" class="text-danger"></span>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="alatBantu_jalan" type="radio" name="alat_bantu" value="Jalan Kaki">
+                    <label class="control-label" for="alatBantu_jalan">Jalan Kaki</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="alatBantu_brankard" type="radio" name="alat_bantu" value="Brankard">
+                    <label class="control-label" for="alatBantu_brankard">Brankard</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="alatBantu_kursiRoda" type="radio" name="alat_bantu" value="Kursi Roda">
+                    <label class="control-label" for="alatBantu_kursiRoda">Kursi Roda</label>
+                  </div>
+
+                  <div class="radio-button radio-button-primary">
+                    <input id="alatBantu_tongkat" type="radio" name="alat_bantu" value="Tongkat/Walker">
+                    <label class="control-label" for="alatBantu_tongkat">Tongkat/Walker</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-md-4">
+                  <label class="control-label mb-10 text-left">Kasus :</label>
+                  <span id="kasus_error" class="text-danger"></span>
+
+                  <!-- Non Trauma -->
+                  <div class="check-item">
+                    <input id="kasus_nonTrauma" type="checkbox" name="kasus" value="non_trauma">
+                    <label class="control-label" for="kasus_nonTrauma">Non Trauma</label>
+                  </div>
+
+                  <!-- Trauma -->
+                  <div class="check-item">
+                    <input id="kasus_trauma" type="checkbox" name="kasus" value="Trauma">
+                    <label class="control-label" for="kasus_trauma">Trauma</label>
+                  </div>
+
+                  <!-- Textbox Trauma -->
+                  <div class="has-success">
+                    <input type="text" class="form-control" id="keterangan_trauma" name="keterangan_trauma" style="display: none;">
+                  </div>
+                  <script>
+                    $('input[name="kasus"]').on('change', function() {
+                      $('input[name="kasus"]').not(this).prop('checked', false);
+                      if ($('#kasus_trauma').is(':checked')) {
+                        $('#keterangan_trauma').show();
+                      } else {
+                        $('#keterangan_trauma').hide().val('');
+                      }
+                    });
+                  </script>
+
+                  <!-- Kebidanan -->
+                  <div class="check-item">
+                    <input id="kasus_kebidanan" type="checkbox" name="kasus" value="Kebidanan">
+                    <label class="control-label" for="kasus_kebidanan">Kebidanan :</label>
+                  </div>
+
+                  <!-- Pilihan Kebidanan -->
+                  <div id="kebidanan_options_wrapper"
+                    style="padding-left: 25px; margin-top: 10px; border-left: 2px solid #f0f0f0; display: none;">
+
+                    <div class="radio-button radio-button-primary">
+                      <input id="hamil_tidak" type="radio" name="status_hamil" value="Tidak Hamil">
+                      <label class="control-label" for="hamil_tidak">Tidak Hamil</label>
+                    </div>
+
+                    <div class="radio-button radio-button-primary">
+                      <input id="hamil_ya" type="radio" name="status_hamil" value="Hamil">
+                      <label class="control-label" for="hamil_ya">Hamil</label>
+                    </div>
+
+                    <!-- Detail Hamil -->
+                    <div id="hamil_detail_wrapper" style="margin-top: 10px;">
+                      <div class="row">
+                        <div class="col-md-3 col-xs-2" style="padding-right: 2px;">
+                          <label class="control-label" for="hamil_g">G:</label>
+                          <input type="number" class="form-control" name="hamil_g" id="hamil_g" placeholder="G">
+                        </div>
+                        <div class="col-md-3 col-xs-2" style="padding-left: 2px; padding-right: 5px;">
+                          <label class="control-label" for="hamil_p">P:</label>
+                          <input type="number" class="form-control" name="hamil_p" id="hamil_p" placeholder="P">
+                        </div>
+                        <div class="col-md-3 col-xs-2" style="padding-left: 2px; padding-right: 5px;">
+                          <label class="control-label" for="hamil_a">A:</label>
+                          <input type="number" class="form-control" name="hamil_a" id="hamil_a" placeholder="A">
+                        </div>
+                        <div class="col-md-3 col-xs-2" style="padding-left: 5px; padding-right: 5px;">
+                          <label class="control-label" for="hamil_minggu">Hamil:</label>
+                          <div class="input-group">
+                            <input type="number" class="form-control" name="hamil_minggu" id="hamil_minggu">
+                            <span class="input">Minggu</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <script>
+                      $(document).ready(function() {
+                        // Jika kasus kebidanan dicentang
+                        $('#kasus_kebidanan').change(function() {
+                          if ($(this).is(':checked')) {
+                            $('#kebidanan_options_wrapper').show();
+                          } else {
+                            $('#kebidanan_options_wrapper').hide();
+                            $('input[name="status_hamil"]').prop('checked', false);
+                            $('#hamil_detail_wrapper').hide();
+                            $('#hamil_g, #hamil_p, #hamil_a, #hamil_minggu').val('');
+                          }
+                        });
+
+                        // Jika memilih status hamil
+                        $('input[name="status_hamil"]').change(function() {
+                          if ($(this).val() === 'Hamil') {
+                            $('#hamil_detail_wrapper').show();
+                          } else {
+                            $('#hamil_detail_wrapper').hide();
+                            $('#hamil_g, #hamil_p, #hamil_a, #hamil_minggu').val('');
+                          }
+                        });
+                      });
+                    </script>
+                  </div>
+                </div>
+              </div>
+
+
+
               <div class="form-group">
                 <div class="col-md-12">
                   <h5 style="margin-top: 30px;"><strong>
-                      <label class="control-label mb-10 text-left"><b>KEADAAN UMUM</b><span class="help"></span></label></strong>
+                      <label class="control-label mb-10 text-left"><b>TANDA-TANDA VITAL</b><span class="help"></span></label></strong>
                   </h5>
                 </div>
 
@@ -127,17 +302,18 @@
                     <label class="control-label mb-10 text-left">Tekanan Darah<span class="help"></span></label>
                     <span id="td_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" id="tekanan_darah" name="tekanan_darah" placeholder="MmHg" value="" disabled>
+                      <input type="text" class="form-control" name="tekanan_darah" placeholder="mmHg">
                     </div>
                   </div>
                 </div>
+
 
                 <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Suhu<span class="help"></span></label>
                     <span id="suhu_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" id="suhu" name="suhu" placeholder="Celsius" value="" disabled>
+                      <input type="number" class="form-control" name="suhu" id="suhu" placeholder="Celsius" inputmode="decimal">
                     </div>
                   </div>
                 </div>
@@ -147,7 +323,7 @@
                     <label class="control-label mb-10 text-left">Frequensi Nadi<span class="help"></span></label>
                     <span id="nadi_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" id="frequensi_nadi" name="frequensi_nadi" placeholder="x/menit" value="" disabled>
+                      <input type="text" class="form-control" name="frequensi_nadi" placeholder="x/menit">
                     </div>
                   </div>
                 </div>
@@ -157,42 +333,42 @@
                     <label class="control-label mb-10 text-left">SPO2<span class="help"></span></label>
                     <span id="spo2_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" id="spo2" name="spo2" placeholder="Spo2" value="" disabled>
+                      <input type="number" class="form-control" name="spo2" placeholder="spo2">
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Berat Badan<span class="help"></span></label>
                     <span id="berat_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" id="berat_badan" name="berat_badan" placeholder="Kg" value="" disabled>
+                      <input type="number" class="form-control" name="berat_badan" placeholder="Kg" disabled>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Frequensi Nafas<span class="help"></span></label>
                     <span id="nafas_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="text" class="form-control" id="frequensi_nafas" name="frequensi_nafas" placeholder="x/menit" value="" disabled>
+                      <input type="text" class="form-control" name="frequensi_nafas" placeholder="x/menit">
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left">Tinggi Badan<span class="help"></span></label>
                     <span id="tinggi_badan_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" id="tinggi_badan" name="tinggi_badan" placeholder="Cm" value="" disabled>
+                      <input type="number" class="form-control" name="tinggi_badan" placeholder="Cm" disabled>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="form-group ">
+                <!-- <div class="form-group ">
                   <div class="col-md-6">
                     <label class="control-label mb-10 text-left">Kebutuhan Khusus</label>
                     <span id="kebutuhan_khusus_error" class="text-danger">*</span>
@@ -229,22 +405,91 @@
                       </label>
                     </div>
                   </div>
+                </div> -->
+
+                <div class="form-group">
+                  <div class="col-md-8">
+                    <label class="control-label mb-10 text-left">Keluhan Utama<span class="help"></span></label>
+                    <span id="td_error" class="text-danger">*</span>
+                    <div class="has-success">
+                      <div class="has-success">
+                        <textarea class="form-control" name="keluhan_utama" cols="30" rows="5"></textarea>
+                      </div>
+                      <!-- <input type="text" class="form-control" name="keluhan_utama"> -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-8">
+                    <label class="control-label mb-10 text-left">Risiko Jatuh</label>
+                    <span id="risiko_jatuh_error" class="text-danger">*</span>
+
+                    <div class="radio-button radio-button-primary">
+                      <input id="risikoJatuh_tidak" type="radio" name="risiko_jatuh" value="Tidak">
+                      <label class="control-label" for="risikoJatuh_tidak">Tidak</label>
+                    </div>
+
+                    <div class="radio-button radio-button-primary">
+                      <input id="risikoJatuh_ya" type="radio" name="risiko_jatuh" value="Ya">
+                      <label class="control-label" for="risikoJatuh_ya">Ya</label>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <div class="col-md-12">
                     <label class="control-label mb-10 text-left">Kesadaran :<span class="help"></span></label>
                   </div>
-                  <div class="col-md-4">
+                  <!-- <div class="col-md-4">
                     <label class="control-label mb-10 text-left">GCS :<span class="help"></span></label>
                     <span id="gcs_error" class="text-danger">*</span>
                     <div class="has-success">
-                      <input type="number" class="form-control" name="GCS" id="gcs" placeholder="">
+                      <input type="number" class="form-control" name="gcs" id="gcs" placeholder="">
                     </div>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="form-group ">
+                  <div class="form-group">
+                    <div class="col-md-4">
+                      <label class="control-label mb-10 text-left">GCS :<span class="help"></span></label>
+                      <span id="gcs_error" class="text-danger"></span>
+                      <div class="">
+                        <input type="number" disabled class="form-control" name="gcs" id="gcs" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-4">
+                        <label class="control-label mb-10 text-left">E :<span class="help"></span></label>
+                        <span id="e_error" class="text-danger"></span>
+                        <div class="">
+                          <input type="number" class="form-control" name="e" id="e" value="0">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-4">
+                        <label class="control-label mb-10 text-left">M :<span class="help"></span></label>
+                        <span id="m_error" class="text-danger"></span>
+                        <div class=" ">
+                          <input type="number" class="form-control" name="m" id="m" value="0">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-4">
+                        <label class="control-label mb-10 text-left">V :<span class="help"></span></label>
+                        <span id="v_error" class="text-danger"></span>
+                        <div class=" ">
+                          <input type="number" class="form-control" name="v" id="v" value="0">
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="form-group ">
                   <div class="col-md-12">
                     <label class="control-label mb-10 text-left">MATA</label>
                     <span id="mata_error" class="text-danger"></span>
@@ -354,22 +599,22 @@
                         Tidak ada respon
                       </label>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <style>
-                    label {
-                      color: black !important;
-                    }
-                  </style>
-                  <div class="form-group text-center" style="margin-top: 30px;">
-                    <div class="col-md-12">
-                      <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                    <style>
+                      label {
+                        color: black !important;
+                      }
+                    </style>
+                    <div class="form-group text-center" style="margin-top: 30px;">
+                      <div class="col-md-12">
+                        <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="clearfix"></div>
+                    <div class="clearfix"></div>
 
-                  <!-- Bagian Pemeriksaan-->
-                  <div id="pemeriksaan">
+                    <!-- Bagian Pemeriksaan-->
+                    <!-- <div id="pemeriksaan">
                     <label>PEMERIKSAAN</label><br>
                     <input type="radio" name="pemeriksaan" value="segera" id="segera" onclick="tampilkanResutasi()">
                     <label for="segera">Segera</label><br>
@@ -379,776 +624,1076 @@
                     <label for="menit30">30 Menit</label><br>
                     <input type="radio" name="pemeriksaan" value="60menit" id="menit60" onclick="tampilkanTidakDarurat()">
                     <label for="menit60">60 Menit</label>
-                  </div>
+                  </div> -->
 
-                  <!-- Bagian resutasi -->
-                  <div id="resutasi" style="display: none; margin-top: 20px;">
-                    <label>AIR WAY</label><br>
-                    <input type="radio" name="resutasi" value="sumbatan_total" id="total">
-                    <label for="total">Sumbatan total</label><br>
-                    <input type="radio" name="resutasi" value="sumbatan_sebagian" id="sebagian">
-                    <label for="sebagian">Sumbatan sebagian</label>
+                    <table class="triase-table">
+                      <tbody>
+                        <tr>
+                          <td class="category-cell">AIR WAY</td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="airway[]" value="sumbatan" id="aw_p1_total">
+                              <label for="aw_p1_total">Sumbatan</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="airway[]" value="ancaman sumbatan" id="aw_p1_sebagian">
+                              <label for="aw_p1_sebagian">Ancaman Sumbatan</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="airway[]" value="bebas1" id="aw_p2_bebas">
+                              <label for="aw_p2_bebas">Bebas</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="airway[]" value="bebas2" id="aw_p3_bebas">
+                              <label for="aw_p3_bebas">Bebas</label>
+                            </div>
+                          </td>
+                          <td>
+                          </td>
+                        </tr>
 
-                    <!-- Bagian BREATHING-->
-                    <div style="margin-top: 10px;">
-                      <label>BREATHING</label><br>
-                      <input type="radio" name="breathing" value="hentinafas" id="hentinafas">
-                      <label for="hentinafas">Henti Nafas</label><br>
-                      <input type="radio" name="breathing" value="RR < 10" id="rr">
-                      <label for="rr">RR < 10</label>
+                        <tr>
+                          <td class="category-cell">Pernapasan</td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="henti_nafas" id="br_p1_henti">
+                              <label for="br_p1_henti">Henti Nafas</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="rr_kurang_10" id="br_p1_rr_lt10">
+                              <label for="br_p1_rr_lt10">Napas (&lt; 10x/mnt)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="rr_lebih_32" id="br_p1_rr_gt32">
+                              <label for="br_p1_rr_gt32">Napas (&gt; 32x/mnt)</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="rr_25_32" id="br_p2_takipneu">
+                              <label for="br_p2_takipneu">Napas (25-32x/mnt)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="whezing" id="br_p2_whezing">
+                              <label for="br_p2_whezing">Whezing / Meng'i</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="normal" id="br_p3_normal">
+                              <label for="br_p3_normal">Normal</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="rr_10_24" id="br_p3_rr_10-24">
+                              <label for="br_p3_rr_10-24">Napas (10-24x/mnt)</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="breathing[]" value="henti_napas" id="br_p4_henti">
+                              <label for="br_p4_henti">Henti Napas</label>
+                            </div>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td class="category-cell">Sirkulasi</td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="henti_jantung" id="cy_p1_henti">
+                              <label for="cy_p1_henti">Henti Jantung</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_lemah" id="cy_p1_lemah">
+                              <label for="cy_p1_lemah">Nadi Lemah</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_kurang_50" id="nadi_50m">
+                              <label for="nadi_50m">Nadi (&lt; 50x/menit)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_lebih_120" id="nadi_120m">
+                              <label for="nadi_120m">Nadi (&gt; 120x/menit)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="akral_dingin" id="akral_dingin">
+                              <label for="akral_dingin">Akral Dingin</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="crt_2" id="crt_2">
+                              <label for="crt_2">CRT &gt; 2 Detik</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nyeri_dada" id="nyeri_dada">
+                              <label for="nyeri_dada">Nyeri Dada (Iskemik)</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_kuat1" id="nadi_kuat1">
+                              <label for="nadi_kuat2">Nadi Kuat</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_101_120" id="nadi_101">
+                              <label for="nadi_101">Nadi (101-120x/mnt)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_51_59" id="nadi_51">
+                              <label for="nadi_51">Nadi (51-59x/mnt)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="akral_hangat" id="akral_hangat">
+                              <label for="akral_hangat">Akral Hangat</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="crt_2d" id="crt_2d">
+                              <label for="crt_2d">CRT &lt; 2 Detik</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="sistol_lebih_160" id="sistol_160">
+                              <label for="cy_p2_kuat">Sistol &gt; 160 mmHg</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="diastol_lebih_100" id="diastol_100">
+                              <label for="diastol_100">Diastol &gt; 100 mmHg</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_kuat2" id="nadi_kuat2">
+                              <label for="nadi_kuat3">Nadi Kuat</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="nadi_60_100" id="nadi_60">
+                              <label for="nadi_60">Nadi (60-100x/mnt)</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="akral_hangat2" id="akral_hangat2">
+                              <label for="akral_hangat2">Akral Hangat</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="crt_2dd" id="crt_2dd">
+                              <label for="crt_2dd">CRT &lt; 2 Detik</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="hentijantung" id="cy_p4_henti">
+                              <label for="cy_p4_henti">Henti Jantung</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="cyrculation[]" value="ekg_asistol" id="ekg_asistol">
+                              <label for="ekg_asistol">EKG Asistol</label>
+                            </div>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td class="category-cell">Kesadaran</td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="gcs_kurang_12" id="di_p1_gcs_lt12">
+                              <label for="di_p1_gcs_lt12">GCS &lt;12</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="kejang" id="di_p1_kejang">
+                              <label for="di_p1_kejang">Kejang</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="gelisah" id="di_p1_gelisah">
+                              <label for="di_p1_gelisah">Gelisah</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="gcs_lebih_12" id="di_p2_gcs_ge12">
+                              <label for="di_p2_gcs_ge12">GCS &gt; 12</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="gcs_15" id="di_p3_gcs15">
+                              <label for="di_p3_gcs15">GCS 15</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="gcs_3" id="di_p4_gcs3">
+                              <label for="di_p4_gcs3">GCS 3</label>
+                            </div>
+                            <div class="check-item">
+                              <input type="checkbox" name="disability[]" value="rc" id="di_p4_rc">
+                              <label for="di_p4_rc">RC (-/-)</label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+
+                      <tfoot>
+                        <tr>
+                          <td class="category-cell">KATEGORI</td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="kategori_triase" value="resusitasi" id="kat_merah">
+                              <label for="kat_merah" class="kategori-box cat-merah">MERAH<br>RESUSITASI</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="kategori_triase" value="urgent" id="kat_kuning">
+                              <label for="kat_kuning" class="kategori-box cat-kuning">KUNING<br>URGENT</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="kategori_triase" value="non_urgent" id="kat_hijau">
+                              <label for="kat_hijau" class="kategori-box cat-hijau">HIJAU<br>NON URGENT</label>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="check-item">
+                              <input type="checkbox" name="kategori_triase" value="doa" id="kat_hitam">
+                              <label for="kat_hitam" class="kategori-box cat-hitam">HITAM<br>DOA</label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                    <script>
+                      $('input[name="kategori_triase[]"]').on('change', function() {
+                        if ($(this).is(':checked')) {
+                          $('input[name="kategori_triase[]"]').not(this).prop('checked', false);
+                        }
+                      });
+                    </script>
+
+                    <div class="form-group row">
+                      <div class="col-md-3">
+                        <label class="control-label mb-10 text-left">
+                          Staff Pengisi Assesmen : <span class="help"></span>
+                        </label>
+                        <div class="has-success">
+                          <select class="form-control select2" id="nama_staff" name="nama_staff" required>
+                            <option>-</option>
+                            <?php foreach ($staff as $s) : ?>
+                              <option value="<?= $s->nama; ?>"><?= $s->nama; ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                          <span class="staff_error"></span>
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- Bagian CYRCULATION -->
-                    <div style="margin-top: 10px;">
-                      <label>CYRCULATION</label><br>
-                      <input type="radio" name="cyrculation" value="hentijantung" id="hentijantung">
-                      <label for="hentijantung">Henti Jantung</label><br>
-                      <input type="radio" name="cyrculation" value="naditidaktersedia" id="naditidaktersedia">
-                      <label for="naditidaktersedia">Nadi tidak tersedia</label><br>
-                      <input type="radio" name="cyrculation" value="TD < 80" id="td">
-                      <label for="td">TD < 80</label><br>
-                          <input type="radio" name="cyrculation" value="pendarahanaktif" id="pendarahanaktif">
-                          <label for="pendarahanaktif">Pendarahan aktif</label>
+                    <div class="form-group row">
+                      <div class="col-md-7">
+                        <h5 style="margin-top: 50px;">
+                          <label class="control-label mb-10 text-left">
+                            <b>Skala Nyeri</b> <span class="help"></span>
+                          </label>
+                        </h5>
+                        <div class="slidecontainer">
+                          <span id="val"></span>
+                          <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
+                          <span class="help-block"></span>
+                          <div id="state">
+                            <img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%>
+                            <br>
+                            <span style='color:black;'>Tidak Nyeri</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- Bagian DISABILITY -->
-                    <div style="margin-top: 10px;">
-                      <label>DISABILITY</label><br>
-                      <input type="radio" name="disability" value="GCS < 9" id="gcs">
-                      <label for="gcs">GCS < 9</label>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label col-md-4 pt-5">Verifikasi Dokter :</label>
+                          <div class="col-md-8">
+                            <div class="radio-list">
+                              <div class="radio-inline pl-0">
+                                <span class="radio radio-info">
+                                  <input type="radio" value="Tidak" name="verifikasi_dokter" id="verifikasi_dokter_tidak" checked>
+                                  <label class="control-label" for="verifikasi_dokter_tidak">Tidak</label>
+                                </span>
+                              </div>
+                              <div class="radio-inline pl-0">
+                                <span class="radio radio-info">
+                                  <input type="radio" value="Ya" name="verifikasi_dokter" id="verifikasi_dokter_ya">
+                                  <label class="control-label" for="verifikasi_dokter_ya">Ya</label>
+                                </span>
+                              </div>
+                              <span class="help-block"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- Bagian EXPOSURE -->
-                    <div style="margin-top: 10px;">
-                      <label>EXPOSURE</label><br>
-                      <input type="radio" name="exposure" value="kejangberkelanjutan" id="kejangberkelanjutan">
-                      <label for="kejangberkelanjutan">Kejang berkelanjutan</label><br>
-                      <input type="radio" name="exposure" value="Overdosis obat dengan hipoventilasi" id="oodehi">
-                      <label for="oodehi">Overdosis obat dengan hipoventilasi</label><br>
-                      <input type="radio" name="exposure" value="Cidera kepala dengan pupil anisokor" id="cidera">
-                      <label for="cidera">Cidera kepala dengan pupil anisokor</label>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="col-md-4 control-label pt-5">Status Verifikasi :</label>
+                          <div class="col-md-8">
+                            <div class="radio-list">
+                              <div id="status">
+                              </div>
+                              <span class="help-block"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="detail_verifikasi" class="form-group row" style="display: none;">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="control-label col-md-4 pt-5">Nama Dokter:</label>
+                          <div class="col-md-8 has-success">
+                            <select class="form-control filled-input select2" style="border: 1px solid lightgreen;" id="nama_dokter">
+                              <option value="">-- Pilih Dokter --</option>
+                              <?php foreach ($dokter as $row) : ?>
+                                <option value="<?php echo $row['nama']; ?>">
+                                  <?php echo $row['nama']; ?>
+                                </option>
+                              <?php endforeach; ?>
+                            </select>
+                            <span class="help-block"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <script>
+                      $('input[name="verifikasi_dokter"]').change(function() {
+                        if ($(this).val() === 'Ya' && $(this).prop('checked')) {
+                          $("#detail_verifikasi").show();
+                        } else {
+                          $("#detail_verifikasi").hide();
+                        }
+                      });
+                    </script>
+
+                    <script>
+                      // Fungsi untuk menampilkan bagian Resutasi
+                      function tampilkanResutasi() {
+                        sembunyikanSemua();
+                        document.getElementById("resutasi").style.display = "block";
+                      }
+
+                      // Fungsi untuk menampilkan bagian Emergency
+                      function tampilkanEmergency() {
+                        sembunyikanSemua();
+                        document.getElementById("emergency").style.display = "block";
+                      }
+
+                      // Fungsi untuk menampilkan bagian Urgent
+                      function tampilkanUrgent() {
+                        sembunyikanSemua();
+                        document.getElementById("urgent").style.display = "block";
+                      }
+
+                      // Fungsi untuk menampilkan bagian Tidak Darurat
+                      function tampilkanTidakDarurat() {
+                        sembunyikanSemua();
+                        document.getElementById("tidak_darurat").style.display = "block";
+                      }
+
+                      // Fungsi untuk menyembunyikan semua bagian
+                      function sembunyikanSemua() {
+                        document.getElementById("resutasi").style.display = "none";
+                        document.getElementById("emergency").style.display = "none";
+                        document.getElementById("urgent").style.display = "none";
+                        document.getElementById("tidak_darurat").style.display = "none";
+                      }
+                    </script>
+
+                    <div class="col-md-6">
+                      <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
+                      <button class="btn btn-success mb-4" onclick="simpan()">Simpan</button>
+                      <button class="btn btn-success mb-4" onclick="cetak()">Cetak</button>
                     </div>
                   </div>
                 </div>
-
-                <!-- Bagian Emergency -->
-                <div id="emergency" style="display: none; margin-top: 20px;">
-                  <label>AIR WAY</label><br>
-                  <input type="radio" name="emergency" value="risiko_gangguan" id="risiko">
-                  <label for="risiko">Risiko gangguan Airway</label><br>
-                  <input type="radio" name="emergency" value="distress_nafas" id="distress">
-                  <label for="distress">Distress nafas berat</label>
-
-                  <!-- Bagian BREATHING-->
-                  <div style="margin-top: 10px;">
-                    <label>BREATHING</label><br>
-                    <input type="radio" name="breathing" value="takipneu" id="takipneu">
-                    <label for="takipneu">Takipneu</label><br>
-                    <input type="radio" name="breathing" value="Penggunaan otot bantu nafas" id="otot">
-                    <label for="otot">Penggunaan otot bantu nafas</label>
-                  </div>
-
-                  <!-- Bagian CYRCULATION -->
-                  <div style="margin-top: 10px;">
-                    <label>CYRCULATION</label><br>
-                    <input type="radio" name="cyrculation" value="Nadi tidak teraba" id="naditidakteraba">
-                    <label for="naditidakteraba">Nadi tidak teraba / sangat halus(50)</label><br>
-                    <input type="radio" name="cyrculation" value="hipotensi" id="hipo">
-                    <label for="hipo">Hipotensi</label><br>
-                    <input type="radio" name="cyrculation" value="Banyak kehilangan darah" id="darah">
-                    <label for="darah">Banyak kehilangan darah</label>
-                  </div>
-
-                  <!-- Bagian DISABILITY -->
-                  <div style="margin-top: 10px;">
-                    <label>DISABILITY</label><br>
-                    <input type="radio" name="disability" value="GCS < 13" id="gcs13">
-                    <label for="gcs13">GCS < 13</label><br>
-                        <input type="radio" name="disability" value="Nyeri berat" id="nyeri">
-                        <label for="nyeri">Nyeri berat</label>
-                  </div>
-
-                  <!-- Bagian EXPOSURE -->
-                  <div style="margin-top: 10px;">
-                    <label>EXPOSURE</label><br>
-                    <input type="radio" name="exposure" value="Nyeri dada tipikal" id="nyeridada">
-                    <label for="nyeridada">Nyeri dada tipikal</label><br>
-                    <input type="radio" name="exposure" value="Demam dengan letargi" id="demam">
-                    <label for="demam">Demam dengan letargi</label><br>
-                    <input type="radio" name="exposure" value="sepsis" id="sepsis">
-                    <label for="sepsis">Sepsis</label><br>
-                    <input type="radio" name="exposure" value="Defisit Neurologi" id="defisit">
-                    <label for="defisit">Defisit Neurologi (Stroke Akut)</label><br>
-                    <input type="radio" name="exposure" value="Mata terpecik" id="mataterpecik">
-                    <label for="mataterpecik">Mata terpecik zat asam/basa</label><br>
-                    <input type="radio" name="exposure" value="multiple trauma" id="multiple">
-                    <label for="multiple">Multiple Trauma</label><br>
-                    <input type="radio" name="exposure" value="Fraktur" id="fraktur">
-                    <label for="fraktur">Fraktur mayor</label><br>
-                    <input type="radio" name="exposure" value="tarsiotestis" id="tarsio">
-                    <label for="tarsio">Tarsio testis</label><br>
-                    <input type="radio" name="exposure" value="Psikiatri" id="pagg">
-                    <label for="pagg">Psikiatri : agresif, gaduh, gelisah</label>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bagian Urgent -->
-              <div id="urgent" style="display: none; margin-top: 20px;">
-                <label>AIR WAY</label><br>
-                <input type="radio" name="urgent" value="paten" id="urgent_paten">
-                <label for="urgent_paten">Paten</label>
-
-                <!-- Bagian BREATHING-->
-                <div style="margin-top: 10px;">
-                  <label>BREATHING</label><br>
-                  <input type="radio" name="breathing" value="dysneu" id="dysneu">
-                  <label for="dysneu">Dysneu</label>
-                </div>
-
-                <!-- Bagian CYRCULATION -->
-                <div style="margin-top: 10px;">
-                  <label>CYRCULATION</label><br>
-                  <input type="radio" name="cyrculation" value="Hipertensi Berat" id="hipertensi">
-                  <label for="hipertensi">Hipertensi berat</label><br>
-                  <input type="radio" name="cyrculation" value="Soo2" id="Soo">
-                  <label for="Soo">Soo2: 90-95%</label><br>
-                  <input type="radio" name="cyrculation" value="tandadehidrasi" id="tandadehidrasi">
-                  <label for="tandadehidrasi">Tanda dehidrasi</label><br>
-                  <input type="radio" name="cyrculation" value="muntah menetap" id="muntah">
-                  <label for="muntah">Muntah menetap</label>
-                </div>
-
-                <!-- Bagian DISABILITY -->
-                <div style="margin-top: 10px;">
-                  <label>DISABILITY</label><br>
-                  <input type="radio" name="disability" value="GCS 14" id="gcs14">
-                  <label for="gcs14">GCS 14-15</label><br>
-                  <input type="radio" name="disability" value="Nyeri sedang" id="nyerisedang">
-                  <label for="nyerisedang">Nyeri sedang</label>
-                </div>
-
-                <!-- Bagian EXPOSURE -->
-                <div style="margin-top: 10px;">
-                  <label>EXPOSURE</label><br>
-                  <input type="radio" name="exposure" value="Post kejang" id="postke">
-                  <label for="postke">Post kejang</label><br>
-                  <input type="radio" name="exposure" value="krisis hipertensi" id="krisishiper">
-                  <label for="krisishiper">Krisis Hipertensi</label><br>
-                  <input type="radio" name="exposure" value="kehilangan darah sedang" id="kedase">
-                  <label for="kedase">Kehilangan darah sedang</label><br>
-                  <input type="radio" name="exposure" value="cedera kepala ringan" id="cederakepala">
-                  <label for="cederakepala">Cedera kepala ringan</label><br>
-                  <input type="radio" name="exposure" value="suspek sepsis" id="suspek">
-                  <label for="suspek">Suspek Sepsis</label><br>
-                  <input type="radio" name="exposure" value="nyeri dada non kardiak" id="nyeridada">
-                  <label for="nyeridada">Nyeri dada non kardiak</label><br>
-                  <input type="radio" name="exposure" value="Cedera ekstremitas" id="ekstremitas">
-                  <label for="ekstremitas">Cedera ekstremitas</label><br>
-                  <input type="radio" name="exposure" value="Psikiatri" id="psi">
-                  <label for="psi">Psikiatri : risiko melukai diri sendiri, psikotik akut, cemas, berpotensial agresif</label>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bagian Tidak Darurat -->
-            <div id="tidak_darurat" style="display: none; margin-top: 20px;">
-              <label>AIR WAY</label><br>
-              <input type="radio" name="tidak_darurat" value="paten" id="td_paten">
-              <label for="td_paten">Paten</label><br>
-              <input type="radio" name="tidak_darurat" value="aspirasi" id="aspirasi">
-              <label for="aspirasi">Aspirasi benda asing tanpa distres nafas</label><br>
-              <input type="radio" name="tidak_darurat" value="kesulitan" id="kesulitan">
-              <label for="kesulitan">Kesulitan menelan tanpa distres nafas</label>
-
-              <!-- Bagian BREATHING-->
-              <div style="margin-top: 10px;">
-                <label>BREATHING</label><br>
-                <input type="radio" name="breathing" value="Frekuensi nafas normal" id="frekuensi">
-                <label for="frekuensi">Frekuensi nafas normal</label>
-              </div>
-
-              <!-- Bagian CYRCULATION -->
-              <div style="margin-top: 10px;">
-                <label>CYRCULATION</label><br>
-                <input type="radio" name="cyrculation" value="Nadi normal" id="nadinormal">
-                <label for="nadinormal">Nadi normal</label><br>
-                <input type="radio" name="cyrculation" value="Muntah atau diare" id="muataudi">
-                <label for="muataudi">Muntah atau diare tanpa dehiderasi</label>
-              </div>
-
-              <!-- Bagian DISABILITY -->
-              <div style="margin-top: 10px;">
-                <label>DISABILITY</label><br>
-                <input type="radio" name="disability" value="GCS normal" id="gcsnormal">
-                <label for="gcsnormal">GCS Normal</label><br>
-                <input type="radio" name="disability" value="Nyeri ringan" id="nyeriringan">
-                <label for="nyeriringan">Nyeri Ringan</label>
-              </div>
-
-              <!-- Bagian EXPOSURE -->
-              <div style="margin-top: 10px;">
-                <label>EXPOSURE</label><br>
-                <input type="radio" name="exposure" value="luka abrasi" id="lukaabrasi">
-                <label for="lukaabrasi">Luka abrasi tidak memerlukan jahitan</label><br>
-                <input type="radio" name="exposure" value="kontrol ulang rawat luka" id="kontrolulang">
-                <label for="kontrolulang">Kontrol ulang rawat luka</label><br>
-                <input type="radio" name="exposure" value="imunisasi" id="imunisasi">
-                <label for="imunisasi">Imunisasi</label><br>
-                <input type="radio" name="exposure" value="Psikiatri" id="padega">
-                <label for="padega">Psikiatri : Pasien dengan gangguan kronis dan klinis baik</label>
               </div>
             </div>
           </div>
+          <script src="<?= base_url(); ?>assets/dist/js/slider.js"></script>
+          <link rel="stylesheet" href="<?php echo base_url('assets/css/range-slide.css'); ?>">
+          <script type="text/javascript">
+            function tampilStatus(val) {
+              if (val >= 0 && val < 1) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
+              } else if (val >= 1 && val < 3) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
+              } else if (val >= 3 && val < 5) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
+              } else if (val >= 5 && val < 7) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang1.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
+              } else if (val >= 7 && val < 9) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Berat</span>");
+              } else if (val >= 9 && val <= 10) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
+              }
+            }
+            $(document).ready(function() {
+              const id_history = $('#inHis').val();
+              if (id_history !== '' && id_history !== null) {
+                // Hanya jalan kalau form EDIT
+                $.ajax({
+                  url: "<?php echo base_url() ?>Erm_ases_triase_ugd/get_ass_per",
+                  method: "POST",
+                  dataType: 'json',
+                  data: {
+                    id: id_history
+                  },
+                  success: function(data) {
+                    console.log("Response:", data);
+                  }
+                });
+              } else {
+                console.log("Form INSERT → Tidak memanggil get_ass_per()");
+              }
+            });
+          </script>
 
-          <div class="col-md-7">
-            <h5 style="margin-top: 30px;"><strong>
-                <label class="control-label mb-10 text-left"><b>Skala Nyeri <b /><span class="help"></span></label>
-              </strong>
-            </h5>
-            <div class="slidecontainer">
-              <span id="val"></span>
-              <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
-              <span class="help-block"></span>
-              <div id="state"><img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img>
-                <br>
-                <span style='color:black;'>Tidak Nyeri</span>
-              </div>
-            </div>
-          </div>
+          <script type="text/javascript">
+            function tampilStatus(val) {
+              if (val >= 0 && val < 1) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
+              } else if (val >= 1 && val < 3) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
+              } else if (val >= 3 && val < 5) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
+              } else if (val >= 5 && val < 7) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang1.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
+              } else if (val >= 7 && val < 9) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Berat</span>");
+              } else if (val >= 9 && val <= 10) {
+                $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
+              }
+            }
+            $(function() {
+              $("#frek_bab1").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#frek_bab").hide();
+                } else {
+                  $("#frek_bab").show();
+                }
+              });
+              $("#kondisi_umum6").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#kondisi_umum").show();
+                } else {
+                  $("#kondisi_umum").hide();
+                }
+              });
+              $("#info_dpjp1").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#info_dpjp").hide();
+                }
+              });
+              $("#info_dpjp2").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#info_dpjp").show();
+                }
+              });
+              $("#wajib_ibadah3").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#wajib_ibadah").show();
+                }
+              });
+              $("#wajib_ibadah2").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#wajib_ibadah").hide();
+                }
+              });
+              $("#wajib_ibadah1").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#wajib_ibadah").hide();
+                }
+              });
+              $("#faktor_nyeri5").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#faktor_nyeri").show();
+                } else {
+                  $("#faktor_nyeri").hide();
+                }
+              });
+              $("#durasi3").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#durasi").show();
+                } else {
+                  $("#durasi").hide();
+                }
+              });
+              $("#durasi2").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#durasi").hide();
+                }
+              });
+              $("#durasi1").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#durasi").hide();
+                }
+              });
+              $("#faktor_peringan4").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#faktor_peringan").show();
+                } else {
+                  $("#faktor_peringan").hide();
+                }
+              });
+              $("#efek_nyeri6").click(function() {
+                if ($(this).is(":checked")) {
+                  $("#efek_nyeri").show();
+                } else {
+                  $("#efek_nyeri").hide();
+                }
+              });
+              $("#pRujuk2").click(function() {
+                if ($(this).is(":checked")) {
+                  $(".inAsalRujuk").show();
+                } else {
+                  $(".inAsalRujuk").hide();
+                }
+              });
+              $("#pRujuk1").click(function() {
+                if ($(this).is(":checked")) {
+                  $(".inAsalRujuk").hide();
+                } else {
+                  $(".inAsalRujuk").hide();
+                }
+              });
+            });
+            $(document).ready(function() {
+              var birth = new Date('<?= $tgl_lahir ?>');
+              var check = new Date();
 
+              var milliDay = 1000 * 60 * 60 * 24; // a day in milliseconds;
+
+
+              var ageInDays = (check - birth) / milliDay;
+
+              var years = Math.floor(ageInDays / 365);
+              if (years > 18) {
+                $("#gizi_dewasa").show();
+                $("#gizi_anak").hide();
+              } else {
+                $("#gizi_anak").show();
+                $("#gizi_dewasa").hide();
+                $('input[name="tekanan_darah"]').val(0);
+              }
+              // alert(years);
+
+              var agama = '<?= $agama; ?>';
+              if (agama == 'ISLAM') {
+                $("#spirit").show();
+              } else {
+                $("#spirit").hide();
+              }
+
+            });
+
+            function sumScore() {
+              if ($('#penurunan_bb1').is(":checked")) {
+                score = 0;
+              } else if ($('#penurunan_bb2').is(":checked")) {
+                score = 2;
+              } else if ($('#penurunan_bb3').is(":checked")) {
+                score = 1;
+              } else if ($('#penurunan_bb4').is(":checked")) {
+                score = 2;
+              } else if ($('#penurunan_bb5').is(":checked")) {
+                score = 3;
+              } else if ($('#penurunan_bb6').is(":checked")) {
+                score = 4;
+              } else if ($('#penurunan_bb7').is(":checked")) {
+                score = 2;
+              }
+              if ($('#kurang_makan1').is(":checked")) {
+                score1 = 0;
+              } else if ($('#kurang_makan2').is(":checked")) {
+                score1 = 1;
+              }
+              sum = Number(score) + Number(score1);
+              // $('#score').val(sum);
+              if (sum >= 2) {
+                $('#score').html('<span class="text-danger"><strong>Pasien berisiko malnutrisi, konsul ke Ahli Gizi</strong></span>');
+              }
+
+            }
+
+            function sumScore1() {
+              if ($('#kurus1').is(":checked")) {
+                score = 0;
+              } else if ($('#kurus2').is(":checked")) {
+                score = 1;
+              }
+              if ($('#turun_bb1').is(":checked")) {
+                score1 = 0;
+              } else if ($('#turun_bb2').is(":checked")) {
+                score1 = 1;
+              }
+              if ($('#diare1').is(":checked")) {
+                score2 = 0;
+              } else if ($('#diare2').is(":checked")) {
+                score2 = 1;
+              }
+              if ($('#makan_kurang1').is(":checked")) {
+                score3 = 0;
+              } else if ($('#makan_kurang2').is(":checked")) {
+                score3 = 1;
+              }
+              if ($('#malnutrisi1').is(":checked")) {
+                score4 = 0;
+              } else if ($('#malnutrisi2').is(":checked")) {
+                score4 = 2;
+              }
+              sum = Number(score) + Number(score1) + Number(score2) + Number(score3) + Number(score4);
+              // $('#score').val(sum);
+              if (sum >= 2) {
+                $('#score1').html('<span class="text-danger"><strong>Pasien berisiko malnutrisi, konsul ke Ahli Gizi</strong></span>');
+              }
+
+            }
+
+            function tampilkanPertanyaan2() {
+              var sutalRadio = document.getElementById('sutal1');
+              var sebanRadio = document.getElementById('seban1');
+              var pertanyaan6 = document.getElementById('pertanyaan6');
+
+              if (sebanRadio.checked) {
+                pertanyaan6.classList.remove('hidden');
+              }
+            }
+
+            function simpan() {
+              id_pelayanan = $('#inPel').val();
+              id_history = $('#inHis').val();
+              no_rm = $('#inNoRM').val();
+              nama = $('#inNama').val();
+              tgl_lahir = $('#inTglLahir').val();
+              jk = $('input[name="inJk"]:checked').val();
+              tgl_masuk = $('#inTglMasuk').val();
+              cara_bayar = $('#inCaraBayar').val();
+              pRujuk = $('input[name="pRujuk"]:checked').val();
+              nama_staff = $('#nama_staff').val();
+              keluhan_utama = $('textarea[name="keluhan_utama"]').val();
+              alat_bantu = $('input[name="alat_bantu"]:checked').val() ?? "";
+              risiko_jatuh = $('input[name="risiko_jatuh"]:checked').val() ?? "";
+
+              var selected = $('input[name="cara_datang"]:checked').val();
+              var cara_datang = "";
+
+              if (selected === "Rujukan") {
+                var asal = $('#asal_rujuk').val().trim();
+                cara_datang = asal !== "" ? "Rujukan : " + asal : "Rujukan";
+              } else {
+                cara_datang = selected;
+              }
+
+              var kasus = [];
+              $('input[name="kasus"]').each(function() {
+                if ($(this).is(":checked")) {
+                  kasus.push($(this).val());
+                }
+              });
+
+              var kasus = "";
+              var selected = $('input[name="kasus"]:checked').val();
+
+              // Jika Trauma
+              if (selected === "Trauma") {
+                var ket = $('#keterangan_trauma').val().trim();
+                kasus = ket !== "" ? "Trauma: " + ket : "Trauma";
+              } else {
+                kasus = selected;
+              }
+
+              // Default
+              var status_hamil = "";
+              var hamil_g = "";
+              var hamil_p = "";
+              var hamil_a = "";
+              var hamil_minggu = "";
+
+              // Jika kasus kebidanan dicentang
+              if ($('#kasus_kebidanan').is(':checked')) {
+
+                status_hamil = $('input[name="status_hamil"]:checked').val();
+
+                if (status_hamil === "Hamil") {
+                  hamil_g = $('#hamil_g').val();
+                  hamil_p = $('#hamil_p').val();
+                  hamil_a = $('#hamil_a').val();
+                  hamil_minggu = $('#hamil_minggu').val();
+                }
+              }
+
+              gcs = $('#gcs').val();
+              e = $('#e').val();
+              m = $('#m').val();
+              v = $('#v').val();
+
+              if (pRujuk == "Ya") {
+                asal_rujuk = $('#inAsalRujuk').val();
+              } else {
+                asal_rujuk = '-';
+              }
+
+              // gcs = $('#gcs').val();
+              tekanan_darah = $('input[name="tekanan_darah"]').val();
+              id = $('input[name="inId"]').val();
+              suhu = $('input[name="suhu"]').val();
+              frequensi_nadi = $('input[name="frequensi_nadi"]').val();
+              spo2 = $('input[name="spo2"]').val();
+              frequensi_nafas = $('input[name="frequensi_nafas"]').val();
+
+              var kebutuhan_khusus = [];
+              $('input[name="kebutuhan_khusus"]').each(function() {
+                if ($(this).is(":checked")) {
+                  kebutuhan_khusus.push($(this).val());
+                }
+              });
+              kebutuhan_khusus = kebutuhan_khusus.toString();
+
+              var airway = $('input[name="airway[]"]:checked')
+                .map(function() {
+                  return this.value;
+                })
+                .get();
+              var breathing = $('input[name="breathing[]"]:checked')
+                .map(function() {
+                  return this.value;
+                })
+                .get();
+              var cyrculation = $('input[name="cyrculation[]"]:checked')
+                .map(function() {
+                  return this.value;
+                })
+                .get();
+              var disability = $('input[name="disability[]"]:checked')
+                .map(function() {
+                  return this.value;
+                })
+                .get();
+              // airway = $('input[name="airway[]"]:checked').val();
+              // breathing = $('input[name="breathing"]:checked').val();
+              // cyrculation = $('input[name="cyrculation"]:checked').val();
+              // disability = $('input[name="disability"]:checked').val();
+              // kategori = $('input[name="kategori_triase"]:checked').val();
+              var kategori = [];
+              $('input[name="kategori_triase"]').each(function() {
+                if ($(this).is(":checked")) {
+                  kategori.push($(this).val());
+                }
+              });
+              kategori = kategori.toString();
+
+              skor_nyeri = $('#slide').val();
+              if (skor_nyeri >= 0 && skor_nyeri < 1) {
+                skala_nyeri = 'Tidak Nyeri';
+              } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
+                skala_nyeri = 'Ringan';
+              } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
+                skala_nyeri = ' Sedang';
+              } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
+                skala_nyeri = 'Sedang';
+              } else if (skor_nyeri >= 7 && skor_nyeri < 9) {
+                skala_nyeri = 'Berat';
+              } else if (skor_nyeri >= 9 && skor_nyeri <= 10) {
+                skala_nyeri = 'Sangat Berat';
+              }
+
+              verif = $("input[name='verifikasi_dokter']:checked").val();
+              tgl_verif = $('#tgl_verif').val();
+              nama_dokter = $('#nama_dokter').val();
+
+              id_pel = "<?php echo urlencode(base64_encode($id_pelayanan)); ?>";
+              id_his = "<?php echo urlencode(base64_encode($id_history)); ?>";
+
+              dataString =
+                'id=' + id +
+                '&no_rm=' + no_rm +
+                '&nama=' + nama +
+                '&tgl_lahir=' + tgl_lahir +
+                '&id_pelayanan=' + id_pelayanan +
+                '&id_history=' + id_history +
+                '&jk=' + jk +
+                '&tgl_masuk=' + tgl_masuk +
+                '&gcs=' + gcs +
+                '&e=' + e +
+                '&m=' + m +
+                '&v=' + v +
+                '&cara_bayar=' + cara_bayar +
+                '&pRujuk=' + pRujuk +
+                '&asal_rujuk=' + asal_rujuk +
+                '&keluhan_utama=' + keluhan_utama +
+                '&tekanan_darah=' + tekanan_darah +
+                '&suhu=' + suhu +
+                '&frequensi_nadi=' + frequensi_nadi +
+                '&spo2=' + spo2 +
+                '&frequensi_nafas=' + frequensi_nafas +
+                '&airway=' + airway +
+                '&breathing=' + breathing +
+                '&cyrculation=' + cyrculation +
+                '&disability=' + disability +
+                '&cara_datang=' + cara_datang +
+                '&alat_bantu=' + alat_bantu +
+                '&kasus=' + kasus +
+                '&status_hamil=' + status_hamil +
+                '&skor_nyeri=' + skor_nyeri +
+                '&hamil_g=' + hamil_g +
+                '&hamil_p=' + hamil_p +
+                '&hamil_a=' + hamil_a +
+                '&hamil_minggu=' + hamil_minggu +
+                '&kategori=' + kategori +
+                '&nama_staff=' + nama_staff +
+                '&skala_nyeri=' + skala_nyeri +
+                '&verif=' + verif +
+                '&nama_dokter=' + nama_dokter +
+                '&tgl_verif=' + tgl_verif +
+                '&risiko_jatuh=' + risiko_jatuh;
+
+              $.ajax({
+                url: "<?php echo base_url() ?>Erm_ases_triase_ugd/insert_asses_triase_ugd",
+                method: "POST",
+                dataType: 'json',
+                data: dataString,
+                success: function(data) {
+                  if (data.status == "success") {
+                    window.location.href = "<?php echo base_url('Erm_igd/form/') ?>" + id_pel + '/' + id_his;
+                  } else if (data.error) {
+                    if (pRujuk == "" || pRujuk == null) {
+                      $('#pRujuk_error').html("*wajib diisi");
+                    }
+                    if (data.gcs != '') {
+                      $('#gcs_error').html(data.gcs);
+                    } else {
+                      $('#gcs_error').html('');
+                    }
+                    if (data.tekanan_darah != '') {
+                      $('#td_error').html(data.tekanan_darah);
+                    } else {
+                      $('#td_error').html('');
+                    }
+                    if (data.suhu != '') {
+                      $('#suhu_error').html(data.suhu);
+                    } else {
+                      $('#suhu_error').html('');
+                    }
+                    if (data.spo2 != '') {
+                      $('#nadi_error').html(data.spo2);
+                    } else {
+                      $('#nadi_error').html('');
+                    }
+                    if (data.frequensi_nadi != '') {
+                      $('#spo2_error').html(data.frequensi_nadi);
+                    } else {
+                      $('#spo2_error').html('');
+                    }
+                    if (data.frequensi_nafas != '') {
+                      $('#nafas_error').html(data.frequensi_nafas);
+                    } else {
+                      $('#nafas_error').html('');
+                    }
+                    if (data.cara_datang != '') {
+                      $('#caraDatang_error').html(data.cara_datang);
+                    } else {
+                      $('#caraDatang_error').html('');
+                    }
+                    if (data.alat_bantu != '') {
+                      $('#alatBantu_error').html(data.alat_bantu);
+                    } else {
+                      $('#alatBantu_error').html('');
+                    }
+                    if (data.kasus != '') {
+                      $('#kasus_error').html(data.kasus);
+                    } else {
+                      $('#kasus_error').html('');
+                    }
+                    if (data.keluhan_utama != '') {
+                      $('#td_error').html(data.keluhan_utama);
+                    } else {
+                      $('#td_error').html('');
+                    }
+                    if (data.keluhan_utama != '') {
+                      $('#td_error').html(data.keluhan_utama);
+                    } else {
+                      $('#td_error').html('');
+                    }
+                    if (data.risiko_jatuh != '') {
+                      $('#risiko_jatuh_error').html(data.risiko_jatuh);
+                    } else {
+                      $('#risiko_jatuh_error').html('');
+                    }
+                    if (data.nama_staff != '') {
+                      $('#staff_error').html(data.nama_staff);
+                    } else {
+                      $('#staff_error').html('');
+                    }
+                    if (data.skala_nyeri != '') {
+                      $('#skala_nyeri_error').html(data.skala_nyeri);
+                    } else {
+                      $('#skala_nyeri_error').html('');
+                    }
+                  } else {
+                    swal({
+                      title: "Gagal!",
+                      type: "warning",
+                      text: data.status,
+                    });
+                  }
+                }
+
+              });
+              return false;
+            }
+
+            function cetak() {
+              id = $('#inPel').val();
+              window.open("<?php echo base_url('Erm_ases_triase_ugd/print_triase/') ?>" + id);
+            }
+          </script>
           <script>
-            // Fungsi untuk menampilkan bagian Resutasi
-            function tampilkanResutasi() {
-              sembunyikanSemua();
-              document.getElementById("resutasi").style.display = "block";
-            }
+            // Ambil elemen input
+            var inputE = document.getElementById('e');
+            var inputM = document.getElementById('m');
+            var inputV = document.getElementById('v');
+            var inputGCS = document.getElementById('gcs');
 
-            // Fungsi untuk menampilkan bagian Emergency
-            function tampilkanEmergency() {
-              sembunyikanSemua();
-              document.getElementById("emergency").style.display = "block";
-            }
+            // Tambahkan event listener untuk menghitung nilai GCS
+            inputE.addEventListener('input', calculateGCS);
+            inputM.addEventListener('input', calculateGCS);
+            inputV.addEventListener('input', calculateGCS);
 
-            // Fungsi untuk menampilkan bagian Urgent
-            function tampilkanUrgent() {
-              sembunyikanSemua();
-              document.getElementById("urgent").style.display = "block";
-            }
+            // Fungsi untuk menghitung nilai GCS
+            function calculateGCS() {
+              // Ambil nilai dari input E, M, dan V
+              var eValue = parseInt(inputE.value) || 0;
+              var mValue = parseInt(inputM.value) || 0;
+              var vValue = parseInt(inputV.value) || 0;
 
-            // Fungsi untuk menampilkan bagian Tidak Darurat
-            function tampilkanTidakDarurat() {
-              sembunyikanSemua();
-              document.getElementById("tidak_darurat").style.display = "block";
-            }
+              // Hitung nilai GCS
+              var gcsValue = eValue + mValue + vValue;
 
-            // Fungsi untuk menyembunyikan semua bagian
-            function sembunyikanSemua() {
-              document.getElementById("resutasi").style.display = "none";
-              document.getElementById("emergency").style.display = "none";
-              document.getElementById("urgent").style.display = "none";
-              document.getElementById("tidak_darurat").style.display = "none";
+              // Tampilkan nilai GCS pada input GCS
+              inputGCS.value = gcsValue;
             }
           </script>
 
-          <div class="col-md-6">
-            <a class="btn btn-default btn-anim  btn-sm" onclick="javascript:history.go(-1)" style="margin-right: 20px; margin-left: 30px;"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></a>
-            <button type="submit" class="btn btn-success mb-4" onclick="simpan()">Simpan</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="<?= base_url(); ?>assets/dist/js/slider.js"></script>
-<link rel="stylesheet" href="<?= base_url(); ?>assets/dist/css/range-slide.css">
-<script type="text/javascript">
-  
-      // $(document).ready(function() {
-      //   var no_rm = "<?php echo $no_rm; ?>";
+          <style>
+            .triase-table {
+              width: 100%;
+              border-collapse: collapse;
+              table-layout: fixed;
+            }
 
-      //   $.ajax({
-      //     url: "<?php echo base_url('Erm_ases_triase_ugd/get_ass_per'); ?>",
-      //     method: "POST",
-      //     dataType: "json",
-      //     data: { id: no_rm },
-      // success: function(data) {
-      //   $('input[name="keluhan_utama"]').val(data.keluhan);
-      //   console.log(data.tekanan_darah)
-      //   if (data.status_dt === 'found') {
-      //     $('#tekanan_darah').val(data.tekanan_darah);
-      //     $('#suhu').val(data.suhu);
-      //     $('#frequensi_nadi').val(data.frequensi_nadi);
-      //     $('#frequensi_nafas').val(data.frequensi_nafas);
-      //     $('#tinggi_badan').val(data.tinggi_badan);
-      //     $('#berat_badan').val(data.berat_badan);
-      //     $('#spo2').val(data.spo2);
-      //   } else {
-      //     $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2').text('-');
-      //   }
-      $(document).ready(function() {
-    id_history = $('#inHis').val();
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ases_triase_ugd/get_ass_per",
-      method: "POST",
-      dataType: 'json',
-      data: {
-        id: id_history
-      },
-      success: function(data) {
-        $('input[name="keluhan_utama"]').val(data.keluhan);
-        if (data.status_dt == 'found') {
-          $('#tekanan_darah').val(data.tekanan_darah);
-          $('#frequensi_nadi').val(data.frequensi_nadi);
-          $('#frequensi_nafas').val(data.frequensi_nafas);
-          $('#suhu').val(data.suhu);
-          $('#tinggi_badan').val(data.tinggi_badan);
-          $('#berat_badan').val(data.berat_badan);
-          $('#spo2').val(data.spo2);
-        }else {
-          $('#tekanan_darah, #suhu, #frequensi_nadi, #frequensi_nafas, #tinggi_badan, #berat_badan, #spo2').text('-');
-        }
-      }
-    });
-  });
-</script>
+            .triase-table th,
+            .triase-table td {
+              border: 1px solid #ddd;
+              padding: 10px;
+              vertical-align: top;
+              text-align: left;
+            }
 
-<!-- <script type="text/javascript">
-  $(document).ready(function() {
-    no_rm = $('#inNoRM').val();
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ases_triase_igd/get_ass_per_igd",
-      method: "POST",
-      dataType: 'json',
-      data: {
-        id: no_rm
-      },
-      success: function(data) {
-        if (data.status_dt == 'found') {
-          $('#riwayat_sakit_dulu').val(data.riwayat).attr('disabled', true);
-        }
-      }
+            .triase-table th {
+              background-color: #f5f5f5;
+              font-weight: bold;
+              text-align: center;
+            }
 
-    });
-  });
-  $(document).ready(function() {
-    id_pelayanan = $('#inPel').val();
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ases_triase_igd/get_ass_per_igd",
-      method: "POST",
-      dataType: 'json',
-      data: {
-        id: id_pelayanan
-      },
-      success: function(data) {
-        if (data.status_dt == 'found') {
-          $('#tekanan_darah').val(data.tekanan_darah);
-          $('#frequensi_nadi').val(data.frequensi_nadi);
-          $('#frequensi_nafas').val(data.frequensi_nafas);
-          $('#suhu').val(data.suhu);
-          $('#skala_nyeri').val(data.skala_nyeri);
-          $('#gcs').val(data.gcs);
-          $('#kondisi_umum').val(data.kondisi_umum);
-          $('#berat_badan').val(data.berat_badan);
-          $('#tinggi_badan').val(data.tinggi_badan);
-          // $('#kebutuhan_khusus').val(data.kebutuhan_khusus);
-          // $('#asesment_triase').val(data.asesment_triase);
-        }
-      }
+            /* Ini untuk sel kategori di paling kiri (AIR WAY, BREATHING, dll.) */
+            .triase-table .category-cell {
+              background-color: #f9f9f9;
+              font-weight: bold;
+              width: 15%;
+              color: #333;
+              /* <-- 1. TAMBAHKAN INI (Warna teks hitam) */
+            }
 
-    });
-  });
-  $(document).ready(function(e) {
-    id_pelayanan = $('#inPel').val();
-    id_history = $('#inHis').val();
-    reload_data_diagnosa(id_pelayanan, id_history);
-    reload_data_diagnosa_id_pel(id_history);
-    reload_data_diagnosa1_id_pel1(id_history);
-    reload_data_penunjang(id_pelayanan);
-  });
-</script> -->
+            /* Perbaikan nama class: 
+       Ubah .radio-item menjadi .check-item agar sesuai dengan HTML Anda 
+    */
+            .check-item {
+              display: block;
+              margin-bottom: 8px;
+            }
 
-<script type="text/javascript">
-  function tampilStatus(val) {
-    if (val >= 0 && val < 1) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
-    } else if (val >= 1 && val < 3) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
-    } else if (val >= 3 && val < 5) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-    } else if (val >= 5 && val < 7) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang1.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-    } else if (val >= 7 && val < 9) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Berat</span>");
-    } else if (val >= 9 && val <= 10) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
-    }
-  }
-  $(function() {
-    $("#frek_bab1").click(function() {
-      if ($(this).is(":checked")) {
-        $("#frek_bab").hide();
-      } else {
-        $("#frek_bab").show();
-      }
-    });
-    $("#kondisi_umum6").click(function() {
-      if ($(this).is(":checked")) {
-        $("#kondisi_umum").show();
-      } else {
-        $("#kondisi_umum").hide();
-      }
-    });
-    $("#info_dpjp1").click(function() {
-      if ($(this).is(":checked")) {
-        $("#info_dpjp").hide();
-      }
-    });
-    $("#info_dpjp2").click(function() {
-      if ($(this).is(":checked")) {
-        $("#info_dpjp").show();
-      }
-    });
-    $("#wajib_ibadah3").click(function() {
-      if ($(this).is(":checked")) {
-        $("#wajib_ibadah").show();
-      }
-    });
-    $("#wajib_ibadah2").click(function() {
-      if ($(this).is(":checked")) {
-        $("#wajib_ibadah").hide();
-      }
-    });
-    $("#wajib_ibadah1").click(function() {
-      if ($(this).is(":checked")) {
-        $("#wajib_ibadah").hide();
-      }
-    });
-    $("#faktor_nyeri5").click(function() {
-      if ($(this).is(":checked")) {
-        $("#faktor_nyeri").show();
-      } else {
-        $("#faktor_nyeri").hide();
-      }
-    });
-    $("#durasi3").click(function() {
-      if ($(this).is(":checked")) {
-        $("#durasi").show();
-      } else {
-        $("#durasi").hide();
-      }
-    });
-    $("#durasi2").click(function() {
-      if ($(this).is(":checked")) {
-        $("#durasi").hide();
-      }
-    });
-    $("#durasi1").click(function() {
-      if ($(this).is(":checked")) {
-        $("#durasi").hide();
-      }
-    });
-    $("#faktor_peringan4").click(function() {
-      if ($(this).is(":checked")) {
-        $("#faktor_peringan").show();
-      } else {
-        $("#faktor_peringan").hide();
-      }
-    });
-    $("#efek_nyeri6").click(function() {
-      if ($(this).is(":checked")) {
-        $("#efek_nyeri").show();
-      } else {
-        $("#efek_nyeri").hide();
-      }
-    });
-    $("#pRujuk2").click(function() {
-      if ($(this).is(":checked")) {
-        $(".inAsalRujuk").show();
-      } else {
-        $(".inAsalRujuk").hide();
-      }
-    });
-    $("#pRujuk1").click(function() {
-      if ($(this).is(":checked")) {
-        $(".inAsalRujuk").hide();
-      } else {
-        $(".inAsalRujuk").hide();
-      }
-    });
-  });
-  $(document).ready(function() {
-    var birth = new Date('<?= $tgl_lahir ?>');
-    var check = new Date();
+            /* Perbaikan selector: 
+       Ubah input[type="radio"] menjadi input[type="checkbox"] 
+    */
+            .check-item input[type="checkbox"] {
+              vertical-align: middle;
+              margin-right: 5px;
+            }
 
-    var milliDay = 1000 * 60 * 60 * 24; // a day in milliseconds;
+            .check-item label {
+              vertical-align: middle;
+            }
 
+            /* CSS BARU UNTUK FOOTER KATEGORI */
+            .triase-table tfoot td {
+              font-weight: bold;
+              vertical-align: middle;
+              padding: 8px;
+            }
 
-    var ageInDays = (check - birth) / milliDay;
+            /* Sel "KATEGORI" di paling kiri */
+            .triase-table tfoot .category-cell {
+              text-align: left;
+              background-color: #f9f9f9;
+              font-weight: bold;
+              color: #333;
+              /* <-- 2. TAMBAHKAN INI (Warna teks hitam) */
+            }
 
-    var years = Math.floor(ageInDays / 365);
-    if (years > 18) {
-      $("#gizi_dewasa").show();
-      $("#gizi_anak").hide();
-    } else {
-      $("#gizi_anak").show();
-      $("#gizi_dewasa").hide();
-      $('input[name="tekanan_darah"]').val(0);
-    }
-    // alert(years);
+            /* Kotak label berwarna */
+            .kategori-box {
+              display: inline-block;
+              padding: 10px 15px;
+              color: white;
+              border-radius: 4px;
+              font-size: 12px;
+              text-align: center;
+              line-height: 1.4;
+              font-weight: bold;
+            }
 
-    var agama = '<?= $agama; ?>';
-    if (agama == 'ISLAM') {
-      $("#spirit").show();
-    } else {
-      $("#spirit").hide();
-    }
+            /* Warna-warna dari gambar */
+            .cat-merah {
+              background-color: #d9534f;
+              color: white;
+            }
 
-  });
+            .cat-kuning {
+              background-color: #f0ad4e;
+              color: #333;
+            }
 
-  function sumScore() {
-    if ($('#penurunan_bb1').is(":checked")) {
-      score = 0;
-    } else if ($('#penurunan_bb2').is(":checked")) {
-      score = 2;
-    } else if ($('#penurunan_bb3').is(":checked")) {
-      score = 1;
-    } else if ($('#penurunan_bb4').is(":checked")) {
-      score = 2;
-    } else if ($('#penurunan_bb5').is(":checked")) {
-      score = 3;
-    } else if ($('#penurunan_bb6').is(":checked")) {
-      score = 4;
-    } else if ($('#penurunan_bb7').is(":checked")) {
-      score = 2;
-    }
-    if ($('#kurang_makan1').is(":checked")) {
-      score1 = 0;
-    } else if ($('#kurang_makan2').is(":checked")) {
-      score1 = 1;
-    }
-    sum = Number(score) + Number(score1);
-    // $('#score').val(sum);
-    if (sum >= 2) {
-      $('#score').html('<span class="text-danger"><strong>Pasien berisiko malnutrisi, konsul ke Ahli Gizi</strong></span>');
-    }
+            .cat-hijau {
+              background-color: #5cb85c;
+              color: white;
+            }
 
-  }
+            .cat-hitam {
+              background-color: #333;
+              color: white;
+            }
 
-  function sumScore1() {
-    if ($('#kurus1').is(":checked")) {
-      score = 0;
-    } else if ($('#kurus2').is(":checked")) {
-      score = 1;
-    }
-    if ($('#turun_bb1').is(":checked")) {
-      score1 = 0;
-    } else if ($('#turun_bb2').is(":checked")) {
-      score1 = 1;
-    }
-    if ($('#diare1').is(":checked")) {
-      score2 = 0;
-    } else if ($('#diare2').is(":checked")) {
-      score2 = 1;
-    }
-    if ($('#makan_kurang1').is(":checked")) {
-      score3 = 0;
-    } else if ($('#makan_kurang2').is(":checked")) {
-      score3 = 1;
-    }
-    if ($('#malnutrisi1').is(":checked")) {
-      score4 = 0;
-    } else if ($('#malnutrisi2').is(":checked")) {
-      score4 = 2;
-    }
-    sum = Number(score) + Number(score1) + Number(score2) + Number(score3) + Number(score4);
-    // $('#score').val(sum);
-    if (sum >= 2) {
-      $('#score1').html('<span class="text-danger"><strong>Pasien berisiko malnutrisi, konsul ke Ahli Gizi</strong></span>');
-    }
+            /* Mengatur posisi checkbox kategori */
+            .triase-table tfoot .check-item {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
 
-  }
-
-  function tampilkanPertanyaan2() {
-    var sutalRadio = document.getElementById('sutal1');
-    var sebanRadio = document.getElementById('seban1');
-    var pertanyaan6 = document.getElementById('pertanyaan6');
-
-    if (sebanRadio.checked) {
-      pertanyaan6.classList.remove('hidden');
-    }
-  }
-
-  function simpan() {
-    id_pelayanan = $('#inPel').val();
-    id_history = $('#inHis').val();
-    no_rm = $('#inNoRM').val();
-    nama = $('#inNama').val();
-    tgl_lahir = $('#inTglLahir').val();
-    jk = $('input[name="inJk"]:checked').val();
-    tgl_masuk = $('#inTglMasuk').val();
-    cara_bayar = $('#inCaraBayar').val();
-    pRujuk = $('input[name="pRujuk"]:checked').val();
-    keluhan_utama = $('input[name="keluhan_utama"]').val();
-
-    if (pRujuk == "Ya") {
-      asal_rujuk = $('#inAsalRujuk').val();
-    } else {
-      asal_rujuk = '-';
-    }
-
-    gcs = $('#gcs').val();
-    tekanan_darah = $('input[name="tekanan_darah"]').val();
-    suhu = $('input[name="suhu"]').val();
-    frequensi_nadi = $('input[name="frequensi_nadi"]').val();
-    spo2 = $('input[name="spo2"]').val();
-    berat_badan = $('input[name="berat_badan"]').val();
-    frequensi_nafas = $('input[name="frequensi_nafas"]').val();
-    tinggi_badan = $('input[name="tinggi_badan"]').val();
-
-    var kebutuhan_khusus = [];
-    $('input[name="kebutuhan_khusus"]').each(function() {
-      if ($(this).is(":checked")) {
-        kebutuhan_khusus.push($(this).val());
-      }
-    });
-    kebutuhan_khusus = kebutuhan_khusus.toString();
-
-    mata = $('input[name="mata"]:checked').val();
-    verbal = $('input[name="verbal"]:checked').val();
-    motorik = $('input[name="motorik"]:checked').val();
-    pemeriksaan = $('input[name="pemeriksaan"]:checked').val();
-    resutasi = $('input[name="resutasi"]:checked').val();
-    breathing = $('input[name="breathing"]:checked').val();
-    cyrculation = $('input[name="cyrculation"]:checked').val();
-    disability = $('input[name="disability"]:checked').val();
-    exposure = $('input[name="exposure"]:checked').val();
-    emergency = $('input[name="emergency"]:checked').val();
-    urgent = $('input[name="urgent"]:checked').val();
-    tidak_darurat = $('input[name="tidak_darurat"]:checked').val();
-    skor_nyeri = $('#slide').val();
-    if (skor_nyeri >= 0 && skor_nyeri < 1) {
-      skala_nyeri = 'Tidak Nyeri';
-    } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
-      skala_nyeri = 'Ringan';
-    } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
-      skala_nyeri = ' Sedang';
-    } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
-      skala_nyeri = 'Sedang';
-    } else if (skor_nyeri >= 7 && skor_nyeri < 9) {
-      skala_nyeri = 'Berat';
-    } else if (skor_nyeri >= 9 && skor_nyeri <= 10) {
-      skala_nyeri = 'Sangat Berat';
-    }
-
-
-    id_pel = "<?php echo urlencode(base64_encode($id_pelayanan)); ?>";
-    id_his = "<?php echo urlencode(base64_encode($id_history)); ?>";
-
-    dataString = 'no_rm=' + no_rm +
-      '&nama=' + nama +
-      '&tgl_lahir=' + tgl_lahir +
-      '&id_pelayanan=' + id_pelayanan +
-      '&id_history=' + id_history +
-      '&jk=' + jk +
-      '&tgl_masuk=' + tgl_masuk +
-      '&gcs=' + gcs +
-      '&cara_bayar=' + cara_bayar +
-      '&pRujuk=' + pRujuk +
-      '&asal_rujuk=' + asal_rujuk +
-      '&keluhan_utama=' + keluhan_utama +
-      '&tekanan_darah=' + tekanan_darah +
-      '&suhu=' + suhu +
-      '&frequensi_nadi=' + frequensi_nadi +
-      '&berat_badan=' + berat_badan +
-      '&spo2=' + spo2 +
-      '&frequensi_nafas=' + frequensi_nafas +
-      '&tinggi_badan=' + tinggi_badan +
-      '&kebutuhan_khusus=' + kebutuhan_khusus +
-      '&mata=' + mata +
-      '&verbal=' + verbal +
-      '&motorik=' + motorik +
-      '&pemeriksaan=' + pemeriksaan +
-      '&resutasi=' + resutasi +
-      '&breathing=' + breathing +
-      '&cyrculation=' + cyrculation +
-      '&disability=' + disability +
-      '&exposure=' + exposure +
-      '&emergency=' + emergency +
-      '&urgent=' + urgent +
-      '&tidak_darurat=' + tidak_darurat +
-      '&skala_nyeri=' + skala_nyeri +
-      '&skor_nyeri=' + skor_nyeri;
-
-    $.ajax({
-      url: "<?php echo base_url() ?>Erm_ases_triase_ugd/insert_asses_triase_ugd",
-      method: "POST",
-      dataType: 'json',
-      data: dataString,
-      success: function(data) {
-        if (data.status == "success") {
-          window.location.href = "<?php echo base_url('Erm_igd/form/') ?>" + id_pel + '/' + id_his;
-        } else if (data.error) {
-          if (pRujuk == "" || pRujuk == null) {
-            $('#pRujuk_error').html("*wajib diisi");
-          }
-          if (data.gcs != '') {
-            $('#gcs_error').html(data.gcs);
-          } else {
-            $('#gcs_error').html('');
-          }
-          if (data.tekanan_darah != '') {
-            $('#td_error').html(data.tekanan_darah);
-          } else {
-            $('#td_error').html('');
-          }
-          if (data.suhu != '') {
-            $('#suhu_error').html(data.suhu);
-          } else {
-            $('#suhu_error').html('');
-          }
-          if (data.spo2 != '') {
-            $('#nadi_error').html(data.spo2);
-          } else {
-            $('#nadi_error').html('');
-          }
-          if (data.frequensi_nadi != '') {
-            $('#spo2_error').html(data.frequensi_nadi);
-          } else {
-            $('#spo2_error').html('');
-          }
-          if (data.berat_badan != '') {
-            $('#berat_badan_error').html(data.berat_badan);
-          } else {
-            $('#berat_badan_error').html('');
-          }
-          if (data.frequensi_nafas != '') {
-            $('#nafas_error').html(data.frequensi_nafas);
-          } else {
-            $('#nafas_error').html('');
-          }
-          if (data.tinggi_badan != '') {
-            $('#tinggi_badan_error').html(data.tinggi_badan);
-          } else {
-            $('#tinggi_badan_error').html('');
-          }
-          if (data.kebutuhan_khusus != '') {
-            $('#kebutuhan_khusus_error').html(data.kebutuhan_khusus);
-          } else {
-            $('#kebutuhan_khusus_error').html('');
-          }
-
-        } else {
-          swal({
-            title: "Gagal!",
-            type: "warning",
-            text: data.status,
-            confirmButtonColor: "#3cb878",
-          });
-        }
-      }
-
-    });
-    return false;
-  }
-</script>
+            .triase-table tfoot .check-item input[type="checkbox"] {
+              margin-right: 10px;
+              width: 20px;
+              height: 20px;
+            }
+          </style>

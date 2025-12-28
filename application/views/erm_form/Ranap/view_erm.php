@@ -131,7 +131,27 @@
                         <h6 class="panel-title txt-dark">RIWAYAT MEDIS</h6>
                     </div> -->
                     <button class="btn btn-success col-md-12" style="margin: 3px" onclick="erm()">RIWAYAT ERM</button>
+
                     <div class="clearfix"></div>
+                </div>
+
+                <div class="panel-body task-panel">
+
+                    <div class="list-group mb-0" id="slide1"></div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="panel card-view">
+            <div class="panel-wrapper">
+                <div class="panel-heading">
+                    <!-- <div class="pull-left">
+                        <h6 class="panel-title txt-dark">RIWAYAT MEDIS</h6>
+                    </div> -->
+
+                    <a class="btn btn-success col-md-12 " style="margin: 3px" href="<?php echo base_url('erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) .  '/' . urlencode(base64_encode($id_histori)) . "/" ."ICU"; ?>">ERM ICU</a>
                 </div>
 
                 <div class="panel-body task-panel">
@@ -155,99 +175,286 @@
                             <div class="row lds-dual-ring overlay" id="loader">
                                 <div class="col-lg-12">
                                     <div class="button-list mt-25">
-                                        <div id="penunjang" style="margin-bottom: 50px; display: block;">
+                                        <?php
+                                            if ($icu_only) {
+                                                // No Menu Penunjan
+                                            }else {
+                                                $ButtonsPenunjang = "
+                                                    <div id='penunjang' style='margin-bottom: 50px; display: block;'>
 
+                                                        <h5 class='txt-dark capitalize-font'>
+                                                            <i class='fa fa-medkit mr-10'></i>PENUNJANG
+                                                        </h5>
+                                                        <hr width='100%'>
 
-                                            <h5 class="txt-dark capitalize-font"><i class="fa fa-medkit mr-10"></i>PENUNJANG</h5>
-                                            <hr width="100%">
+                                                        <button class='btn btn-success col-md-5' onclick='pindah_kamar(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Pindah Kamar
+                                                        </button>
 
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5'  onclick='pindah_kamar(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Pindah Kamar
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_radiologi(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Radiologi
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_labor(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Labor
-                                            </button>";
-                                            ?>
-                                            <?php
-                                            $db_kamar = $this->db->get_where('history_pelayanan_ranap', ['id_history' => $id_histori])->row();
-                                            //  if($db_kamar->tgl_keluar == NULL){
-                                            echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_obat(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Obat
-                                            </button>";
-                                            //  }
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='tindakan_apelkes(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Tindakan Biaya
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='obat_ruang(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Obat Ruang
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='show_visite(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Visite Dokter
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='tindakan_fisio(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Tindakan Fisio
-                                            </button>";
-                                            ?>
+                                                        <button class='btn btn-success col-md-5' onclick='edit_radiologi(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Radiologi
+                                                        </button>
 
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_paket(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Paket Cendrawasih
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_transportasi(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Transportasi & Jenazah
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_kia(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Tindakan KIA
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_lain(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Penunjang Lainnya
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='edit_makan(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Makan
-                                            </button>";
-                                            ?>
-                                            <?php echo
-                                            "<button class='btn btn-success col-md-5'  onclick='listDuaTindakan(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            Dua Tindakan
-                                            </button>";
-                                            ?>
-                                            <!-- </?php echo
-                                            "<button class='btn btn-success col-md-5' onclick='listDuaTindakan(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
-                                            2 Tindakan OK
-                                            </button>";
-                                            ?> -->
-                                            <div class="clearfix"></div>
+                                                        <button class='btn btn-success col-md-5' onclick='edit_labor(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Labor
+                                                        </button>
 
-                                        </div>
-                                        <div style="display: block;">
-                                            <h5 class="txt-dark capitalize-font"><i class="fa fa-file mr-10"></i>ERM</h5>
-                                            <hr width="100%">
-                                            <!-- </?php if($id_histori_igd != ""){?>
+                                                        <button class='btn btn-success col-md-5' onclick='edit_obat(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Obat
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='tindakan_apelkes(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Tindakan Biaya
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='obat_ruang(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Obat Ruang
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='show_visite(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Visite Dokter
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='tindakan_fisio(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Tindakan Fisio
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='edit_paket(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Paket Cendrawasih
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='edit_transportasi(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Transportasi & Jenazah
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='edit_kia(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Tindakan KIA
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='edit_lain(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Penunjang Lainnya
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='edit_makan(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Makan
+                                                        </button>
+
+                                                        <button class='btn btn-success col-md-5' onclick='listDuaTindakan(\"$id_pelayanan\", \"$id_histori\")'>
+                                                            Dua Tindakan
+                                                        </button>
+
+                                                        <div class='clearfix'></div>
+                                                    </div>
+                                                ";
+
+                                                echo $ButtonsPenunjang;
+                                            }
+                                        ?>
+
+                                        <!-- Button Penunjang Yang tidak terpakai -->
+                                        <!-- </?php echo
+                                        "<button class='btn btn-success col-md-5' onclick='listDuaTindakan(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
+                                        2 Tindakan OK
+                                        </button>";
+                                        ?> -->
+
+                                        <?php
+                                            if ($icu_only) {
+                                                $buttonListIcuOnly = "
+                                                <div style='display: block;'>
+                                                    <h5 class='txt-dark capitalize-font'><i class='fa fa-file mr-10'></i>ERM ICU </h5>
+                                                    <hr width='100%'>
+
+                                                    <a class='btn btn-success col-md-5 pengisian_awal_mcu' href='" . base_url('PengisianAwalMCU/awalMCU/') . "$id_pelayanan/$id_histori'>
+                                                        Pengisian Awal ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 status_respirasi' href='" . base_url('StatusRespirasi/form/') . "$id_pelayanan/$id_histori'>
+                                                        Status Respirasi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 formulir_medikasi_pasien_icu' href='" . base_url('Medikasi_pasien_icu/formMedikasi/') . "$id_pelayanan/$id_histori'>
+                                                        Medikasi Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pemantauan_pasien_icu' href='" . base_url('Erm_pemantauan_pasien_icu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pemantauan Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pemakaian_cairan_icu' href='" . base_url('Form_pemakaian_cairan_icu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pemakaian Cairan Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 catatan_keperawatan' href='" . base_url('catatan_keperawatan/form/') . "$id_pelayanan/$id_histori'>
+                                                        Catatan Keperawatan
+                                                    </a>
+                                                    <a class='btn btn-success col-md-5 status_kesadaran_icu' href='" . base_url('Erm_status_kesadaran_icu/formstatus/') . "$id_pelayanan/$id_histori'>
+                                                        Status Kesadaran Pasien ICU
+                                                    </a>
+                                                    <a class='btn btn-success col-md-5 resiko_lingkungan' href='" . base_url('ResikoLingkungan/tampil/') . "$id_pelayanan'>
+                                                        Resiko Lingkungan
+                                                    </a>
+                                                      <a class='btn btn-success col-md-5 implementasi_perawatan' href='" . base_url('Implementasi_Perawatan/form/') . "$no_rm/$id_pelayanan/$id_histori'>
+                                                        Implementasi Perawatan
+                                                    </a>
+                                                    <a class='btn btn-success col-md-5 PengamatanDokterHasilMcu' href='" . base_url('PengamatanDokterHasilMcu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pengamatan Dokter Hasil ICU
+                                                    </a>
+                                                </div>
+                                                ";
+
+                                                echo $buttonListIcuOnly;
+                                            }else {
+                                                $buttonListFULLERM = "
+                                                <div style='display: block;'>
+                                                    <h5 class='txt-dark capitalize-font'><i class='fa fa-file mr-10'></i>ERM</h5>
+                                                    <hr width='100%'>
+
+                                                    <a class='btn btn-success col-md-5 asses_per_ranap' href='" . base_url('Erm_ranap_asesmen_perawat/formasesmenranap/') . "$id_pelayanan/$id_histori'>
+                                                        Assesmen Awal Perawat
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 rencana_keperawatan' href='" . base_url('Erm_ranap_rencana_keperawatan/formrencanakeperawatan/') . "$id_pelayanan/$id_histori'>
+                                                        Rencana Keperawatan
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 anamnesis_fisik' href='" . base_url('Erm_ranap_asesmen_dokter/formasesmen/') . "$id_pelayanan/$id_histori'>
+                                                        Asesmen Awal Medis Rawat Inap
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 catatan_perkembangan' href='" . base_url('Erm_ranap_catatan_perkembangan/formcppt/') . "$id_pelayanan/$id_histori'>
+                                                        Catatan Perkembangan Pasien Terintegrasi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 form_edu_dokter' href='" . base_url('Catatan_pemakaian_cairan_infus/formcpci/') . "$id_pelayanan/$id_histori'>
+                                                        Catatan Pemakaian Cairan Infus
+                                                    </a>
+
+                                                    <a style='background-color:". $warna_btn_pemtVital. "; color: ". $wrn_fnt_pemtVital .";'class='font-weight-bold border-0 btn btn-success col-md-5 pemantauan_vital' href='" . base_url('Erm_ranap_pemantauan_vital/formvital/') . "$id_pelayanan/$id_histori'>
+                                                        Pemantauan Tanda Vital Dewasa
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 intra' href='" . base_url('Erm_transfer_intra_rs/form/') . "$id_pelayanan/$id_histori'>
+                                                        Transfer Internal RS
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 imd_eksklusif' href='" . base_url('Erm_ranap_imd/formimdasi/') . "$id_pelayanan/$id_histori'>
+                                                        IMD/ASI Ekslusif
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 asesmen_ulang_dewasa' href='" . base_url('Erm_ranap_ulang_jatuh_dewasa/formulangjatuhdewasa/') . "$id_pelayanan/$id_histori'>
+                                                        Asesmen Ulang Jatuh Dewasa
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 asesmen_ulang_geriatri' href='" . base_url('Erm_ranap_ulang_jatuh_geriatri/formulangjatuhgeriatri/') . "$id_pelayanan/$id_histori'>
+                                                        Asesmen Ulang Jatuh Geriatri
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 persetujuan_kedokteran' href='" . base_url('Erm_ranap_persetujuan_kedokteran/formpersetujuan/') . "$id_pelayanan/$id_histori'>
+                                                        Persetujuan Tindakan Kedokteran
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 lembar_evaluasi' href='" . base_url('Erm_ranap_evaluasi_dpjp/formevaluasidpjp/') . "$id_pelayanan/$id_histori'>
+                                                        Lembar Evaluasi DPJP
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pengobatan_sakit' href='" . base_url('Erm_ranap_pengobatan_orang_sakit/formpengobatan/') . "$id_pelayanan/$id_histori'>
+                                                        Daftar Pemberian Obat
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 surveilans' href='" . base_url('erm_survei_infeksi/form/') . "$id_pelayanan/$id_histori'>
+                                                        Surveilans Infeksi Daerah Operasi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 surveilans' href='" . base_url('Erm_surveilans_hais_rs/form/') . "$id_pelayanan/$id_histori'>
+                                                        Surveilans Hais RS
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 resume_bayi_tabung' href='" . base_url('Erm_resume_bayi_tabung/formresumebayitabung/') . "$id_pelayanan/$id_histori'>
+                                                        Resume Bayi Tabung
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 resume_pulang' href='" . base_url('Erm_resume_pulang/form_resume_pulang/') . "$id_pelayanan/$id_histori'>
+                                                        Resume Pulang
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 laporan_operasi' href='" . base_url('Erm_laporan_operasi/formlaporanoperasi/') . "$id_pelayanan/$id_histori'>
+                                                        Laporan Operasi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 ass_bayi_baru_lahir' href='" . base_url('Erm_ranap_bayi_baru_lahir/formbayibarulahir/') . "$id_pelayanan/$id_histori'>
+                                                        Assesmen Bayi Baru Lahir
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 discharge_planning' href='" . base_url('Discharge_planning/formresume/') . "$id_pelayanan/$id_histori'>
+                                                        Discharge Planning
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 assesmen_gizi' href='" . base_url('Erm_assesmen_gizi/formgizi/') . "$id_pelayanan/$id_histori'>
+                                                        Assesmen Gizi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 one_day_care' href='" . base_url('OneDayCare/decer/') . "$id_pelayanan/$id_histori'>
+                                                        One Day Care
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pengisian_awal_mcu' href='" . base_url('PengisianAwalMCU/awalMCU/') . "$id_pelayanan/$id_histori'>
+                                                        Pengisian Awal ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 status_respirasi' href='" . base_url('StatusRespirasi/form/') . "$id_pelayanan/$id_histori'>
+                                                        Status Respirasi
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 formulir_medikasi_pasien_icu' href='" . base_url('Medikasi_pasien_icu/formMedikasi/') . "$id_pelayanan/$id_histori'>
+                                                        Medikasi Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pemantauan_pasien_icu' href='" . base_url('Erm_pemantauan_pasien_icu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pemantauan Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 pemakaian_cairan_icu' href='" . base_url('Form_pemakaian_cairan_icu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pemakaian Cairan Pasien ICU
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 catatan_keperawatan' href='" . base_url('catatan_keperawatan/form/') . "$id_pelayanan/$id_histori'>
+                                                        Catatan Keperawatan
+                                                    </a>
+
+                                                    <a class='btn btn-success col-md-5 status_kesadaran_icu' href='" . base_url('Erm_status_kesadaran_icu/formstatus/') . "$id_pelayanan/$id_histori'>
+                                                        Status Kesadaran Pasien ICU
+                                                    </a>
+                                                  
+                                                    <a class='btn btn-success col-md-5 implementasi_perawatan' href='" . base_url('Implementasi_Perawatan/form/') . "$no_rm/$id_pelayanan/$id_histori'>
+                                                        Implementasi Perawatan
+                                                    </a>
+                                                   <a class='btn btn-success col-md-5 PengamatanDokterHasilMcu' href='" . base_url('PengamatanDokterHasilMcu/form/') . "$id_pelayanan/$id_histori'>
+                                                        Pengamatan Dokter Hasil ICU
+                                                    </a>
+                                                   <a class='btn btn-success col-md-5 asesmen_jatuh_anak' href='" . base_url('Erm_awal_jatuh_anak/form/') . "$id_pelayanan/$id_histori'>
+                                                        Asesmen Jatuh Anak
+                                                    </a>
+                                                   <a class='btn btn-success col-md-5 asesmen_jatuh_lansia' href='" . base_url('Erm_ranap_ulang_jatuh_lansia/formulangjatuhlansia/') . "$id_pelayanan/$id_histori'>
+                                                        Asesmen Jatuh Lansia
+                                                    </a>
+                                                   
+
+                                                     <a style='background-color: " . $warna_btn_pews . "; color: " . $wrn_fnt_pews . ";'
+                                                    class='btn btn-success col-md-5 pews_anak'
+                                                    href='" . base_url('Pews_anak/pewsAnak/') . $id_pelayanan . "/" . $id_histori . "'>
+                                                        PEWS ANAK
+                                                    </a>
+                                                </div>
+                                                ";
+
+                                                echo $buttonListFULLERM;
+                                            }
+                                        ?>
+
+                                        <!-- Button Erm Yang Tidak Terpakai -->
+
+                                        <!-- </?php if($id_histori_igd != ""){?>
                                             <a class="btn btn-success col-md-5 asses_per_igd" href="<?php echo base_url('Erm_ases_per_igd/form/') . $id_pelayanan . '/' . $id_histori_igd; ?>">
                                                 Triase & Assesmen Keperawatan   
                                             </a>
@@ -256,137 +463,37 @@
                                                Status Present
                                             </a>
                                         </?php }?> -->
-                                            <a class="btn btn-success col-md-5 asses_per_ranap" href="<?php echo base_url('Erm_ranap_asesmen_perawat/formasesmenranap/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Assesmen Awal Perawat
-                                            </a>
-                                            <!-- <a class="btn btn-success col-md-5 asses_per_ranap" onclick="cek_skrining_tbc()">
+
+                                                                                    <!-- <a class="btn btn-success col-md-5 asses_per_ranap" onclick="cek_skrining_tbc()">
                                                 Assesmen Awal Perawat
                                             </a> -->
-                                            <a class="btn btn-success col-md-5 rencana_keperawatan" href="<?php echo base_url('Erm_ranap_rencana_keperawatan/formrencanakeperawatan/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Rencana Keperawatan
-                                            </a>
-                                            <a class="btn btn-success col-md-5 anamnesis_fisik" href="<?php echo base_url('Erm_ranap_asesmen_dokter/formasesmen/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Asesmen Awal Medis Rawat Inap
-                                            </a>
-                                            <a class="btn btn-success col-md-5 catatan_perkembangan" href="<?php echo base_url('Erm_ranap_catatan_perkembangan/formcppt/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Catatan Perkembangan Pasien Terintegrasi
-                                            </a>
                                             <!-- <a class="btn btn-success col-md-5 infus_sehari" href="<?php echo base_url('Erm_ranap_infus_sehari/forminfus/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Catatan Pemakaian Cairan Infus
                                             </a> -->
-                                            <a class="btn btn-success col-md-5 form_edu_dokter" href="<?= base_url('Catatan_pemakaian_cairan_infus/formcpci/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Catatan Pemakaian Cairan Infus
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5 pemantauan_vital" href="<?php echo base_url('Erm_ranap_pemantauan_vital/formvital/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Pemantauan Tanda Vital Dewasa
-                                            </a>
-
                                             <!-- <a class="btn btn-success col-md-5 analisis_data" href="<?php echo base_url('Erm_ranap_analisis/formanalisisdata/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Analisis Data
                                             </a> -->
-                                            <a class="btn btn-success col-md-5 intra" href="<?= base_url('Erm_transfer_intra_rs/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Transfer Internal RS
-                                            </a>
                                             <!-- <a class="btn btn-success col-md-5 visite_dokter" href="<?php echo base_url('Erm_ranap_visite_dokter/formvisite/') . $id_pelayanan . '/' . $id_histori; ?>"> 
                                             Visite Dokter
                                         </a> -->
                                             <!-- <a class="btn btn-success col-md-5 bayi_gabung" href="<?php echo base_url('Erm_ranap_bayi_gabung/formbayirawatgabung/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Bayi Rawat Gabung
                                             </a> -->
-
-                                            <a class="btn btn-success col-md-5 imd_eksklusif" href="<?php echo base_url('Erm_ranap_imd/formimdasi/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                IMD/ASI Ekslusif
-                                            </a>
                                             <!-- <a class="btn btn-success col-md-5 asesmen_awal_dewasa" href="<?php echo base_url('Erm_ranap_awal_jatuh_dewasa/formawaljatuhdewasa/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Asesmen Awal Jatuh Dewasa
                                             </a> -->
-                                            <a class="btn btn-success col-md-5 asesmen_ulang_dewasa" href="<?php echo base_url('Erm_ranap_ulang_jatuh_dewasa/formulangjatuhdewasa/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Asesmen Ulang Jatuh Dewasa
-                                            </a>
                                             <!-- <a class="btn btn-success col-md-5 asesmen_awal_geriatri" href="<?php echo base_url('Erm_ranap_awal_jatuh_geriatri/formawaljatuhgeriatri/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Asesmen Awal Jatuh Geriatri
                                             </a> -->
-                                            <a class="btn btn-success col-md-5 asesmen_ulang_geriatri" href="<?php echo base_url('Erm_ranap_ulang_jatuh_geriatri/formulangjatuhgeriatri/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Asesmen Ulang Jatuh Geriatri
-                                            </a>
-                                            <a class="btn btn-success col-md-5 persetujuan_kedokteran" href="<?php echo base_url('Erm_ranap_persetujuan_kedokteran/formpersetujuan/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Persetujuan Tindakan Kedokteran
-                                            </a>
-                                            <a class="btn btn-success col-md-5 lembar_evaluasi" href="<?php echo base_url('Erm_ranap_evaluasi_dpjp/formevaluasidpjp/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Lembar Evaluasi DPJP
-                                            </a>
-
-
-                                            <a class="btn btn-success col-md-5 pengobatan_sakit" href="<?php echo base_url('Erm_ranap_pengobatan_orang_sakit/formpengobatan/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Daftar Pemberian Obat
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('erm_survei_infeksi/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Surveilans Infeksi Daerah Operasi
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_surveilans_hais_rs/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Surveilans Hais RS
-                                            </a>
 
                                             <!-- <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_ranap_resume_medis/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Medis
                                         </a> -->
 
-                                            <a class="btn btn-success col-md-5 resume_bayi_tabung" href="<?= base_url('Erm_resume_bayi_tabung/formresumebayitabung/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Resume Bayi Tabung
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5 resume_pulang" href="<?= base_url('Erm_resume_pulang/form_resume_pulang/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Resume Pulang
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5 laporan_operasi" href="<?= base_url('Erm_laporan_operasi/formlaporanoperasi/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Laporan Operasi
-                                            </a>
 
                                             <!-- <a class="btn btn-success col-md-5 resume_pasien_pulang" href="<?= base_url('Erm_resume_pasien_pulang/formresumepasienpulang/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Pasien Pulang
                                         </a> -->
-
-
-                                            <a class="btn btn-success col-md-5  ass_bayi_baru_lahir" href="<?= base_url('Erm_ranap_bayi_baru_lahir/formbayibarulahir/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Assesmen Bayi Baru Lahir
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5  discharge_planning" href="<?= base_url('Discharge_planning/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Discharge Planning
-                                            </a>
-                                            <a class="btn btn-success col-md-5  assesmen_gizi" href="<?= base_url('Erm_assesmen_gizi/formgizi/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Assesmen Gizi
-                                            </a>
-
-                                            <a class="btn btn-success col-md-5  one_day_care" href="<?= base_url('OneDayCare/decer/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                One Day Care
-                                            </a>
-                                            <a class="btn btn-success col-md-5  pengisian_awal_mcu" href="<?= base_url('PengisianAwalMCU/awalMCU/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Pengisian Awal MCU
-                                            </a>
-                                             <a class="btn btn-success col-md-5  status_respirasi" href="<?= base_url('StatusRespirasi/form/'.$id_pelayanan.'/'.$id_histori) ?>">
-                                                Status Respirasi
-                                            </a>
-                                            <a class="btn btn-success col-md-5 formulir_medikasi_pasien_icu" href="<?= base_url('Medikasi_pasien_icu/formMedikasi/'.$id_pelayanan.'/'.$id_histori) ?>">
-                                                Medikasi Pasien ICU
-                                            </a>
-                                            <a class="btn btn-success col-md-5  pemantauan_pasien_icu" href="<?= base_url('Erm_pemantauan_pasien_icu/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Pemantauan Pasien ICU 
-                                            </a>
-                                            <a class="btn btn-success col-md-5 pemakaian_cairan_icu" href="<?php echo base_url('Form_pemakaian_cairan_icu/form/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Pemakaian Cairan Pasien ICU
-                                            </a>
-                                            <a class="btn btn-success col-md-5 catatan_keperawatan" href="<?php echo base_url('catatan_keperawatan/form/') . $id_pelayanan . '/' . $id_histori; ?>">
-                                                Catatan Keperawatan
-                                            </a>
-                                            <a class="btn btn-success col-md-5  status_kesadaran_icu"
-                                                href="<?= base_url('Erm_status_kesadaran_icu/formstatus/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                                Status Kesadaran Pasien ICU
-                                            </a>
 
                                             <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
@@ -405,7 +512,10 @@
                                                     </button>
                                                 </div>
                                             </div>
-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -424,7 +534,9 @@
 <style>
     p {
         color: black;
+        
     }
+
 </style>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -537,8 +649,27 @@
                 if (data.catatan_keperawatan == "found") {
                     $('.catatan_keperawatan').removeClass('btn-success').addClass('btn-danger ');
                 }
+                if (data.resiko_lingkungan == "found") {
+                    $('.resiko_lingkungan').removeClass('btn-success').addClass('btn-danger ');
+                }   
+                if (data.implementasi_perawatan == "found") {
+                    $('.implementasi_perawatan').removeClass('btn-success').addClass('btn-danger ');
+                }   
+                if (data.PengamatanDokterHasilMcu == "found") {
+                    $('.PengamatanDokterHasilMcu').removeClass('btn-success').addClass('btn-danger ');
+                }   
+                if (data.asesmen_jatuh_anak == "found") {
+                    $('.asesmen_jatuh_anak').removeClass('btn-success').addClass('btn-danger ');
+                }   
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.asesmen_jatuh_lansia == "found") {
+                    $('.asesmen_jatuh_lansia').removeClass('btn-success').addClass('btn-danger ');
+                }
+
+                if (data.pews_anak == "found") {
+                    $('.pews_anak').removeClass('btn-success').addClass('btn-danger ');
                 }
 
                 $('#loader').removeClass('hide')

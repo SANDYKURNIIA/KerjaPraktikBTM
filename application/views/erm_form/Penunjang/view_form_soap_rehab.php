@@ -71,9 +71,22 @@
               </div>
             </div>
 
+            <!-- ini banh -->
+
+            <div style="margin-bottom: 12px;">
+            <label style="color: #000; margin-right:15px;">
+                <input type="radio" name="status_kunjungan" value="sebelum"> Sebelum
+            </label>
+
+            <label style="color: #000;">
+                <input type="radio" name="status_kunjungan" value="sesudah"> Sesudah
+            </label>
+             </div>
+              <!-- ini banh -->
+
             <div class="form-group row">
               <div class="col-md-12">
-                <label class="control-label mb-10 text-left">S<span class="help"></span></label>
+                <label class="control-label mb-10 text-left">S :<span class="help"></span></label>
                 <span id="hasil_error" class="text-danger"></span>
                 <div class="has-success">
                   <textarea class="form-control" id="inS" name="inS"></textarea>
@@ -81,7 +94,7 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <label class="control-label mb-10 text-left">O<span class="help"></span></label>
+                <label class="control-label mb-10 text-left">O :<span class="help"></span></label>
                 <span id="hasil_error" class="text-danger"></span>
                 <div class="has-success">
                   <!-- Input Field untuk Diagnosa -->
@@ -102,7 +115,7 @@
                 </div>
               </div>
               <div class="col-md-12">
-                <label class="control-label mb-10 text-left">P<span class="help"></span></label>
+                <label class="control-label mb-10 text-left">P :<span class="help"></span></label>
                 <span id="hasil_error" class="text-danger"></span>
                 <div class="has-success">
                   <textarea class="form-control" id="inP" name="inP"></textarea>
@@ -261,13 +274,26 @@
           id_pelayanan = $("#inPel").val();
           id_history = $("#inHis").val();
           tanggal = $("#inTgl").val();
+          status_kunjungan = $('input[name="status_kunjungan"]:checked').val();
           no_rm = $('#inNoRM').val();
           s = $('#inS').val();
           o = $('#inO').val();
           a = $('#inA').val();
           p = $('#inP').val();
 
-          dataString = 'tanggal=' + tanggal + '&s=' + s + '&o=' + o + '&a=' + a + '&p=' + p + '&no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history;
+          dataString = 'tanggal=' + tanggal + '&s=' + s + '&o=' + o + '&a=' + a + '&p=' + p + '&status_kunjungan=' + status_kunjungan +
+           '&no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history;
+
+           if (!status_kunjungan) {
+          swal({
+              title: "Peringatan!",
+              text: "Pilih status kunjungan (Sebelum / Sesudah)",
+              type: "warning",
+              confirmButtonColor: "#3cb878",
+          });
+          return false;
+      }
+
 
           $.ajax({
             url: "<?php echo base_url() ?>Form_soap_rehab/insert_soap",
@@ -336,6 +362,13 @@
                 $("#inO").val(data.O);
                 $("#inA").val(data.A);
                 $("#inP").val(data.P);
+
+                  if (data.status_kunjungan == "sebelum") {
+                $('input[name="status_kunjungan"][value="sebelum"]').prop("checked", true);
+            } else if (data.status_kunjungan == "sesudah") {
+                $('input[name="status_kunjungan"][value="sesudah"]').prop("checked", true);
+            }
+
               } else {
                 swal({
                   title: "Gagal!",
@@ -357,12 +390,25 @@
           id_history = $("#inHis").val();
           no_rm = $('#inNoRM').val();
           tanggal = $("#inTgl").val();
+          status_kunjungan = $('input[name="status_kunjungan"]:checked').val();
           s = $('#inS').val();
           o = $('#inO').val();
           a = $('#inA').val();
           p = $('#inP').val();
 
-          dataString = 'tanggal=' + tanggal + '&s=' + s + '&o=' + o + '&a=' + a + '&p=' + p + '&no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history + '&id=' + id;
+          dataString = 'tanggal=' + tanggal + '&s=' + s + '&o=' + o + '&a=' + a + '&p=' + p + '&status_kunjungan=' + status_kunjungan +
+          '&no_rm=' + no_rm + '&id_pelayanan=' + id_pelayanan + '&id_history=' + id_history + '&id=' + id;
+
+          if (!status_kunjungan) {
+          swal({
+              title: "Peringatan!",
+              text: "Pilih status kunjungan (Sebelum / Sesudah)",
+              type: "warning",
+              confirmButtonColor: "#3cb878",
+          });
+          return false;
+      }
+
           $.ajax({
             url: "<?php echo base_url() ?>Form_soap_rehab/edit_soap",
             method: "POST",
@@ -423,4 +469,3 @@
     window.open("<?= base_url('Form_soap_rehab/print_soap/') ?>" + id, "_blank");
   }
 </script>
-

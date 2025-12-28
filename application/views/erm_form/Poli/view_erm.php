@@ -353,7 +353,14 @@
                                     <a class="btn btn-success col-md-5 form_fisikrehab"
                                                 href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
                                                 Formulir Layanan Rehabilitasi Medik
-                                            </a>
+                                    </a>
+                                     <a class="btn btn-success col-md-5 hd_harian" href="<?php echo base_url('Pemantauan_pelaksanaan_hemodialis_harian/form/')  . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
+                                        Pemantauan Pelaksanaan Hemodialisis
+                                    </a>
+
+                                    <a class="btn btn-success col-md-5 intradialitik" href="<?= base_url('Erm_pemantauan_intradialitik/form/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>">
+                                        Pemantauan Intradialitik
+                                    </a>
                                     <?php if ($tipe == 'polimata') { ?>
                                         <a class="btn btn-success col-md-5 laporan_tin_operasi" href="<?= base_url('Erm_laporan_tin_operasi/form/') . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
                                             Laporan Tindakan Operasi
@@ -471,18 +478,17 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                 }
                 if (data.lembar_rujukan == "found") {
                     $('.lembar_rujukan').removeClass('btn-success').addClass('btn-danger ');
-                    $('.lembar_rujukan').attr('href', '<?php echo base_url('Erm_dpjp/edit_lembar_rujukan/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
                 }
                 if (data.eval == "found") {
                     $('.eval').removeClass('btn-success').addClass('btn-danger ');
                     $('.eval').attr('href', '<?php echo base_url('Erm_dpjp/edit_eval/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
                 }
-             if (data.assesmen_rehab == "found") {
+                if (data.assesmen_rehab == "found") {
                   $('.form_assesmen_rehab')
                   .removeClass('btn-success')
                   .addClass('btn-danger')
                   .attr('href', '<?php echo base_url('Assesmen_Rehab/form_edit/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
-        }
+                 }
                 if (data.penundaan == "found") {
                     $('.penundaan').removeClass('btn-success').addClass('btn-danger ');
                     $('.penundaan').attr('href', '<?php echo base_url('Erm_penundaan_pelayanan_pengobatan/edit_penundaan/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
@@ -495,7 +501,9 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.intra').removeClass('btn-success').addClass('btn-danger ');
                     $('.intra').attr('href', '<?php echo base_url('Erm_transfer_intra_rs/edit_intra/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
                 }
-                if (data.usg_kebidanan == "found") {
+
+               
+                if (data.hasil_usg_kebidanan == "found") {
                     $('.usg_kebidanan').removeClass('btn-success').addClass('btn-danger ');
                 }
                     
@@ -511,6 +519,14 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
               if (data.lembar_uji_fungsi == "found") {
                     $('.lembar_uji_fungsi').removeClass('btn-success').addClass('btn-danger ');
                     
+                }
+
+                 if (data.intradialitik == "found") {
+                    $('.intradialitik').removeClass('btn-success').addClass('btn-danger ');
+                }
+
+                if (data.hd_harian == "found") {
+                    $('.hd_harian').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.laporan_tin_operasi == "found") {
                     $('.laporan_tin_operasi').removeClass('btn-success').addClass('btn-danger ');

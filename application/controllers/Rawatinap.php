@@ -783,8 +783,12 @@ class Rawatinap extends CI_Controller
 
         $out = null;
         for ($i = 0; $i < count($page_data); $i++) {
-            $delete =
-                "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='batal_pindah(\"" . $page_data[$i]->id_riwayat . "\",\"" . $page_data[$i]->tipe . "\")' '><i class='fa fa-trash'></i></button>";
+                        //jika page_data lebih dari 1 maka tombol batal aktif
+            if (count($page_data) > 1) {
+                $batal ="<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='batal_pindah(\"" . $page_data[$i]->id_riwayat . "\",\"" . $page_data[$i]->tipe . "\")' '><i class='fa fa-undo'></i></button>";
+            }else{
+                $batal ="<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='batal_pindah(\"" . $page_data[$i]->id_riwayat . "\",\"" . $page_data[$i]->tipe . "\")' ' disabled><i class='fa fa-undo'></i></button>";
+            }
 
             $no = $i + 1;
             $kelas_ruangan = $page_data[$i]->kelas_ruangan;
@@ -793,7 +797,7 @@ class Rawatinap extends CI_Controller
             $tanggal_keluar = $page_data[$i]->tanggal_keluar;
             $status = $page_data[$i]->status;
 
-            $out[$i] = array($no, $kelas_ruangan,  $tipe, $tanggal_masuk, $tanggal_keluar, $status);
+            $out[$i] = array($no,$batal, $kelas_ruangan,  $tipe, $tanggal_masuk, $tanggal_keluar, $status);
         }
         if ($out == null) {
             echo '{"data":""}';
@@ -1039,6 +1043,95 @@ class Rawatinap extends CI_Controller
         // print_r($page_data);
         echo json_encode($out);
     }
+
+    public function batal_kamar() // Ranap
+    {
+        $this->db->trans_begin();
+
+        $id_riwayat = $this->input->post('id_riwayat');
+        $idHis = $this->input->post('idHis');
+
+        $tgl =  date("Y-m-d H:i:s");
+
+        $data = $this->session->userdata('data_auth');
+        $datatipe = $data->id_staff;
+        $id_staff = $datatipe;
+        $kamar_sekarang = $this->M_Rawatinap->get_riwayat_kamar_by_id($id_riwayat);
+        $kamar_terakhir = $this->M_Rawatinap->get_kamar_terakhir_by_id_pel($kamar_sekarang->id_pelayanan);
+
+        //update riwayat kamar
+            $page_data = array(
+                'status' => 'BATAL',
+                'staff_delete' => $id_staff,
+                'tanggal_delete' =>    $tgl,
+                'ket' => '1',
+    
+            );
+            $where = array(
+                'id_riwayat' =>    $id_riwayat
+            );
+            $this->M_Rawatinap->update_riwayat_kamar_prev($where, $page_data, 'riwayat_kamar');
+
+        if($kamar_sekarang->status == 'AKTIF'){
+            //update ruangan yang dibatalkan jadi tersedia
+            $page_data3 = array(
+                'status' => 'tersedia',
+            );
+            $where3 = array(
+                'id_ruangan' => $kamar_sekarang->id_kamar
+            );
+            $this->M_Rawatinap->update_kamar_baru($where3, $page_data3, 'ruangan');
+    
+            //update ruangan kamar terakhir jadi dipakai
+            $page_data4 = array(
+                'status' => 'dipakai',
+            );
+            $where4 = array(
+                'id_ruangan' => $kamar_terakhir->id_kamar
+            );
+            $this->M_Rawatinap->update_kamar_baru($where4, $page_data4, 'ruangan');
+    
+            //update history pelayanan ranap
+            $page_data5 = array(
+                'id_kamar' => $kamar_terakhir->id_kamar,
+            );
+            $where5 = array(
+                'id_history' =>  $idHis
+            );
+            $this->M_Rawatinap->update_history($where5, $page_data5, 'history_pelayanan_ranap');
+
+            //update riwayat kamar terakhir jadi aktif
+            $page_data = array(
+                'status' => 'AKTIF',
+                'tanggal_keluar' => null,
+    
+            );
+            $where = array(
+                'id_riwayat' =>$kamar_terakhir->id_riwayat
+            );
+            $this->M_Rawatinap->update_riwayat_kamar_now($where, $page_data, 'riwayat_kamar');
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $db_error = $this->db->error();
+
+            $this->db->trans_rollback();
+            echo json_encode([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan database',
+                'db_code' => $db_error['code'],
+                'db_msg'  => $db_error['message']
+            ]);
+            return;
+        }
+
+        $this->db->trans_commit();
+
+        $out['status'] = "success";
+        // print_r($page_data);
+        echo json_encode($out);
+    }
+    
     // public function batal_kamar() // Ranap
     // {
     //     $id_riwayat = $this->input->post('id_riwayat');

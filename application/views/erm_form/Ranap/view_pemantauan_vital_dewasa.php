@@ -22,8 +22,8 @@
     }
 
     .ews-hijau {
-        background-color: #1abc9c;
-        color: #fff;
+        background-color: #B6F500;
+        color: #000;
         font-weight: bold;
         text-align: center;
     }
@@ -621,10 +621,10 @@
                         <div style="background-color:#e67e22; padding: 20px; border-radius: 8px;">
                             Observasi ulang tiap 1 jam dan lapor PPJP/JP shift
                         </div>
-                        <div style="background-color:#1abc9c; padding: 20px; border-radius: 8px;">
+                        <div style="background-color:#B6F500; color:#000; padding: 20px; border-radius: 8px;">
                             TTV di zona hijau atau hijau total skor 0-3
                         </div>
-                        <div style="background-color:#1abc9c; padding: 20px; border-radius: 8px;">
+                        <div style="background-color:#B6F500; color:#000; padding: 20px; border-radius: 8px;">
                             Lakukan pemeriksaan ulang tiap 4-6 jam
                         </div>
                     </div>

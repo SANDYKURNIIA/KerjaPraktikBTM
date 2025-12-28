@@ -163,7 +163,7 @@
                 <div class="form-group">
                   <div class="col-md-6">
                     <label class="control-label mb-10 text-left">Proses Pembedahaan/Tindakan<span class="help"></span></label>
-                    <textarea class="form-control" name="" id="terapi" cols="30" rows="5" disabled><?= str_replace("<br>", "\n",$dok['terapi']) ?></textarea>
+                    <textarea class="form-control" name="" id="terapi" cols="30" rows="5" disabled><?= str_replace("<br>", "\n",$dok['prosedur_tindakan']) ?></textarea>
                   </div>
                 </div>
 

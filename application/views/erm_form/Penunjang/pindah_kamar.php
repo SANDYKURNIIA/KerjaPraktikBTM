@@ -83,6 +83,7 @@
                                         <thead>
                                             <tr class="bg-success">
                                                 <th>NO</th>
+                                                <th>BATAL</th>
                                                 <th>KELAS</th>
                                                 <th>KAMAR</th>
                                                 <th>TANGGAL MASUK</th>
@@ -259,6 +260,54 @@
         });
         return false;
     }
+
+    function batal_pindah(id_riwayat, nama) {
+        idHis = $("#idHis").val();
+        swal({
+            title: "Apakah kamu yakin?",
+            text: "Batal Pindah " + nama + "?" + idHis,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3cb878",
+            confirmButtonText: "Yakin",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false
+        }, function() {
+            $().ready(function() {
+                $.ajax({
+                    url: "<?php echo base_url() ?>Rawatinap/batal_kamar",
+                    method: "POST",
+                    dataType: 'json',
+                    data: {
+                        id_riwayat: id_riwayat,
+                        idHis: idHis
+                    },
+                    success: function(data) {
+                        if (data.status == "success") {
+                            swal({
+                                title: "Good Job!",
+                                type: "success",
+                                text: "Batal Pindah Kamar Berhasil",
+                                confirmButtonColor: "#3cb878",
+                            });
+                            $('#tablekamar').DataTable().ajax.reload();
+                            pindah_kamar(idPelayanan, idHis)
+                        } else {
+                            swal({
+                                title: "Gagal!",
+                                type: "warning",
+                                text: data.status,
+                                confirmButtonColor: "#3cb878",
+                            });
+                        }
+                    }
+                });
+            });
+
+        });
+        return false;
+    }
+    
     function reload_data_kamar(idPelayanan) {
         $('#tablekamar').dataTable().fnClearTable();
         $('#tablekamar').dataTable().fnDestroy();

@@ -274,6 +274,11 @@ Swal.fire({
                                             BUKU MCU
                                         </a>";
 											?>
+											<?php echo
+											"<a class='btn btn-success col-md-5' href='" . base_url('ResikoLingkungan/tampil/') . $id_pelayanan . "'>
+                                            Resiko Lingkungan Pekerjaan
+                                        </a>";
+											?>
 											<a class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
 												Surat Keterangan Sakit
 											</a>

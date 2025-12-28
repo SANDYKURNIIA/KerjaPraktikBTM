@@ -7,17 +7,12 @@ class Erm_ranap_pemantauan_vital extends CI_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
-		$this->load->model('M_IGD');
-		$this->load->model('M_Erm');
-		$this->load->model('M_Assembling');
-		$this->load->model('M_Poli');
-		$this->load->model('M_Pencarian_Pasien');
 		$this->load->model('M_Erm_ranap');
 	}
+
 	public function formvital($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
-		// $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
 		$staff = $this->session->userdata('data_auth');
 
 		$page_data['nama'] = $selectPasien->nama;
@@ -32,17 +27,16 @@ class Erm_ranap_pemantauan_vital extends CI_Controller
 		$page_data['id_pelayanan'] = $id_pelayanan;
 		$page_data['id_history'] = $id_history;
 		$page_data['agama'] = $selectPasien->agama;
-		// $page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
 
 		$this->load->view('assets/_header');
 		$page_data['page_content'] = 'erm_form/Ranap/view_pemantauan_vital_dewasa';
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function edit_vital($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
-		// $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
 		$staff = $this->session->userdata('data_auth');
 
 		$page_data['nama'] = $selectPasien->nama;
@@ -56,13 +50,13 @@ class Erm_ranap_pemantauan_vital extends CI_Controller
 		$page_data['id_pelayanan'] = $id_pelayanan;
 		$page_data['id_history'] = $id_history;
 		$page_data['agama'] = $selectPasien->agama;
-		// $page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
 
 		$this->load->view('assets/_header');
 		$page_data['page_content'] = 'erm_form/Ranap_Edit/view_pemantauan_vital_dewasa';
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function insert_pemantauan_vital()
 	{
 		$data = $this->session->userdata('data_auth');
@@ -122,7 +116,6 @@ class Erm_ranap_pemantauan_vital extends CI_Controller
 			// 	'no_rm' => $this->input->post('no_rm'),
 			// );
 			$this->M_Erm_ranap->insert($data, 'data_pemantauan_vital');
-			// $this->M_Erm->insert($data2, 'riwayat_erm_ranap');
 			$out['status'] = "success";
 		} else {
 			$out = array(
@@ -196,8 +189,6 @@ class Erm_ranap_pemantauan_vital extends CI_Controller
 	// 		// 	'id_history' => $this->input->post('id_history'),
 	// 		// 	'no_rm' => $this->input->post('no_rm'),
 	// 		// );
-	// 		$this->M_Erm->insert($data, 'data_pemantauan_vital');
-	// 		// $this->M_Erm->insert($data2, 'riwayat_erm_ranap');
 	// 		$out['status'] = "success";
 	// 	} else {
 	// 		$out = array(

@@ -131,25 +131,30 @@ class M_Apotik extends CI_Model
 
     //yohanes1
 // ambil data pasien by kode (masih perlu karena dipanggil di controller)
+// ambil data pasien by kode (masih perlu karena dipanggil di controller)
 public function getPasienByKode($kode_pasien)
 {
     return $this->db->get_where('pasien', ['kode' => $kode_pasien])->row_array();
 }
 
 // ambil data edukasi pasien berdasarkan no_rm (hanya 1 terakhir)
-public function getEdukasiByNoRM($no_rm)
+public function getEdukasiByNoRMHistory($no_rm, $id_history)
 {
-    return $this->db->order_by('tanggal_input', 'DESC')
-                    ->get_where('topik_edukasi_ugd', ['no_rm' => $no_rm])
-                    ->row_array(); // hanya 1 baris
+    return $this->db
+        ->get_where('topik_edukasi_ugd', [
+            'no_rm' => $no_rm,
+            'id_history' => $id_history
+        ])->row_array();
 }
 
 
+
 // insert atau update data edukasi (pakai no_rm)
-public function saveOrUpdateEdukasi($data)
+public function saveOrUpdateEdukasiByHistory($data)
 {
     $cek = $this->db->get_where('topik_edukasi_ugd', [
-        'no_rm' => $data['no_rm']
+        'no_rm' => $data['no_rm'],
+        'id_history' => $data['id_history']
     ])->row();
 
     if ($cek) {

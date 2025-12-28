@@ -798,6 +798,27 @@ class M_Rawatinap extends CI_Model
         return $this->db->get_where('catatan_tekanan_darah', ['id_history' => $id_history , 'id_pelayanan' => $id_pelayanan])->result();
     }
 
+    public function get_pemantauanTd_by_hisNPelNTgl($id_history, $id_pelayanan, $tgl_data = null)
+    {
+        // Default pakai tanggal hari ini jika tidak dikirim
+        if ($tgl_data === null) {
+            $tgl_data = date('Y-m-d');
+        }
+
+        // Buat rentang tanggal
+        $start = $tgl_data . ' 00:00:00';
+        $end   = $tgl_data . ' 23:59:59';
+
+        return $this->db
+            ->where('id_history', $id_history)
+            ->where('id_pelayanan', $id_pelayanan)
+            ->where('tgl_input >=', $start)
+            ->where('tgl_input <=', $end)
+            ->get('catatan_tekanan_darah')
+            ->result();
+    }
+
+
     public function get_pemantauanTd_by_id($id)
     {
         return $this->db->get_where('catatan_tekanan_darah', ['id_catatan_tekanan_darah' => $id])->result();
@@ -841,6 +862,25 @@ class M_Rawatinap extends CI_Model
             log_message('error', 'Gagal menghapus data catatan_tekanan_darah untuk id_pelayanan: '.$id_pelayanan.' dan id_history: '.$id_history);
             return false;
         }
+    }
+
+    public function get_riwayat_kamar_by_id($id_riwayat)
+    {
+        $this->db->select('*');
+        $this->db->from('riwayat_kamar'); 
+        $this->db->where('id_riwayat', $id_riwayat);
+        return $this->db->get()->row();
+    }
+
+    public function get_kamar_terakhir_by_id_pel($id_pelayanan)
+    {
+        $this->db->select('*');
+        $this->db->from('riwayat_kamar');
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->where('ket', '0');
+        $this->db->order_by('tanggal_keluar', 'DESC');
+        $this->db->limit(1);
+        return $this->db->get()->row();
     }
 
 }

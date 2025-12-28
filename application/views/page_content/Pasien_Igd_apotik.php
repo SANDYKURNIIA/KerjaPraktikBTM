@@ -18,6 +18,7 @@
                                 <th>NO</th>
                                 <th>TINDAKAN OBAT</th>
                                 <th>TOPIK EDUKASI</th>
+                                
                                 <!-- 												 <th>RACIKAN</th>  -->
                                 <th>TANGGAL PELAYANAN</th>
                                 <th>JAM REQUEST</th>

@@ -1,3 +1,4 @@
+
 <?php /* View: Form Edukasi UGD */ ?>
 
 <style>
@@ -91,7 +92,7 @@
     <div class="panel panel-default card-view">
       <div class="panel-heading">
         <div class="pull-left">
-          <h6 class="panel-title txt-dark">FORM EDUKASI UGD</h6>
+          <h6 class="panel-title txt-dark">FORM EDUKASI FARMASI</h6>
         </div>
         <div class="clearfix"></div>
       </div>
@@ -100,7 +101,8 @@
         <div class="panel-body">
           <form id="form-edukasi" autocomplete="off">
             <input type="hidden" name="no_rm" value="<?= $pasien['no_rm']; ?>">
-
+<input type="hidden" name="id_pelayanan" value="<?= $id_pelayanan ?>">
+<input type="hidden" name="id_history" value="<?= $id_history ?>">
             <!-- =================== HEADER =================== -->
             <div class="row">
               <div class="col-md-6">
@@ -207,14 +209,20 @@
             <!-- =================== ACTIONS =================== -->
             <div class="row" style="margin-top:12px">
               <div class="col-md-12 text-center">
-                <a class="btn btn-ghost btn-sm btn-anim" href="<?= base_url('Apotik/pasien_igd'); ?>" style="margin-right:12px">
-                  <span class="btn-text">KEMBALI</span><span class="icon"><i class="fa fa-arrow-left"></i></span>
-                </a>
+          <a class="btn btn-ghost btn-sm btn-anim" href="javascript:history.back()" style="margin-right:12px">
+    <span class="btn-text">KEMBALI</span>
+    <span class="icon"><i class="fa fa-arrow-left"></i></span>
+</a>
+
                 <button type="submit" class="btn btn-success btn-sm btn-anim">
                   <span class="btn-text">SIMPAN</span><span class="icon"><i class="fa fa-save"></i></span>
                 </button>
-                <a class="btn btn-primary btn-sm btn-anim" target="_blank" href="<?= base_url('Apotik/print_edukasi_ugd/'.$pasien['no_rm']); ?>">
-                  <span class="btn-text">PRINT</span><span class="icon"><i class="fa fa-print"></i></span>
+               <a class="btn btn-primary btn-sm btn-anim" target="_blank"
+   href="<?= base_url('Apotik/print_edukasi_ugd/'.$pasien['no_rm'].'/'.$id_history); ?>">
+    <span class="btn-text">PRINT</span>
+    <span class="icon"><i class="fa fa-print"></i></span>
+</a>
+
                 </a>
               </div>
             </div>
@@ -229,25 +237,32 @@
 <!-- 🔹 AJAX Script -->
 <script>
 $(document).ready(function(){
-    let no_rm = $("input[name=no_rm]").val();
 
-    // Load data
-    $.getJSON("<?= base_url('Apotik/get_riwayat_edukasi/'); ?>" + no_rm, function(e){
-        if(e){
-            for(let i=1;i<=4;i++){
-                if(e["materi_penyampaian"+i]){
-                    let materiArr = e["materi_penyampaian"+i].split(", ");
-                    materiArr.forEach(m => {
-                        $("input[name='materi_penyampaian"+i+"[]'][value='"+m+"']").prop("checked", true);
-                    });
+    let no_rm = $("input[name=no_rm]").val();
+    let id_history = $("input[name=id_history]").val();
+
+    // === LOAD DATA EDUKASI (PAKAI no_rm + id_history) ===
+    $.getJSON(
+        "<?= base_url('Apotik/get_riwayat_edukasi/'); ?>" + no_rm + "/" + id_history,
+        function(e){
+            if(e){
+                for(let i=1;i<=4;i++){
+                    if(e["materi_penyampaian"+i]){
+                        let materiArr = e["materi_penyampaian"+i].split(", ");
+                        materiArr.forEach(m => {
+                            $("input[name='materi_penyampaian"+i+"[]'][value='"+m+"']")
+                              .prop("checked", true);
+                        });
+                    }
+                    $("input[name=durasi"+i+"]").val(e["durasi"+i]);
+                    $("input[name=pasien_keluarga"+i+"]").val(e["pasien_keluarga"+i]);
+                    $("input[name=edukator"+i+"]").val(e["edukator"+i]);
+                    $("input[name='evaluasi"+i+"'][value='"+e["evaluasi"+i]+"']")
+                      .prop("checked", true);
                 }
-                $("input[name=durasi"+i+"]").val(e["durasi"+i]);
-                $("input[name=pasien_keluarga"+i+"]").val(e["pasien_keluarga"+i]);
-                $("input[name=edukator"+i+"]").val(e["edukator"+i]);
-                $("input[name='evaluasi"+i+"'][value='"+e["evaluasi"+i]+"']").prop("checked", true);
             }
         }
-    });
+    );
 
     // Validasi angka
     $("input[name^='durasi']").on("input", function(){
@@ -263,31 +278,33 @@ $(document).ready(function(){
             data: $(this).serialize(),
             dataType: "json",
             success: function(res){
-              if(res.status === "success"){
-                  swal({
-                      title: "Good Job!",
-                      text: res.message,
-                      type: "success",
-                      confirmButtonColor: "#3cb878"
-                  });
-              } else {
-                  swal({
-                      title: "Gagal!",
-                      text: res.message,
-                      type: "warning",
-                      confirmButtonColor: "#e74c3c"
-                  });
-              }
-          },
-          error: function(){
-              swal({
-                  title: "Error!",
-                  text: "Gagal menyimpan data.",
-                  type: "error",
-                  confirmButtonColor: "#e74c3c"
-              });
-          }
+                if(res.status === "success"){
+                    swal({
+                        title: "Good Job!",
+                        text: res.message,
+                        type: "success",
+                        confirmButtonColor: "#3cb878"
+                    });
+                } else {
+                    swal({
+                        title: "Gagal!",
+                        text: res.message,
+                        type: "warning",
+                        confirmButtonColor: "#e74c3c"
+                    });
+                }
+            },
+            error: function(){
+                swal({
+                    title: "Error!",
+                    text: "Gagal menyimpan data.",
+                    type: "error",
+                    confirmButtonColor: "#e74c3c"
+                });
+            }
         });
     });
+
 });
 </script>
+

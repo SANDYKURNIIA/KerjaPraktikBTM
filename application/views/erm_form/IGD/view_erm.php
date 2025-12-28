@@ -200,6 +200,9 @@
 
                                         <h5 class="txt-dark capitalize-font"><i class="fa fa-file mr-10"></i>ERM</h5>
                                         <hr width="100%">
+                                        <a class="btn btn-success col-md-5 asses_triase_ugd" href="<?php echo base_url('Erm_ases_triase_ugd/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                            Assesmen Triase UGD
+                                        </a>
                                         <a class="btn btn-success col-md-5 asses_per_igd" href="<?php echo base_url('Erm_ases_per_igd/form/') . $id_pelayanan . '/' . $id_histori; ?>">
                                             Assesmen Perawat/Bidan IGD
                                         </a>
@@ -207,14 +210,13 @@
                                         <a class="btn btn-success col-md-5 asses_dokter_igd" href="<?php echo base_url('erm_ases_dok_igd/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Assesmen Dokter IGD
                                         </a>
-                                        <a class="btn btn-success col-md-5 asses_triase_ugd" href="<?php echo base_url('Erm_ases_triase_ugd/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
-                                            Assesmen Triase UGD
-                                        </a>
 
                                         <a class="btn btn-success col-md-5 resume" href="<?= base_url('erm_igd/input_resume_medis_raj/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Medis Rajal
                                         </a>
-
+                                        <!-- <a class="btn btn-success col-md-5 resume" href="<?= base_url('Erm_ranap_catatan_perkembangan/formcppt/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                            Form S B A R
+                                        </a> -->
                                         <a class="btn btn-success col-md-5 penunjang" href="<?= base_url('Erm_penunjang_diagnostik/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Hasil Baca Penunjang Diagnostik
                                         </a>
@@ -251,9 +253,9 @@
                                             Lembar Rujukan Antar DPJP
                                         </a>
 
-                                        <a class="btn btn-success col-md-5 pengkhu" href="<?= base_url('Erm_igd_peng_khu_upmar_2017/form/') .   $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 pengkhu" href="<?= base_url('Erm_igd_peng_khu_upmar_2017/form/') .   $id_pelayanan . '/' . $id_histori; ?>">
                                             Pengawasan Khusus Update Maret 2017
-                                        </a>
+                                        </a> -->
 
                                         <a class="btn btn-success col-md-5 pentindok" href="<?= base_url('Erm_penolakan_tindakan_kedokteran/form/') .   $id_pelayanan . '/' . $id_histori;  ?>">
                                             Penolakan Tindakan Kedokteran
@@ -288,8 +290,13 @@
                                         <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_surveilans_hais_rs/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Surveilans Hais RS
                                         </a>
+                                       <a class="<?= isset($btn_transfer_class) ? $btn_transfer_class : 'btn btn-success col-md-5 erm'; ?>"
+   href="<?= base_url('TransferPasien/form/' . $id_pelayanan . '/' . $id_histori); ?>">
+    Transfer Pasien
+</a>
+
                                         <a class="btn btn-success col-md-5 surveilans"
-                                            href="<?php echo base_url('Erm_edukasi_igd/edukasi_pendaftaran_igd/' . urlencode($no_rm));?>">
+                                            href="<?php echo base_url('TransferPasien/form/')  .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Form Edukasi Pasien
                                         </a>
                                         <a   class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
@@ -299,9 +306,9 @@
                                     </div>
                                 </div>
                                 <div class="row pull-right">
-                                    <button class="btn btn-default btn-anim" onclick="window.location.href='javascript:history.go(-1)';" type="submit" style="margin-right: 40px; margin-top:40px;padding: 10px 24px;" id="simpanKunjungan"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></button>
+                                    <button class="btn btn-default btn-anim" onclick="window.location.href='javascript:history.go(-1)';" type="submit" style="margin-right: 40px; margin-top:40px;padding: 10px 24px;" id="back"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></button>
                                     <?php if ($simpan == 0) { ?>
-                                        <button class="btn btn-primary btn-anim" onclick="simpan()" type="submit" style="margin-right: 100px; margin-top:40px" id="simpanKunjungan"><i class="icon-rocket"></i><span class="btn-text">SIMPAN ERM</span></button>
+                                        <button class="btn btn-primary btn-anim"  type="button" style="margin-right: 100px; margin-top:40px" id="simpanKunjungan"><i class="icon-rocket"></i><span class="btn-text">SIMPAN ERM</span></button>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -364,10 +371,85 @@
                     $('.asses_per_igd').removeClass('btn-success').addClass('btn-danger ');
                     $('.asses_per_igd').attr('href', '<?php echo base_url('erm_ases_per_igd/edit_asses_perawat_igd/') . $id_pelayanan . '/' . $id_histori; ?>');
                 }
+
+                $('.asses_dokter_igd').on('click', function(e) {
+                    let belum = [];
+
+                    if (data.asses_triase_ugd !== "found") {
+                        belum.push("Assesmen Triase IGD");
+                    }
+
+                    if (data.asses_per_igd !== "found") {
+                        belum.push("Assesmen Perawat IGD");
+                    }
+
+                    if (belum.length > 0) {
+                        e.preventDefault();
+                        swal({
+                            title: "Peringatan!",
+                            text: "Harap mengisi:\n- " + belum.join("\n- "),
+                            type: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        });
+                    }
+                });
+
+
+                $('.asses_per_igd').on('click', function(e) {
+                    let belum = [];
+
+                    if (data.asses_triase_ugd !== "found") {
+                        belum.push("Assesmen Triase IGD");
+                    }
+
+                    if (belum.length > 0) {
+                        e.preventDefault();
+                        swal({
+                            title: "Peringatan!",
+                            text: "Harap mengisi:\n- " + belum.join("\n- "),
+                            type: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        });
+                    }
+                });
+
+
+                $('#simpanKunjungan').on('click', function(e) {
+                    let belum = [];
+
+                    if (data.asses_triase_ugd !== "found") {
+                        belum.push("Assesmen Triase IGD");
+                    }
+
+                    if (data.asses_per_igd !== "found") {
+                        belum.push("Assesmen Perawat IGD");
+                    }
+
+                    if (data.asses_dokter_igd !== "found") {
+                        belum.push("Assesmen Dokter IGD");
+                    }
+
+                    if (belum.length > 0) {
+                        e.preventDefault();
+                        swal({
+                            title: "Peringatan!",
+                            text: "Harap mengisi terlebih dahulu:\n- " + belum.join("\n- "),
+                            type: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        });
+                    } else {
+                        simpan();
+                    }
+                });
+
                 if (data.asses_dokter_igd == "found") {
                     $('.asses_dokter_igd').removeClass('btn-success').addClass('btn-danger ');
                     $('.asses_dokter_igd').attr('href', '<?php echo base_url('erm_ases_dok_igd/edit_asses_dok_igd/') . $id_pelayanan . '/' . $id_histori; ?>');
                 }
+
                 if (data.asses_triase_ugd == "found") {
                     $('.asses_triase_ugd').removeClass('btn-success').addClass('btn-danger ');
                     $('.asses_triase_ugd').attr('href', '<?php echo base_url('Erm_ases_triase_ugd/edit_asses_triase_ugd/') . $id_pelayanan . '/' . $id_histori; ?>');
@@ -413,6 +495,9 @@
                 }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.transfer_pasien == "found") {
+                    $('.transfer_pasien').removeClass('btn-success').addClass('btn-danger ');
                 }
 
                 $('#loader').removeClass('hide')

@@ -2,4 +2,4 @@
 /db/db/data.sql
 /docker-init-db/db_sibatik.sql
 /vendor
-    
+/db_backup.sql    

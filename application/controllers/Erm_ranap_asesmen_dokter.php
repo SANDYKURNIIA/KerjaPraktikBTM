@@ -14,6 +14,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 		$this->load->model('M_Pencarian_Pasien');
 		$this->load->model('M_Erm_ranap');
 	}
+
 	public function formasesmen($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
@@ -38,6 +39,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+    
 	public function formedit($id_pelayanan, $id_history)
 	{
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
@@ -65,6 +67,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function insert_asses_dokter_ranap()
     {
         $data = $this->session->userdata('data_auth');
@@ -231,7 +234,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
         echo json_encode($out);
     }
 
- public function update_asses_dokter_ranap()
+    public function update_asses_dokter_ranap()
     {
         $data = $this->session->userdata('data_auth');
         $tgl = date("Y-m-d H:i:s");

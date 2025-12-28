@@ -1,135 +1,243 @@
+<?php
+$isTA = false;
+$isTV = false;
+
+if (!empty($usg_kebidanan->jenis_pemeriksaan)) {
+  $jenis = strtolower($usg_kebidanan->jenis_pemeriksaan);
+  $isTA = ($jenis == 'ta' || $jenis == 'transabdominal');
+  $isTV = ($jenis == 'tv' || $jenis == 'transvaginal');
+}
+
+if (!empty($usg_kebidanan->tanggal_pemeriksaan)) {
+  $tanggalPemeriksaan = date('d F Y', strtotime($usg_kebidanan->tanggal_pemeriksaan));
+} else {
+  $tanggalPemeriksaan = '-';
+}
+
+$tanggalCetak = date('d F Y');
+?>
+
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="utf-8">
-  <title>Hasil USG Kebidanan</title>
+  <meta charset="UTF-8">
+  <title>Hasil USG Kebidanan - <?= htmlspecialchars($usg_kebidanan->nama_pasien ?? 'Pasien', ENT_QUOTES, 'UTF-8') ?>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta name="robots" content="noindex, nofollow">
+
   <style>
-    :root { --blue:#1a4d8f; --border:#4b5563; }
-    *{box-sizing:border-box}
-    body{font-family:Arial,Helvetica,sans-serif;font-size:11px;margin:0;padding:16px;color:#000;background:#fff}
-    .topbar{border-top:4px solid var(--blue);border-bottom:4px solid var(--blue);padding:8px 0 10px;margin:0 0 16px}
-    .brand{display:flex;align-items:center;gap:12px;justify-content:center}
-    .brand img{width:120px;display:block;} /* Ukuran logo diperbesar di sini */
-    .brand h1{margin:0;font-size:18px;color:var(--blue)}
-    .brand p{margin:2px 0;font-size:11px}
-    h2{margin:8px 0 12px;text-align:center;color:var(--blue)}
-    table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}
-    table,th,td{border:1px solid var(--border)}
-    th{background:#e6f0ff;text-align:left}
-    th,td{padding:6px;vertical-align:top}
-    .section-title{font-weight:bold;margin:12px 0 6px;color:var(--blue);text-decoration:underline}
-    .box{border:1px solid var(--border);min-height:54px;padding:8px}
-    .muted{color:#6b7280}
-    .right{text-align:right}
-    @page{size:A4 portrait;margin:10mm}
-    @media print{ body{font-size:11px} .no-print{display:none!important} }
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+
+    body {
+      font-family: "Times New Roman", serif;
+      font-size: 13px;
+      color: #000;
+      background: #fff;
+      margin: 0;
+    }
+
+    .kop-rs td {
+      vertical-align: top;
+      line-height: 1.3;
+    }
+
+    .kop-rs img {
+      width: 110px;
+    }
+
+    .line-double {
+      border-top: 3px double #000;
+      margin-top: 3px;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 15px;
+      margin: 10px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+    }
+
+    th,
+    td {
+      vertical-align: top;
+      padding: 5px;
+      font-size: 13px;
+    }
+
+    .identitas th {
+      text-align: left;
+      width: 28%;
+    }
+
+    .identitas td {
+      width: 72%;
+    }
+
+    .box-line {
+      border: 1px solid #000;
+      border-radius: 4px;
+      padding: 6px 8px;
+      min-height: 40px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .section-title {
+      font-style: italic;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .ttd {
+      margin-top: 40px;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    .ttd strong {
+      text-decoration: underline;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        margin: 10mm;
+      }
+    }
+
+    .actions {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      font-weight: 600;
+      margin: 3px;
+    }
+
+    .btn-print {
+      background-color: #1b8f55;
+    }
   </style>
 </head>
-<body onload="window.print()">
-<?php
-  // ---------- Helper kecil ----------
-  $e = function($v){ return htmlentities((string)$v, ENT_QUOTES, 'UTF-8'); };
 
-  // ---------- Ambil data dari controller ----------
-  // $row diteruskan sebagai object
-  $no_rm   = isset($row->no_rm) ? $row->no_rm : '-';
-  $nama    = isset($row->nama_pasien) ? $row->nama_pasien : '-';
-  $bpjs    = isset($row->no_bpjs) ? $row->no_bpjs : '-';
-  $usia    = isset($row->usia) ? $row->usia : '-';
-  $tgl     = isset($row->tanggal_pemeriksaan) ? substr($row->tanggal_pemeriksaan, 0, 10) : '-';
-  $dokter  = isset($row->dokter_pemeriksa) ? $row->dokter_pemeriksa : '-';
-  $jenis   = strtolower((string)($row->jenis_pemeriksaan ?? ''));
-  $isTA    = (stripos($jenis, 'transabdominal') !== false);
-  $isTV    = (stripos($jenis, 'transvaginal')   !== false);
-  $indikasi= $row->indikasi_pemeriksaan ?? '';
-  $hasil   = $row->hasil_pemeriksaan    ?? '';
-  $kes     = $row->kesimpulan           ?? '';
+<body>
 
-  // ---------- Sumber logo ----------
-  // 1) jika controller mengirim $logo_url, pakai itu
-  // 2) kalau tidak, coba cari di beberapa lokasi (prioritas resources/img/logo_ihc.png)
-  if (!empty($logo_url)) {
-      $logo_src = $logo_url;
-  } else {
-      $candidates = [
-          'resources/img/logo_ihc.png',     // lokasi yang kamu pakai sekarang
-          'assets/dist/img/ihc.png',
-          'assets/img/ihc.png',
-          'public/assets/dist/img/ihc.png',
-      ];
-      $logo_src = '';
-      foreach ($candidates as $rel) {
-          if (defined('FCPATH') && is_file(FCPATH.$rel)) { $logo_src = base_url($rel); break; }
-      }
-      // Jika dicek dari CLI/unit test tanpa FCPATH, tetap tampilkan path utama
-      if ($logo_src === '') $logo_src = base_url('resources/img/logo_ihc.png');
-  }
-?>
-  <!-- HEADER -->
-  <div class="topbar">
-    <div class="brand">
-      <img src="<?= $e($logo_src) ?>" alt="Logo IHC"> <!-- Ukuran logo diperbesar di sini -->
-      <div style="text-align:center">
-        <h1>RUMAH SAKIT BAKTI TIMAH</h1>
-        <p>Jl. Bukit Baru No.1, Taman Bunga, Kec. Gerunggang, Kabupaten Bangka, Kep. Bangka Belitung 33131</p>
-        <p>Telp: (0717) 433026</p>
-      </div>
-    </div>
+  <div class="actions no-print">
+    <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
   </div>
 
-  <h2>HASIL USG KEBIDANAN</h2>
-
-  <!-- IDENTITAS -->
-  <div class="section-title">Identitas Pasien</div>
-  <table>
+  <table class="kop-rs">
     <tr>
-      <th style="width:18%">No. RM</th><td style="width:32%"><?= $e($no_rm) ?></td>
-      <th style="width:18%">Nama</th><td style="width:32%"><?= $e($nama) ?></td>
-    </tr>
-    <tr>
-      <th>No. BPJS</th><td><?= $e($bpjs) ?></td>
-      <th>Usia</th><td><?= $e($usia) ?></td>
-    </tr>
-    <tr>
-      <th>Tanggal Pemeriksaan</th><td><?= $e($tgl) ?></td>
-      <th>Dokter Pemeriksa</th><td><?= $e($dokter) ?></td>
+      <td width="120px">
+        <img src="<?= base_url() ?>assets/dist/img/rsbt_ihc.png" alt="Logo RSBT">
+      </td>
+      <td>
+        <strong style="font-size:16px;">RS. BAKTI TIMAH</strong><br>
+        <span style="font-size:13px;">
+          Jl. Jendral Sudirman No.3 Sungailiat<br>
+          Kepulauan Bangka Belitung, Indonesia<br>
+          Telp. 0717 95837, Fax. 0717 93335
+        </span>
+      </td>
     </tr>
   </table>
 
-  <!-- JENIS PEMERIKSAAN -->
+  <div class="line-double"></div>
+  <h3>HASIL USG KEBIDANAN</h3>
+
+  <!-- ==== IDENTITAS PASIEN ==== -->
+  <table class="identitas">
+    <tr>
+      <th>Nomor Rekam Medis</th>
+      <td>: <?= htmlspecialchars($usg_kebidanan->no_rm ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+      <th>Nama</th>
+      <td>: <?= htmlspecialchars($usg_kebidanan->nama_pasien ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+      <th>No. BPJS</th>
+      <td>: <?= htmlspecialchars($usg_kebidanan->no_bpjs ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+      <th>Usia</th>
+      <td>: <?= htmlspecialchars($usg_kebidanan->usia ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+      <th>Tanggal Pemeriksaan</th>
+      <td>: <?= $tanggalPemeriksaan ?></td>
+    </tr>
+    <tr>
+      <th>Dokter Pemeriksa</th>
+      <td>: <?= htmlspecialchars($usg_kebidanan->dokter_pemeriksa ?? '-', ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+  </table>
+
+  <!-- ==== JENIS ==== -->
   <div class="section-title">Jenis Pemeriksaan</div>
-  <div class="box">
-    <div><?= $isTA ? '✓' : '—' ?> Transabdominal</div>
-    <div><?= $isTV ? '✓' : '—' ?> Transvaginal</div>
+  <div class="box-line">
+    <?= ($isTA ? '✓' : '—') ?> Transabdominal<br>
+    <?= ($isTV ? '✓' : '—') ?> Transvaginal
     <?php if (!$isTA && !$isTV): ?>
-      <div class="muted">-</div>
+      <br>-
     <?php endif; ?>
   </div>
 
-  <!-- INDIKASI -->
   <div class="section-title">Indikasi Pemeriksaan</div>
-  <div class="box">
-    <?= $indikasi !== '' ? nl2br($e($indikasi)) : '<span class="muted">-</span>' ?>
+  <div class="box-line">
+    <?= htmlspecialchars($usg_kebidanan->indikasi_pemeriksaan ?? "-", ENT_QUOTES, 'UTF-8') ?>
   </div>
 
-  <!-- HASIL -->
   <div class="section-title">Hasil Pemeriksaan</div>
-  <div class="box">
-    <?= $hasil !== '' ? nl2br($e($hasil)) : '<span class="muted">-</span>' ?>
+  <div class="box-line">
+    <?= htmlspecialchars($usg_kebidanan->hasil_pemeriksaan ?? "-", ENT_QUOTES, 'UTF-8') ?>
   </div>
 
-  <!-- KESIMPULAN -->
   <div class="section-title">Kesimpulan</div>
-  <div class="box">
-    <?= $kes !== '' ? nl2br($e($kes)) : '<span class="muted">-</span>' ?>
+  <div class="box-line">
+    <?= htmlspecialchars($usg_kebidanan->kesimpulan ?? "-", ENT_QUOTES, 'UTF-8') ?>
   </div>
 
-  <!-- TTD -->
-  <div style="margin-top:28px" class="right">
-    Pangkalpinang, <?= date('d/m/Y') ?><br><br><br>
-    <strong><?= $e($dokter) ?></strong><br>
-    <span class="muted">Dokter Pemeriksa</span>
+  <div class="ttd">
+    <p>Sungailiat, <?= htmlspecialchars($tanggalCetak, ENT_QUOTES, 'UTF-8') ?></p>
+
+    <?php if ($usg_kebidanan->foto): ?>
+      <img src="<?= base_url() . 'assets/ttd/' . $usg_kebidanan->foto ?>" width="100px;" height="100px;">
+    <?php else: ?>
+      <div width="100px;" height="120px;">-</div>
+    <?php endif ?>
+
+    <p>
+      <strong><?= htmlspecialchars($usg_kebidanan->dokter_dpjp ?? '....................................', ENT_QUOTES, 'UTF-8') ?></strong><br>
+    </p>
   </div>
+
+  <script>
+    window.print();
+  </script>
 
 </body>
+
 </html>

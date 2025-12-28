@@ -28,12 +28,73 @@ class Erm_ranap extends CI_Controller
 		$this->load->view('assets/_footer');
 	}
 
-	public function form($id_pel, $id_his)
+	public function form($id_pel, $id_his , $icuOnly = false)
 	{
 		$id_pelayanan = base64_decode(urldecode($id_pel));
 		$id_histori = base64_decode(urldecode($id_his));
 		$data = $this->session->userdata('data_auth');
 		$perequest = $data->tipe;
+
+		$data_ews = $this->M_Erm_ranap->get_last_total_ews_by_pel_id($id_pelayanan);
+		$total_ews = -1;
+
+
+		if($data_ews !== NULL){
+			$total_ews = $data_ews->total_ews;
+		}
+
+		$warna_btn_pemtVital = ""; 
+		$wrn_fnt_pemtVital = "#fff";
+
+		if($total_ews === -1){
+			$warna_btn_pemtVital = "#3cb878";
+		}
+
+		if ($total_ews >= 0 && $total_ews <= 3) {
+			$warna_btn_pemtVital = "#B6F500";
+			$wrn_fnt_pemtVital = "#000";
+
+		} elseif ($total_ews >= 4 && $total_ews <= 5) {
+			$warna_btn_pemtVital = "#f1c40f"; 
+		} elseif ($total_ews >= 6 && $total_ews <= 7) {
+			$warna_btn_pemtVital = "#e67e22"; 
+		} elseif ($total_ews >= 8) {
+			$warna_btn_pemtVital = "#e74c3c"; 
+		}
+
+
+		$data_pews = $this->M_Erm_ranap->get_last_total_pews_by_pel_id($id_pelayanan);
+		$total_pews = -1;
+
+		if ($data_pews !== NULL) {
+			$total_pews = $data_pews->skor;   // pastikan field-nya benar (skor)
+		}
+
+		// Default font warna
+		$wrn_fnt_pews = "#fff";
+
+		// Belum ada data PEWS
+		if ($total_pews === -1) {
+			$warna_btn_pews = "";  // hijau default
+		}
+
+		// Sudah ada data → tentukan warna
+		if ($total_pews >= 6) {
+			$warna_btn_pews = "#e74c3c"; // merah
+		} elseif ($total_pews == 5) {
+			$warna_btn_pews = "#e67e22"; // oranye
+		} elseif ($total_pews >= 3 && $total_pews <= 4) {
+			$warna_btn_pews = "#f1c40f"; // kuning
+			$wrn_fnt_pews = "#000";      // teks hitam agar terbaca
+		} elseif ($total_pews >= 0 && $total_pews <= 2) {
+			$warna_btn_pews = "#1abc9c"; // hijau
+		}
+
+		$page_data['warna_btn_pews'] = $warna_btn_pews;
+		$page_data['wrn_fnt_pews'] = $wrn_fnt_pews;
+		//
+
+		
 		// $id_pelayanan = $id_pel;
 		// $id_histori = $id_his;
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_histori);
@@ -47,6 +108,8 @@ class Erm_ranap extends CI_Controller
 		$page_data['no_rm'] = $selectPasien->no_rm;
 		$page_data['nama_dokter'] = $selectPasien->nama_dokter;
 		$page_data['agama'] = $selectPasien->agama;
+		$page_data['warna_btn_pemtVital'] = $warna_btn_pemtVital;
+		$page_data['wrn_fnt_pemtVital'] = $wrn_fnt_pemtVital;
 		$page_data['simpan'] = 0;
 		// $page_data['no_rm'] = $selectPasien->no_rm;
 		// $page_data['pasien'] = $this->M_Erm->selectDataPasien($db[0]->no_rm);
@@ -123,6 +186,7 @@ class Erm_ranap extends CI_Controller
 			$stok = "stok_kemo";
 		}
 		$page_data['obat_ruang'] = $this->M_Rawatinap->getNamaObatRuang($stok);
+		$page_data['icu_only'] = $icuOnly;
 		// load page view
 		$this->load->view('assets/_header');
 		$page_data['page_content'] = 'erm_form/Ranap/view_erm';
@@ -197,6 +261,8 @@ class Erm_ranap extends CI_Controller
 			$stok = "stok_ranap";
 		}
 		$page_data['obat_ruang'] = $this->M_Rawatinap->getNamaObatRuang($stok);
+		$page_data['icu_only'] = $icuOnly;
+
 		// load page view
 		$this->load->view('assets/_header');
 		$page_data['page_content'] = 'erm_form/Ranap/view_erm_riwayat';
@@ -227,6 +293,7 @@ class Erm_ranap extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
+
 	public function checkData()
 	{
 		$id_pelayanan = $this->input->post('id_pelayanan');
@@ -258,9 +325,15 @@ class Erm_ranap extends CI_Controller
 		$catatan_keperawatan = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'catatan_keperawatan');
 		$resume_bayi_tabung = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'resume_bayi_tabung');
 		$discharge_planning = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'discharger');
-
+		$resiko_lingkungan = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'quiz_resiko_lingkungan_pekerjaan');
+		$implementasi_perawatan = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'implementasi_perawatan');
+		$pengkajian = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pengkajian');
 		$one_day_care = $this->OneDayCare_model->checkData(['no_rm' => $id_histori], 'onedaycare');
 		$pengisian_awal_mcu = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pengisianawalmcu');
+		$pews_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pews_anak');
+		$asesmen_jatuh_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_anak');
+		$asesmen_jatuh_lansia = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_lansia');
+
 
 		// $asses_per_igd = $this->M_Erm->checkData($id_pelayanan, 'form_ass_per_igd');
 		// $observasi = $this->M_Erm->checkData($id_pelayanan, 'form_observasi');
@@ -298,9 +371,14 @@ class Erm_ranap extends CI_Controller
 		$db['status_respirasi'] = empty($status_respirasi) ? 'not-found' : 'found';
 		$db['resume_bayi_tabung'] = empty($resume_bayi_tabung) ? 'not-found' : 'found';
 		$db['discharge_planning'] = empty($discharge_planning) ? 'not-found' : 'found';
-
 		$db['one_day_care'] = empty($one_day_care) ? 'not-found' : 'found';
 		$db['pengisian_awal_mcu'] = empty($pengisian_awal_mcu) ? 'not-found' : 'found';
+		$db['resiko_lingkungan'] = empty($resiko_lingkungan) ? 'not-found' : 'found';
+		$db['implementasi_perawatan'] = empty($implementasi_perawatan) ? 'not-found' : 'found';
+		$db['pengkajian'] = empty($pengkajian) ? 'not-found' : 'found';
+		$db['asesmen_jatuh_anak'] = empty($asesmen_jatuh_anak) ? 'not-found' : 'found';
+		$db['pews_anak'] = empty($pews_anak) ? 'not-found' : 'found';
+		$db['asesmen_jatuh_lansia'] = empty($asesmen_jatuh_lansia) ? 'not-found' : 'found';
 
 		// $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
 		// $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';

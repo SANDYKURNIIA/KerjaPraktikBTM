@@ -170,15 +170,39 @@
         
         <input type="number" name="id" id="id" hidden>
         <div class="form-group col-md-12 mt-40" >
-            <label for="tanggal_grafik" class="control-label mb-10 text-left ">Pilih Tanggal Data Grafik : </label>
-            <div class="has-success mb-40">
+            <label for="tanggal_grafik" class="control-label mb-10 text-left ">Pilih Tanggal Data :  </label>
+            <div class="has-success mb-20 rounded">
                 <input type="date" name="tanggal_grafik" id="tanggal_grafik" class="form-control">
             </div>
-            <h5 style="font-weight: bold; margin-top: 100px; margin-bottom: 100px; text-align: center;" id="kosong_grafik">Tidak Ada Data Grafik Untuk Ditampilkan Hari Ini</h5>
+            <button type="button" class="btn btn-success " style="border-radius: 1000px; " id="toggleGrafik">
+                Tampilkan Grafik
+            </button>
+            <script>
+                // Toggle grafik dan pesan
+                document.getElementById("toggleGrafik").addEventListener("click", function() {
+                    const chart = document.getElementById("lineChart");
+                    const message = document.getElementById("kosong_grafik");
 
-            <canvas id="lineChart">
+                    // Toggle visibility
+                    if (chart.style.display === "none") {
+                        chart.style.display = "block";  // Tampilkan grafik
+                    } else {
+                        chart.style.display = "none";  // Sembunyikan grafik
+                    }
+                });
+
+                // Simulasikan klik untuk fokus ke input tanggal
+                document.getElementById("btnAmbilTanggal").addEventListener("click", function () {
+                    const inputTanggal = document.getElementById("tanggal_grafik");
+
+                    // Simulasikan klik (buka date picker)
+                    inputTanggal.focus();
+                });
+            </script>
+            <h5 style="font-weight: bold; margin-top: 100px; margin-bottom: 100px; text-align: center; display: none;" id="kosong_grafik">Tidak Ada Data Grafik Untuk Ditampilkan</h5>
+
+            <canvas id="lineChart" style="display: none;">
             </canvas>
-
         </div>
 
         <div class="panel-wrapper collapse in">
@@ -221,6 +245,7 @@
                             <th>Waktu Ukur SUHU</th>
                             <th>RR</th>
                             <th>Waktu Ukur RR</th>
+                            <th>Tanggal Data Input</th>
                         </tr>
                         </tfoot>
                         <tbody style="color: black">
@@ -495,11 +520,11 @@
 
                 if(response.labels.length > 0){
                     $('#kosong_grafik').hide();
-                    $('#lineChart').show();
+                    // $('#lineChart').show();
 
                 }else{
                     $('#kosong_grafik').show();
-                    $('#lineChart').hide();
+                    // $('#lineChart').hide();
 
                 }
 
@@ -644,45 +669,50 @@
     });
 
     // Tabel
-    $(document).ready(function() {
-    $('#tabel_catatan').DataTable({
-        "language": {
-          "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-          "sProcessing": "Sedang memproses...",
-          "sLengthMenu": "Tampilkan _MENU_ entri",
-          "sZeroRecords": "Tidak ditemukan data yang sesuai",
-          "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-          "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-          "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-          "sInfoPostFix": "",
-          "sSearch": "Cari:",
-          "sUrl": "",
-          "oPaginate": {
-            "sFirst": "Pertama",
-            "sPrevious": "Sebelumnya",
-            "sNext": "Selanjutnya",
-            "sLast": "Terakhir",
-          }
-        },
-        "ajax": {
-          "url": '<?php echo base_url('Erm_pemantauan_pasien_icu/tampil_list_pemantauan_TD'); ?>',
-          "type": 'POST',
-          "data": {
-            id_pelayanan: id_pelayanan,
-            id_history: id_history
-          },
-        },
+    let table;
 
-        "deferRender": true,
-        "processing": true,
-        "order": [],
-        "columnDefs": [{
-          "width": "20%",
-          "targets": [0],
-          "orderable": false,
-        }, ],
-      });
-      });
+    $(document).ready(function() {
+
+        $.fn.dataTable.ext.errMode = 'none';
+        table = $('#tabel_catatan').DataTable({
+            "language": {
+                "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                "sProcessing": "Sedang memproses...",
+                "sLengthMenu": "Tampilkan _MENU_ entri",
+                "sZeroRecords": "Tidak ditemukan data yang sesuai",
+                "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+                "sSearch": "Cari:",
+                "oPaginate": {
+                    "sFirst": "Pertama",
+                    "sPrevious": "Sebelumnya",
+                    "sNext": "Selanjutnya",
+                    "sLast": "Terakhir"
+                }
+            },
+
+            "ajax": {
+                "url": "<?php echo base_url('Erm_pemantauan_pasien_icu/tampil_list_pemantauan_TD'); ?>",
+                "type": "POST",
+                "data": function(d) {
+                    d.id_pelayanan = id_pelayanan;
+                    d.id_history = id_history;
+                    d.tgl_data = $('#tanggal_grafik').val(); // ambil data terbaru
+                }
+            },
+
+            "processing": true,
+            "deferRender": true,
+            "order": [],
+        });
+
+    });
+
+    $('#tanggal_grafik').on('change', function() {
+        table.ajax.reload(); 
+    });
+
 </script>
 
 
@@ -708,11 +738,11 @@ $(document).ready(function() {
 
                     if(response.labels.length > 0){
                         $('#kosong_grafik').hide();
-                        $('#lineChart').show();
+                        // $('#lineChart').show();
 
                     }else{
                         $('#kosong_grafik').show();
-                        $('#lineChar').hide();
+                        // $('#lineChar').hide();
                     }
 
                     swal({
@@ -743,10 +773,10 @@ $(document).ready(function() {
                                     label: 'Sistolik (mmHg)',
                                     data: response.sistolik || [],
                                     yAxisID: 'yTekanan',
-                                    borderColor: 'red',
+                                    borderColor: 'black',
                                     borderWidth: 2,
                                     tension: 0.3,
-                                    backgroundColor: 'rgba(255, 0, 0, 0.5)', // 🟢 Warna arsiran transparan
+                                    backgroundColor: 'rgba(255, 0, 0, 0.1)', // 🟢 Warna arsiran transparan
                                     pointRadius: 5,
                                     fill: '1',
                                     pointStyle: 'triangle'
@@ -766,7 +796,7 @@ $(document).ready(function() {
                                     label: 'Nadi (x/menit)',
                                     data: response.nadi || [],
                                     yAxisID: 'yNadi',
-                                    borderColor: 'blue',
+                                    borderColor: 'red',
                                     borderDash: [5,5],
                                     borderWidth: 2,
                                     tension: 0.3,
@@ -778,7 +808,7 @@ $(document).ready(function() {
                                     label: 'RR (napas/menit)',
                                     data: response.rr || [],
                                     yAxisID: 'yRR',
-                                    borderColor: 'green',
+                                    borderColor: 'blue',
                                     borderDash: [2,2],
                                     borderWidth: 2,
                                     tension: 0.3,
@@ -789,7 +819,7 @@ $(document).ready(function() {
                                     label: 'Suhu (°C)',
                                     data: response.suhu || [],
                                     yAxisID: 'ySuhu',
-                                    borderColor: 'yellow',
+                                    borderColor: 'green',
                                     borderWidth: 2,
                                     tension: 0.3,
                                     pointRadius: 5,

@@ -14,6 +14,7 @@ class Erm_igd extends CI_Controller
 		$this->load->model('M_Assembling');
 		$this->load->model('M_Poli');
 		$this->load->model('M_Pencarian_Pasien');
+		$this->load->model('M_TransferPasien');
 	}
 
 	public function index()
@@ -25,52 +26,73 @@ class Erm_igd extends CI_Controller
 	}
 
 	public function form($id_pel, $id_his)
-	{
-		$id_pelayanan = base64_decode(urldecode($id_pel));
-		$id_histori = base64_decode(urldecode($id_his));
-		// $id_pelayanan = $id_pel;
-		// $id_histori = $id_his;
-		$selectPasien = $this->M_Erm->selectDataPasienIGDby_id($id_pelayanan, $id_histori);
+{
+    $id_pelayanan = base64_decode(urldecode($id_pel));
+    $id_histori   = base64_decode(urldecode($id_his));
 
-		$page_data['id_pelayanan'] = $id_pelayanan;
-		$page_data['id_histori'] = $id_histori;
-		$page_data['nama'] = $selectPasien->nama;
-		$page_data['no_rm'] = $selectPasien->no_rm;
-		$page_data['nama_dokter'] = $selectPasien->nama_dokter;
-		$page_data['agama'] = $selectPasien->agama;
-		$page_data['simpan'] = 0;
-		$carabayar = $selectPasien->id_cara_bayar;
-		// $page_data['no_rm'] = $selectPasien->no_rm;
-		// $page_data['pasien'] = $this->M_Erm->selectDataPasien($db[0]->no_rm);
-		$page_data['data_dokter'] = $this->M_IGD->selectNamaDPJP();
-		if ($carabayar == '333'  || $carabayar == 'a74' || $carabayar == 'b1' || $carabayar == 'b4') {
-			$page_data['data_tindakan'] = $this->M_IGD->selectNamaTindakan_lama();
-			$page_data['tindakan_radiologi'] = $this->M_IGD->selectNamaRadiologi_lama();
-			$page_data['tindakan_labor'] = $this->M_IGD->selectNamaLabor_lama();
-		} else {
-			$page_data['data_tindakan'] = $this->M_IGD->selectNamaTindakan();
-			$page_data['tindakan_radiologi'] = $this->M_IGD->selectNamaRadiologi();
-			$page_data['tindakan_labor'] = $this->M_IGD->selectNamaLabor();
-		}
+    $selectPasien = $this->M_Erm->selectDataPasienIGDby_id($id_pelayanan, $id_histori);
 
-		$page_data['obat'] = $this->M_Apotik->getNamaObat();
-		$page_data['obat_ruang'] = $this->M_IGD->getNamaObat1();
-		$page_data['signa'] = $this->M_Apotik->getSigna();
-		$page_data['cara_pemakaian_obat'] = $this->M_Apotik->getCaraPakai();
-		// $page_data['golongan'] = $this->db->query("SELECT DISTINCT(golongan_farmakologi) golongan_farmakologi from list_logistik")->result_array();
+    $page_data['id_pelayanan'] = $id_pelayanan;
+    $page_data['id_histori']   = $id_histori;
+    $page_data['nama']         = $selectPasien->nama;
+    $page_data['no_rm']        = $selectPasien->no_rm;
+    $page_data['nama_dokter']  = $selectPasien->nama_dokter;
+    $page_data['agama']        = $selectPasien->agama;
+    $page_data['simpan']       = 0;
 
-		$page_data['gen_con'] = 'erm_igd/Form_general_concern/input_gencon_igd/';
-		$page_data['ass_per_igd'] = 'Erm/input_asses_per_igd/';
-		$page_data['ass_dok_igd'] = 'Erm_ases_dok_igd/input_asses_dok_igd/';
+    $carabayar = $selectPasien->id_cara_bayar;
 
-		// load page view
-		$this->load->view('assets/_header');
-		$page_data['page_content'] = 'erm_form/IGD/view_erm';
-		$this->load->view('Main', $page_data);
-		$this->load->view('assets/_footer');
-		$this->load->view('modal_mcu/modal_surat_keterangan_sakit', $page_data);
+    $page_data['data_dokter'] = $this->M_IGD->selectNamaDPJP();
+    if ($carabayar == '333' || $carabayar == 'a74' || $carabayar == 'b1' || $carabayar == 'b4') {
+        $page_data['data_tindakan']      = $this->M_IGD->selectNamaTindakan_lama();
+        $page_data['tindakan_radiologi'] = $this->M_IGD->selectNamaRadiologi_lama();
+        $page_data['tindakan_labor']     = $this->M_IGD->selectNamaLabor_lama();
+    } else {
+        $page_data['data_tindakan']      = $this->M_IGD->selectNamaTindakan();
+        $page_data['tindakan_radiologi'] = $this->M_IGD->selectNamaRadiologi();
+        $page_data['tindakan_labor']     = $this->M_IGD->selectNamaLabor();
+    }
 
-	}
+    $page_data['obat']               = $this->M_Apotik->getNamaObat();
+    $page_data['obat_ruang']         = $this->M_IGD->getNamaObat1();
+    $page_data['signa']              = $this->M_Apotik->getSigna();
+    $page_data['cara_pemakaian_obat'] = $this->M_Apotik->getCaraPakai();
+
+    $page_data['gen_con']     = 'erm_igd/Form_general_concern/input_gencon_igd/';
+    $page_data['ass_per_igd'] = 'Erm/input_asses_per_igd/';
+    $page_data['ass_dok_igd'] = 'Erm_ases_dok_igd/input_asses_dok_igd/';
+
+    // ================== LOGIKA WARNA BUTTON TRANSFER ==================
+    
+    $transfer = $this->M_TransferPasien->get_by_history($id_histori);
+
+    // default: belum ada data → hijau
+    $btn_transfer_class = 'btn btn-success col-md-5 erm';
+
+    if ($transfer) {
+        if ($transfer->verif === 'Ya') {
+            // terverifikasi
+            $btn_transfer_class = 'btn btn-primary col-md-5 erm';
+        } elseif ($transfer->verif === 'Belum') {
+            // menunggu verifikasi
+            $btn_transfer_class = 'btn btn-warning col-md-5 erm';
+        } else {
+            // sudah ada data tapi bukan Ya/Belum
+            $btn_transfer_class = 'btn btn-danger col-md-5 erm';
+        }
+    }
+
+    $page_data['btn_transfer_class'] = $btn_transfer_class;
+   
+
+    // load page view
+    $this->load->view('assets/_header');
+    $page_data['page_content'] = 'erm_form/IGD/view_erm';
+    $this->load->view('Main', $page_data);
+    $this->load->view('assets/_footer');
+    $this->load->view('modal_mcu/modal_surat_keterangan_sakit', $page_data);
+}
+
 	public function form_riwayat($id_pel, $id_his)
 	{
 		$id_pelayanan = base64_decode(urldecode($id_pel));
@@ -135,6 +157,7 @@ class Erm_igd extends CI_Controller
 		$formKronologis = $this->M_Erm->checkData($id_pelayanan, 'upload_form_kronologis');
 		$penolakan = $this->M_Erm->checkData($id_pelayanan, 'upload_penolakan_tindakan');
 		$suratKematian = $this->M_Erm->checkData($id_pelayanan, 'upload_surat_kematian');
+		$transfer_pasien = $this->M_Erm->checkData($id_pelayanan, 'form_transfer_pasien_igd');
 
 		$db['upload_aps'] = empty($aps) ? 'not-found' : 'found';
 		$db['upload_fKronologis'] = empty($formKronologis) ? 'not-found' : 'found';
@@ -155,6 +178,7 @@ class Erm_igd extends CI_Controller
 		$db['antar'] = empty($antar) ? 'not-found' : 'found';
 		$db['surveilans'] = empty($surveilans) ? 'not-found' : 'found';
 		$db['survei'] = empty($survei) ? 'not-found' : 'found';
+		$db['transfer_pasien'] = empty($transfer_pasien) ? 'not-found' : 'found';
 
 		echo json_encode($db);
 		exit;
@@ -451,6 +475,7 @@ class Erm_igd extends CI_Controller
 			exit;
 		}
 	}
+	
 	public function tampil_list_diagnosa1()
 	{
 		// $id_akun = 'dgok8itaesm';

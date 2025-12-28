@@ -18,22 +18,44 @@ class Form_pemakaian_cairan_icu extends CI_Controller
     }
 
     // >>> Diperketat: kembalikan '' jika '/', 'a/', '/b', atau format tidak lengkap
-    private function san_per($v) {
-        $v = trim((string)$v);
-        if ($v === '') return '';
-        $v = str_replace(',', '.', $v);
-        $v = preg_replace('/\s+/', '', $v);
+// di controller Form_pemakaian_cairan_icu
+private function san_per($v) {
+    $v = trim((string)$v);
+    if ($v === '') return '';
+    $v = str_replace(',', '.', $v);
+    $v = preg_replace('/\s+/', '', $v);
 
-        // jika hanya slash atau tidak lengkap
-        if ($v === '/') return '';
-        $parts = explode('/', $v, 2);
-        if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') return '';
+    // jika hanya slash atau kosong
+    if ($v === '/') return '';
 
-        // validasi a/b (keduanya angka desimal)
-        if (!preg_match('/^[+-]?\d+(?:\.\d+)?$/', $parts[0])) return '';
-        if (!preg_match('/^[+-]?\d+(?:\.\d+)?$/', $parts[1])) return '';
-        return $parts[0].'/'.$parts[1];
+    // jika tidak ada slash -> terima sebagai angka tunggal
+    if (strpos($v, '/') === false) {
+        return preg_match('/^[+-]?\d+(?:\.\d+)?$/', $v) ? $v : '';
     }
+
+    // ada slash -> pisah maksimal 2 bagian
+    $parts = explode('/', $v, 2);
+    $a = isset($parts[0]) ? $parts[0] : '';
+    $b = isset($parts[1]) ? $parts[1] : '';
+
+    // jika kedua kosong -> kosongkan
+    if ($a === '' && $b === '') return '';
+
+    // jika hanya a terisi -> simpan a
+    if ($a !== '' && $b === '') {
+        return preg_match('/^[+-]?\d+(?:\.\d+)?$/', $a) ? $a : '';
+    }
+    // jika hanya b terisi -> simpan b
+    if ($a === '' && $b !== '') {
+        return preg_match('/^[+-]?\d+(?:\.\d+)?$/', $b) ? $b : '';
+    }
+    // jika keduanya terisi -> validasi keduanya
+    if (preg_match('/^[+-]?\d+(?:\.\d+)?$/', $a) && preg_match('/^[+-]?\d+(?:\.\d+)?$/', $b)) {
+        return $a . '/' . $b;
+    }
+    return '';
+}
+
 
     private function pick($source, $key) {
         if (is_array($source))  return $source[$key] ?? null;
