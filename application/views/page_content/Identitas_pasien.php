@@ -314,6 +314,7 @@
 			<button onclick="tambah_kunjungan()" class="btn btn-success btn-anim btn-sm" style="margin-right: 20px;"><i class="icon-rocket"></i><span class="btn-text">+ KUNJUNGAN</span></button>
 			<button data-toggle="modal" data-target="#modal_poli_sore" aria-expanded="false" aria-controls="poli_sore" class="btn btn-primary btn-anim btn-sm"><i class="icon-rocket"></i><span class="btn-text">+ POLI SORE</span></button>
 			<a class="btn btn-primary btn-anim btn-sm" id="gecon" href="<?= base_url('Erm_general_concern/identitas_pasien/') . $data['no_rm'] ?>"><i class="icon-rocket"></i><span class="btn-text">GENERAL CONSENT</span></a>
+			<a class="btn btn-danger btn-anim btn-sm" id="gecon" href="<?= base_url('Erm_general_concern/identitas_pasien/') . $data['no_rm'] ?>"><i class="icon-rocket"></i><span class="btn-text">GENERAL BARU TESTING</span></a>
 		</div>
 	</div>
 </div>

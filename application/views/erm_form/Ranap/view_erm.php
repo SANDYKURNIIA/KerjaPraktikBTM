@@ -438,6 +438,15 @@
                                                    <a class='btn btn-success col-md-5 asesmen_jatuh_lansia' href='" . base_url('Erm_ranap_ulang_jatuh_lansia/formulangjatuhlansia/') . "$id_pelayanan/$id_histori'>
                                                         Asesmen Jatuh Lansia
                                                     </a>
+                                                   <a class='btn btn-success col-md-5 lembar_monitoring' href='" . site_url('Lembar_Monitoring/index/') . "$no_rm/$id_pelayanan/$id_histori'>
+                                                        Lembar Monitoring
+                                                    </a>
+                                                   <a class='btn btn-success col-md-5 ews_maternity' href='" . site_url('Erm_ews_maternity/formewsmaternity/') . "$id_pelayanan/$id_histori'>
+                                                        EWS Maternity
+                                                    </a>
+                                                   <a class='btn btn-success col-md-5 asses_ulang_nyeri' href='" . base_url('Erm_ranap_ulang_nyeri/formulangnyeri/') . "$id_pelayanan/$id_histori'>
+                                                        Assesmen Ulang Nyeri
+                                                    </a>
                                                    
 
                                                      <a style='background-color: " . $warna_btn_pews . "; color: " . $wrn_fnt_pews . ";'
@@ -445,6 +454,7 @@
                                                     href='" . base_url('Pews_anak/pewsAnak/') . $id_pelayanan . "/" . $id_histori . "'>
                                                         PEWS ANAK
                                                     </a>
+                                                    
                                                 </div>
                                                 ";
 
@@ -670,6 +680,15 @@
 
                 if (data.pews_anak == "found") {
                     $('.pews_anak').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.lembar_monitoring == "found") {
+                    $('.lembar_monitoring').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.ews_maternity == "found") {
+                    $('.ews_maternity').removeClass('btn-success').addClass('btn-danger ');
+                }
+                if (data.asses_ulang_nyeri == "found") {
+                    $('.asses_ulang_nyeri').removeClass('btn-success').addClass('btn-danger ');
                 }
 
                 $('#loader').removeClass('hide')

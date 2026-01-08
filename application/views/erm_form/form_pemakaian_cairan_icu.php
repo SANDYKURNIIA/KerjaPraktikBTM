@@ -1,5 +1,5 @@
 <?php /* View: Pemakaian Cairan Pasien ICU (validasi angka & per, SweetAlert, "per" auto-slash, cegah simpan "/") */ ?>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
   html, body { color:#000; font-family:'Segoe UI', sans-serif; }
   .panel-title, .txt-dark, label, strong { color:#000 !important; }
@@ -179,7 +179,7 @@
 
                     <!-- Baris Total -->
                     <tr>
-                      <td class="sticky-col"><b>Total</b></td>
+                      <td class="sticky-col"><b>Garing / Balance</b></td>
                       <?php for ($c=1;$c<=25;$c++): ?>
                         <td>
                           <input type="text" class="small-input per js-per"
@@ -196,6 +196,15 @@
             </div>
 
             <div class="text-right mt-3">
+                <button type="button"
+                      class="btn btn-primary"
+                      id="btn-print"
+                      data-url="<?= site_url(
+                      'Form_pemakaian_cairan_icu/print_form/' .
+                      $id_pelayanan . '/' . $id_history
+                      ); ?>">      
+                Print
+              </button>
               <button type="submit" class="btn btn-success">Simpan</button>
             </div>
 
@@ -480,4 +489,23 @@ for (let c = 1; c <= 25; c++) {
       }
     });
   });
+
+   document.getElementById('btn-print').addEventListener('click', function () {
+  const printUrl = this.dataset.url;
+
+  Swal.fire({
+    title: 'Konfirmasi Cetak',
+    text: 'Pastikan Anda sudah klik SIMPAN terlebih dahulu saat memperbarui data sebelum melakukan cetak.',
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: 'Cancel',
+    confirmButtonText: 'Print',
+    reverseButtons: false // Cancel kiri, Print kanan
+
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.open(printUrl, '_blank');
+    }
+  });
+});
 </script>

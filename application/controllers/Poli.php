@@ -2607,6 +2607,7 @@ class Poli extends CI_Controller
                 'id_pelayanan' => $this->input->post('id_pelayanan'),
                 'id_history' => $this->input->post('id_history'),
                 'jenis_resep' => $jenis,
+                'iterasi' => $this->input->post('iterasi'),
                 'nama_resep' => $this->input->post('nama_resep'),
                 'depo' => $depo,
                 'tanggal' => $tgl,
@@ -2978,6 +2979,7 @@ class Poli extends CI_Controller
             $no = $i + 1;
             $nama_resep = $page_data[$i]->nama_resep;
             $jenis_resep = $page_data[$i]->jenis_resep;
+            $iterasi = $page_data[$i]->iterasi;
 
             $depo = $page_data[$i]->depo;
             if ($depo == "APOTIK") {
@@ -2998,9 +3000,9 @@ class Poli extends CI_Controller
             }
 
             if ($this->input->post('akun') == 'ranap') {
-                $out[$i] = array($no, $request, $tombol, $hapus, $next, $nama_resep, $jenis_resep, $depo, $tgl);
+                $out[$i] = array($no, $request, $tombol, $hapus, $next, $nama_resep, $jenis_resep, $depo,$iterasi, $tgl);
             } else {
-                $out[$i] = array($no, $request, $tombol, $hapus, $nama_resep, $jenis_resep, $depo, $tgl);
+                $out[$i] = array($no, $request, $tombol, $hapus, $nama_resep, $jenis_resep, $depo, $iterasi, $tgl);
             }
             // }else{
             //     $out[$i] = array($no, $request, $tombol, $nama_resep, $jenis_resep,$tgl);

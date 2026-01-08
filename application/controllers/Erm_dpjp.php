@@ -107,7 +107,6 @@ class Erm_dpjp extends CI_Controller
 		$this->load->view('Main', $page_data);
 		$this->load->view('assets/_footer');
 	}
-	
 	public function insert_lembar_rujukan()
 	{
 		$data_user_login = $this->session->userdata('data_auth');
@@ -299,7 +298,6 @@ class Erm_dpjp extends CI_Controller
 		$out['status'] = "success";
 		echo json_encode($out);
 	}
-
 	public function get_diagnosa()
 	{
 		$id = $this->input->post('id');
@@ -336,8 +334,7 @@ class Erm_dpjp extends CI_Controller
 
 		return $dokter;
 	}
-
-	public function get_data()
+	public function get_data()//edit
 	{
 		$id = $this->input->post('id');
 		$db = $this->db->get_where('form_lembar_rujukan', ['id_pelayanan' => $id])->result();
@@ -350,12 +347,12 @@ class Erm_dpjp extends CI_Controller
 		}
 		echo json_encode($db);
 	}
-
 	public function get_data_awal()
 	{
 		$id = $this->input->post('id');
 
 		$result = $this->M_Lembar_konsul->get_data_form_awal($id);
+
 
 		if ($result) {
 			$result->status = 'found';
@@ -388,6 +385,10 @@ class Erm_dpjp extends CI_Controller
 	{
 		$data['lembar_konsul'] = $this->M_Lembar_konsul->get_form_lembar_rujukan_by_id_form($id_lembar_konsul);
 
+		if (!$data['lembar_konsul']) {
+			show_error('Data lembar konsul tidak ditemukan', 404);
+		}
+
 		$this->load->view('erm_print/print_lembar_konsul', $data);
 	}
 
@@ -396,8 +397,11 @@ class Erm_dpjp extends CI_Controller
 		$id_lembar_konsul = $this->input->post('id');
 
 		$data['lembar_konsul'] = $this->M_Lembar_konsul->get_form_lembar_rujukan_by_id_form($id_lembar_konsul);
-	
-		echo json_encode($data);
+		if (!$data['lembar_konsul']) {
+			show_error('Data lembar konsul tidak ditemukan', 404);
+		} else {
+			echo json_encode($data);
+		}
 	}
 
 	public function kirim_balasan()
@@ -490,7 +494,7 @@ class Erm_dpjp extends CI_Controller
 					$tombol_balasan,
 					$tombol_cetak,
 					$nama_pasien,
-					$usia,
+					// $usia,
 					$date,
 					$dokter,
 					$poli,
@@ -553,7 +557,7 @@ class Erm_dpjp extends CI_Controller
 					$hapus,
 					$tombol_cetak,
 					$nama_pasien,
-					$usia,
+					// $usia,
 					$date,
 					$dokter,
 					$poli,

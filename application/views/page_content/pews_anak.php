@@ -2,12 +2,7 @@
 <html>
 
 <head>
-    <title>One Day Care & One Day Surgery</title>
-
-    <!-- jQuery + SweetAlert2 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <title>PENILAIAN PEDIATRIC EARLY WARNING SYSTEM (PEWS)</title>
     <style>
         .mt-10 {
             margin-top: 10px;
@@ -208,17 +203,20 @@
                         </div>
 
                         <!-- Jam -->
-                        <div class="form-group col-md-8">
-                            <div class="col-md-6">
-                                <label class="control-label mb-10 text-left">Jam : <span class="help"></span></label>
-                                <span id="jam" class="text-danger"></span>
+                     <div class="form-group col-md-8">
+                        <div class="col-md-6">
+                            <label class="control-label mb-10 text-left">Jam : <span class="help"></span></label>
+                            
+                            <div id="display_jam_lama" style="display:none; margin-bottom: 5px;">
+                                <span class="label label-info">Jam tersimpan: <b id="text_jam_lama"></b></span>
+                            </div>
 
-                                <div class="has-success">
-                                    <input type="time" class="form-control" id="jam" name="jam">
-                                    <span class="help-block"></span>
-                                </div>
+                            <div class="has-success">
+                                <input type="time" class="form-control" id="jam" name="jam">
+                                <small class="help-block">Isi kembali jika ingin mengubah jam.</small>
                             </div>
                         </div>
+                    </div>
 
                         <!-- Tombol Skor -->
                         <div class="col-md-6">
@@ -256,6 +254,7 @@
                             <canvas id="can" style="display:none;"></canvas>
                         </div>
                     </div>
+                    </form>
                         <h3 class="text-center">Penatalaksanaan Berdasarkan Zona</h3>
                         <div class="panel-body">
                             <div class="panel-wrapper collapse in" style="padding: 10px;">
@@ -297,7 +296,7 @@
                                     <div class="col-md-12">
                                         <div class="table-wrap">
                                             <div class="table-responsive">
-                                                <table class="table table-hover display pb-60">
+                                                <table id="table_riwayat" class="table table-hover display pb-60">
                                                     <thead>
                                                         <tr class="bg-success">
                                                             <th style="width: 5%">NO</th>
@@ -309,260 +308,186 @@
                                                             <th style="width: 5%">SKOR</th>
                                                         </tr>
                                                     </thead>
-
-                                                    <tfoot>
-                                                        <tr class="bg-success">
-                                                            <th>NO</th>
-                                                            <th>PILIH</th>
-                                                            <th>HAPUS</th>
-                                                            <th>TANGGAL</th>
-                                                            <th>JAM</th>
-                                                            <th>STAFF</th>
-                                                            <th>SKOR</th>
-                                                        </tr>
-                                                    </tfoot>
-
                                                     <tbody style="color: black;">
-                                                        <?php if (!empty($riwayat)) : ?>
-                                                            <?php $no = 1; ?>
-                                                            <?php foreach ($riwayat as $row) : ?>
-                                                                <tr>
-                                                                    <td><?= $no++; ?></td>
-
-                                                                    <!-- Tombol Edit & Hapus -->
-                                                                    <td style="text-align: start;">
-                                                                        <button class="btn btn-primary btn-sm btn-icon-anim"
-                                                                            type="button" onclick="select_pws(<?= $row->id ?>)">
-                                                                            <i class="icon-pencil"></i>
-                                                                        </button>
-
-                                                                    </td>
-                                                                    <td style="text-align: start;">
-                                                                        <button class="btn btn-danger btn-sm btn-icon-anim"
-                                                                            type="button" onclick="hapus_pws(<?= $row->id ?>)">
-                                                                            <i class="icon-trash"></i>
-                                                                        </button>
-                                                                    </td>
-
-                                                                    <td style="text-align: start;"><?= date('d-m-Y', strtotime($row->tanggal)) ?></td>
-                                                                    <td style="text-align: start;"><?= $row->jam ?></td>
-                                                                    <td style="text-align: start;"><?= $row->nama_staff ?></td>
-                                                                    <td><?= $row->skor ?></td>
-                                                                </tr>
-                                                            <?php endforeach; ?>
-
-                                                        <?php else : ?>
-                                                            <tr>
-                                                                <td colspan="6" class="text-center">Belum ada riwayat PEWS</td>
-                                                            </tr>
-                                                        <?php endif; ?>
-                                                    </tbody>
-
+                                                        </tbody>
                                                 </table>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            const id_pelayanan = $("#id_pelayanan").val();
+            
+            // Inisialisasi awal
+            $("#btnEdit").hide();
+            if(id_pelayanan) reload_data_pews(id_pelayanan);
 
-    <!-- AJAX + SweetAlert2 -->
-    <script>
-        function buildBackUrl() {
-            var idPel = document.getElementById('id_pelayanan').value || '';
-            var idHis = document.getElementById('id_history').value || '';
-            if (idPel && idHis) {
-                return "<?= base_url('erm_ranap/form/') ?>" + btoa(idPel) + "/" + btoa(idHis);
+            // FUNGSI RELOAD DATATABLE
+            function reload_data_pews(id_pel) {
+                $('#table_riwayat').dataTable().fnClearTable();
+                $('#table_riwayat').dataTable().fnDestroy();
+                $('#table_riwayat').DataTable({
+                    "language": {
+                        "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
+                        "sProcessing": "Sedang memproses.",
+                        "sLengthMenu": "Tampilkan _MENU_ entri",
+                        "sZeroRecords": "Tidak ditemukan data yang sesuai",
+                        "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                        "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+                        "sSearch": "Cari:",
+                        "oPaginate": {
+                            "sFirst": "Pertama", "sPrevious": "Sebelumnya",
+                            "sNext": "Selanjutnya", "sLast": "Terakhir"
+                        }
+                    },
+                    "ajax": {
+                        "url": '<?= base_url('Pews_anak/get_riwayat_ajax') ?>',
+                        "type": 'POST',
+                        "data": { id_pelayanan: id_pel }
+                    },
+                    "deferRender": true,
+                    "processing": true,
+                    "order": [],
+                    "columnDefs": [
+                        { "targets": [0, 1, 2], "orderable": false },
+                        { "targets": [6], "className": "text-center" }
+                    ],
+                    "createdRow": function(row, data, dataIndex) {
+                        let score = parseInt(data[6]);
+                        let cls = "";
+                        if (score >= 6) cls = "ews-merah";
+                        else if (score == 5) cls = "ews-oranye";
+                        else if (score >= 3) cls = "ews-kuning";
+                        else if (score >= 0) cls = "ews-hijau";
+                        
+                        $('td', row).eq(6).addClass(cls);
+                    }
+                });
             }
-            return "";
-        }
 
-        $(function() {
+            // SIMPAN DATA (INSERT)
             $("#btnSimpan").on("click", function(e) {
                 e.preventDefault();
-                var $form = $("#formPewsAnak");
+                let $form = $("#formPewsAnak");
+                let id_pelayanan = $("#id_pelayanan").val(); // Pastikan ID ini tersedia
+
                 $.ajax({
                     url: $form.attr("action"),
                     type: "POST",
                     data: $form.serialize(),
                     success: function() {
-                        Swal.fire({
-                            title: "Good job!",
-                            text: "Data Pengisian Awal MCU berhasil disimpan!",
-                            icon: "success"
-                        }).then(() => {
-
-                            history.go(-1);
+                        swal({
+                            title: "Berhasil!",
+                            text: "Data PEWS berhasil disimpan!",
+                            type: "success"
+                        }, function() {
+                            // Panggil reload datatable agar data baru muncul
+                            reload_data_pews(id_pelayanan); 
+                            $form[0].reset();
+                            // Reset manual skor tampilan jika perlu
+                            $('#inTotal').val(0);
                         });
                     },
                     error: function(xhr, s, err) {
-                        Swal.fire({
-                            title: "Gagal!",
-                            text: "Terjadi kesalahan saat menyimpan. " + (err || ""),
-                            icon: "error"
-                        });
+                        swal("Gagal!", "Terjadi kesalahan: " + (err || ""), "error");
                     }
                 });
             });
-        });
 
-
-        function hapus_pws(id) {
-            Swal.fire({
-                title: "Hapus Data?",
-                text: "Data PEWS akan dihapus permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Hapus",
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.post("<?= base_url('Pews_anak/hapus') ?>", {
-                        id_pws: id
-                    }, function(res) {
-                        let data = JSON.parse(res);
-                        if (data.status === 'success') {
-                            Swal.fire("Berhasil!", data.message, "success")
-                                .then(() => location.reload());
-                        } else {
-                            Swal.fire("Gagal!", data.message, "error");
-                        }
-                    });
-                }
-            });
-        }
-
-
-        function select_pws(id) {
-            $.ajax({
-                url: "<?= base_url() ?>Pews_anak/get_data_pws",
-                method: "POST",
-                dataType: "json",
-                data: {
-                    id: id
-                },
-                success: function(response) {
-
-                    const data = response.data;
-
-                    $("#id_pws").val(data.id);
-                    // Perilaku
-                    $("input[name='perilaku']").each(function() {
-                        if ($(this).val() === data.perilaku) {
-                            $(this).prop("checked", true);
-                        }
-                    });
-
-                    // Kardiovaskular
-                    $("input[name='kardiovaskular']").each(function() {
-                        if ($(this).val() === data.kardiovaskular) {
-                            $(this).prop("checked", true);
-                        }
-                    });
-
-                    // Respirasi
-                    $("input[name='respirasi']").each(function() {
-                        if ($(this).val() === data.respirasi) {
-                            $(this).prop("checked", true);
-                        }
-                    });
-
-                    // Jam
-                    $("#jam").val(data.jam);
-
-                    // Skor + tampilkan pada input total skor
-                    $("#inTotal").val(data.skor);
-                    $("#skorHidden").val(data.skor);
-
-                    // Hitung ulang tipe resiko
-                    let tipe_resiko = "";
-                    if (data.skor <= 2) tipe_resiko = "Rendah";
-                    else if (data.skor <= 4) tipe_resiko = "Sedang";
-                    else tipe_resiko = "Tinggi";
-
-                    $("#tipeResikoHidden").val(tipe_resiko);
-
-                    // Set ID jika mau edit
-                    $("#id_history").val(data.id_history);
-                    $("#id_pelayanan").val(data.id_pelayanan);
-
-                    // Tampilkan tombol "Edit"
-                    $("#btnSimpan").hide();
-                    $("#btnEdit").show();
-                }
-            });
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-
-            $("#btnEdit").hide();
-
-            // AJAX EDIT
-            $("#btnEdit").on("click", function(e) {
+            // UPDATE DATA
+           $("#btnEdit").on("click", function(e) {
                 e.preventDefault();
-
-                var $form = $("#formPewsAnak");
-
                 $.ajax({
                     url: "<?= base_url('Pews_anak/update') ?>",
                     type: "POST",
-                    data: $form.serialize(),
+                    data: $("#formPewsAnak").serialize(),
                     dataType: "json",
                     success: function(res) {
-
                         if (res.status === "success") {
-                            Swal.fire({
+                            // Sintaks swal v1: swal(title, text, type, callback)
+                            swal({
                                 title: "Berhasil!",
-                                text: "Data PEWS berhasil diperbarui!",
-                                icon: "success"
-                            }).then(() => {
+                                text: "Data diperbarui!",
+                                type: "success"
+                            }, function() {
                                 location.reload();
                             });
                         } else {
-                            Swal.fire({
-                                title: "Gagal!",
-                                text: res.message,
-                                icon: "error"
-                            });
+                            swal("Gagal!", res.message, "error");
                         }
-
                     },
-                    error: function(xhr, s, err) {
-                        Swal.fire({
-                            title: "Error!",
-                            text: "Terjadi kesalahan saat update: " + (err || ""),
-                            icon: "error"
-                        });
+                    error: function() {
+                        swal("Error!", "Terjadi kesalahan pada server", "error");
                     }
                 });
-
             });
-
         });
-    </script>
 
-    <?php if ($this->session->flashdata('success')): ?>
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: "<?= $this->session->flashdata('success'); ?>",
-                icon: "success"
+                // FUNGSI HAPUS
+        function hapus_pws(id) {
+            swal({
+                title: "Hapus data?",
+                text: "Data tidak dapat dikembalikan!",
+                type: "warning", // v1 menggunakan 'type', bukan 'icon'
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                closeOnConfirm: false // Agar swal tidak langsung tertutup sebelum proses selesai
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    $.post("<?= base_url('Pews_anak/hapus') ?>", { id_pws: id }, function(res) {
+                        let data = JSON.parse(res);
+                        if (data.status === 'success') {
+                            swal("Terhapus!", data.message, "success");
+                            // Refresh tabel tanpa reload halaman penuh
+                            $('#table_riwayat').DataTable().ajax.reload();
+                        } else {
+                            swal("Gagal!", data.message, "error");
+                        }
+                    });
+                }
             });
-        </script>
-    <?php endif; ?>
+        }
 
-    <!-- Perhitungan Skor -->
-    <script type="text/javascript">
+        // FUNGSI SELECT DATA UNTUK EDIT
+        function select_pws(id) {
+            $.ajax({
+                url: "<?= base_url('Pews_anak/get_data_pws') ?>",
+                method: "POST",
+                dataType: "json",
+                data: { id: id },
+                success: function(response) {
+                    const data = response.data;
+                    $("#id_pws").val(data.id);
+                    $("#inTotal, #skorHidden").val(data.skor);
+
+                   if (data.jam) {
+                        $("#text_jam_lama").text(data.jam.substring(0, 5));
+                        $("#display_jam_lama").show();
+                    }
+                    
+                    // Set Radio Buttons
+                    $(`input[name='perilaku'][value='${data.perilaku}']`).prop("checked", true);
+                    $(`input[name='kardiovaskular'][value='${data.kardiovaskular}']`).prop("checked", true);
+                    $(`input[name='respirasi'][value='${data.respirasi}']`).prop("checked", true);
+
+                    // UI Changes
+                    $("#btnSimpan").hide();
+                    $("#btnEdit").show();
+                    window.scrollTo(0,0);
+                    sumScore();
+                }
+            });
+        }
+
         function sumScore() {
 
             var score = 0,
@@ -605,28 +530,5 @@
             $('#tipeResikoHidden').val(tipe_resiko);
         }
     </script>
-    <script>
-        $(document).ready(function() {
-            $("table tbody tr").each(function() {
-
-                let cell = $(this).find("td").eq(6); // kolom skor
-                let score = parseInt(cell.text());
-
-                if (!isNaN(score)) {
-
-                    if (score >= 6) {
-                        cell.addClass("ews-merah");
-                    } else if (score >= 5 && score <= 5) {
-                        cell.addClass("ews-oranye");
-                    } else if (score >= 3 && score <= 4) {
-                        cell.addClass("ews-kuning");
-                    } else if (score >= 0 && score <= 2) {
-                        cell.addClass("ews-hijau");
-                    }
-                }
-            });
-        });
-    </script>
-    </form>
 </body>
 </html>

@@ -41,7 +41,7 @@
             </div>
         </div>
 
-                <div class="col-md-6">
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label col-md-3">ITERASI</label>
                 <div class="col-md-9 has-success">
@@ -56,8 +56,6 @@
         </div>
     </div>
     <div class="collapse_next_resep" style="display: none;">
-
-
         <div class="col-md-6">
             <div class="form-group ">
                 <label class="control-label col-md-3">LIST RESEP</label>
@@ -332,8 +330,10 @@
         depo = $('#inDepo1').val();
         id_pelayanan = $('#inPelResep').val();
         id_history = $('#inHisResep').val();
-        var iterasi = $("#inIterasi").val()
-        console.log(iterasi)
+        iterasi = $("#inIterasi").val();
+
+        console.log("hallo")
+
         $.ajax({
             url: "<?= base_url() . 'Poli/insert_resep' ?>",
             method: "POST",

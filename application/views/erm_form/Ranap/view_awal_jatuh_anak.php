@@ -887,9 +887,15 @@
                                 data: dataString,
                                 success: function(data) {
                                     if (data.status == "success") {
-                                        window.location.href =
-                                            "<?php echo base_url('Erm_awal_jatuh_anak/form/') ?>" +
-                                            id_pelayanan + '/' + id_history;
+                                            swal({
+                                                title: "Berhasil!",
+                                                text: "Data Asessmen Jatuh Anak berhasil ditambahkan",
+                                                type: "success",
+                                                confirmButtonColor: "#3cb878",
+                                                confirmButtonText: "OK"
+                                            }, function() {
+                                                window.location.href = "<?php echo base_url('Erm_awal_jatuh_anak/form/') ?>" + id_pelayanan + '/' + id_history;
+                                            });
                                     } else if (data.error) {
                                         // Validasi error
                                         if (!usia) $('#usia_error').html("*wajib diisi"); // a
@@ -925,13 +931,15 @@
                                 },
                                 success: function(data) {
                                     if (data.status_dt == "found") {
+
+                                    console.log(data);
                                         //Data utama asesmen
                                         $('input[name="usia"][value="' + data.usia + '"]').prop('checked', true);
-                                        $('input[name="kelamin"][value="' + data.kelamin + '"]').prop('checked', true);
-                                        $('input[name="kognitif"][value="' + data.kognitif + '"]').prop('checked', true);
-                                        $('input[name="lingkungan"][value="' + data.lingkungan + '"]').prop('checked', true);
-                                        $('input[name="response"][value="' + data.response + '"]').prop('checked', true);
-                                        $('input[name="obat"][value="' + data.obat + '"]').prop('checked', true);
+                                        $('input[name="kelamin"][value="' + data.jenis_kelamin + '"]').prop('checked', true);
+                                        $('input[name="kognitif"][value="' + data.gangguan_kognitif + '"]').prop('checked', true);
+                                        $('input[name="lingkungan"][value="' + data.faktor_lingkungan + '"]').prop('checked', true);
+                                        $('input[name="response"][value="' + data.respon_pasien + '"]').prop('checked', true);
+                                        $('input[name="obat"][value="' + data.penggunaan_obat + '"]').prop('checked', true);
                                         //Data utama asesmen
                                         $('input[name="orientasikan_pasien"][value="' + data.orientasikan_pasien + '"]').prop('checked', true);
                                         $('input[name="rem_tempat_tidur"][value="' + data.rem_tempat_tidur + '"]').prop('checked', true);
@@ -958,6 +966,8 @@
                                             top: 0,
                                             behavior: 'smooth'
                                         });
+
+                                        sumScore()
                                     } else {
                                         swal({
                                             title: "Gagal!",
@@ -1095,7 +1105,15 @@
                                 data: dataString,
                                 success: function(data) {
                                     if (data.status == "success") {
+                                      swal({
+                                        title: "Berhasil!",
+                                        text: "Data Asessmen Jatuh Anak berhasil diupdate",
+                                        type: "success",
+                                        confirmButtonColor: "#3cb878",
+                                        confirmButtonText: "OK"
+                                    }, function() {
                                         window.location.href = "<?php echo base_url('Erm_awal_jatuh_anak/formulangjatuhanak/') ?>" + id_pelayanan + '/' + id_history;
+                                    });
                                     } else {
                                         swal({
                                             title: "Gagal!",

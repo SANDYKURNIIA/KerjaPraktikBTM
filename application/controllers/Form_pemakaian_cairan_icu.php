@@ -166,4 +166,86 @@ private function san_per($v) {
         $res = $this->pc->upsert($payload);
         $this->output->set_content_type('application/json')->set_output(json_encode($res));
     }
+
+
+
+ public function print_form($id_pelayanan, $id_history)
+{
+    $staff = $this->session->userdata('data_auth');
+
+    // --- pelayanan ---
+    $pelayanan = $this->db->get_where('pelayanan', [
+        'id_pelayanan' => $id_pelayanan
+    ])->row_array();
+    if (!$pelayanan) show_404();
+
+    // --- history ---
+    $history = $this->db->get_where('history_pelayanan_ranap', [
+        'id_pelayanan' => $id_pelayanan,
+        'id_history'   => $id_history
+    ])->row_array();
+    if (!$history) {
+        $history = [
+            'id_history'  => $id_history,
+            'tgl_masuk'   => null,
+            'tgl_keluar'  => null,
+            'jenis_rawat' => null
+        ];
+    }
+
+    // --- pasien ---
+    $pasien = $this->db->get_where('pasien', [
+        'no_rm' => $pelayanan['id_pasien']
+    ])->row_array();
+    if (!$pasien) {
+        $pasien = [
+            'no_rm'      => '-',
+            'nama'       => '-',
+            'tgl_lahir'  => null,
+            'no_hp'      => '-',
+            'alamat'     => '-'
+        ];
+    }
+
+    // --- data pemakaian cairan ---
+    $row = $this->pc->get_by_keys($id_pelayanan, $id_history);
+
+    // 👉 JIKA BELUM ADA DATA → BUAT DEFAULT KOSONG
+    if (!$row) {
+        $row = [
+            'enteral_jenis'    => json_encode(array_fill(0, 5, '')),
+            'parenteral_jenis' => json_encode(array_fill(0, 7, '')),
+            'enteral'          => json_encode(array_fill(0, 5, array_fill(0, 25, ''))),
+            'parenteral'       => json_encode(array_fill(0, 7, array_fill(0, 25, ''))),
+            'keluar'           => json_encode(array_fill(0, 7, array_fill(0, 25, ''))),
+            'total_input'      => json_encode(array_fill(0, 25, '')),
+            'total_output'     => json_encode(array_fill(0, 25, '')),
+            'total'            => json_encode(array_fill(0, 25, '')),
+        ];
+    }
+
+    // decode json → array
+    $decode = function ($v) {
+        return is_string($v) ? json_decode($v, true) : [];
+    };
+
+    $page_data = [
+        'pasien'           => $pasien,
+        'pelayanan'        => $pelayanan,
+        'history'          => $history,
+        'sso_user_data'    => $staff,
+
+        'enteral_jenis'    => $decode($row['enteral_jenis']),
+        'parenteral_jenis' => $decode($row['parenteral_jenis']),
+        'enteral'          => $decode($row['enteral']),
+        'parenteral'       => $decode($row['parenteral']),
+        'keluar'           => $decode($row['keluar']),
+        'total_input'      => $decode($row['total_input']),
+        'total_output'     => $decode($row['total_output']),
+        'total'            => $decode($row['total']),
+    ];
+
+    // load view print
+    $this->load->view('print/form_pemakaian_cairan_icu_print', $page_data);
+}
 }

@@ -2340,6 +2340,7 @@ $izinAkses = $data->izin_akses;
         depo = $('#inDepo1').val();
         id_pelayanan = $('#inPelResep').val();
         id_history = $('#inHisResep').val();
+          iterasi = $("#inIterasi").val();
         $.ajax({
             url: "<?= base_url() . 'Poli/insert_resep' ?>",
             method: "POST",
@@ -2348,6 +2349,7 @@ $izinAkses = $data->izin_akses;
                 jenis_resep: jenis_resep,
                 nama_resep: nama_resep,
                 depo: depo,
+                iterasi: iterasi,
                 id_pelayanan: id_pelayanan,
                 id_history: id_history
             },

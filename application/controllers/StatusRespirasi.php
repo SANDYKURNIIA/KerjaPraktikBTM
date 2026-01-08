@@ -7,30 +7,36 @@ class StatusRespirasi extends CI_Controller
     {
         parent::__construct();
         $this->load->model('M_Erm_ranap');
-        $this->load->model('M_status_respirasi'); // ← tambahkan model baru
+        $this->load->model('M_status_respirasi');
         $this->load->helper(['url']);
-        $this->load->library(['user_agent']);
     }
 
     public function form($id_pelayanan, $id_history)
     {
-        // Gunakan string apa adanya (misal: pl_9, ranap_10)
         $page_data['id_pelayanan'] = (string)$id_pelayanan;
         $page_data['id_history']   = (string)$id_history;
 
-        $selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
-        $page_data['pasien'] = $selectPasien;
-        $page_data['nama']   = $selectPasien->nama ?? '';
-        $page_data['no_rm']  = $selectPasien->no_rm ?? '';
+        $pasien = $this->M_Erm_ranap
+            ->selectDataPasienRanapby_id($id_pelayanan, $id_history);
 
-        $page_data['hours']  = array_merge(range(7, 24), range(1, 6));
+        $page_data['pasien'] = $pasien;
+        $page_data['nama']   = $pasien->nama ?? '';
+        $page_data['no_rm']  = $pasien->no_rm ?? '';
+
+        // JAM
+        $page_data['hours'] = array_merge(range(7, 24), range(1, 6));
+
+        // RENTANG JAM (untuk parameter range)
         $ranges = [];
         $h = $page_data['hours'];
         $n = count($h);
-        for ($i = 0; $i < $n; $i++) $ranges[] = $h[$i] . '-' . $h[($i + 1) % $n];
+        for ($i = 0; $i < $n; $i++) {
+            $ranges[] = $h[$i] . '-' . $h[($i + 1) % $n];
+        }
         $page_data['ranges'] = $ranges;
+        $page_data['colspanRanges'] = count($ranges);
 
-        // Pola nafas per jam (checkbox)
+        // POLA CHECKBOX PER JAM
         $page_data['patterns_hourly'] = [
             'kanula' => 'Kanula Nasal',
             'rm_nrm' => 'RM/NRM',
@@ -40,7 +46,7 @@ class StatusRespirasi extends CI_Controller
             'psimv'  => 'PSIMV',
         ];
 
-        // Pola nafas input angka (dropdown)
+        // POLA ANGKA PER JAM (JSON)
         $page_data['patterns_numeric'] = [
             'ps'   => 'PS',
             'cpap' => 'CPAP',
@@ -52,7 +58,7 @@ class StatusRespirasi extends CI_Controller
             'ipl'  => 'IPL',
         ];
 
-        // Parameter per rentang (checkbox) — kecuali SEKR akan jadi dropdown
+        // PARAMETER RANGE
         $page_data['params_range'] = [
             'ph'    => 'pH',
             'paco2' => 'PaCO2',
@@ -63,7 +69,7 @@ class StatusRespirasi extends CI_Controller
             'svo2'  => 'SvO2',
         ];
 
-        // Sekresi: dropdown dengan kode
+        // SEKR
         $page_data['sekr_options'] = [
             'K'  => 'Kotor',
             'P'  => 'Putih',
@@ -72,8 +78,10 @@ class StatusRespirasi extends CI_Controller
             'Kn' => 'Kental',
         ];
 
-        // ← ambil dari model, bukan query langsung
-        $saved = $this->M_status_respirasi->get_by_id($page_data['id_pelayanan'], $page_data['id_history']);
+        // DATA TERSIMPAN
+        $saved = $this->M_status_respirasi
+            ->get_by_id($id_pelayanan, $id_history);
+
         $page_data['saved'] = $saved ?: [];
 
         $this->load->view('assets/_header');
@@ -88,47 +96,58 @@ class StatusRespirasi extends CI_Controller
 
         $id_pelayanan = trim((string)$this->input->post('id_pelayanan', true));
         $id_history   = trim((string)$this->input->post('id_history', true));
+
         if ($id_pelayanan === '' || $id_history === '') {
-            echo json_encode(['status' => 'error', 'message' => 'id_pelayanan dan id_history wajib.']);
+            echo json_encode(['status' => 'error', 'message' => 'ID tidak valid']);
             return;
         }
 
-        // checkbox[] → CSV
-        $to_csv = function (string $name) {
+        $to_csv = function ($name) {
             $arr = $this->input->post($name);
             if (!is_array($arr)) return null;
-            $arr = array_values(array_unique(array_filter(array_map('trim', $arr), fn($v) => $v !== '')));
+            $arr = array_values(array_unique(array_filter(array_map('trim', $arr))));
             return $arr ? implode(',', $arr) : null;
         };
-
-        $patterns_hourly = ['kanula', 'rm_nrm', 'vc', 'pc', 'simv', 'psimv'];
-        $patterns_numeric = ['ps', 'cpap', 'fio2', 'rr', 'tv', 'mv', 'peep', 'ipl'];
-        $params_range = ['ph', 'paco2', 'pao2', 'be', 'hco3', 'sao2', 'svo2'];
 
         $payload = [
             'id_pelayanan' => $id_pelayanan,
             'id_history'   => $id_history,
         ];
 
-        foreach ($patterns_hourly as $c) {
+        foreach (['kanula','rm_nrm','vc','pc','simv','psimv'] as $c) {
             $payload[$c] = $to_csv($c);
         }
 
-        foreach ($patterns_numeric as $c) {
-            $val = trim((string)$this->input->post($c));
-            $payload[$c] = ($val === '' ? null : (int)$val);
-        }
-
-        foreach ($params_range as $c) {
+        foreach (['ph','paco2','pao2','be','hco3','sao2','svo2'] as $c) {
             $payload[$c] = $to_csv($c);
         }
 
-        $sekr = trim((string)$this->input->post('sekr'));
-        $payload['sekr'] = ($sekr === '') ? null : $sekr;
+        $payload['sekr'] = trim((string)$this->input->post('sekr')) ?: null;
 
-        // ← panggil upsert model, bukan query langsung
+        // POLA ANGKA PER JAM
+        $pola_angka = [];
+        $input = $this->input->post('pola_angka');
+
+        if (is_array($input)) {
+            foreach ($input as $param => $hours) {
+                foreach ($hours as $jam => $val) {
+                    $val = trim((string)$val);
+                    if ($val !== '') {
+                        $pola_angka[$param][$jam] = (int)$val;
+                    }
+                }
+            }
+        }
+
+        $payload['json_pola_angka'] = empty($pola_angka)
+            ? null
+            : json_encode($pola_angka);
+
         $ok = $this->M_status_respirasi->save_or_update($payload);
 
-        echo json_encode($ok ? ['status' => 'success'] : ['status' => 'error', 'message' => 'Gagal menyimpan ke database.']);
+        echo json_encode(
+            $ok ? ['status' => 'success']
+                : ['status' => 'error', 'message' => 'Gagal menyimpan']
+        );
     }
 }

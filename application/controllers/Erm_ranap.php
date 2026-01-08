@@ -333,6 +333,9 @@ class Erm_ranap extends CI_Controller
 		$pews_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pews_anak');
 		$asesmen_jatuh_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_anak');
 		$asesmen_jatuh_lansia = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_lansia');
+		$lembar_monitoring = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'lembar_monitoring');	
+		$ews_maternity = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'lembar_monitoring');
+		$asses_ulang_nyeri = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'form_asesmen_ulang_nyeri');
 
 
 		// $asses_per_igd = $this->M_Erm->checkData($id_pelayanan, 'form_ass_per_igd');
@@ -379,6 +382,9 @@ class Erm_ranap extends CI_Controller
 		$db['asesmen_jatuh_anak'] = empty($asesmen_jatuh_anak) ? 'not-found' : 'found';
 		$db['pews_anak'] = empty($pews_anak) ? 'not-found' : 'found';
 		$db['asesmen_jatuh_lansia'] = empty($asesmen_jatuh_lansia) ? 'not-found' : 'found';
+		$db['lembar_monitoring'] = empty($lembar_monitoring) ? 'not-found' : 'found';
+		$db['ews_maternity'] = empty($ews_maternity) ? 'not-found' : 'found';
+		$db['asses_ulang_nyeri'] = empty($asses_ulang_nyeri) ? 'not-found' : 'found';
 
 		// $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
 		// $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';

@@ -589,10 +589,19 @@
                             $('input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
                         }
 
-                        // CHECKBOX
+                       // CHECKBOX
                         if ($('[name="' + key + '"]').is('input[type="checkbox"]')) {
+                            // Reset dulu semua checkbox dengan nama yang sama agar tidak double saat load ulang
+                            $('[name="' + key + '"]').prop('checked', false);
+
                             if (value !== null && value !== '') {
-                                $('input[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+                                // Pecah string "FISTULA AV (CIMINO),DOUBLE LUMEN CATHETER" menjadi array
+                                let selectedValues = value.split(','); 
+
+                                $.each(selectedValues, function(i, val){
+                                    // Gunakan .trim() untuk jaga-jaga jika ada spasi setelah koma
+                                    $('input[name="' + key + '"][value="' + val.trim() + '"]').prop('checked', true);
+                                });
                             }
                         }
                     });

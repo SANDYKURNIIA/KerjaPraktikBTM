@@ -59,6 +59,7 @@ class Pews_anak extends CI_Controller
             ]);
         }
     }
+    
     public function simpan()
     {
         $tgl = date("Y-m-d H:i:s"); // gunakan H (24 jam)
@@ -163,5 +164,36 @@ class Pews_anak extends CI_Controller
                 'message' => 'Gagal menghapus data.'
             ]);
         }
+    }
+
+    public function get_riwayat_ajax() {
+        $id_pelayanan = $this->input->post('id_pelayanan');
+        $riwayat = $this->M_Pews_Anak->getRiwayatPews($id_pelayanan);
+        $data = array();
+        $no = 1;
+
+        foreach ($riwayat as $row) {
+            $sub_array = array();
+            $sub_array[] = $no++;
+            
+            // Tombol Edit
+            $sub_array[] = '<button class="btn btn-primary btn-icon-anim btn square" type="button" onclick="select_pws('.$row->id.')">
+                                <i class="icon-pencil"></i>
+                            </button>';
+            
+            // Tombol Hapus
+            $sub_array[] = '<button class="btn btn-danger btn-icon-anim btn square" type="button" onclick="hapus_pws('.$row->id.')">
+                                <i class="icon-trash"></i>
+                            </button>';
+                            
+            $sub_array[] = date('d-m-Y', strtotime($row->tanggal));
+            $sub_array[] = $row->jam;
+            $sub_array[] = $row->nama_staff;
+            $sub_array[] = $row->skor; // Kirim angka saja, warna diatur di JavaScript
+            
+            $data[] = $sub_array;
+        }
+
+        echo json_encode(array("data" => $data));
     }
 }

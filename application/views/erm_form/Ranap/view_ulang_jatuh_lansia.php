@@ -1,9 +1,6 @@
 <!-- view_ulang_jatuh_lansia.php -->
 
 <style>
-  /* FORCE HITAM UNTUK BAGIAN PETUNJUK PENILAIAN */
-  .panel-body div,
-  .panel-body span,
   .panel-body label,
   .panel-body p,
   .panel-body li {
@@ -11,10 +8,6 @@
   }
 
   /* Khusus baris abu-abu */
-  .panel-body *:not(.bg-success):not(.btn) {
-    color: #000 !important;
-  }
-
   /* Override text-muted / help */
   .text-muted,
   .help,
@@ -115,9 +108,9 @@
                     </div>
                     <div class="col-md-12">
                       <label class="control-label mb-10 text-left"><b>Petunjuk Penilaian</b></label>
-                      <div>- 0-7 : Risiko Rendah</div>
-                      <div>- 8-13 : Risiko Sedang</div>
-                      <div>- >14 : Risiko Tinggi</div>
+                      <p>- 0-7 : Risiko Rendah</p>
+                      <p>- 8-13 : Risiko Sedang</p>
+                      <p>- >14 : Risiko Tinggi</p>
                     </div>
                   </div>
                 </div>
@@ -1269,6 +1262,8 @@
               top: 0,
               behavior: 'smooth'
             });
+
+            sumScore();
           } else {
             swal({
               title: "Gagal!",

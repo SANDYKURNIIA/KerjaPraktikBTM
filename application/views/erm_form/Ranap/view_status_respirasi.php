@@ -38,9 +38,9 @@ $colspanRanges = count($ranges);
           <table class="table table-bordered table-striped table-sm mb-4">
             <thead>
               <tr>
-                <th class="fixed-col">Pola Nafas</th>
+                <th class="fixed-col">Pola Nafas / Jam</th>
                 <?php foreach ($hours as $h): ?>
-                  <th><?= $h ?></th>
+                  <th class="text-center"><?= $h ?></th>
                 <?php endforeach; ?>
               </tr>
             </thead>
@@ -57,40 +57,60 @@ $colspanRanges = count($ranges);
           </table>
         </div>
 
-        <!-- ===== INPUT ANGKA (PS–IPL) ===== -->
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-sm mb-4">
-            <thead>
-              <tr>
-                <th class="fixed-col">Pola (Angka)</th>
-                <th>Nilai</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($patterns_numeric as $col => $label): ?>
-                <tr>
-                  <td class="label-col"><?= htmlspecialchars($label) ?></td>
-                  <td style="text-align:left;">
-                    <input type="number" min="0"
-                      name="<?= $col ?>"
-                      class="form-control form-control-sm text-center"
-                      style="max-width:100px;display:inline-block;"
-                      value="<?= htmlspecialchars($saved[$col] ?? '', ENT_QUOTES); ?>"
-                      placeholder="0">
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
+       <!-- ===== INPUT ANGKA (PS–IPL) PER JAM ===== -->
+<!-- ===== INPUT ANGKA (PS–IPL) PER JAM ===== -->
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-sm mb-4">
+    <thead>
+      <tr>
+        <th>Pola (Angka) / Jam</th>
+        <?php foreach ($hours as $h): ?>
+          <th class="text-center"><?= $h ?></th>
+        <?php endforeach; ?>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($patterns_numeric as $col => $label): ?>
+        <tr>
+          <td class="font-weight-bold text-dark">
+            <?= htmlspecialchars($label) ?>
+          </td>
+          <?php foreach ($hours as $h): ?>
+            <td class="text-center">
+            <input
+  type="text"
+  name="pola_angka[<?= $col ?>][<?= $h ?>]"
+  class="pola-angka-input font-pola"
+  value="<?= htmlspecialchars($saved['pola_angka'][$col][$h] ?? '', ENT_QUOTES); ?>"
+>
+
+
+
+            </td>
+          <?php endforeach; ?>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+$(document).on('input', '.pola-angka-input', function(){
+  this.value = this.value.replace(/[^0-9]/g,'');
+});
+</script>
+
+
+
 
         <!-- ===== PARAMETER RENTANG + SEKR ===== -->
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-sm mb-4">
             <thead>
               <tr>
-                <th class="fixed-col">Parameter</th>
-                <?php foreach ($ranges as $r): ?>
+                <th class="fixed-col">Parameter / Range Jam</th>
+                <?php foreach ($ranges as $r): ?> 
                   <th><?= $r ?></th>
                 <?php endforeach; ?>
               </tr>
@@ -158,6 +178,46 @@ td.label-col, th.fixed-col { text-align:left; font-weight:bold; color:black; }
   .panel-heading div[style] { font-size:0.9rem; }
 }
 .btn-secondary { background:#6c757d; border-color:#6c757d; color:#fff; }
+/* samakan gaya dengan tabel pola nafas */
+.table th,
+.table td{
+  color:#000;
+  font-weight:600;
+}
+
+/* input angka */
+.pola-angka-input{
+  width:60px;
+  height:28px;
+  text-align:center;
+  border:1px solid #999;
+  border-radius:3px;
+  background:#fff;
+  color:#000;
+  font-weight:600;
+  font-size:13px;
+  outline:none;
+  position:relative;
+  z-index:10;
+}
+
+/* saat fokus */
+.pola-angka-input:focus{
+  border-color:#333;
+}
+
+.table-responsive td{
+  position:relative;
+}
+/* khusus tabel pola nafas */
+.table-responsive table thead th.fixed-col,
+.table-responsive table tbody td.label-col{
+  text-align:center !important;
+}
+
+
+
+
 </style>
 
 <script>

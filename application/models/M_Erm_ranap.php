@@ -803,4 +803,42 @@ public function update_resiko_ulang_jatuh_lansia($id_asesmen, $data)
         return $this->db->get()->row_array();
     }
 
+    public function upsertStatusRespirasi(array $data)
+    {
+        $exists = $this->db
+            ->where('id_pelayanan', $data['id_pelayanan'])
+            ->where('id_history', $data['id_history'])
+            ->get('status_respirasi')
+            ->row_array();
+
+        if ($exists) {
+            return $this->db
+                ->where('id_pelayanan', $data['id_pelayanan'])
+                ->where('id_history', $data['id_history'])
+                ->update('status_respirasi', $data);
+        }
+
+        return $this->db->insert('status_respirasi', $data);
+    }
+
+    public function getEwsMaternityByPelayanan($id_pelayanan, $id_history)
+    {
+        return $this->db
+            ->where('id_pelayanan', $id_pelayanan)
+            ->where('id_history', $id_history)
+            ->get('ews_maternity')
+            ->row();
+    }
+
+    public function selectPemantauanEwsMaternitySehari($id_pelayanan)
+    {
+        $this->db->select('d.*, p.tgl_masuk');
+        $this->db->from('ews_maternity d, pelayanan p');
+        $this->db->where('d.id_pelayanan = p.id_pelayanan');
+        $this->db->where('d.id_pelayanan', $id_pelayanan);
+        return $this->db->get()->result();
+    }
+
+
+
 }

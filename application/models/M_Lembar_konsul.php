@@ -51,7 +51,7 @@ class M_Lembar_konsul extends CI_Model
         d_tujuan.nama AS dokter_tujuan, 
         d_pengirim.nama AS dokter_pengirim, d_pengirim.foto as ttd_dokter_pengirim,
         p.nama AS nama_pasien, 
-        p.tgl_lahir 
+        p.tgl_lahir
     ");
         $this->db->from("form_lembar_rujukan f");
         $this->db->join("list_poli l", "f.id_list_poli = l.id_list_poli", "left");

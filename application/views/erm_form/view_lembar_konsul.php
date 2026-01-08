@@ -1,60 +1,86 @@
 <div class="row">
     <div class="col-sm-12">
-        <div class="panel panel-default card-view">
-            <!-- Header -->
-            <div class="panel-heading">
+        <div class="panel panel-default card-view shadow-sm" style="border-radius: 8px; border: 1px solid #e0e0e0;">
+            <div class="panel-heading" style="background-color: #f8f9fa; border-bottom: 1px solid #eee; padding: 20px;">
                 <div class="pull-left">
-                    <h1 class="panel-title txt-dark">Lembar Konsul Antar DPJP</h1>
+                    <h5 class="panel-title txt-dark" style="font-weight: 700; letter-spacing: 0.5px;">
+                        <i class="fa fa-exchange text-success mr-10"></i> RUJUKAN INTERNAL ANTAR DPJP
+                    </h5>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
-            <hr>
-
             <div class="panel-wrapper collapse in">
-                <div class="panel-body">
+                <div class="panel-body" style="padding: 30px;">
                     <div class="form-wrap">
-                        <!-- Dokter -->
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">
-                                <strong>Kepada Yth. TS. Dokter:</strong>
-                            </label>
-                            <div class="col-md-6 has-success">
-                                <select class="form-control select2" id="id_dokter" name="id_dokter">
-                                    <option value="">PILIH DOKTER</option>
-                                    <?php foreach ($dokter as $d): ?>
-                                        <option value="<?= $d->id_dokter; ?>" data-spes="<?= $d->dokter_spes; ?>">
-                                            <?= $d->nama; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label mb-10"><strong>Kepada Yth. TS. Dokter:</strong></label>
+                                    <div class="has-success">
+                                        <select class="form-control select2" id="id_dokter" name="id_dokter">
+                                            <option value="">-- PILIH DOKTER TUJUAN --</option>
+                                            <?php foreach ($dokter as $d): ?>
+                                                <option value="<?= $d->id_dokter; ?>" data-spes="<?= $d->dokter_spes; ?>">
+                                                    <?= $d->nama; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label mb-10"><strong>Poli Tujuan:</strong></label>
+                                    <div class="has-success">
+                                        <select class="form-control select2" id="id_list_poli" name="id_list_poli">
+                                            <option value="">-- PILIH POLI TUJUAN --</option>
+                                            <?php foreach ($list_poli as $p): ?>
+                                                <option value="<?= $p->id_list_poli; ?>"
+                                                    data-spes="<?= htmlspecialchars($p->kdpoli_bpjs); ?>">
+                                                    <?= $p->nama_panjang; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Poli -->
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">
-                                <strong>Poli Tujuan:</strong>
-                            </label>
-                            <div class="col-md-6 has-success">
-                                <select class="form-control select2" id="id_list_poli" name="id_list_poli">
-                                    <option value="">PILIH POLI</option>
-                                    <?php foreach ($list_poli as $p): ?>
-                                        <option value="<?= $p->id_list_poli; ?>"
-                                            data-spes="<?= htmlspecialchars($p->kdpoli_bpjs); ?>">
-                                            <?= $p->nama_panjang; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                        <hr class="light-grey-hr">
+
+                        <div class="alert"
+                            style="background-color: #f1faf5; border-left: 5px solid #48bb78; color: #2f855a; padding: 20px;">
+                            <i class="fa fa-user mr-10" style="color: #48bb78;"></i>
+                            <strong style="color: #276749;">Informasi Pasien:</strong> Mohon konsultasi pasien berikut:
                         </div>
 
-
-                        <!-- Info Pasien -->
-                        <div class="form-group row">
-                            <label class="col-md-12 control-label text-left">
-                                <strong>Mohon konsultasi pasien berikut:</strong>
-                            </label>
+                        <div class="row mb-20">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Nama Pasien</label>
+                                    <input type="text" disabled class="form-control" value="<?= $nama ?>"
+                                        style="font-weight: 600;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Umur</label>
+                                    <input type="text" disabled class="form-control" value="<?php
+                                    $tanggal = new DateTime($tgl_lahir);
+                                    $today = new DateTime();
+                                    echo $today->diff($tanggal)->y . ' Tahun';
+                                    ?>" style="font-weight: 600;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">No. RM</label>
+                                    <input type="text" disabled class="form-control" value="<?= $no_rm ?>"
+                                        style="font-weight: 600;">
+                                </div>
+                            </div>
                         </div>
 
                         <input type="hidden" id="inPel" value="<?= $id_pelayanan ?>">
@@ -62,179 +88,116 @@
                         <input type="hidden" id="inNoRM" value="<?= $no_rm ?>">
                         <input type="hidden" id="inIdFormRujukan">
 
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="control-label text-left">Nama</label>
-                                <input type="text" disabled class="form-control" value="<?= $nama ?>">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="control-label text-left">Umur</label>
-                                <input type="text" disabled class="form-control" value="<?php
-                                $tanggal = new DateTime($tgl_lahir);
-                                $today = new DateTime();
-                                echo $today->diff($tanggal)->y . ' tahun';
-                                ?>">
-                            </div>
-                        </div>
-
-                        <!-- Diagnosis -->
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">Diagnosis</label>
-
-                            <div class="col-md-6 has-success">
-                                <div class="input-group">
-                                    <input type="text" id="diagnosis" class="form-control typeahead"
-                                        placeholder="Cari Diagnosa (Kode/Nama Diagnosa)">
-
-                                    <span class="input-group-addon">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label mb-10"><strong>Diagnosis Utama (ICD-10)</strong></label>
+                                    <div class="input-group has-success">
+                                        <input type="text" id="diagnosis" class="form-control typeahead"
+                                            placeholder="Cari Kode atau Nama Diagnosa...">
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Keluhan Utama -->
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">Keluhan</label>
-                            <div class="col-md-6 has-success">
-                                <span id="keluhan_error" class="text-danger"></span>
-                                <textarea id="keluhan" class="form-control" rows="4"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Terapi -->
-
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">Terapi Yang Telah Diberikan</label>
-                            <div class="col-md-6 has-success">
-                                <span id="terapi_error" class="text-danger"></span>
-                                <textarea id="terapi" class="form-control" rows="4"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Riwayat Penyakit -->
-                        <div class="form-group row">
-                            <label class="col-md-2 control-label text-left">Riwayat Penyakit</label>
-                            <div class="col-md-6 has-success">
-                                <span id="riwayat_penyakit_error" class="text-danger"></span>
-                                <textarea id="riwayat_penyakit" class="form-control" rows="4"></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Penutup -->
-                        <div class="form-group row" style="margin-top: 0px;">
-                            <label class="col-md-12 control-label text-left">
-                                <strong>Mohon konsul dan penanganan selanjutnya. Terima kasih atas bantuan dan kerja
-                                    samanya.</strong>
-                            </label>
-                        </div>
-
-                        <!-- Respon Dokter -->
-                        <?php if ($is_dokter): ?>
-                            <div class="form-group row" id="respon_wrapper" style="margin-top:15px; display:none;">
-                                <label class="col-md-2 control-label text-left">
-                                    <strong>Respon Dokter</strong>
-                                </label>
-                                <div class="col-md-6">
-
-                                    <label class="radio-inline">
-                                        <input type="radio" name="respon_dokter" value="terima" id="rd_terima">
-                                        Terima
-                                    </label>
-
-                                    <label class="radio-inline">
-                                        <input type="radio" name="respon_dokter" value="tolak" id="rd_tolak">
-                                        Tolak
-                                    </label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label class="control-label mb-10">Keluhan Utama</label>
+                                    <div class="has-success">
+                                        <textarea id="keluhan" class="form-control" rows="4"
+                                            placeholder="Tuliskan keluhan utama pasien..."></textarea>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label mb-10">Terapi Yang Telah Diberikan</label>
+                                    <div class="has-success">
+                                        <textarea id="terapi" class="form-control" rows="4"
+                                            placeholder="Daftar obat atau tindakan..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label mb-10">Riwayat Penyakit</label>
+                                    <div class="has-success">
+                                        <textarea id="riwayat_penyakit" class="form-control" rows="4"
+                                            placeholder="Riwayat penyakit terdahulu..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <!-- Balasan Dokter -->
-                            <div class="form-group row" id="balasan_wrapper" style="display:none;">
-                                <label class="col-md-2 control-label text-left">
-                                    Balasan
-                                </label>
-                                <div class="col-md-6  has-success">
-                                    <textarea id="balasan" name="balasan" class="form-control" rows="4"
-                                        placeholder="Masukkan balasan dokter..."></textarea>
+                        <p class="mt-10 mb-20 text-muted"><em>* Mohon konsul dan penanganan selanjutnya. Terima kasih
+                                atas bantuan dan kerja samanya.</em></p>
+
+                       <?php if ($is_dokter): ?>
+                            <div id="respon_section" class="well" style="background: #fdfdfd; border: 1px dashed #22af47; display: none;">
+                                <div class="form-group">
+                                    <label class="control-label mb-10"><strong>Tanggapan Dokter Penerima:</strong></label>
+                                    <div class="radio-list">
+                                        <label class="radio-inline"><input type="radio" name="respon_dokter" value="terima" id="rd_terima"> Terima </label>
+                                        <label class="radio-inline"><input type="radio" name="respon_dokter" value="tolak" id="rd_tolak"> Tolak </label>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-0" id="balasan_wrapper">
+                                    <label class="control-label mb-10">Catatan Balasan</label>
+                                    <div class="has-success">
+                                        <textarea id="balasan" name="balasan" class="form-control" rows="3" placeholder="Masukkan balasan atau instruksi dokter..."></textarea>
+                                    </div>
                                 </div>
                             </div>
                         <?php endif ?>
 
+                        <hr class="light-grey-hr">
 
-                        <!-- Tombol -->
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <a href="javascript:history.back()" class="btn btn-default btn-anim">
-                                    <i class="fa fa-arrow-left"></i>
-                                    <span class="btn-text">KEMBALI</span>
-                                </a>
+                        <div class="form-actions">
+                            <a href="javascript:history.back()" class="btn btn-default btn-outline btn-anim">
+                                <i class="fa fa-arrow-left"></i><span class="btn-text">Kembali</span>
+                            </a>
 
-                                <?php if (!$is_dokter): ?>
-                                    <button style="margin-left: 10px;" type="button" class="btn btn-success btn-anim"
-                                        onclick="simpan()">
-                                        <i class="icon-rocket"></i>
-                                        <span class="btn-text">SIMPAN</span>
-                                    </button>
-                                <?php else: ?>
-                                    <button style="margin-left: 10px;" type="button" class="btn btn-success btn-anim d-none"
-                                        onclick="kirim_balasan()" disabled id="btnKirim">
-                                        <i class="icon-rocket"></i>
-                                        <span class="btn-text">KIRIM BALASAN</span>
-                                    </button>
-                                <?php endif; ?>
-
-                            </div>
+                            <?php if (!$is_dokter): ?>
+                                <button type="button" class="btn btn-success btn-anim pull-right" onclick="simpan()">
+                                    <i class="fa fa-save"></i><span class="btn-text">SIMPAN RUJUKAN</span>
+                                </button>
+                            <?php else: ?>
+                                <button type="button" class="btn btn-primary btn-anim pull-right"
+                                    onclick="kirim_balasan()" disabled id="btnKirim" style="display: none;">
+                                    <i class="fa fa-paper-plane"></i><span class="btn-text">KIRIM BALASAN</span>
+                                </button>
+                            <?php endif; ?>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabel Riwayat -->
+            <div class="panel-heading" style="background-color: #fcfcfc; border-top: 1px solid #eee;">
+                <h6 class="panel-title txt-dark"><i class="fa fa-history mr-10"></i> RIWAYAT RUJUKAN PASIEN</h6>
+            </div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-body">
                     <div class="table-wrap">
                         <div class="table-responsive">
-                            <table id="tabel_terapi" class="table table-hover display pb-30">
+                            <table id="tabel_terapi" class="table table-hover table-bordered display pb-30">
                                 <thead>
                                     <tr class="bg-success">
-                                        <?php if ($is_dokter): ?>
-                                            <th style="width: 5%;">PILIH</th>
-                                        <?php else: ?>
-                                            <th style="width: 5%;">HAPUS</th>
-                                        <?php endif ?>
-                                        <th style="width: 5%;">CETAK</th>
-                                        <th style="width: 10%;">PASIEN</th>
-                                        <th style="width: 10%;">USIA</th>
-                                        <th style="width: 10%;">TANGGAL & JAM</th>
-                                        <th style="width: 10%;">DOKTER</th>
-                                        <th style="width: 10%;">POLI</th>
-                                        <th style="width: 30%;">DIAGNOSA</th>
-                                        <th style="width: 30%;">KELUHAN UTAMA</th>
-                                        <th style="width: 30%;">STATUS</th>
-                                        <th style="width: 30%;">BALASAN</th>
+                                        <th class="text-white"><?= $is_dokter ? 'PILIH' : 'HAPUS' ?></th>
+                                        <th class="text-white">CETAK</th>
+                                        <th class="text-white">PASIEN</th>
+                                        <th class="text-white">WAKTU</th>
+                                        <th class="text-white">DOKTER</th>
+                                        <th class="text-white">POLI</th>
+                                        <th class="text-white">DIAGNOSA</th>
+                                        <th class="text-white">KELUHAN</th>
+                                        <th class="text-white">STATUS</th>
+                                        <th class="text-white">BALASAN</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr class="bg-success">
-                                        <?php if ($is_dokter): ?>
-                                            <th>PILIH</th>
-                                        <?php else: ?>
-                                            <th>HAPUS</th>
-                                        <?php endif ?>
-                                        <th>CETAK</th>
-                                        <th>PASIEN</th>
-                                        <th>USIA</th>
-                                        <th>TANGGAL & JAM</th>
-                                        <th>DOKTER</th>
-                                        <th>POLI</th>
-                                        <th>DIAGNOSA</th>
-                                        <th>KELUHAN UTAMA</th>
-                                        <th>STATUS</th>
-                                        <th>BALASAN</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody style="color: black;"></tbody>
+                                <tbody style="color: #333;"></tbody>
                             </table>
                         </div>
                     </div>
@@ -243,21 +206,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .ui-autocomplete {
-        max-height: 100px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        z-index: 9999 !important;
-        background: white;
-        border-radius: 6px;
-    }
-
-    .d-none {
-        display: none;
-    }
-</style>
 
 <link rel="stylesheet" href="<?php echo base_url('assets/dist/jquery-ui.css'); ?>">
 <script src="<?php echo base_url('assets/dist/jquery-ui.min.js'); ?>"></script>
@@ -270,7 +218,7 @@
             return text
                 .toString()
                 .toLowerCase()
-                .replace(/\s+/g, '') 
+                .replace(/\s+/g, '')
                 .trim();
         }
 
@@ -285,8 +233,6 @@
             if (!spesDokter) return;
 
             spesDokter = normalize(spesDokter);
-
-            console.log('SPES DOKTER:', spesDokter);
 
             let found = false;
 
@@ -308,12 +254,6 @@
                     return false;
                 }
             });
-
-            if (!found) {
-                console.warn('Poli TIDAK DITEMUKAN untuk:', spesDokter);
-                $('#id_list_poli').prop('disabled', false).trigger('change');
-            }
-
         });
 
     });
@@ -382,6 +322,15 @@
         });
     });
 
+    function toggleButtonLoading(btnSelector, isLoading, originalText) {
+        const btn = $(btnSelector);
+        if (isLoading) {
+            btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Memproses...');
+        } else {
+            btn.prop('disabled', false).html(originalText);
+        }
+    }
+
     function select_konsul(id_lembar_konsul) {
         $.ajax({
             url: "<?= base_url() ?>Erm_dpjp/get_lembar_konsul",
@@ -389,9 +338,14 @@
             dataType: "json",
             data: { id: id_lembar_konsul },
             success: function (data) {
-                $('#respon_wrapper').fadeIn();
-                $('#balasan_wrapper').fadeIn();
-                $('#btnKirim').removeClass('d-none');
+                $('#respon_section').fadeIn(600); 
+                $('#btnKirim').fadeIn(600);
+
+                $('html, body').animate({
+                    scrollTop: $("#respon_section").offset().top - 500
+                }, 600);
+
+                setTimeout(() => $('#balasan').focus(), 800);
 
                 const {
                     id_form_lembar_rujukan,
@@ -516,6 +470,7 @@
                         swal("Sukses", "Balasan berhasil dikirim", "success");
 
                         reload_data_id_pel(id_pelayanan);
+                        select_konsul(id_form_lembar_rujukan);
 
                         // reset form
                         $('#balasan').val('');
@@ -529,8 +484,8 @@
                             <span class="btn-text">KIRIM BALASAN</span>
                         `);
 
-                        $('#balasan_wrapper').hide();
-                        $('#respon_wrapper').hide();
+                        // $('#balasan_wrapper').hide();
+                        // $('#respon_wrapper').hide();
 
                     } else {
                         swal("Gagal", res.message || "Gagal mengirim balasan", "error");
@@ -611,16 +566,16 @@
 
     function hapus_lembar_konsul(id_lembar_konsul) {
         swal({
-            title: "Keterangan Penghapusan",
-            text: "Silakan isi alasan penghapusan lembar konsul:",
+            title: "Batalkan Rujukan?",
+            text: "Berikan alasan pembatalan medis atau administrasi:",
             type: "input",
-            input: "textarea",
+            placeholder: "Contoh: Salah pilih dokter / Pasien pulang APS",
             showCancelButton: true,
-            confirmButtonColor: "#3cb878",
-            confirmButtonText: "Hapus",
+            confirmButtonColor: "#d9534f",
+            confirmButtonText: "Batalkan Rujukan",
             cancelButtonText: "Batal",
-            showLoaderOnConfirm: true,
-            closeOnConfirm: false
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
         }, function (keterangan) {
 
             if (keterangan === false) return false;
@@ -648,13 +603,6 @@
                             confirmButtonColor: "#3cb878"
                         });
                         $('#tabel_terapi').DataTable().ajax.reload();
-                    } else {
-                        swal({
-                            title: "Gagal!",
-                            type: "warning",
-                            text: data.message,
-                            confirmButtonColor: "#3cb878"
-                        });
                     }
                 },
 
@@ -675,7 +623,7 @@
 
     function print_lembar_konsul(id_lembar_konsul) {
         swal({
-            title: "Cetak Lembar Konsul?",
+            title: "Cetak Lembar Rujukan?",
             text: "Apakah kamu yakin ingin mencetak?",
             type: "warning",
             showCancelButton: true,
@@ -715,7 +663,7 @@
 
         swal({
             title: "Apakah kamu yakin?",
-            text: "Menambahkan lembar konsul baru",
+            text: "Menambahkan lembar rujukan baru",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3cb878",
@@ -726,6 +674,7 @@
         }, function (isConfirm) {
 
             if (!isConfirm) return false;
+            toggleButtonLoading('button[onclick="simpan()"]', true, '<i class="fa fa-save"></i> SIMPAN RUJUKAN');
 
             $.ajax({
                 url: "<?php echo base_url() ?>Erm_dpjp/insert_lembar_rujukan",
@@ -735,48 +684,10 @@
 
                 success: function (data) {
                     if (data.status === "success") {
-
+                        swal("Berhasil!", "Rujukan telah dikirim ke dokter tujuan.", "success");
                         reload_data_id_pel(id_pelayanan);
-
-                        swal({
-                            title: "Berhasil!",
-                            text: "Data berhasil disimpan. Apakah ingin kembali ke halaman sebelumnya?",
-                            type: "success",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3cb878",
-                            confirmButtonText: "Ya, pindah halaman",
-                            cancelButtonText: "Tetap di sini",
-                            closeOnConfirm: false
-                        }, function (isConfirm) {
-                            if (isConfirm) {
-                                window.location.href = "<?= $url ?>";
-                            } else {
-                                swal.close();
-                            }
-                        });
-
-                    } else if (data.error) {
-
-                        $('#tempat_error').html(data.tempat || '');
-                        $('#riwayat_penyakit_error').html(data.riwayat_penyakit || '');
-                        $('#diagnosis_error').html(data.diagnosis || '');
-                        $('#terapi_error').html(data.terapi || '');
-                        $('#tempat1_error').html(data.tempat1 || '');
-                        $('#hasil_periksa_error').html(data.hasil_periksa || '');
-                        $('#terapi1_error').html(data.terapi1 || '');
-                        $('#saran_error').html(data.saran || '');
-
-                        swal.close();
-
-                    } else {
-
-                        swal({
-                            title: "Gagal!",
-                            type: "warning",
-                            text: data.status,
-                            confirmButtonColor: "#3cb878"
-                        });
                     }
+                    toggleButtonLoading('button[onclick="simpan()"]', false, '<i class="fa fa-save"></i> SIMPAN RUJUKAN');
                 },
 
                 error: function () {

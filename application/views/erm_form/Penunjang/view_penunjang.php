@@ -2700,6 +2700,7 @@ $izinAkses = $data->izin_akses;
         depo = $('#inDepo1').val();
         id_pelayanan = $('#inPelResep').val();
         id_history = $('#inHisResep').val();
+
         $.ajax({
             url: "<?= base_url() . 'Poli/insert_resep' ?>",
             method: "POST",
