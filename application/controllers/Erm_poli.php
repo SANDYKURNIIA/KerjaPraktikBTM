@@ -261,6 +261,7 @@ class Erm_poli extends CI_Controller
       
         // $super_ranap = $this->M_Erm_poli->checkData($id_histori, 'form_perintah_ranap');
         $asses_per_igd = $this->M_Erm_poli->checkData($id_histori, 'form_assesmen_awal_rajal');
+        $form_ekg = $this->M_Erm_poli->checkData($id_histori, 'form_ekg');
         // $observasi = $this->M_Erm_poli->checkData($id_histori, 'form_observasi');
         // $sebab_kematian = $this->M_Erm_poli->checkData($id_histori, 'form_sebab_kematian');
         // $lembar_rujukan = $this->M_Erm_poli->checkData($id_histori, 'form_lembar_rujukan');
@@ -281,6 +282,7 @@ class Erm_poli extends CI_Controller
         $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';
         $db['assesmen_rehab'] = empty($assesmen_rehab) ? 'not-found' : 'found';
         $db['form_fisikrehab'] = empty($form_fisikrehab) ? 'not-found' : 'found';
+        $db['form_ekg'] = empty($form_ekg) ? 'not-found' : 'found';
         // $db['observasi'] = empty($observasi) ? 'not-found' : 'found';
         // $db['sebab_kematian'] = empty($sebab_kematian) ? 'not-found' : 'found';
         // $db['lembar_rujukan'] = empty($lembar_rujukan) ? 'not-found' : 'found';

@@ -202,14 +202,77 @@ ul {
 <!--table 3-->
             <table width=100% class="table1" cellspacing=0>
 
+                <?php
+                $skala = 0;
+                if (isset($data['skor_nyeri']) && $data['skor_nyeri'] !== '') {
+                    $skala = intval($data['skor_nyeri']);
+                } elseif (isset($data['skala_nyeri']) && is_numeric($data['skala_nyeri'])) {
+                    $skala = intval($data['skala_nyeri']);
+                } elseif (isset($data['skala_nyeri']) && is_string($data['skala_nyeri'])) {
+                    $label = strtolower(trim($data['skala_nyeri']));
+                    if (strpos($label, 'tidak') !== false) {
+                        $skala = 0;
+                    } elseif (strpos($label, 'ringan') !== false) {
+                        $skala = 2;
+                    } elseif (strpos($label, 'sedang') !== false) {
+                        $skala = 4;
+                    } elseif (strpos($label, 'mengganggu') !== false) {
+                        $skala = 6;
+                    } elseif (strpos($label, 'berat') !== false) {
+                        $skala = 8;
+                    } elseif (strpos($label, 'sangat berat') !== false) {
+                        $skala = 10;
+                    }
+                }
+
+                switch ($skala) {
+                    case 0:
+                        $gambar = "tidak_nyeri.png";
+                        $status = "Tidak Nyeri";
+                        break;
+                    case 1:
+                    case 2:
+                        $gambar = "nyeri_ringan.png";
+                        $status = "Nyeri Ringan";
+                        break;
+                    case 3:
+                    case 4:
+                        $gambar = "nyeri_sedang.png";
+                        $status = "Nyeri Sedang";
+                        break;
+                    case 5:
+                    case 6:
+                        $gambar = "nyeri_sedang1.png";
+                        $status = "Nyeri Mengganggu";
+                        break;
+                    case 7:
+                    case 8:
+                        $gambar = "nyeri_berat.png";
+                        $status = "Nyeri Berat";
+                        break;
+                    case 9:
+                    case 10:
+                        $gambar = "nyeri_sangat_berat.png";
+                        $status = "Nyeri Sangat Berat";
+                        break;
+                    default:
+                        $gambar = "tidak_nyeri.png";
+                        $status = "-";
+                }
+                ?>
+
                 <tr>
                     <td width="40"></td>
                     <td>TD :         mmHg</td>
                     <td>Suhu :     °C </td>
                     <td> Nadi :       x/mnt</td>
                     <td> RR :       x/mnt</td>
-                    <td> Skala Nyeri  :</td>
-                    <td></td>
+                    <td>Skala Nyeri :</td>
+                    <td style="text-align:center;">
+                        <img src="<?= base_url('assets/dist/img/'.$gambar); ?>" style="width:40px;"><br>
+                        <strong><?= $skala ?></strong><br>
+                        <?= $status ?>
+                    </td>
                 </tr>
 
                 <tr>

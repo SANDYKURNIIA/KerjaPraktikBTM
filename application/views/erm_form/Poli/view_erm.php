@@ -225,12 +225,11 @@
                                         </button>";
                                                 ?> -->
 
-                                        <?php if ($tipe == "polibedah" || $tipe =="polibedahmulut" || $tipe =="poliorthopedi" || $tipe =="politht" || $tipe =="poliobgyne") {
+                                        <?php if ($tipe == "polibedah" || $tipe == "polibedahmulut" || $tipe == "poliorthopedi" || $tipe == "politht" || $tipe == "poliobgyne") {
                                             echo "<button class='btn btn-success col-md-5' onclick='antrian_operasi(\"" . $id_pelayanan . "\",\"" . $id_histori . "\")'>
                                                 Antrian Operasi
                                                 </button>";
                                             $this->load->view('erm_form/OK/antrian_operasi');
-
                                         }
                                         ?>
                                         <div class="clearfix"></div>
@@ -340,7 +339,7 @@
                                         hasil usg kebidanan
                                     </a>
 
-                                      <a class="btn btn-success col-md-5 tb lembar_uji_fungsi"
+                                    <a class="btn btn-success col-md-5 tb lembar_uji_fungsi"
                                         href="<?= base_url('Lembar_uji_fungsi/form/' . $id_pelayanan . '/' . $no_rm); ?>">
                                         Lembar Uji Fungsi Setelah Rehab
                                     </a>
@@ -351,16 +350,22 @@
                                     </a>
 
                                     <a class="btn btn-success col-md-5 form_fisikrehab"
-                                                href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
-                                                Formulir Layanan Rehabilitasi Medik
+                                        href="<?php echo base_url('Form_fisikrehab/form/') . $id_pel . '/' . $id_his . '/' . $jenis_pelayanan; ?>">
+                                        Formulir Layanan Rehabilitasi Medik
                                     </a>
-                                     <a class="btn btn-success col-md-5 hd_harian" href="<?php echo base_url('Pemantauan_pelaksanaan_hemodialis_harian/form/')  . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
+                                    <a class="btn btn-success col-md-5 hd_harian" href="<?php echo base_url('Pemantauan_pelaksanaan_hemodialis_harian/form/')  . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
                                         Pemantauan Pelaksanaan Hemodialisis
                                     </a>
 
                                     <a class="btn btn-success col-md-5 intradialitik" href="<?= base_url('Erm_pemantauan_intradialitik/form/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>">
                                         Pemantauan Intradialitik
                                     </a>
+
+                                    <a class="btn btn-success col-md-5 form_ekg"
+                                        href="<?= base_url('Erm_form_ekg/form/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>">
+                                        Form EKG
+                                    </a>
+
                                     <?php if ($tipe == 'polimata') { ?>
                                         <a class="btn btn-success col-md-5 laporan_tin_operasi" href="<?= base_url('Erm_laporan_tin_operasi/form/') . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
                                             Laporan Tindakan Operasi
@@ -484,11 +489,12 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.eval').attr('href', '<?php echo base_url('Erm_dpjp/edit_eval/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
                 }
                 if (data.assesmen_rehab == "found") {
-                  $('.form_assesmen_rehab')
-                  .removeClass('btn-success')
-                  .addClass('btn-danger')
-                  .attr('href', '<?php echo base_url('Assesmen_Rehab/form_edit/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
-                 }
+                    $('.form_assesmen_rehab')
+                        .removeClass('btn-success')
+                        .addClass('btn-danger')
+                        .attr('href', '<?php echo base_url('Assesmen_Rehab/form_edit/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
+                }
+
                 if (data.penundaan == "found") {
                     $('.penundaan').removeClass('btn-success').addClass('btn-danger ');
                     $('.penundaan').attr('href', '<?php echo base_url('Erm_penundaan_pelayanan_pengobatan/edit_penundaan/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
@@ -502,26 +508,26 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.intra').attr('href', '<?php echo base_url('Erm_transfer_intra_rs/edit_intra/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>');
                 }
 
-               
+
                 if (data.hasil_usg_kebidanan == "found") {
                     $('.usg_kebidanan').removeClass('btn-success').addClass('btn-danger ');
                 }
-                    
-                 if (data.form_fisikrehab === "found") {
-                     $('.form_fisikrehab').removeClass('btn-success').addClass('btn-danger');
-                // kalau nanti kamu punya route edit khusus, bisa sekalian ganti href di sini
-                // $('.form_fisikrehab').attr('href', '<?= base_url('Form_fisikrehab/edit/') ?>' + <?= $id_pelayanan ?> + '/<?= $id_histori ?>');
+
+                if (data.form_fisikrehab === "found") {
+                    $('.form_fisikrehab').removeClass('btn-success').addClass('btn-danger');
+                    // kalau nanti kamu punya route edit khusus, bisa sekalian ganti href di sini
+                    // $('.form_fisikrehab').attr('href', '<?= base_url('Form_fisikrehab/edit/') ?>' + <?= $id_pelayanan ?> + '/<?= $id_histori ?>');
                 }
                 if (data.laporan_tin_operasi == "found") {
                     $('.laporan_tin_operasi').removeClass('btn-success').addClass('btn-danger ');
                     $('.laporan_tin_operasi').attr('href', '<?php echo base_url('Erm_laporan_tin_operasi/edit_laporan/') . $id_pelayanan .  '/' . $id_histori; ?>');
                 }
-              if (data.lembar_uji_fungsi == "found") {
+                if (data.lembar_uji_fungsi == "found") {
                     $('.lembar_uji_fungsi').removeClass('btn-success').addClass('btn-danger ');
-                    
+
                 }
 
-                 if (data.intradialitik == "found") {
+                if (data.intradialitik == "found") {
                     $('.intradialitik').removeClass('btn-success').addClass('btn-danger ');
                 }
 
@@ -532,6 +538,13 @@ $this->load->view('erm_form/Poli/view_penunjang') ?>
                     $('.laporan_tin_operasi').removeClass('btn-success').addClass('btn-danger ');
                     $('.laporan_tin_operasi').attr('href', '<?php echo base_url('Erm_laporan_tin_operasi/edit_laporan/') . $id_pelayanan .  '/' . $id_histori; ?>');
                 }
+                if (data.form_ekg == "found") {
+                    $('.form_ekg')
+                        .removeClass('btn-success')
+                        .addClass('btn-danger')
+                        .attr('href', '<?php echo base_url('Erm_form_ekg/form_edit/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>');
+                }
+
                 $('#loader').removeClass('hide')
             }
         });

@@ -8,12 +8,13 @@ class M_Lembar_konsul extends CI_Model
         $this->db->insert($table, $data);
     }
 
-    public function get_data_form_awal($id_history)
+   public function get_data_form_awal($id_history)
     {
-        $this->db->select("d.nama_diagnosa,d.kode, f.terapi, f.riwayat, f.keluhan");
-        $this->db->from("diagnosa_utama d, form_assesmen_dokter f");
+        $this->db->select("d.nama_diagnosa, d.kode, f.prosedur_tindakan AS terapi, f.riwayat AS riwayat_penyakit, f.keluhan AS keluhan_utama");
+        $this->db->from("form_assesmen_dokter f");
+        $this->db->join("diagnosa_utama d", "d.id_history = f.id_history", "left");
         $this->db->where("f.id_history", $id_history);
-        $this->db->where("d.id_history", $id_history);
+
         return $this->db->get()->row();
     }
 
@@ -127,11 +128,12 @@ class M_Lembar_konsul extends CI_Model
     }
 
     public function get_list_poli_ada()
-    {
-        return $this->db
-            ->where('status_dokter', 'ADA')
-            ->order_by('nama_panjang', 'ASC')
-            ->get('list_poli')
-            ->result();
-    }
+{
+    return $this->db
+        ->where('status_dokter', 'ADA')
+        ->where_not_in('nama_panjang', ['RADIOLOGI', 'POLI UMUM', 'LABORATORIUM', 'IGD'])
+        ->order_by('nama_panjang', 'ASC')
+        ->get('list_poli')
+        ->result();
+}
 }

@@ -722,7 +722,7 @@
 
 											<div class="slidecontainer">
 												<span id="val"></span>
-												<input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
+												<input id="slide" name="skala_nyeri" type="range" min="0" max="10" value="0" oninput="updateNyeri(event)" onchange="updateNyeri(event)" />
 												<span class="help-block"></span>
 												<div id="state"><img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img>
 													<br>
@@ -2037,12 +2037,7 @@
 				$('#masalah').val(data.masalah);
 				$('#rencana').val(data.rencana);
 				$('#slide').val(data.skor_nyeri);
-				$('#val').html(data.skor_nyeri);
-				tampilStatus(data.skor_nyeri);
-
-
-
-				$('input[name="masalah_keperawatan"][value="'+ data.masalah_keperawatan +'"]').prop("checked", true);
+					updateNyeri({ target: $('#slide')[0] });
 
 
 			}
@@ -2112,6 +2107,19 @@
 			);
 		}
 	}
+
+	function displayValue(e) {
+		if (e && e.target) {
+			$('#val').html(e.target.value);
+		}
+	}
+
+	function updateNyeri(e) {
+		if (!e || !e.target) return;
+		displayValue(e);
+		tampilStatus(e.target.value);
+	}
+
 	// Menampilkan dan menyembunyikan teks
 	$(function() {
 		$("#alergi1").click(function() {
@@ -2317,7 +2325,7 @@
         } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
             skala_nyeri = 'Ringan';
         } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
-            skala_nyeri = ' Sedang';
+            skala_nyeri = 'Sedang';
         } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
             skala_nyeri = 'Sedang';
         } else if (skor_nyeri >= 7 && skor_nyeri < 9) {

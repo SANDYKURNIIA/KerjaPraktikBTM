@@ -151,7 +151,7 @@
                         <h6 class="panel-title txt-dark">RIWAYAT MEDIS</h6>
                     </div> -->
 
-                    <a class="btn btn-success col-md-12 " style="margin: 3px" href="<?php echo base_url('erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) .  '/' . urlencode(base64_encode($id_histori)) . "/" ."ICU"; ?>">ERM ICU</a>
+                    <a class="btn btn-success col-md-12 " style="margin: 3px" href="<?php echo base_url('erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) .  '/' . urlencode(base64_encode($id_histori)) . "/" . "ICU"; ?>">ERM ICU</a>
                 </div>
 
                 <div class="panel-body task-panel">
@@ -176,10 +176,10 @@
                                 <div class="col-lg-12">
                                     <div class="button-list mt-25">
                                         <?php
-                                            if ($icu_only) {
-                                                // No Menu Penunjan
-                                            }else {
-                                                $ButtonsPenunjang = "
+                                        if ($icu_only) {
+                                            // No Menu Penunjan
+                                        } else {
+                                            $ButtonsPenunjang = "
                                                     <div id='penunjang' style='margin-bottom: 50px; display: block;'>
 
                                                         <h5 class='txt-dark capitalize-font'>
@@ -247,8 +247,8 @@
                                                     </div>
                                                 ";
 
-                                                echo $ButtonsPenunjang;
-                                            }
+                                            echo $ButtonsPenunjang;
+                                        }
                                         ?>
 
                                         <!-- Button Penunjang Yang tidak terpakai -->
@@ -259,8 +259,8 @@
                                         ?> -->
 
                                         <?php
-                                            if ($icu_only) {
-                                                $buttonListIcuOnly = "
+                                        if ($icu_only) {
+                                            $buttonListIcuOnly = "
                                                 <div style='display: block;'>
                                                     <h5 class='txt-dark capitalize-font'><i class='fa fa-file mr-10'></i>ERM ICU </h5>
                                                     <hr width='100%'>
@@ -303,9 +303,9 @@
                                                 </div>
                                                 ";
 
-                                                echo $buttonListIcuOnly;
-                                            }else {
-                                                $buttonListFULLERM = "
+                                            echo $buttonListIcuOnly;
+                                        } else {
+                                            $buttonListFULLERM = "
                                                 <div style='display: block;'>
                                                     <h5 class='txt-dark capitalize-font'><i class='fa fa-file mr-10'></i>ERM</h5>
                                                     <hr width='100%'>
@@ -330,7 +330,7 @@
                                                         Catatan Pemakaian Cairan Infus
                                                     </a>
 
-                                                    <a style='background-color:". $warna_btn_pemtVital. "; color: ". $wrn_fnt_pemtVital .";'class='font-weight-bold border-0 btn btn-success col-md-5 pemantauan_vital' href='" . base_url('Erm_ranap_pemantauan_vital/formvital/') . "$id_pelayanan/$id_histori'>
+                                                    <a style='background-color:" . $warna_btn_pemtVital . "; color: " . $wrn_fnt_pemtVital . ";'class='font-weight-bold border-0 btn btn-success col-md-5 pemantauan_vital' href='" . base_url('Erm_ranap_pemantauan_vital/formvital/') . "$id_pelayanan/$id_histori'>
                                                         Pemantauan Tanda Vital Dewasa
                                                     </a>
 
@@ -454,12 +454,16 @@
                                                     href='" . base_url('Pews_anak/pewsAnak/') . $id_pelayanan . "/" . $id_histori . "'>
                                                         PEWS ANAK
                                                     </a>
+
+                                                      <a class='btn btn-success col-md-5 laporan_tindakan_kebidanan' href='" . base_url('Erm_laporan_tindakan_kebidanan/form/') . "$id_pelayanan/$id_histori'>
+                                                        Laporan Tindakan Kebidanan
+                                                    </a>
                                                     
                                                 </div>
                                                 ";
 
-                                                echo $buttonListFULLERM;
-                                            }
+                                            echo $buttonListFULLERM;
+                                        }
                                         ?>
 
                                         <!-- Button Erm Yang Tidak Terpakai -->
@@ -474,53 +478,52 @@
                                             </a>
                                         </?php }?> -->
 
-                                                                                    <!-- <a class="btn btn-success col-md-5 asses_per_ranap" onclick="cek_skrining_tbc()">
+                                        <!-- <a class="btn btn-success col-md-5 asses_per_ranap" onclick="cek_skrining_tbc()">
                                                 Assesmen Awal Perawat
                                             </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 infus_sehari" href="<?php echo base_url('Erm_ranap_infus_sehari/forminfus/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 infus_sehari" href="<?php echo base_url('Erm_ranap_infus_sehari/forminfus/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Catatan Pemakaian Cairan Infus
                                             </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 analisis_data" href="<?php echo base_url('Erm_ranap_analisis/formanalisisdata/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 analisis_data" href="<?php echo base_url('Erm_ranap_analisis/formanalisisdata/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Analisis Data
                                             </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 visite_dokter" href="<?php echo base_url('Erm_ranap_visite_dokter/formvisite/') . $id_pelayanan . '/' . $id_histori; ?>"> 
+                                        <!-- <a class="btn btn-success col-md-5 visite_dokter" href="<?php echo base_url('Erm_ranap_visite_dokter/formvisite/') . $id_pelayanan . '/' . $id_histori; ?>"> 
                                             Visite Dokter
                                         </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 bayi_gabung" href="<?php echo base_url('Erm_ranap_bayi_gabung/formbayirawatgabung/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 bayi_gabung" href="<?php echo base_url('Erm_ranap_bayi_gabung/formbayirawatgabung/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Bayi Rawat Gabung
                                             </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 asesmen_awal_dewasa" href="<?php echo base_url('Erm_ranap_awal_jatuh_dewasa/formawaljatuhdewasa/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 asesmen_awal_dewasa" href="<?php echo base_url('Erm_ranap_awal_jatuh_dewasa/formawaljatuhdewasa/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Asesmen Awal Jatuh Dewasa
                                             </a> -->
-                                            <!-- <a class="btn btn-success col-md-5 asesmen_awal_geriatri" href="<?php echo base_url('Erm_ranap_awal_jatuh_geriatri/formawaljatuhgeriatri/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 asesmen_awal_geriatri" href="<?php echo base_url('Erm_ranap_awal_jatuh_geriatri/formawaljatuhgeriatri/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Asesmen Awal Jatuh Geriatri
                                             </a> -->
 
-                                            <!-- <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_ranap_resume_medis/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_ranap_resume_medis/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Medis
                                         </a> -->
 
 
-                                            <!-- <a class="btn btn-success col-md-5 resume_pasien_pulang" href="<?= base_url('Erm_resume_pasien_pulang/formresumepasienpulang/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 resume_pasien_pulang" href="<?= base_url('Erm_resume_pasien_pulang/formresumepasienpulang/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Pasien Pulang
                                         </a> -->
 
-                                            <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a id="dischargePlanningBtn" class="btn btn-success col-md-5 discharger_planning" href="<?= base_url('Discharge_planning/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                                 Discharge Planning
-                                            </a> -->    
+                                            </a> -->
 
 
 
 
                                         <div class="row text-right mt-4">
-                                                <div class="col-md-12">
-                                                    <button class="btn btn-default btn-anim"
-                                                        onclick="window.location.href='javascript:history.go(-1)';"
-                                                        type="button"
-                                                        style="margin-top: 20px; padding: 10px 24px;">
-                                                        <i class="fa fa-arrow-left"></i> <span class="btn-text">KEMBALI</span>
-                                                    </button>
-                                                </div>
+                                            <div class="col-md-12">
+                                                <button class="btn btn-default btn-anim"
+                                                    onclick="window.location.href='javascript:history.go(-1)';"
+                                                    type="button"
+                                                    style="margin-top: 20px; padding: 10px 24px;">
+                                                    <i class="fa fa-arrow-left"></i> <span class="btn-text">KEMBALI</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -533,6 +536,7 @@
         </div>
     </div>
 </div>
+</div>
 <?php $this->load->view('erm_form/Ranap/view_penunjang') ?>
 <?php $this->load->view('erm_form/Ranap/view_paket') ?>
 <?php $this->load->view('erm_form/Penunjang/pelayanan_tambahan') ?>
@@ -544,9 +548,8 @@
 <style>
     p {
         color: black;
-        
-    }
 
+    }
 </style>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -558,7 +561,7 @@
             dataType: 'json',
             data: {
                 id_pelayanan: id_pelayanan,
-                id_histori : id_histori
+                id_histori: id_histori
             },
             success: function(data) {
                 if (data.asses_per_ranap == "found") {
@@ -639,7 +642,12 @@
                 if (data.anamnesis_fisik == "found") {
                     $('.anamnesis_fisik').removeClass('btn-success').addClass('btn-danger ');
                     $('.anamnesis_fisik').attr('href', '<?php echo base_url('Erm_ranap_asesmen_dokter/formedit/') . $id_pelayanan . '/' . $id_histori; ?>');
-                    
+
+                }
+                if (data.status == "found") {
+                    $('.laporan_tindakan_kebidanan')
+                        .removeClass('btn-success')
+                        .addClass('btn-danger');
                 }
                 if (data.one_day_care == "found") {
                     $('.one_day_care').removeClass('btn-success').addClass('btn-danger ');
@@ -650,7 +658,7 @@
                 if (data.laporan_operasi == "found") {
                     $('.laporan_operasi').removeClass('btn-success').addClass('btn-danger ');
                 }
-                 if (data.status_respirasi == "found") {
+                if (data.status_respirasi == "found") {
                     $('.status_respirasi').removeClass('btn-success').addClass('btn-danger ');
                 }
                 if (data.formulir_medikasi_pasien_icu == "found") {
@@ -661,16 +669,16 @@
                 }
                 if (data.resiko_lingkungan == "found") {
                     $('.resiko_lingkungan').removeClass('btn-success').addClass('btn-danger ');
-                }   
+                }
                 if (data.implementasi_perawatan == "found") {
                     $('.implementasi_perawatan').removeClass('btn-success').addClass('btn-danger ');
-                }   
+                }
                 if (data.PengamatanDokterHasilMcu == "found") {
                     $('.PengamatanDokterHasilMcu').removeClass('btn-success').addClass('btn-danger ');
-                }   
+                }
                 if (data.asesmen_jatuh_anak == "found") {
                     $('.asesmen_jatuh_anak').removeClass('btn-success').addClass('btn-danger ');
-                }   
+                }
                 if (data.survei == "found") {
                     $('.survei').removeClass('btn-success').addClass('btn-danger ');
                 }

@@ -1563,7 +1563,7 @@
                         <div class="slidecontainer col-md-14">
                           <label class="control-label mb-10 text-left">WBFPRS:</label>
                           <span id="val"></span>
-                          <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
+                          <input id="slide" name="skala_nyeri" type="range" min="0" max="10" value="0" oninput="updateNyeri(event)" onchange="updateNyeri(event)" />
                           <span class="help-block"></span>
                           <div id="state"><img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img>
                             <br>
@@ -4730,10 +4730,9 @@
 
 
 
-        $('input[name="keluhan"]:checked').val(data.keluhan);
+        $('input[name="keluhan']:checked').val(data.keluhan);
         $('#slide').val(data.skor_nyeri);
-        $('#val').html(data.skor_nyeri);
-        tampilStatus(data.skor_nyeri);
+        updateNyeri({ target: $('#slide')[0] });
         $('input[name="skala_nyeri"]').val(data.skala_nyeri);
         canvas = document.getElementById('can');
         ctx = canvas.getContext("2d");
@@ -4979,6 +4978,18 @@
     } else if (val >= 9 && val <= 10) {
       $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
     }
+  }
+
+  function displayValue(e) {
+    if (e && e.target) {
+      $('#val').html(e.target.value);
+    }
+  }
+
+  function updateNyeri(e) {
+    if (!e || !e.target) return;
+    displayValue(e);
+    tampilStatus(e.target.value);
   }
 
   function simpan() {

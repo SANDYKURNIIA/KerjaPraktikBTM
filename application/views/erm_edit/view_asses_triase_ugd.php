@@ -627,6 +627,27 @@
                   <input type="radio" name="pemeriksaan" value="60menit" id="menit60" onclick="tampilkanTidakDarurat()">
                   <label for="menit60">60 Menit</label>
                 </div> -->
+                  <div class="form-group row">
+                      <div class="col-md-7">
+                        <h5 style="margin-top: 50px;">
+                          <label class="control-label mb-10 text-left">
+                            <b>Skala Nyeri</b> <span class="help"></span>
+                          </label>
+                        </h5>
+                        <div class="slidecontainer">
+                          <span id="val"><?= isset($data['skala_nyeri']) ? $data['skala_nyeri'] : 0; ?></span>
+                          <input id="slide" name="skala_nyeri" type="range" min="0" max="10" 
+                            value="<?= isset($data['skala_nyeri']) ? $data['skala_nyeri'] : 0; ?>" 
+                            oninput="updateNyeri(event)" onchange="updateNyeri(event)" />
+                          <span class="help-block"></span>
+                          <div id="state">
+                            <img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%>
+                            <br>
+                            <span style='color:black;'>Tidak Nyeri</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <table class="triase-table">
                       <tbody>
@@ -890,26 +911,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group row">
-                      <div class="col-md-7">
-                        <h5 style="margin-top: 50px;">
-                          <label class="control-label mb-10 text-left">
-                            <b>Skala Nyeri</b> <span class="help"></span>
-                          </label>
-                        </h5>
-                        <div class="slidecontainer">
-                          <span id="val"></span>
-                          <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
-                          <span class="help-block"></span>
-                          <div id="state">
-                            <img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%>
-                            <br>
-                            <span style='color:black;'>Tidak Nyeri</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
+                  
                     <div class="form-group row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -1032,24 +1034,31 @@
               </div>
             </div>
 
-            <script src="<?= base_url(); ?>assets/dist/js/slider.js"></script>
             <link rel="stylesheet" href="<?php echo base_url('assets/css/range-slide.css'); ?>">
             <script type="text/javascript">
-              function tampilStatus(val) {
-                if (val >= 0 && val < 1) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
-                } else if (val >= 1 && val < 3) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
-                } else if (val >= 3 && val < 5) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-                } else if (val >= 5 && val < 7) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sedang1.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sedang</span>");
-                } else if (val >= 7 && val < 9) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Berat</span>");
-                } else if (val >= 9 && val <= 10) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
+              function displayValue(e) {
+                var inp = e.target || this;
+                if (!inp) return;
+                var value = inp.value;
+                var min = inp.min;
+                var max = inp.max;
+                var width = inp.offsetWidth || 100;
+                var offset = -20;
+                var percent = (value - min) / (max - min);
+                var pos = percent * (width + offset) - 40;
+                var span = document.getElementById('val');
+                if (span) {
+                  span.style.left = pos + 'px';
+                  span.innerHTML = value;
                 }
               }
+
+              function updateNyeri(e) {
+                if (!e || !e.target) return;
+                displayValue(e);
+                tampilStatus(e.target.value);
+              }
+
               $(document).ready(function() {
                 id_history = $('#inHis').val();
                 $.ajax({
@@ -1090,9 +1099,9 @@
                     } else {
                       $('#status').html("<span class='badge badge-default'>Tidak memerlukan verifikasi</span>");
                     }
-                    $('#val').html(data.skor_nyeri);
                     $('#slide').val(data.skor_nyeri);
-                    tampilStatus(data.skor_nyeri);   
+                    $('#val').html(data.skor_nyeri);
+                    updateNyeri({ target: $('#slide')[0] });
 
            
                     $('input[name="verifikasi_dokter"]').prop('disabled', true);
@@ -1160,7 +1169,7 @@
             <script type="text/javascript">
               function tampilStatus(val) {
                 if (val >= 0 && val < 1) {
-                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
+                  $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
                 } else if (val >= 1 && val < 3) {
                   $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
                 } else if (val >= 3 && val < 5) {
@@ -1174,7 +1183,6 @@
                 }
               }
 
-              
               $(function() {
                 $("#frek_bab1").click(function() {
                   if ($(this).is(":checked")) {
@@ -1477,19 +1485,7 @@
                 kategori = kategori.toString();
 
                 skor_nyeri = $('#slide').val();
-                if (skor_nyeri >= 0 && skor_nyeri < 1) {
-                  skala_nyeri = 'Tidak Nyeri';
-                } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
-                  skala_nyeri = 'Ringan';
-                } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
-                  skala_nyeri = ' Sedang';
-                } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
-                  skala_nyeri = 'Sedang';
-                } else if (skor_nyeri >= 7 && skor_nyeri < 9) {
-                  skala_nyeri = 'Berat';
-                } else if (skor_nyeri >= 9 && skor_nyeri <= 10) {
-                  skala_nyeri = 'Sangat Berat';
-                }
+                skala_nyeri = skor_nyeri;
 
                 verif = $("input[name='verifikasi_dokter']:checked").val();
                 tgl_verif = $('#tgl_verif').val();

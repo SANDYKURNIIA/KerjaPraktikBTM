@@ -15,6 +15,7 @@ class Erm_resume_pulang extends CI_Controller
         $this->load->model('M_Erm_ranap');
         $this->load->model('M_Erm_poli');
         $this->load->model('M_Formulir_resume_pulang');
+        $this->load->model('M_Apelkes');
     }
     public function insert($data)
     {
@@ -163,7 +164,7 @@ class Erm_resume_pulang extends CI_Controller
 
 
         // Jika tidak ada history ranap
-        if(!$poli){
+        if (!$poli) {
             $poli = $this->db->query("SELECT rp.alasan as alasan_pulang , keluhan_utama, u.kode,u.nama_diagnosa from diagnosa_utama u
             left join form_assesmen_dokter d on u.id_history = d.id_history
             left join  form_assesmen_awal_rajal f on f.id_history = u.id_history
@@ -257,6 +258,26 @@ class Erm_resume_pulang extends CI_Controller
         $data['terapi'] = $this->M_Erm->selectTerapiByIdPel($id_pelayanan);
 
         // $this->load->view('assets/_header');
+
+        $visite = $this->M_Apelkes->getDokterPendamping($id_pelayanan);
+
+        $dokter_list = array_map(function ($v) {
+            $nama = str_replace(['<br>', '<br/>', '<br />'], ' ', $v->dokter);
+            $nama = preg_replace("/(\r\n|\r|\n)/", " ", $nama);
+
+            $nama = preg_replace('/\s+/', ' ', $nama);
+
+            return trim($nama);
+        }, $visite);
+
+        $dokter_list = array_unique($dokter_list);
+        $nama_dokter_utama = trim($data['pasien']->nama_dokter ?? '');
+
+        $dokter_list = array_filter($dokter_list, function ($dok) use ($nama_dokter_utama) {
+            return strtolower(trim($dok)) !== strtolower($nama_dokter_utama);
+        });
+
+        $data['dokter_pendamping'] = $dokter_list;
 
         $this->load->view('erm_print/view_resume_pulang_print', $data);
         // $this->load->view('assets/_footer');

@@ -625,7 +625,27 @@
                     <input type="radio" name="pemeriksaan" value="60menit" id="menit60" onclick="tampilkanTidakDarurat()">
                     <label for="menit60">60 Menit</label>
                   </div> -->
-
+<div class="form-group row">
+                      <div class="col-md-7">
+                        <h5 style="margin-top: 50px;">
+                          <label class="control-label mb-10 text-left">
+                            <b>Skala Nyeri</b> <span class="help"></span>
+                          </label>
+                        </h5>
+                        <div class="slidecontainer">
+                          <span id="val"></span>
+                          <input id="slide" name="skala_nyeri" 
+                          type="range" min="0" max="10" value="0" oninput="updateNyeri(event)" onchange="updateNyeri(event)" />
+                          <span class="help-block"></span>
+                          <div id="state">
+                            <img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%>
+                            <br>
+                            <span style='color:black;'>Tidak Nyeri</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                     <table class="triase-table">
                       <tbody>
                         <tr>
@@ -888,25 +908,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group row">
-                      <div class="col-md-7">
-                        <h5 style="margin-top: 50px;">
-                          <label class="control-label mb-10 text-left">
-                            <b>Skala Nyeri</b> <span class="help"></span>
-                          </label>
-                        </h5>
-                        <div class="slidecontainer">
-                          <span id="val"></span>
-                          <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
-                          <span class="help-block"></span>
-                          <div id="state">
-                            <img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%>
-                            <br>
-                            <span style='color:black;'>Tidak Nyeri</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+              
 
                     <div class="form-group row">
                       <div class="col-md-6">
@@ -1038,6 +1040,19 @@
                 $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
               }
             }
+
+            function displayValue(e) {
+              if (e && e.target) {
+                $('#val').html(e.target.value);
+              }
+            }
+
+            function updateNyeri(e) {
+              if (!e || !e.target) return;
+              displayValue(e);
+              tampilStatus(e.target.value);
+            }
+
             $(document).ready(function() {
               const id_history = $('#inHis').val();
               if (id_history !== '' && id_history !== null) {

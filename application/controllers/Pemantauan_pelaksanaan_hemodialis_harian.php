@@ -91,37 +91,126 @@ class Pemantauan_pelaksanaan_hemodialis_harian extends CI_Controller
 			'tgl_simpan' => date('Y-m-d H:i:s')
 		];
 
-		$existing = $this->M_Pemantauan_hd->get_data_pemantauan_hd($id_pelayanan, $id_history);
+		$this->M_Pemantauan_hd->insert($data);
 
-		if ($existing) {
-			$data['tgl_update'] = date('Y-m-d H:i:s');
+		echo json_encode([
+			'status' => 'success',
+			'type' => 'insert',
+			'message' => 'Data berhasil disimpan'
+		]);
+	}
 
-			unset($data['tgl_input']);
+	public function update_data()
+	{
+		$id = $this->input->post('id');
+		$staff = $this->session->userdata('data_auth');
 
-			$this->M_Pemantauan_hd->update($id_pelayanan, $id_history, $data);
-			echo json_encode([
-				'status' => 'success',
-				'type' => 'update',
-				'message' => 'Data berhasil diperbarui'
-			]);
-		} else {
-			// INSERT
-			$this->M_Pemantauan_hd->insert($data);
-			echo json_encode([
-				'status' => 'success',
-				'type' => 'insert',
-				'message' => 'Data berhasil disimpan'
-			]);
-		}
+		$data = [
+			'id_pelayanan' => $this->input->post('id_pelayanan'),
+			'id_history' => $this->input->post('id_history'),
+			'no_rm' => $this->input->post('no_rm'),
+
+			'gelang_identitas_status' => $this->input->post('gelang_identitas_status', true),
+			'gelang_identitas_alasan' => $this->input->post('gelang_identitas_alasan', true),
+			'alergi_status' => $this->input->post('alergi_status', true),
+			'alergi_keterangan' => $this->input->post('alergi_keterangan', true),
+			'gelang_alergi_status' => $this->input->post('gelang_alergi_status', true),
+			'gelang_alergi_alasan' => $this->input->post('gelang_alergi_alasan', true),
+
+			'akses_jenis' => $this->input->post('akses_jenis', true),
+			'akses_lokasi' => $this->input->post('akses_lokasi', true),
+			'akses_kondisi' => $this->input->post('akses_kondisi', true),
+			'akses_infeksi' => $this->input->post('akses_infeksi', true),
+			'akses_aneurisma' => $this->input->post('akses_aneurisma', true),
+			'akses_thrill' => $this->input->post('akses_thrill', true),
+			'akses_bruit' => $this->input->post('akses_bruit', true),
+			'akses_lain' => $this->input->post('akses_lain', true),
+
+			'lumen_arteri_cm' => $this->input->post('lumen_arteri_cm', true),
+			'lumen_vena_cm' => $this->input->post('lumen_vena_cm', true),
+			'panjang_dl_arteri_cc' => $this->input->post('panjang_dl_arteri_cc', true),
+			'panjang_dl_vena_cc' => $this->input->post('panjang_dl_vena_cc', true),
+
+			'antibiotic_lock_arteri_cc' => $this->input->post('antibiotic_lock_arteri_cc', true),
+			'antibiotic_lock_vena_cc' => $this->input->post('antibiotic_lock_vena_cc', true),
+
+			'mesin_hd' => $this->input->post('mesin_hd', true),
+			'mesin_no' => $this->input->post('mesin_no', true),
+
+			'dialisat_ca' => $this->input->post('dialisat_ca', true),
+			'dialisat_suhu' => $this->input->post('dialisat_suhu', true),
+
+			'dialiser_model' => $this->input->post('dialiser_model', true),
+			'dialiser_flux' => $this->input->post('dialiser_flux', true),
+			'dialiser_kondisi' => $this->input->post('dialiser_kondisi', true),
+
+			'bb_kering_kg' => $this->input->post('bb_kering_kg', true),
+			'lama_hd_jam' => $this->input->post('lama_hd_jam', true),
+
+			'blood_flow_rate_ml_menit' => $this->input->post('blood_flow_rate_ml_menit', true),
+			'ufg' => $this->input->post('ufg', true),
+
+			'heparin_jenis' => $this->input->post('heparin_jenis', true),
+			'heparin_total' => $this->input->post('heparin_total', true),
+			'heparin_bolus' => $this->input->post('heparin_bolus', true),
+			'heparin_kontinyu' => $this->input->post('heparin_kontinyu', true),
+
+			'lain_lain_1' => $this->input->post('lain_lain_1', true),
+			'lain_lain_2' => $this->input->post('lain_lain_2', true),
+
+			'perubahan_obat' => $this->input->post('perubahan_obat', true),
+
+			'id_staff' => $staff->id_staff,
+			'tgl_update' => date('Y-m-d H:i:s')
+		];
+
+		$this->db->where('id', $id);
+		$this->db->update('pemantauan_hd_harian', $data);
+
+		echo json_encode([
+			'status' => 'success',
+			'message' => 'Data berhasil diupdate'
+		]);
+	}
+
+	public function delete_data()
+	{
+		$id = $this->input->post('id');
+
+		$this->db->where('id', $id);
+		$this->db->delete('pemantauan_hd_harian');
+
+		echo json_encode([
+			'status' => 'success'
+		]);
 	}
 
 
 	public function get_data_pemantauan()
 	{
+		$no_rm = $this->input->post('no_rm'); 
 		$id_pelayanan = $this->input->post('id_pelayanan');
 		$id_history = $this->input->post('id_history');
 
-		$data = $this->M_Pemantauan_hd->get_data_pemantauan_hd($id_pelayanan, $id_history);
+		$data = $this->M_Pemantauan_hd->get_data_pemantauan_hd($no_rm, $id_pelayanan, $id_history);
+
+		if ($data) {
+			echo json_encode([
+				'status' => 'found',
+				'data' => $data
+			]);
+		} else {
+			echo json_encode([
+				'status' => 'not found'
+			]);
+		}
+	}
+
+	public function get_by_id()
+	{
+		$id = $this->input->post('id');
+
+		$data = $this->M_Pemantauan_hd->get_by_id($id);
 
 		if ($data) {
 			echo json_encode([
@@ -158,14 +247,24 @@ class Pemantauan_pelaksanaan_hemodialis_harian extends CI_Controller
 	// 	$this->load->view('erm_print/pemantauan_pelaksanaan_hemodialis_harian',$data);
 	// }
 
-	public function cetak_pemantauan($id_pel = null, $id_his = null) 
+	public function cetak_pemantauan($id = null, $id_pelayanan = null, $id_history = null)
 	{
+		$pemantauan = $this->db
+			->select('pemantauan_hd_harian.*, pasien.nama, pelayanan.tgl_masuk')
+			->from('pemantauan_hd_harian')
+			->join('pelayanan', 'pelayanan.id_pelayanan = pemantauan_hd_harian.id_pelayanan', 'left')
+			->join('pasien', 'pasien.no_rm = pelayanan.id_pasien', 'left')
+			->where('pemantauan_hd_harian.id', $id)
+			->get()
+			->row();
+
+		if (!$pemantauan) {
+			echo "Data tidak ditemukan";
+			return;
+		}
+
 		$pasien = $this->M_Erm_poli
-			->selectDataPasienIGDby_id($id_pel, $id_his);
-
-		$pemantauan = $this->M_Pemantauan_hd
-			->get_data_pemantauan_hd($id_pel, $id_his);
-
+			->selectDataPasienIGDby_id($pemantauan->id_pelayanan, $pemantauan->id_history);
 		$dokter = $this->db
 			->select('nama, foto')
 			->from('dokter')
@@ -183,6 +282,4 @@ class Pemantauan_pelaksanaan_hemodialis_harian extends CI_Controller
 
 		$this->load->view('erm_print/pemantauan_pelaksanaan_hemodialis_harian', $data);
 	}
-
-
 }

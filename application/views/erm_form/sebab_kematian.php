@@ -444,12 +444,12 @@
     </div>
 </div>
 <?php $this->load->view('assets/signature2') ?>
-<style>
-    canvas {
-        cursor: crosshair;
-        border: 1px solid #000000;
-    }
-</style>
+    <style>
+        canvas {
+            cursor: crosshair;
+            border: 1px solid #000000;
+        }
+    </style>
 
 <script type="text/javascript">
     function simpan() {

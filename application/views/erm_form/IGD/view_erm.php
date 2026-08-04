@@ -290,25 +290,29 @@
                                         <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_surveilans_hais_rs/form/') .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Surveilans Hais RS
                                         </a>
-                                       <a class="<?= isset($btn_transfer_class) ? $btn_transfer_class : 'btn btn-success col-md-5 erm'; ?>"
-   href="<?= base_url('TransferPasien/form/' . $id_pelayanan . '/' . $id_histori); ?>">
-    Transfer Pasien
-</a>
+                                        <a class="<?= isset($btn_transfer_class) ? $btn_transfer_class : 'btn btn-success col-md-5 erm'; ?>"
+                                            href="<?= base_url('TransferPasien/form/' . $id_pelayanan . '/' . $id_histori); ?>">
+                                            Transfer Pasien
+                                        </a>
 
                                         <a class="btn btn-success col-md-5 surveilans"
                                             href="<?php echo base_url('TransferPasien/form/')  .  $id_pelayanan . '/' . $id_histori; ?>">
                                             Form Edukasi Pasien
                                         </a>
-                                        <a   class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
-												Surat Keterangan Sakit
+                                        <a class='btn btn-success col-md-5' onclick='toggleSuratKeteranganSakit()'>
+                                            Surat Keterangan Sakit
                                         </a>
+                                        <a class="btn btn-success col-md-5 penundaan" href="<?= base_url('Erm_igd_form_permohonan_ranap/form/') .   $id_pelayanan . '/' . $id_histori; ?>">
+                                            Form Permohonan Rawat Inap
+                                        </a>
+
 
                                     </div>
                                 </div>
                                 <div class="row pull-right">
                                     <button class="btn btn-default btn-anim" onclick="window.location.href='javascript:history.go(-1)';" type="submit" style="margin-right: 40px; margin-top:40px;padding: 10px 24px;" id="back"><i class="fa fa-arrow-left"></i><span class="btn-text">KEMBALI</span></button>
                                     <?php if ($simpan == 0) { ?>
-                                        <button class="btn btn-primary btn-anim"  type="button" style="margin-right: 100px; margin-top:40px" id="simpanKunjungan"><i class="icon-rocket"></i><span class="btn-text">SIMPAN ERM</span></button>
+                                        <button class="btn btn-primary btn-anim" type="button" style="margin-right: 100px; margin-top:40px" id="simpanKunjungan"><i class="icon-rocket"></i><span class="btn-text">SIMPAN ERM</span></button>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -468,7 +472,17 @@
                 }
                 if (data.penundaan == "found") {
                     $('.penundaan').removeClass('btn-success').addClass('btn-danger ');
-                    $('.penundaan').attr('href', '<?php echo base_url('Erm_igd_penundaan_pelayanan_pengobatan/edit_penundaan/') . $id_pelayanan . '/' . $id_histori; ?>');
+                    $('.penundaan').attr('href', '<?php echo base_url('Erm_laporan_tindakan_kebidanan/edit_penundaan/') . $id_pelayanan . '/' . $id_histori; ?>');
+                }
+                if (data.permohonan_ranap == "found") {
+                    $('.penundaan')
+                        .removeClass('btn-success')
+                        .addClass('btn-danger');
+
+                    $('.penundaan').attr(
+                        'href',
+                        "<?= base_url('Erm_igd_form_permohonan_ranap/form/') . $id_pelayanan . '/' . $id_histori; ?>"
+                    );
                 }
                 if (data.antar == "found") {
                     $('.antar').removeClass('btn-success').addClass('btn-danger ');
@@ -665,8 +679,8 @@
     }
 
     function toggleSuratKeteranganSakit() {
-	    const no_rm = $('#noRM').val();
-    	$('#no_rm').val(no_rm); 
-		$('#modal_medic_sertif').modal('toggle');
-	}
+        const no_rm = $('#noRM').val();
+        $('#no_rm').val(no_rm);
+        $('#modal_medic_sertif').modal('toggle');
+    }
 </script>

@@ -15,21 +15,7 @@
                     <div class="form-wrap">
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label mb-10"><strong>Kepada Yth. TS. Dokter:</strong></label>
-                                    <div class="has-success">
-                                        <select class="form-control select2" id="id_dokter" name="id_dokter">
-                                            <option value="">-- PILIH DOKTER TUJUAN --</option>
-                                            <?php foreach ($dokter as $d): ?>
-                                                <option value="<?= $d->id_dokter; ?>" data-spes="<?= $d->dokter_spes; ?>">
-                                                    <?= $d->nama; ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label mb-10"><strong>Poli Tujuan:</strong></label>
@@ -40,6 +26,22 @@
                                                 <option value="<?= $p->id_list_poli; ?>"
                                                     data-spes="<?= htmlspecialchars($p->kdpoli_bpjs); ?>">
                                                     <?= $p->nama_panjang; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label mb-10"><strong>Kepada Yth. TS. Dokter:</strong></label>
+                                    <div class="has-success">
+                                        <select class="form-control select2" id="id_dokter" name="id_dokter">
+                                            <option value="" disabled selected>-- PILIH DOKTER --</option>
+                                            <?php foreach ($dokter as $d): ?>
+                                                <option value="<?= $d->id_dokter; ?>" data-spes="<?= $d->dokter_spes; ?>">
+                                                    <?= $d->nama; ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
@@ -68,10 +70,10 @@
                                 <div class="form-group">
                                     <label class="control-label">Umur</label>
                                     <input type="text" disabled class="form-control" value="<?php
-                                    $tanggal = new DateTime($tgl_lahir);
-                                    $today = new DateTime();
-                                    echo $today->diff($tanggal)->y . ' Tahun';
-                                    ?>" style="font-weight: 600;">
+                                                                                            $tanggal = new DateTime($tgl_lahir);
+                                                                                            $today = new DateTime();
+                                                                                            echo $today->diff($tanggal)->y . ' Tahun';
+                                                                                            ?>" style="font-weight: 600;">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -88,17 +90,12 @@
                         <input type="hidden" id="inNoRM" value="<?= $no_rm ?>">
                         <input type="hidden" id="inIdFormRujukan">
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label mb-10"><strong>Diagnosis Utama (ICD-10)</strong></label>
-                                    <div class="input-group has-success">
-                                        <input type="text" id="diagnosis" class="form-control typeahead"
-                                            placeholder="Cari Kode atau Nama Diagnosa...">
-                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label class="control-label mb-10">
+                                <strong>Diagnosis Utama (ICD-10)</strong>
+                            </label>
+                            <input type="text" id="diagnosis" class="form-control" readonly
+                                style="cursor: not-allowed; background-color: #eee;">
                         </div>
 
                         <div class="row">
@@ -109,6 +106,7 @@
                                         <textarea id="keluhan" class="form-control" rows="4"
                                             placeholder="Tuliskan keluhan utama pasien..."></textarea>
                                     </div>
+                                    <small id="error_keluhan" class="text-danger"></small>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -118,6 +116,7 @@
                                         <textarea id="terapi" class="form-control" rows="4"
                                             placeholder="Daftar obat atau tindakan..."></textarea>
                                     </div>
+                                    <small id="error_terapi" class="text-danger"></small>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -127,6 +126,7 @@
                                         <textarea id="riwayat_penyakit" class="form-control" rows="4"
                                             placeholder="Riwayat penyakit terdahulu..."></textarea>
                                     </div>
+                                    <small id="error_riwayat" class="text-danger"></small>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                         <p class="mt-10 mb-20 text-muted"><em>* Mohon konsul dan penanganan selanjutnya. Terima kasih
                                 atas bantuan dan kerja samanya.</em></p>
 
-                       <?php if ($is_dokter): ?>
+                        <?php if ($is_dokter): ?>
                             <div id="respon_section" class="well" style="background: #fdfdfd; border: 1px dashed #22af47; display: none;">
                                 <div class="form-group">
                                     <label class="control-label mb-10"><strong>Tanggapan Dokter Penerima:</strong></label>
@@ -211,8 +211,7 @@
 <script src="<?php echo base_url('assets/dist/jquery-ui.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/dist/jquery-ui.js'); ?>"></script>
 <script>
-    $(document).ready(function () {
-        $('#id_list_poli').prop('disabled', true).trigger('change');
+    $(document).ready(function() {
 
         function normalize(text) {
             return text
@@ -222,38 +221,49 @@
                 .trim();
         }
 
+        let allDokterOptions = $('#id_dokter option').clone();
 
-        $('#id_dokter').on('change', function () {
+        $('#id_dokter').prop('disabled', true);
 
-            const selectedDokter = $(this).find(':selected');
-            let spesDokter = selectedDokter.data('spes');
+        $('#id_list_poli').on('change', function() {
 
-            $('#id_list_poli').val('').prop('disabled', true).trigger('change');
+            const selectedPoli = $(this).find(':selected');
+            let spesPoli = selectedPoli.data('spes');
 
-            if (!spesDokter) return;
+            $('#id_dokter')
+                .html('')
+                .prop('disabled', true);
 
-            spesDokter = normalize(spesDokter);
+            if (!spesPoli) return;
+
+            spesPoli = normalize(spesPoli);
 
             let found = false;
 
-            $('#id_list_poli option').each(function () {
+            allDokterOptions.each(function() {
 
-                let spesPoli = $(this).data('spes');
-                if (!spesPoli) return;
+                let spesDokter = $(this).data('spes');
+                if (!spesDokter) return;
 
-                spesPoli = normalize(spesPoli);
+                spesDokter = normalize(spesDokter);
 
-                if (spesPoli.includes(spesDokter) || spesDokter.includes(spesPoli)) {
+                if (spesDokter.includes(spesPoli) || spesPoli.includes(spesDokter)) {
 
-                    $('#id_list_poli')
-                        .prop('disabled', false)
-                        .val($(this).val())
-                        .trigger('change');
-
+                    $('#id_dokter').append($(this));
                     found = true;
-                    return false;
                 }
             });
+
+            if (found) {
+                $('#id_dokter').prop('disabled', false);
+            }
+
+            let dokterOptions = $('#id_dokter option');
+
+            if (dokterOptions.length > 1) {
+                let firstVal = dokterOptions.eq(1).val();
+                $('#id_dokter').val(firstVal).trigger('change');
+            }
         });
 
     });
@@ -261,8 +271,8 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#balasan').on('input', function () {
+    $(document).ready(function() {
+        $('#balasan').on('input', function() {
             if ($(this).val().trim().length > 0) {
                 $('#btnKirim').prop('disabled', false);
             } else {
@@ -270,7 +280,7 @@
             }
         });
 
-        $('input[name="respon_dokter"]').on('change', function () {
+        $('input[name="respon_dokter"]').on('change', function() {
             $('#balasan_wrapper').fadeIn();
         });
 
@@ -286,23 +296,25 @@
             data: {
                 id: id
             },
-            success: function (data) {
+            success: function(data) {
                 if (data.status == 'found') {
-                    $('#terapi').val(data.terapi);
-                    $('#riwayat_penyakit').val(data.riwayat);
-                    $('#keluhan').val(data.keluhan);
+                    $('#terapi').val(data.terapi || '-');
+                    $('#riwayat_penyakit').val(data.riwayat_penyakit || '-');
+                    $('#keluhan').val(data.keluhan_utama || '-');
+                    $('#diagnosis').val(
+                        (data.kode ? data.kode : '') + ' - ' + (data.nama_diagnosa ? data.nama_diagnosa : '')
+                    );
                 }
             }
         });
-
         $.ajax({
             url: "<?php echo base_url() ?>Erm_dpjp/get_all_diagnosa",
             method: "GET",
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 let diagnosaList = [];
 
-                $.each(data, function (i, val) {
+                $.each(data, function(i, val) {
                     diagnosaList.push({
                         label: val.id_diagnosa + ' | ' + val.nama_diagnosa,
                         value: val.id_diagnosa + ' | ' + val.nama_diagnosa
@@ -313,7 +325,7 @@
                     source: diagnosaList,
                     minLength: 2,
                     autoFocus: true,
-                    select: function (event, ui) {
+                    select: function(event, ui) {
                         $("#diagnosis").val(ui.item.value);
                         return false;
                     }
@@ -336,9 +348,11 @@
             url: "<?= base_url() ?>Erm_dpjp/get_lembar_konsul",
             method: "POST",
             dataType: "json",
-            data: { id: id_lembar_konsul },
-            success: function (data) {
-                $('#respon_section').fadeIn(600); 
+            data: {
+                id: id_lembar_konsul
+            },
+            success: function(data) {
+                $('#respon_section').fadeIn(600);
                 $('#btnKirim').fadeIn(600);
 
                 $('html, body').animate({
@@ -369,8 +383,7 @@
 
                 if (verifikasi === 'terima' || verifikasi === '1' || verifikasi === 1) {
                     $('input[name="respon_dokter"][value="terima"]').prop('checked', true);
-                }
-                else if (verifikasi === 'tolak' || verifikasi === '0' || verifikasi === 0) {
+                } else if (verifikasi === 'tolak' || verifikasi === '0' || verifikasi === 0) {
                     $('input[name="respon_dokter"][value="tolak"]').prop('checked', true);
                 }
 
@@ -440,7 +453,7 @@
             cancelButtonText: "Batal",
             showLoaderOnConfirm: true,
             closeOnConfirm: false
-        }, function (isConfirm) {
+        }, function(isConfirm) {
 
             if (!isConfirm) {
                 $('#btnKirim').prop('disabled', false).html(`
@@ -464,7 +477,7 @@
                     respon_dokter: respon,
                     balasan: balasan
                 },
-                success: function (res) {
+                success: function(res) {
 
                     if (res.status === "success") {
                         swal("Sukses", "Balasan berhasil dikirim", "success");
@@ -498,7 +511,7 @@
                         `);
                     }
                 },
-                error: function () {
+                error: function() {
                     swal("Error", "Terjadi kesalahan server", "error");
 
                     $('#btnKirim')
@@ -539,14 +552,14 @@
                 "data": {
                     id_pelayanan: id_pelayanan
                 },
-                "dataSrc": function (json) {
+                "dataSrc": function(json) {
                     if (!json || !json.data) {
                         console.warn('DataTables: tidak ada data yang dikembalikan.');
                         return [];
                     }
                     return json.data;
                 },
-                "error": function (xhr, error, thrown) {
+                "error": function(xhr, error, thrown) {
                     $('#tabel_terapi').html(
                         '<tr><td colspan="10" class="text-center text-danger">Gagal memuat data. Silakan coba lagi.</td></tr>'
                     );
@@ -555,12 +568,10 @@
             "deferRender": true,
             "processing": true,
             "order": [4],
-            "columnDefs": [
-                {
-                    "targets": [0, 1],
-                    "orderable": false
-                }
-            ],
+            "columnDefs": [{
+                "targets": [0, 1],
+                "orderable": false
+            }],
         });
     }
 
@@ -576,7 +587,7 @@
             cancelButtonText: "Batal",
             closeOnConfirm: false,
             showLoaderOnConfirm: true
-        }, function (keterangan) {
+        }, function(keterangan) {
 
             if (keterangan === false) return false;
 
@@ -594,7 +605,7 @@
                     keterangan: keterangan
                 },
 
-                success: function (data) {
+                success: function(data) {
                     if (data.status === "success") {
                         swal({
                             title: "Berhasil!",
@@ -606,7 +617,7 @@
                     }
                 },
 
-                error: function () {
+                error: function() {
                     swal({
                         title: "Error!",
                         type: "error",
@@ -631,35 +642,68 @@
             confirmButtonText: "Ya, Cetak",
             cancelButtonText: "Batal",
             closeOnConfirm: true
-        }, function (isConfirm) {
+        }, function(isConfirm) {
             if (isConfirm) {
                 window.open("<?php echo base_url('Erm_dpjp/print_lembar_konsul/'); ?>" + id_lembar_konsul, "_blank");
             }
         });
     }
 
+    function isEmpty(val) {
+        if (!val) return true;
+
+        let v = val.trim();
+
+        return v === '';
+    }
+
     function simpan() {
-        id_pelayanan = $('#inPel').val();
-        id_history = $('#inHis').val();
-        no_rm = $('#inNoRM').val();
-        id_dokter = $('#id_dokter').val();
-        id_list_poli = $('#id_list_poli').val();
 
-        diagnosis = $('#diagnosis').val();
-        terapi = $('#terapi').val();
-        keluhan = $('#keluhan').val();
-        riwayat_penyakit = $('#riwayat_penyakit').val();
+        let id_pelayanan = $('#inPel').val();
+        let id_history = $('#inHis').val();
+        let no_rm = $('#inNoRM').val();
+        let id_dokter = $('#id_dokter').val();
+        let id_list_poli = $('#id_list_poli').val();
 
-        dataString =
-            'no_rm=' + no_rm +
-            '&id_pelayanan=' + id_pelayanan +
-            '&id_dokter=' + id_dokter +
-            '&id_list_poli=' + id_list_poli +
-            '&id_history=' + id_history +
-            '&diagnosis=' + diagnosis +
-            '&terapi=' + terapi +
-            '&riwayat_penyakit=' + riwayat_penyakit +
-            '&keluhan=' + keluhan;
+        let diagnosis = $('#diagnosis').val();
+        let terapi = $('#terapi').val();
+        let keluhan = $('#keluhan').val();
+        let riwayat_penyakit = $('#riwayat_penyakit').val();
+
+        // 🔥 RESET ERROR
+        $('#error_terapi').text('');
+        $('#error_keluhan').text('');
+        $('#error_riwayat').text('');
+
+        let isValid = true;
+
+        // 🔥 VALIDASI POLI (POPUP)
+        if (!id_list_poli || id_list_poli === '') {
+            swal({
+                title: "Peringatan!",
+                text: "Silahkan pilih poli terlebih dahulu!!",
+                type: "warning",
+                confirmButtonColor: "#f0ad4e"
+            });
+            return;
+        }
+
+        if (!keluhan || keluhan.trim() === '') {
+            $('#error_keluhan').text('*keluhan utama wajib diisi');
+            isValid = false;
+        }
+
+        if (!terapi || terapi.trim() === '') {
+            $('#error_terapi').text('*terapi yang telah diberikan wajib diisi');
+            isValid = false;
+        }
+
+        if (!riwayat_penyakit || riwayat_penyakit.trim() === '') {
+            $('#error_riwayat').text('*riwayat penyakit wajib diisi');
+            isValid = false;
+        }
+
+        if (!isValid) return;
 
         swal({
             title: "Apakah kamu yakin?",
@@ -671,26 +715,35 @@
             cancelButtonText: "Batal",
             showLoaderOnConfirm: true,
             closeOnConfirm: false
-        }, function (isConfirm) {
+        }, function(isConfirm) {
 
             if (!isConfirm) return false;
+
             toggleButtonLoading('button[onclick="simpan()"]', true, '<i class="fa fa-save"></i> SIMPAN RUJUKAN');
 
             $.ajax({
                 url: "<?php echo base_url() ?>Erm_dpjp/insert_lembar_rujukan",
                 method: "POST",
                 dataType: 'json',
-                data: dataString,
-
-                success: function (data) {
+                data: {
+                    no_rm: no_rm,
+                    id_pelayanan: id_pelayanan,
+                    id_dokter: id_dokter,
+                    id_list_poli: id_list_poli,
+                    id_history: id_history,
+                    diagnosis: diagnosis,
+                    terapi: terapi,
+                    riwayat_penyakit: riwayat_penyakit,
+                    keluhan: keluhan
+                },
+                success: function(data) {
                     if (data.status === "success") {
                         swal("Berhasil!", "Rujukan telah dikirim ke dokter tujuan.", "success");
                         reload_data_id_pel(id_pelayanan);
                     }
                     toggleButtonLoading('button[onclick="simpan()"]', false, '<i class="fa fa-save"></i> SIMPAN RUJUKAN');
                 },
-
-                error: function () {
+                error: function() {
                     swal({
                         title: "Error!",
                         text: "Tidak dapat terhubung ke server.",

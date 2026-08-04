@@ -88,11 +88,12 @@
                       </label>
                     </div>
                   </div>
+
                   <div class="col-md-4">
                     <label class="control-label mb-10 text-left"><b>Keluhan Utama <span style="color:red;">*</span></b><span class="help"></span></label>
                     <span id="keluhan_error" class="text-danger"></span>
                     <div class="has-success">
-                      <textarea class="form-control" name="keluhan" id="keluhan" cols="30" rows="3"></textarea>
+                      <textarea class="form-control" name="keluhan" id="keluhan" cols="30" rows="3"><?= isset($ass_dokter->keluhan_utama) ? $ass_dokter->keluhan_utama : '' ?></textarea>
                     </div>
                   </div>
                 </div>
@@ -554,14 +555,14 @@
             </div>
 
             <div class="form-group">
-                    <div class="col-md-4" style="margin-top:10px;">
-                      <label class="control-label mb-10 text-left">Diagnosa Sekunder <b style="color:red;">*</b></label>
-                      <span id="diagnosa_sekunder_error" class="text-danger"></span>
-                      <div class="has-success">
-                        <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"><?= isset($data['diagnosa_sekunder']) ? $data['diagnosa_sekunder'] : '' ?></textarea>
-                      </div>
-                    </div>
-                  </div>
+              <div class="col-md-4" style="margin-top:10px;">
+                <label class="control-label mb-10 text-left">Diagnosa Sekunder <b style="color:red;">*</b></label>
+                <span id="diagnosa_sekunder_error" class="text-danger"></span>
+                <div class="has-success">
+                  <textarea class="form-control" name="diagnosa_sekunder" id="diagnosa_sekunder" cols="30" rows="5"><?= isset($data['diagnosa_sekunder']) ? $data['diagnosa_sekunder'] : '' ?></textarea>
+                </div>
+              </div>
+            </div>
             <div class="col-md-12">
               <label class="control-label mb-10 text-left">&nbsp;<span class="help"></span></label>
             </div>
@@ -675,6 +676,16 @@
 
   //   });
   // });
+  (function() {
+    const originalVal = $.fn.val;
+
+    $.fn.val = function(value) {
+      if (arguments.length) {
+        console.trace('VAL DISET KE:', value, 'TARGET:', this);
+      }
+      return originalVal.apply(this, arguments);
+    };
+  })();
   $(document).ready(function() {
 
     id_pelayanan = $('#inPel').val();
@@ -686,6 +697,8 @@
         id: id_pelayanan
       },
       success: function(data) {
+        console.log('RESP:', data);
+        console.log('keluhan_utama:', data.keluhan_utama);
         if (data.status_dt == 'found') {
           $('#tekanan_darah').val(data.tekanan_darah);
           $('#frequensi_nadi').val(data.frequensi_nadi);
@@ -696,7 +709,9 @@
           $('#kondisi_umum').val(data.kondisi_umum);
           $('#berat_badan').val(data.berat_badan);
           $('#tinggi_badan').val(data.tinggi_badan);
-          $('#keluhan').val(data.keluhan_utama);
+          if (data.keluhan_utama && data.keluhan_utama !== '') {
+            $('#keluhan').val(data.keluhan_utama);
+          }
           /*---------------*/
           $('input[name="riwayat_alergi"][value="' + data.alergi + '"]').prop("checked", true);
 
@@ -882,7 +897,7 @@
 
 
 
-    
+
 
     $.ajax({
       url: "<?php echo base_url('Erm_ranap_asesmen_dokter/insert_asses_dokter_ranap'); ?>",

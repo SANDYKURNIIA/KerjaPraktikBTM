@@ -12,7 +12,7 @@
 
         }
 
-        .table2 { 
+        .table2 {
             color: #232323;
             border-collapse: collapse;
             border: 1px solid;
@@ -113,7 +113,6 @@
         </table>
 
         <?php
-        // helper kecil biar aman & rapi
         function e($v)
         {
             return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
@@ -125,20 +124,17 @@
             return $ts ? date($fmt, $ts) : e($v);
         }
 
-        // ambil nilai tanggal secara aman (kalau tidak ada, jadikan string kosong)
-        // sesuaikan fallback kalau kamu punya variabel lain (mis. $resume)
         $tglMasuk  = $pasien->tgl_masuk  ?? '';
-        $tglKeluar = $pasien->tgl_keluar ?? '';  // <- tidak semua data punya ini, hence guarded
+        $tglKeluar = $pasien->tgl_keluar ?? '';
         ?>
         <table width="100%" class="table2" cellspacing="0" height="100">
-            <!-- BIODATA (kiri–kanan) -->
-                 <td width="20%">Agama</td>
-                <td width="1%">:</td>
-                <td><?= e($pasien->agama ?? '') ?></td>
+            <td width="20%">Agama</td>
+            <td width="1%">:</td>
+            <td><?= e($pasien->agama ?? '') ?></td>
 
-                <td width="20%">Tanggal Masuk</td>
-                <td width="1%">:</td>
-                <td><?= fmtDate($tglMasuk) ?></td>
+            <td width="20%">Tanggal Masuk</td>
+            <td width="1%">:</td>
+            <td><?= fmtDate($tglMasuk) ?></td>
             </tr>
 
             <tr>
@@ -156,10 +152,6 @@
                 <td width="1%">:</td>
                 <td><?= nl2br(e($pasien->alamat ?? '')) ?></td>
 
-                <td colspan="3"></td>
-            </tr>
-
-            <tr>
                 <td width="20%">Dokter</td>
                 <td width="1%">:</td>
                 <td><strong><?= e($pasien->nama_dokter ?? '') ?></strong></td>
@@ -167,7 +159,24 @@
                 <td colspan="3"></td>
             </tr>
 
-            <!-- PEMISAH: satu sel full-width berisi sub-table agar tetap ada batas/garis sendiri -->
+            <tr class="garisbawah">
+                <td width="20%"></td>
+                <td width="1%"></td>
+                <td></td>
+
+                <td width="20%" style="vertical-align: top;">Dokter Pendamping</td>
+                <td width="1%" style="vertical-align: top;">:</td>
+                <td style="vertical-align: top;">
+                    <?php if (!empty($dokter_pendamping)): ?>
+                        <?php foreach ($dokter_pendamping as $dok): ?>
+                            <div>- <?= e($dok) ?></div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        -
+                    <?php endif; ?>
+                </td>
+            </tr>
+
             <tr>
                 <td colspan="6" style="padding:0;">
                     <table width="100%" class="table2" cellspacing="0" height="100">

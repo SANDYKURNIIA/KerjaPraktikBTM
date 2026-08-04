@@ -199,6 +199,18 @@ class M_Apelkes extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function getDokterPendamping($id_pelayanan)
+    {
+        $this->db->select("SUBSTRING_INDEX(dokter, ' Sp', 1) as dokter");
+        $this->db->distinct();
+        $this->db->from('v_tindakan_apelkes');
+        $this->db->where('nama', 'Dokter spesialis visite rutin');
+
+        $this->db->where('id_pelayanan', $id_pelayanan);
+
+        return $this->db->get()->result();
+    }
+    
     public function selectDataKamarByIdPel($id_pelayanan) //Apelkes
     {
         $this->db->select('*');

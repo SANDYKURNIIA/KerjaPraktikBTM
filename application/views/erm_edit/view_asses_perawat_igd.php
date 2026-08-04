@@ -1364,7 +1364,7 @@
                           </h5>
                           <div class="slidecontainer">
                             <span id="val"></span>
-                            <input id="slide" type="range" min="0" max="10" value="0" oninput="displayValue(event)" onchange="tampilStatus(this.value)" />
+                            <input id="slide" name="skala_nyeri" type="range" min="0" max="10" value="0" oninput="updateNyeri(event)" onchange="updateNyeri(event)" />
                             <span class="help-block"></span>
                             <div id="state"><img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img>
                               <br>
@@ -1497,8 +1497,7 @@
         $('#masalah').val(data.masalah);
         $('#rencana').val(data.rencana);
         $('#slide').val(data.skor_nyeri);
-        $('#val').html(data.skor_nyeri);
-        tampilStatus(data.skor_nyeri);
+        updateNyeri({ target: $('#slide')[0] });
 
         arrayTeks = data.masalah.split(",");
         arrayTeks.forEach(item => {
@@ -1688,7 +1687,7 @@
 <script type="text/javascript">
   function tampilStatus(val) {
     if (val >= 0 && val < 1) {
-      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>'width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
+      $('#state').html("<img src='<?= base_url() . 'assets/dist/img/tidak_nyeri.png'; ?>' width=7%></img><br><span style='color:black;'>Tidak Nyeri</span>");
     } else if (val >= 1 && val < 3) {
       $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_ringan.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Ringan</span>");
     } else if (val >= 3 && val < 5) {
@@ -1701,6 +1700,13 @@
       $('#state').html("<img src='<?= base_url() . 'assets/dist/img/nyeri_sangat_berat.png'; ?>' width=7%></img><br><span style='color:black;'>Nyeri Sangat Berat</span>");
     }
   }
+
+  function updateNyeri(e) {
+    if (!e || !e.target) return;
+    displayValue(e);
+    tampilStatus(e.target.value);
+  }
+
   $(function() {
     $("#frek_bab1").click(function() {
       if ($(this).is(":checked")) {
@@ -2079,7 +2085,7 @@
     } else if (skor_nyeri >= 1 && skor_nyeri < 3) {
       skala_nyeri = 'Ringan';
     } else if (skor_nyeri >= 3 && skor_nyeri < 5) {
-      skala_nyeri = ' Sedang';
+      skala_nyeri = 'Sedang';
     } else if (skor_nyeri >= 5 && skor_nyeri < 7) {
       skala_nyeri = 'Sedang';
     } else if (skor_nyeri >= 7 && skor_nyeri < 9) {

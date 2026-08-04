@@ -3,96 +3,110 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Erm_ranap_asesmen_dokter extends CI_Controller
 {
-	function __construct()
-	{
-		parent::__construct();
-		date_default_timezone_set('Asia/Jakarta');
-		$this->load->model('M_IGD');
-		$this->load->model('M_Erm');
-		$this->load->model('M_Assembling');
-		$this->load->model('M_Poli');
-		$this->load->model('M_Pencarian_Pasien');
-		$this->load->model('M_Erm_ranap');
-	}
+    function __construct()
+    {
+        parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
+        $this->load->model('M_IGD');
+        $this->load->model('M_Erm');
+        $this->load->model('M_Assembling');
+        $this->load->model('M_Poli');
+        $this->load->model('M_Pencarian_Pasien');
+        $this->load->model('M_Erm_ranap');
+    }
+    public function getAssDokterRanap($id_pelayanan, $id_history)
+    {
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->where('id_history', $id_history);
+        return $this->db->get('form_ass_dokter_ranap')->row();
+    }
 
-	public function formasesmen($id_pelayanan, $id_history)
-	{
-		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
-		$staff = $this->session->userdata('data_auth');
+    public function formasesmen($id_pelayanan, $id_history)
+    {
+        $selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history);
 
-		$page_data['nama'] = $selectPasien->nama;
-		// $page_data['no_hp'] = $selectPasien->no_hp;
-		// $page_data['alamat'] = $selectPasien->alamat . ', ' . $selectPasien->kelurahan . ', ' . $selectPasien->kecamatan . ', ' . $selectPasien->provinsi;
-		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
-		$page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
-		$page_data['cara_bayar'] = $selectPasien->cara_bayar;
-		$page_data['tgl_masuk'] = $selectPasien->tgl_masuk;
-		$page_data['staff'] = $staff->id_staff;
-		$page_data['no_rm'] = $selectPasien->no_rm;
-		$page_data['id_pelayanan'] = $id_pelayanan;
-		$page_data['id_history'] = $id_history;
-		$page_data['agama'] = $selectPasien->agama;
-		$page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
-		$page_data['gambar'] = base_url("assets/dist/img/status_lokalis.png");
-		$this->load->view('assets/_header');
-		$page_data['page_content'] = 'erm_form/Ranap/view_anamnesis_pemeriksaan_fisik';
-		$this->load->view('Main', $page_data);
-		$this->load->view('assets/_footer');
-	}
-    
-	public function formedit($id_pelayanan, $id_history)
-	{
-		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
-		$staff = $this->session->userdata('data_auth');
-        $db = $this->db->get_where('form_ass_dokter_ranap', ['id_pelayanan' => $id_pelayanan , 'id_history' => $id_history])->row();
+        // 🔥 ambil data assesment dokter (FIX: pakai id_pelayanan saja)
+        $ass_dokter = $this->M_Erm_ranap->getAssDokterRanap($id_pelayanan);
 
 
-		$page_data['nama'] = $selectPasien->nama;
-		$page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
-		$page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
-		$page_data['cara_bayar'] = $selectPasien->cara_bayar;
-		$page_data['tgl_masuk'] = $selectPasien->tgl_masuk;
-		$page_data['staff'] = $staff->id_staff;
-		$page_data['no_rm'] = $selectPasien->no_rm;
-		$page_data['id_pelayanan'] = $id_pelayanan;
-		$page_data['id_history'] = $id_history;
-		$page_data['agama'] = $selectPasien->agama;
-		$page_data['id'] = $db->id_form;
-		$page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
-        
+        $staff = $this->session->userdata('data_auth');
 
-		$this->load->view('assets/_header');
-		$page_data['page_content'] = 'erm_form/Ranap_Edit/view_anamnesis_pemeriksaan_fisik';
-		$page_data['gambar'] = base_url("assets/dist/img/status_lokalis.png");
-		$this->load->view('Main', $page_data);
-		$this->load->view('assets/_footer');
-	}
+        $page_data['nama'] = $selectPasien->nama;
+        $page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
+        $page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
+        $page_data['cara_bayar'] = $selectPasien->cara_bayar;
+        $page_data['tgl_masuk'] = $selectPasien->tgl_masuk;
+        $page_data['staff'] = $staff->id_staff;
+        $page_data['no_rm'] = $selectPasien->no_rm;
+        $page_data['id_pelayanan'] = $id_pelayanan;
+        $page_data['id_history'] = $id_history;
+        $page_data['agama'] = $selectPasien->agama;
+        $page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
 
-	public function insert_asses_dokter_ranap()
+        // 🔥 KIRIM KE VIEW
+        $page_data['ass_dokter'] = $ass_dokter;
+
+        $page_data['gambar'] = base_url("assets/dist/img/status_lokalis.png");
+
+        $this->load->view('assets/_header');
+        $page_data['page_content'] = 'erm_form/Ranap/view_anamnesis_pemeriksaan_fisik';
+        $this->load->view('Main', $page_data);
+        $this->load->view('assets/_footer');
+    }
+
+    public function formedit($id_pelayanan, $id_history)
+    {
+        $selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_history); // $selectPasien2 = $this->M_Erm->selectPasienIGDById($id_rm);
+        $staff = $this->session->userdata('data_auth');
+        $db = $this->db->get_where('form_ass_dokter_ranap', ['id_pelayanan' => $id_pelayanan, 'id_history' => $id_history])->row();
+
+
+        $page_data['nama'] = $selectPasien->nama;
+        $page_data['tgl_lahir'] = $selectPasien->tgl_lahir;
+        $page_data['jenis_kelamin'] = $selectPasien->jenis_kelamin;
+        $page_data['cara_bayar'] = $selectPasien->cara_bayar;
+        $page_data['tgl_masuk'] = $selectPasien->tgl_masuk;
+        $page_data['staff'] = $staff->id_staff;
+        $page_data['no_rm'] = $selectPasien->no_rm;
+        $page_data['id_pelayanan'] = $id_pelayanan;
+        $page_data['id_history'] = $id_history;
+        $page_data['agama'] = $selectPasien->agama;
+        $page_data['id'] = $db->id_form;
+        $page_data['diagnosa'] = $this->M_Pencarian_Pasien->getDiagnosa();
+
+
+        $this->load->view('assets/_header');
+        $page_data['page_content'] = 'erm_form/Ranap_Edit/view_anamnesis_pemeriksaan_fisik';
+        $page_data['gambar'] = base_url("assets/dist/img/status_lokalis.png");
+        $this->load->view('Main', $page_data);
+        $this->load->view('assets/_footer');
+    }
+
+    public function insert_asses_dokter_ranap()
     {
         $data = $this->session->userdata('data_auth');
         $tgl = date("Y-m-d H:i:s");
         $staff = $data->id_staff;
 
         $diagnosa_utama = $this->input->post('diagnosa_utama');
-		$diagnosa_sekunder = $this->input->post('diagnosa_sekunder');
+        $diagnosa_sekunder = $this->input->post('diagnosa_sekunder');
 
 
-		if (empty($diagnosa_utama) || empty($diagnosa_sekunder)) {
-			$out['status'] = "error";
-			$out['message'] = "Diagnosa Utama dan Diagnosa Sekunder wajib diisi!";
-			echo json_encode($out);
-			return;
-		}
-		$this->form_validation->set_rules('diagnosa_utama', 'Diagnosa Utama', 'required|trim');
-		$this->form_validation->set_rules('diagnosa_sekunder', 'Diagnosa Sekunder', 'required|trim');
+        if (empty($diagnosa_utama) || empty($diagnosa_sekunder)) {
+            $out['status'] = "error";
+            $out['message'] = "Diagnosa Utama dan Diagnosa Sekunder wajib diisi!";
+            echo json_encode($out);
+            return;
+        }
+        $this->form_validation->set_rules('diagnosa_utama', 'Diagnosa Utama', 'required|trim');
+        $this->form_validation->set_rules('diagnosa_sekunder', 'Diagnosa Sekunder', 'required|trim');
 
-		if ($this->form_validation->run() == FALSE) {
-			$out['status'] = "error";
-			$out['message'] = validation_errors();
-			echo json_encode($out);
-			return;
-		}
+        if ($this->form_validation->run() == FALSE) {
+            $out['status'] = "error";
+            $out['message'] = validation_errors();
+            echo json_encode($out);
+            return;
+        }
 
         $img = $this->input->post('gambar');
         if ($img != "") {
@@ -184,7 +198,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
             'lama' => $this->input->post('lama'),
             'prognosa' => $this->input->post('prognosa'),
             'diagnosa_utama' => $this->input->post('diagnosa_utama'),
-			'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
+            'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
 
 
             'gambar' => $file,
@@ -296,7 +310,7 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
             'lama' => $this->input->post('lama'),
             'prognosa' => $this->input->post('prognosa'),
             'diagnosa_utama' => $this->input->post('diagnosa_utama'),
-			'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
+            'diagnosa_sekunder' => $this->input->post('diagnosa_sekunder'),
 
 
             // 'gambar' => $file,
@@ -323,31 +337,32 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
     public function get_ass_per_ranap()
     {
         $id = $this->input->post('id');
-        $db = $this->db->get_where('form_ass_per_ranap', ['id_pelayanan' => $id])->result();
-        if (count($db) > 0) {
-            $db = $db[0];
+
+        // 🔥 ambil dari tabel yang BENAR
+        $db = $this->db->get_where('form_ass_dokter_ranap', ['id_pelayanan' => $id])->row();
+
+        if ($db) {
             $db->status_dt = 'found';
         } else {
-            $db = null;
-            $db['status_dt'] = 'not found';
+            $db = ['status_dt' => 'not found'];
         }
+
         echo json_encode($db);
     }
 
-
-	// public function get_ass_dok()
-	// {
-	// 	$id = $this->input->post('id');
-	// 	$db = $this->db->get_where('form_ass_dokter_ranap', ['id_history' => $id])->result();
-	// 	if (count($db) > 0) {
-	// 		$db = $db[0];
-	// 		$db->status_dt = 'found';
-	// 	} else {
-	// 		$db = null;
-	// 		$db['status_dt'] = 'not found';
-	// 	}
-	// 	echo json_encode($db);
-	// }
+    // public function get_ass_dok()
+    // {
+    // 	$id = $this->input->post('id');
+    // 	$db = $this->db->get_where('form_ass_dokter_ranap', ['id_history' => $id])->result();
+    // 	if (count($db) > 0) {
+    // 		$db = $db[0];
+    // 		$db->status_dt = 'found';
+    // 	} else {
+    // 		$db = null;
+    // 		$db['status_dt'] = 'not found';
+    // 	}
+    // 	echo json_encode($db);
+    // }
 
     public function get_ass_dok()
     {
@@ -369,88 +384,88 @@ class Erm_ranap_asesmen_dokter extends CI_Controller
         }
     }
 
-	function hapus_data_diagnosa()
-	{
-		$id = $this->input->post('id');
-		$where = array(
-			'no_diagnosa' => $id,
-		);
-		$this->M_Erm->delete($where, 'diagnosa_utama');
-		$out['status'] = "success";
-		echo json_encode($out);
-	}
-	function hapus_data_diagnosa1()
-	{
-		$id = $this->input->post('id');
-		$where = array(
-			'no_diagnosa' => $id,
-		);
-		$this->M_Erm->delete($where, 'erm_diagnosa_dokter');
-		$out['status'] = "success";
-		echo json_encode($out);
-	}
-	public function tampil_list_diagnosa_ranap()
-	{
-		// $id_akun = 'dgok8itaesm';
-		$id_pelayanan = $this->input->post('id_pelayanan');
-		$page_data = $this->M_Erm->selectDataDiagnosaByIdPel($id_pelayanan);
+    function hapus_data_diagnosa()
+    {
+        $id = $this->input->post('id');
+        $where = array(
+            'no_diagnosa' => $id,
+        );
+        $this->M_Erm->delete($where, 'diagnosa_utama');
+        $out['status'] = "success";
+        echo json_encode($out);
+    }
+    function hapus_data_diagnosa1()
+    {
+        $id = $this->input->post('id');
+        $where = array(
+            'no_diagnosa' => $id,
+        );
+        $this->M_Erm->delete($where, 'erm_diagnosa_dokter');
+        $out['status'] = "success";
+        echo json_encode($out);
+    }
+    public function tampil_list_diagnosa_ranap()
+    {
+        // $id_akun = 'dgok8itaesm';
+        $id_pelayanan = $this->input->post('id_pelayanan');
+        $page_data = $this->M_Erm->selectDataDiagnosaByIdPel($id_pelayanan);
 
-		// $page_data = null;
-		$out = null;
-		for ($i = 0; $i < count($page_data); $i++) {
+        // $page_data = null;
+        $out = null;
+        for ($i = 0; $i < count($page_data); $i++) {
 
-			// $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-			$tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
-
-
-			$nama_dokter = $page_data[$i]->no_diagnosa;
-			$kode = $page_data[$i]->kode;
-			$nama_diagnosa = $page_data[$i]->nama_diagnosa;
-			$tombol = $tombol;
+            // $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
+            $tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
 
 
-
-			$out[$i] = array($nama_dokter, $kode, $nama_diagnosa, $tombol);
-		}
-		if ($out == null) {
-			echo '{"data":""}';
-			exit;
-		} else {
-			$page_data['data'] = $out;
-			echo json_encode($page_data);
-			exit;
-		}
-	}
-	public function tampil_list_diagnosa1()
-	{
-		// $id_akun = 'dgok8itaesm';
-		$id_pelayanan = $this->input->post('id_pelayanan');
-		$page_data = $this->db->query("SELECT * from diagnosa_utama where id_history='$id_pelayanan'")->result();
-
-		// $page_data = null;
-		$out = null;
-		for ($i = 0; $i < count($page_data); $i++) {
-
-			// $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-			$tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
-
-
-			$nama_dokter = $page_data[$i]->no_diagnosa;
-			$kode = $page_data[$i]->kode;
-			$nama_diagnosa = $page_data[$i]->nama_diagnosa;
-			$tombol = $tombol;
+            $nama_dokter = $page_data[$i]->no_diagnosa;
+            $kode = $page_data[$i]->kode;
+            $nama_diagnosa = $page_data[$i]->nama_diagnosa;
+            $tombol = $tombol;
 
 
 
-			$out[$i] = array($nama_dokter, $kode, $nama_diagnosa, $tombol);
-		}
-		if ($out == null) {
-			echo '{"data":""}';
-			exit;
-		} else {
-			$page_data['data'] = $out;
-			echo json_encode($page_data);
-			exit;
-		}
-	}
+            $out[$i] = array($nama_dokter, $kode, $nama_diagnosa, $tombol);
+        }
+        if ($out == null) {
+            echo '{"data":""}';
+            exit;
+        } else {
+            $page_data['data'] = $out;
+            echo json_encode($page_data);
+            exit;
+        }
+    }
+    public function tampil_list_diagnosa1()
+    {
+        // $id_akun = 'dgok8itaesm';
+        $id_pelayanan = $this->input->post('id_pelayanan');
+        $page_data = $this->db->query("SELECT * from diagnosa_utama where id_history='$id_pelayanan'")->result();
+
+        // $page_data = null;
+        $out = null;
+        for ($i = 0; $i < count($page_data); $i++) {
+
+            // $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
+            $tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
+
+
+            $nama_dokter = $page_data[$i]->no_diagnosa;
+            $kode = $page_data[$i]->kode;
+            $nama_diagnosa = $page_data[$i]->nama_diagnosa;
+            $tombol = $tombol;
+
+
+
+            $out[$i] = array($nama_dokter, $kode, $nama_diagnosa, $tombol);
+        }
+        if ($out == null) {
+            echo '{"data":""}';
+            exit;
+        } else {
+            $page_data['data'] = $out;
+            echo json_encode($page_data);
+            exit;
+        }
+    }
 }

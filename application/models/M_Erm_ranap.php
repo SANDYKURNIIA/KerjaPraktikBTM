@@ -30,7 +30,16 @@ class M_Erm_ranap extends CI_Model
     }
 
 
+    public function getAssDokterRanap($id_pelayanan)
+    {
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $query = $this->db->get('form_ass_dokter_ranap');
 
+        // debug aman (optional, bisa dihapus nanti)
+        // echo $this->db->last_query(); die;
+
+        return $query->row();
+    }
 
     public function selectDataPasien($no_rm)
     {
@@ -711,7 +720,7 @@ class M_Erm_ranap extends CI_Model
         $query = $this->db->get();
         return $query->row(); // row() karena hanya 1 data
     }
-    
+
     public function get_last_total_pews_by_pel_id($id_pelayanan)
     {
         $this->db->select('skor');
@@ -752,17 +761,17 @@ class M_Erm_ranap extends CI_Model
     }
 
     public function selectUlangJatuhAnak($id_pelayanan)
-{
-    $this->db->select('*');
-    $this->db->from('asesmen_ulang_anak');
-    $this->db->where('id_pelayanan', $id_pelayanan);
-    $this->db->group_by('skor_resiko');
-    $this->db->order_by('tanggal', 'DESC');
+    {
+        $this->db->select('*');
+        $this->db->from('asesmen_ulang_anak');
+        $this->db->where('id_pelayanan', $id_pelayanan);
+        $this->db->group_by('skor_resiko');
+        $this->db->order_by('tanggal', 'DESC');
 
-    return $this->db->get()->result();
-}
+        return $this->db->get()->result();
+    }
 
-public function update_resiko_ulang_jatuh_lansia($id_asesmen, $data)
+    public function update_resiko_ulang_jatuh_lansia($id_asesmen, $data)
     {
         $this->db->where('id_asesmen', $id_asesmen);
         return $this->db->update('resiko_ulang_jatuh_lansia', $data);
@@ -838,7 +847,4 @@ public function update_resiko_ulang_jatuh_lansia($id_asesmen, $data)
         $this->db->where('d.id_pelayanan', $id_pelayanan);
         return $this->db->get()->result();
     }
-
-
-
 }

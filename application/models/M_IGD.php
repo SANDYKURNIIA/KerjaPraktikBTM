@@ -596,7 +596,7 @@ class M_IGD extends CI_Model
         $this->db->select('p.tgl_masuk');
         $this->db->from('pelayanan p,pasien_TBC tb');
         $this->db->where('p.id_pelayanan = tb.id_pelayanan');
-        
+
         return $this->db->get()->result();
     }
 }

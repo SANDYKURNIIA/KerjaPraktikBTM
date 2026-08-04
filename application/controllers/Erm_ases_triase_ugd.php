@@ -230,7 +230,7 @@ class Erm_ases_triase_ugd extends CI_Controller
 				'skala_nyeri' => $this->input->post('skala_nyeri'),
 				'kategori' => $this->input->post('kategori'),
 				'nama_staff' => $this->input->post('nama_staff'),
-				'skala_nyeri' => $this->input->post('skala_nyeri'),
+	
 				'skor_nyeri' => $this->input->post('skor_nyeri'),
 				'verif' => $verif_value,
 				'tgl_verif' => $this->input->post('tgl_verifikasi'),
@@ -377,7 +377,7 @@ class Erm_ases_triase_ugd extends CI_Controller
 			'disability'        => $this->input->post('disability'),
 			'kategori'          => $this->input->post('kategori'),
 			'nama_staff' 		=> $this->input->post('nama_staff'),
-			'skala_nyeri' 		=> $this->input->post('skala_nyeri'),
+			'skala_nyeri' 			=> $this->input->post('skala_nyeri'),
 			'skor_nyeri' 		=> $this->input->post('skor_nyeri'),
 			'verif' 			=> $verif_value,
 			'tgl_verif' 		=> $this->input->post('tgl_verifikasi'),
@@ -437,6 +437,7 @@ class Erm_ases_triase_ugd extends CI_Controller
 			->where('nama', $data['data']['dokter_verif'])
 			->get()
 			->row('foto');
+			
 
 		$this->load->view('print/ases_triase_ugd', $data);
 	}

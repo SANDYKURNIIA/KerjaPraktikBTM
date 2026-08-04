@@ -407,6 +407,18 @@ class Erm_dpjp extends CI_Controller
 	public function kirim_balasan()
 	{
 		$id_form_rujukan = $this->input->post('id_form_lembar_rujukan');
+		$id_dokter = $this->input->post('id_dokter');
+		$id_poli = $this->input->post('id_list_poli');
+
+		if (empty($id_poli)) {
+    		echo json_encode(['status' => 'error', 'message' => 'Poli wajib dipilih']);
+    		return;
+		}
+
+		if (empty($id_dokter)) {
+    		echo json_encode(['status' => 'error', 'message' => 'Dokter wajib dipilih']);
+    		return;
+		}
 
 		$data = [
 			'id_history' => $this->input->post('id_history'),
