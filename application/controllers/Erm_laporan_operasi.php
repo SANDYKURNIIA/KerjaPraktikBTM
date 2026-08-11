@@ -92,6 +92,31 @@ public function simpan()
 }
 
 
+    public function get_list($id_pelayanan)
+    {
+        $this->load->model('M_laporan_operasi_model');
+        $data = $this->M_laporan_operasi_model->get_list($id_pelayanan);
+        echo json_encode(['status' => 'success', 'data' => $data]);
+    }
+    
+    public function get_by_id($id)
+    {
+        $this->load->model('M_laporan_operasi_model');
+        $data = $this->M_laporan_operasi_model->get_by_id($id);
+        echo json_encode(['status' => 'success', 'data' => $data]);
+    }
+
+    public function hapus($id)
+    {
+        $this->load->model('M_laporan_operasi_model');
+        $delete = $this->M_laporan_operasi_model->hapus($id);
+        if ($delete) {
+            echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal menghapus data']);
+        }
+    }
+
     public function print_out($id_pelayanan, $id_history)
     {
         // $data['data'] = $this->M_laporan_operasi_model->getData($id_pelayanan);
@@ -106,21 +131,14 @@ public function simpan()
     public function store()
     {
         $this->load->model('M_laporan_operasi_model');
-        $id_pelayanan = $this->input->post('id_pelayanan');
-        $existing_data = $this->M_laporan_operasi_model->CekId($id_pelayanan);
+        $id_laporan_operasi = $this->input->post('id_laporan_operasi');
         $staff = $this->session->userdata('data_auth');
         // Menangani pengiriman data dari form ke database
         {
             $data = array(
-                // 'Ruang' => $this->input->post('Ruang'),
                 'no_rm' => $this->input->post('no_rm'),
                 'id_pelayanan' => $this->input->post('id_pelayanan'),
                 'id_history' => $this->input->post('id_history'),
-                // 'kelas' => $this->input->post('kelas'),
-                // 'nama_pasien' => $this->input->post('nama_pasien'),
-                // 'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-                // 'tanggal_lahir' => $this->input->post('tanggal_lahir'),
-                // tambah
                 'kamar_ok' => $this->input->post('kamar_ok'),
 
                 'nama_ahli_bedah' => $this->input->post('nama_ahli_bedah'),
@@ -137,7 +155,6 @@ public function simpan()
                 'diagnosa_post_operasi' => $this->input->post('diagnosa_post_operasi'),
                 'indikasi_operasi' => $this->input->post('indikasi_operasi'),
                 'jenis_operasi' => $this->input->post('jenis_operasi'),
-                // tambah
                 'jenis_pembiusan' => $this->input->post('jenis_pembiusan'),
                 'posisi_operasi' => $this->input->post('posisi_operasi'),
 
@@ -158,15 +175,11 @@ public function simpan()
                 'laporan_operasi' => $this->input->post('laporan_operasi'),
                 'staff' => $staff->id_staff,
             );
-            // var_dump($data);
-            // die;
-            // log_message('debug', 'Data yang diterima: ' . print_r($data, true)); 
 
-            if ($existing_data) {
-                // Data sudah ada, gunakan perintah update
-                $this->M_laporan_operasi_model->update_data_pasien($id_pelayanan, $data);
+            if(!empty($id_laporan_operasi)) {
+                $this->M_laporan_operasi_model->update_by_id($id_laporan_operasi, $data);
             } else {
-                // Data belum ada, gunakan perintah insert
+                // Selalu INSERT — agar bisa menyimpan lebih dari satu laporan operasi per pasien
                 $this->M_laporan_operasi_model->insert_data_pasien($data);
             }
         }

@@ -34,6 +34,7 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
               </div>
               <input type="hidden" id="inPel" value="<?= $id_pelayanan ?>">
               <input type="hidden" id="inHis" value="<?= $id_history ?>">
+              <input type="hidden" id="inIdLaporanOperasi" value="">
               <input type="hidden" name="id_laporan"
                 value="<?php echo isset($laporan->id_laporan) ? $laporan->id_laporan : ''; ?>">
 
@@ -790,6 +791,56 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
                   </button>
                 </div>
               </div>
+              <div class="clearfix"></div>
+
+              <!-- MULAI TABEL LAPORAN OPERASI -->
+              <div class="col-md-12" style="margin-top: 40px; padding: 0 20px;">
+                <hr>
+                <h6 class="txt-dark capitalize-font mb-20">Data Laporan Operasi</h6>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped" id="tabelLaporanOperasi" style="white-space: nowrap; color: #222222; font-weight: 500;">
+                    <thead style="background-color: #d4edda;">
+                      <tr>
+                        <th class="text-center">NO</th>
+                        <th class="text-center">PILIH</th>
+                        <th class="text-center">LANJUTKAN</th>
+                        <th class="text-center">HAPUS</th>
+                        <th>TINDAKAN OPERASI</th>
+                        <th>OPERASI DIMULAI</th>
+                        <th>OPERASI SELESAI</th>
+                        <th>DIAGNOSA PRA OPERASI</th>
+                        <th>DIAGNOSA POST OPERASI</th>
+                        <th>TANGGAL</th>
+                        <th>MULAI PUKUL</th>
+
+                        <th>NAMA</th>
+                      </tr>
+                    </thead>
+                    <tbody id="bodyLaporanOperasi">
+                      <!-- Data load via AJAX -->
+                    </tbody>
+                    <tfoot style="background-color: #d4edda;">
+                      <tr>
+                        <th class="text-center">NO</th>
+                        <th class="text-center">PILIH</th>
+                        <th class="text-center">LANJUTKAN</th>
+                        <th class="text-center">HAPUS</th>
+                        <th>TINDAKAN OPERASI</th>
+                        <th>OPERASI DIMULAI</th>
+                        <th>OPERASI SELESAI</th>
+                        <th>DIAGNOSA PRA OPERASI</th>
+                        <th>DIAGNOSA POST OPERASI</th>
+                        <th>TANGGAL</th>
+                        <th>MULAI PUKUL</th>
+
+                        <th>NAMA</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <!-- AKHIR TABEL LAPORAN OPERASI -->
 
               <script type="text/javascript">
                 $(document).ready(function () {
@@ -798,6 +849,20 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
                   reload_data_diagnosa(id_pelayanan, id_history);
                   reload_data_diagnosa_id_pel(id_pelayanan);
                   reload_data_diagnosa1_id_pel1(id_pelayanan);
+                  
+                  loadTabelLaporanOperasi();
+
+                // Delegasi event untuk tombol edit (roket) yang di-render dinamis
+                  $(document).on('click', '.btnEditLaporan', function() {
+                      var id = $(this).data('id');
+                      editLaporan(id);
+                  });
+
+                  // Delegasi event untuk tombol hapus yang di-render dinamis
+                  $(document).on('click', '.btnHapusLaporan', function() {
+                      var id = $(this).data('id');
+                      hapusLaporan(id);
+                  });
 
                   $("#inPenOperasi2").click(function () {
                     if ($(this).is(":checked")) {
@@ -1009,6 +1074,7 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
                       komplikasi_operasi: komplikasi_operasi,
                       nomor_pendaftaran: nomor_pendaftaran,
                       laporan_operasi: laporan_operasi,
+                    id_laporan_operasi: $('#inIdLaporanOperasi').val(),
 
                     },
                     success: function (data) {
@@ -1025,6 +1091,9 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
                         }, function () {
                           // location.reload();
                         });
+                        loadTabelLaporanOperasi();
+                        // Reset ID setelah simpan agar berikutnya INSERT baru
+                        $('#inIdLaporanOperasi').val('');
                       } else if (data.error) {
                         if (nama_ibu == '' || nama_ibu == null) {
                           $('#ibu_error').html('*wajib diisi');
@@ -1435,4 +1504,146 @@ $laporan_operasi = $this->db->get_where('laporan_operasi', ['id_pelayanan' => $i
                     console && console.warn && console.warn('Prefill error:', e);
                   }
                 })();
+
+                function loadTabelLaporanOperasi() {
+                    let id_pel = $('#inPel').val();
+                    $.ajax({
+                        url: "<?php echo base_url('Erm_laporan_operasi/get_list/') ?>" + id_pel,
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function(response) {
+                            let html = '';
+                            if (response.status === 'success') {
+                                if (response.data.length > 0) {
+                                    $.each(response.data, function(i, item) {
+                                        // Format tanggal
+                                        let tgl = '';
+                                        if (item.tanggal_operasi) {
+                                            let d = new Date(item.tanggal_operasi);
+                                            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                                            tgl = d.toLocaleDateString('en-GB', options);
+                                        }
+
+
+
+                                        html += '<tr>';
+                                        html += '<td class="text-center">'+(i+1)+'</td>';
+                                        html += '<td class="text-center"><button type="button" class="btn btn-success btn-xs btn-icon-anim btn-square btnEditLaporan" data-id="'+item.id+'"><i class="fa fa-rocket"></i></button></td>';
+                                        html += '<td class="text-center"><button type="button" class="btn btn-warning btn-xs btn-icon-anim btn-square btnEditLaporan" data-id="'+item.id+'"><i class="fa fa-rocket"></i></button></td>';
+                                        html += '<td class="text-center"><button type="button" class="btn btn-danger btn-xs btn-icon-anim btn-square btnHapusLaporan" data-id="'+item.id+'"><i class="fa fa-trash"></i></button></td>';
+                                        html += '<td>'+(item.tindakan_operasi ? item.tindakan_operasi : '')+'</td>';
+                                        html += '<td>'+(item.operasi_dimulai ? item.operasi_dimulai : '')+'</td>';
+                                        html += '<td>'+(item.operasi_selesai ? item.operasi_selesai : '')+'</td>';
+                                        html += '<td>'+(item.diagnosa_pra_operasi ? item.diagnosa_pra_operasi : '')+'</td>';
+                                        html += '<td>'+(item.diagnosa_post_operasi ? item.diagnosa_post_operasi : '')+'</td>';
+                                        html += '<td>'+tgl+'</td>';
+                                        html += '<td>'+(item.operasi_dimulai ? item.operasi_dimulai : '')+'</td>'; // Mulai pukul = operasi dimulai?
+
+                                        html += '<td>'+(item.nama_staff ? item.nama_staff : (item.staff ? item.staff : ''))+'</td>';
+                                        html += '</tr>';
+                                    });
+                                } else {
+                                    html = '<tr><td colspan="12" class="text-center">Belum ada data laporan operasi.</td></tr>';
+                                }
+                            }
+                            $('#bodyLaporanOperasi').html(html);
+                        }
+                    });
+                }
+
+                function hapusLaporan(id) {
+                    swal({
+                        title: "Apakah Anda yakin?",
+                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#f83f37",
+                        confirmButtonText: "Ya, Hapus!",
+                        cancelButtonText: "Batal",
+                        closeOnConfirm: false
+                    }, function () {
+                        $.ajax({
+                            url: "<?php echo base_url('Erm_laporan_operasi/hapus/') ?>" + id,
+                            type: "POST",
+                            dataType: "JSON",
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    swal("Berhasil!", data.message, "success");
+                                    loadTabelLaporanOperasi();
+                                } else {
+                                    swal("Gagal!", data.message, "error");
+                                }
+                            }
+                        });
+                    });
+                }
+
+
+                function editLaporan(id) {
+                    $.ajax({
+                        url: "<?php echo base_url('Erm_laporan_operasi/get_by_id/') ?>" + id,
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function(res) {
+                            if (res.status === 'success' && res.data) {
+                                var d = res.data;
+                                // Set ID agar simpan() menggunakan UPDATE
+                                $('#inIdLaporanOperasi').val(d.id);
+
+                                // Isi form dengan data record yang dipilih
+                                $('#kamar_ok').val(d.kamar_ok);
+                                $('#inDPJP').val(d.nama_ahli_bedah);
+                                $('#inNamaPerawat').val(d.nama_perawat_instrumen);
+                                $('#inNamaAsisten1').val(d.nama_asisten1);
+                                $('#inNamaAsisten2').val(d.nama_asisten2);
+                                $('#inSirkuler').val(d.sirkuler);
+                                $('#inDokterAnestesi').val(d.nama_dokter_anestesi);
+                                $('#inPerawatAnestesi').val(d.nama_perawat_anestesi);
+                                $('#inDiagPra').val(d.diagnosa_pra_operasi);
+                                $('#inTinOperasi').val(d.tindakan_operasi);
+                                $('#inDiagPost').val(d.diagnosa_post_operasi);
+                                $('#inOperasi').val(d.indikasi_operasi);
+                                $('#inPosisiOperasi').val(d.posisi_operasi);
+                                $('#inTglOperasi').val(d.tanggal_operasi);
+                                $('#inOpeMulai').val(d.operasi_dimulai);
+                                $('#inOpeSelesai').val(d.operasi_selesai);
+                                $('#inLamaOperasi').val(d.lama_operasi);
+                                $('#inJarEksisi').val(d.jaringan_eksisi);
+                                $('#inBahDikirim').val(d.bahan_dikirim_laboratorium);
+                                $('#inUntPem').val(d.untuk_pemeriksaan);
+                                $('#inSingKel').val(d.singkatan_kelainan);
+                                $('#inJumPenda').val(d.jumlah_pendarahan);
+                                $('#inJumTrans').val(d.jumlah_transfusi);
+                                $('#inNoPend').val(d.nomor_pendaftaran);
+
+                                // Radio buttons
+                                if (d.jenis_operasi) $('input[name="inJenOperasi"][value="'+d.jenis_operasi+'"]').prop('checked', true);
+                                if (d.jenis_pembiusan) $('input[name="inAnestesi"][value="'+d.jenis_pembiusan+'"]').prop('checked', true);
+                                if (d.antiseptik) $('input[name="inAntiSeptik"][value="'+d.antiseptik+'"]').prop('checked', true);
+
+                                // Penyulit operasi
+                                if (d.penyulit_operasi && d.penyulit_operasi.trim() !== '') {
+                                    $('input[name="penyulit"][value="Ada"]').prop('checked', true);
+                                    $('#inPenOperasi').val(d.penyulit_operasi).show();
+                                } else {
+                                    $('input[name="penyulit"][value="Tidak Ada"]').prop('checked', true);
+                                    $('#inPenOperasi').hide();
+                                }
+
+                                // Komplikasi operasi
+                                if (d.komplikasi_operasi && d.komplikasi_operasi.trim() !== '') {
+                                    $('input[name="komplikasi"][value="Ada"]').prop('checked', true);
+                                    $('#inKomplikasi').val(d.komplikasi_operasi).show();
+                                } else {
+                                    $('input[name="komplikasi"][value="Tidak Ada"]').prop('checked', true);
+                                    $('#inKomplikasi').hide();
+                                }
+
+                                // Scroll ke atas form
+                                $('html, body').animate({ scrollTop: 0 }, 400);
+                            }
+                        }
+                    });
+                }
+
               </script>
