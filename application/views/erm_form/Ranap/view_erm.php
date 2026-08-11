@@ -99,7 +99,9 @@
                 <div class="panel-wrapper">
                     <div class="panel-body">
                         <!-- <a class="btn btn-success col-md-12" style="margin: 3px" href="</?php echo base_url('All_Poli/Spri/') . $id_his .  '/' . $id_pel; ?>">SPRI</a> -->
-                        <a class="btn btn-success col-md-12" style="margin: 3px" href="<?php echo base_url('All_Poli/Rencana_kontrol/') . $id_his .  '/' . $id_pel; ?>">RENCANA KONTROL</a>
+                        <a class="btn btn-success col-md-12" style="margin: 3px"
+                            href="<?php echo base_url('All_Poli/Rencana_kontrol/') . $id_his . '/' . $id_pel; ?>">RENCANA
+                            KONTROL</a>
 
                     </div>
                 </div>
@@ -111,7 +113,8 @@
                     <!-- <div class="pull-left">
                         <h6 class="panel-title txt-dark">RIWAYAT MEDIS</h6>
                     </div> -->
-                    <button class="btn btn-success col-md-12" style="margin: 3px" onclick="riwayat()">RIWAYAT MEDIS</button>
+                    <button class="btn btn-success col-md-12" style="margin: 3px" onclick="riwayat()">RIWAYAT
+                        MEDIS</button>
                     <div class="clearfix"></div>
                 </div>
 
@@ -151,7 +154,9 @@
                         <h6 class="panel-title txt-dark">RIWAYAT MEDIS</h6>
                     </div> -->
 
-                    <a class="btn btn-success col-md-12 " style="margin: 3px" href="<?php echo base_url('erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) .  '/' . urlencode(base64_encode($id_histori)) . "/" . "ICU"; ?>">ERM ICU</a>
+                    <a class="btn btn-success col-md-12 " style="margin: 3px"
+                        href="<?php echo base_url('erm_ranap/form/') . urlencode(base64_encode($id_pelayanan)) . '/' . urlencode(base64_encode($id_histori)) . "/" . "ICU"; ?>">ERM
+                        ICU</a>
                 </div>
 
                 <div class="panel-body task-panel">
@@ -458,7 +463,10 @@
                                                       <a class='btn btn-success col-md-5 laporan_tindakan_kebidanan' href='" . base_url('Erm_laporan_tindakan_kebidanan/form/') . "$id_pelayanan/$id_histori'>
                                                         Laporan Tindakan Kebidanan
                                                     </a>
-                                                    
+
+                                                    <a class='btn btn-success col-md-5 btn-robson' href='" . base_url('Erm_robson/form/' . $id_pelayanan . '/' . $id_histori) . "'>
+                                                    Laporan Robson
+                                                    </a>
                                                 </div>
                                                 ";
 
@@ -473,7 +481,7 @@
                                                 Triase & Assesmen Keperawatan   
                                             </a>
 
-                                            <a class="btn btn-success col-md-5 asses_dokter_igd" href="<?php echo base_url('erm_ases_dok_igd/form/') .  $id_pelayanan . '/' . $id_histori_igd; ?>">
+                                            <a class="btn btn-success col-md-5 asses_dokter_igd" href="<?php echo base_url('erm_ases_dok_igd/form/') . $id_pelayanan . '/' . $id_histori_igd; ?>">
                                                Status Present
                                             </a>
                                         </?php }?> -->
@@ -500,12 +508,12 @@
                                                 Asesmen Awal Jatuh Geriatri
                                             </a> -->
 
-                                        <!-- <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_ranap_resume_medis/formresume/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 surveilans" href="<?= base_url('Erm_ranap_resume_medis/formresume/') . $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Medis
                                         </a> -->
 
 
-                                        <!-- <a class="btn btn-success col-md-5 resume_pasien_pulang" href="<?= base_url('Erm_resume_pasien_pulang/formresumepasienpulang/') .  $id_pelayanan . '/' . $id_histori; ?>">
+                                        <!-- <a class="btn btn-success col-md-5 resume_pasien_pulang" href="<?= base_url('Erm_resume_pasien_pulang/formresumepasienpulang/') . $id_pelayanan . '/' . $id_histori; ?>">
                                             Resume Pasien Pulang
                                         </a> -->
 
@@ -520,9 +528,9 @@
                                             <div class="col-md-12">
                                                 <button class="btn btn-default btn-anim"
                                                     onclick="window.location.href='javascript:history.go(-1)';"
-                                                    type="button"
-                                                    style="margin-top: 20px; padding: 10px 24px;">
-                                                    <i class="fa fa-arrow-left"></i> <span class="btn-text">KEMBALI</span>
+                                                    type="button" style="margin-top: 20px; padding: 10px 24px;">
+                                                    <i class="fa fa-arrow-left"></i> <span
+                                                        class="btn-text">KEMBALI</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -552,7 +560,7 @@
     }
 </style>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         id_pelayanan = $('#inPel').val();
         id_histori = $('#inHis').val();
         $.ajax({
@@ -563,7 +571,7 @@
                 id_pelayanan: id_pelayanan,
                 id_histori: id_histori
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.asses_per_ranap == "found") {
                     $('.asses_per_ranap').removeClass('btn-success').addClass('btn-danger ');
                     $('.asses_per_ranap').attr('href', '<?php echo base_url('Erm_ranap_asesmen_perawat/edit_asses_perawat_ranap/') . $id_pelayanan . '/' . $id_histori; ?>');
@@ -698,6 +706,9 @@
                 if (data.asses_ulang_nyeri == "found") {
                     $('.asses_ulang_nyeri').removeClass('btn-success').addClass('btn-danger ');
                 }
+                if (data.robson == "found") {
+                    $('.btn-robson').removeClass('btn-success').addClass('btn-danger');
+                }
 
                 $('#loader').removeClass('hide')
             }
@@ -714,7 +725,7 @@
             data: {
                 id_pelayanan: id_pelayanan
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.status == "success") {
                     window.location.href = "<?php echo base_url('Erm_ranap_asesmen_perawat/formasesmenranap/') . $id_pelayanan . '/' . $id_histori; ?>";
                 } else {
@@ -743,7 +754,7 @@
             data: {
                 id: no_rm
             },
-            success: function(data) {
+            success: function (data) {
                 var html = '';
                 var i;
                 for (i = 0; i < data.length; i++) {
@@ -774,7 +785,7 @@
             data: {
                 id: no_rm
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.status == 'found') {
                     var html = '';
                     var i;
@@ -814,7 +825,7 @@
             data: {
                 id_pelayanan: id_pelayanan
             },
-            success: function(data) {
+            success: function (data) {
                 if (data.status == "success") {
                     // window.location.href = "<?php echo base_url('Igd') ?>";
 

@@ -28,7 +28,7 @@ class Erm_ranap extends CI_Controller
 		$this->load->view('assets/_footer');
 	}
 
-	public function form($id_pel, $id_his , $icuOnly = false)
+	public function form($id_pel, $id_his, $icuOnly = false)
 	{
 		$id_pelayanan = base64_decode(urldecode($id_pel));
 		$id_histori = base64_decode(urldecode($id_his));
@@ -39,14 +39,14 @@ class Erm_ranap extends CI_Controller
 		$total_ews = -1;
 
 
-		if($data_ews !== NULL){
+		if ($data_ews !== NULL) {
 			$total_ews = $data_ews->total_ews;
 		}
 
-		$warna_btn_pemtVital = ""; 
+		$warna_btn_pemtVital = "";
 		$wrn_fnt_pemtVital = "#fff";
 
-		if($total_ews === -1){
+		if ($total_ews === -1) {
 			$warna_btn_pemtVital = "#3cb878";
 		}
 
@@ -55,11 +55,11 @@ class Erm_ranap extends CI_Controller
 			$wrn_fnt_pemtVital = "#000";
 
 		} elseif ($total_ews >= 4 && $total_ews <= 5) {
-			$warna_btn_pemtVital = "#f1c40f"; 
+			$warna_btn_pemtVital = "#f1c40f";
 		} elseif ($total_ews >= 6 && $total_ews <= 7) {
-			$warna_btn_pemtVital = "#e67e22"; 
+			$warna_btn_pemtVital = "#e67e22";
 		} elseif ($total_ews >= 8) {
-			$warna_btn_pemtVital = "#e74c3c"; 
+			$warna_btn_pemtVital = "#e74c3c";
 		}
 
 
@@ -94,7 +94,7 @@ class Erm_ranap extends CI_Controller
 		$page_data['wrn_fnt_pews'] = $wrn_fnt_pews;
 		//
 
-		
+
 		// $id_pelayanan = $id_pel;
 		// $id_histori = $id_his;
 		$selectPasien = $this->M_Erm_ranap->selectDataPasienRanapby_id($id_pelayanan, $id_histori);
@@ -169,7 +169,7 @@ class Erm_ranap extends CI_Controller
 			$stok = "stok_ranap";
 		} else if (
 			$perequest == "anastesi" || $perequest == 'poliinternis' || $perequest == 'poliobgyne' || $perequest == 'politht' || $perequest === 'polimata' || $perequest == 'polikulit' || $perequest == 'poliumum' || $perequest == 'polianak' || $perequest == 'poligigi' || $perequest == 'polijantung' || $perequest == 'polibedah' || $perequest == 'rehab' || $perequest == 'polihemodialisa' || $perequest == 'poliakupuntur' || $perequest == 'polibedahmulut' || $perequest == 'polikesjiwa' || $perequest == 'poliorthopedi' || $perequest == 'poliparu' || $perequest == 'polisaraf'
-			|| $perequest == 'poliurologi' || $perequest == 'polipenyakitmulut' || $perequest == 'poliginjal' || $perequest == 'kasir'|| $perequest == 'homecare'
+			|| $perequest == 'poliurologi' || $perequest == 'polipenyakitmulut' || $perequest == 'poliginjal' || $perequest == 'kasir' || $perequest == 'homecare'
 		) {
 			$stok = "stok_ranap";
 		} else if ($perequest == "igdponek") {
@@ -333,9 +333,10 @@ class Erm_ranap extends CI_Controller
 		$pews_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'pews_anak');
 		$asesmen_jatuh_anak = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_anak');
 		$asesmen_jatuh_lansia = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'asesmen_ulang_lansia');
-		$lembar_monitoring = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'lembar_monitoring');	
+		$lembar_monitoring = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'lembar_monitoring');
 		$ews_maternity = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'lembar_monitoring');
 		$asses_ulang_nyeri = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'form_asesmen_ulang_nyeri');
+		$robson = $this->M_Erm_ranap->checkData(['id_pelayanan' => $id_pelayanan], 'erm_robson');
 
 
 		// $asses_per_igd = $this->M_Erm->checkData($id_pelayanan, 'form_ass_per_igd');
@@ -385,6 +386,7 @@ class Erm_ranap extends CI_Controller
 		$db['lembar_monitoring'] = empty($lembar_monitoring) ? 'not-found' : 'found';
 		$db['ews_maternity'] = empty($ews_maternity) ? 'not-found' : 'found';
 		$db['asses_ulang_nyeri'] = empty($asses_ulang_nyeri) ? 'not-found' : 'found';
+		$db['robson'] = empty($robson) ? 'not-found' : 'found';
 
 		// $db['asses_per_igd'] = empty($asses_per_igd) ? 'not-found' : 'found';
 		// $db['asses_dokter_igd'] = empty($asses_dokter_igd) ? 'not-found' : 'found';
@@ -535,7 +537,7 @@ class Erm_ranap extends CI_Controller
 		$this->form_validation->set_rules('jk', 'Diagnosis', 'required');
 
 		if ($this->form_validation->run()) {
-			$db   =   array(
+			$db = array(
 				'no_rm' => $this->input->post('no_rm'),
 				'hubungan' => $this->input->post('hubungan'),
 				'nama' => $this->input->post('nama'),
@@ -553,7 +555,7 @@ class Erm_ranap extends CI_Controller
 			$out['status'] = "success";
 		} else {
 			$out = array(
-				'error'   => true,
+				'error' => true,
 				'hubungan' => form_error('hubungan'),
 				'nama' => form_error('nama'),
 				'jk' => form_error('jk'),
@@ -567,7 +569,7 @@ class Erm_ranap extends CI_Controller
 	}
 	public function simpan_erm()
 	{
-		$db   =   array(
+		$db = array(
 			'total_bayar' => 1,
 		);
 		$where = array(
@@ -622,7 +624,7 @@ class Erm_ranap extends CI_Controller
 		for ($i = 0; $i < count($page_data); $i++) {
 			$id_pelayanan = $this->input->post('id_pelayanan');
 			// $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-			$tombol =   "<button class='btn btn-success btn-icon-anim btn-square' data-toggle='modal' onclick='tambah_data_diagnosa(\"" . $id_pelayanan . "\",\"" . $page_data[$i]->id_diagnosa . "\",\"" . $page_data[$i]->nama_diagnosa . "\")' '><i class='icon-plus'></i></button>";
+			$tombol = "<button class='btn btn-success btn-icon-anim btn-square' data-toggle='modal' onclick='tambah_data_diagnosa(\"" . $id_pelayanan . "\",\"" . $page_data[$i]->id_diagnosa . "\",\"" . $page_data[$i]->nama_diagnosa . "\")' '><i class='icon-plus'></i></button>";
 
 
 			$id_diagnosa = $page_data[$i]->id_diagnosa;
@@ -653,7 +655,7 @@ class Erm_ranap extends CI_Controller
 		for ($i = 0; $i < count($page_data); $i++) {
 
 			// $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-			$tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
+			$tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa1(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
 
 
 			$nama_dokter = $page_data[$i]->no_diagnosa;
@@ -686,7 +688,7 @@ class Erm_ranap extends CI_Controller
 		for ($i = 0; $i < count($page_data); $i++) {
 
 			// $tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->id_pelayanan . "\")' '><i class='fa fa-trash '></i></button>";
-			$tombol =   "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\""  . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
+			$tombol = "<button class='btn btn-danger btn-icon-anim btn-square' data-toggle='modal' onclick='hapus_data_diagnosa(\"" . $page_data[$i]->no_diagnosa . "\")' '><i class='fa fa-trash '></i></button>";
 
 
 			$nama_dokter = $page_data[$i]->no_diagnosa;
@@ -821,7 +823,8 @@ class Erm_ranap extends CI_Controller
 		$this->load->view('erm_ranap_print/ases_dok_ranap', $data);
 	}
 
-	public function cek_skrining_tbc() {
+	public function cek_skrining_tbc()
+	{
 		$id_pelayanan = $this->input->post('id_pelayanan');
 		$result = $this->M_Erm_ranap->cek_skrining($id_pelayanan);
 		if ($result) {
@@ -838,63 +841,63 @@ class Erm_ranap extends CI_Controller
 	}
 
 	//erm
-    public function erm_ranap()
-    {
-        $this->load->view('assets/_header');
-        $page_data['page_content'] = 'page_content/Riwayat_erm_ranap';
+	public function erm_ranap()
+	{
+		$this->load->view('assets/_header');
+		$page_data['page_content'] = 'page_content/Riwayat_erm_ranap';
 
-        $this->load->view('Main', $page_data);
-        $this->load->view('assets/_footer');
-    }
-    public function tampil_erm_ranap()
-    {
-        $data = $this->session->userdata('data_auth');
+		$this->load->view('Main', $page_data);
+		$this->load->view('assets/_footer');
+	}
+	public function tampil_erm_ranap()
+	{
+		$data = $this->session->userdata('data_auth');
 
-        if ($this->input->post('mulai')!='' && $this->input->post('akhir')!=''  && $this->input->post('tipe')!=''  ) {
-            $page_data = $this->M_Erm_ranap->selectERM($this->input->post('mulai'), $this->input->post('akhir'), $this->input->post('tipe'));
-        } else {
+		if ($this->input->post('mulai') != '' && $this->input->post('akhir') != '' && $this->input->post('tipe') != '') {
+			$page_data = $this->M_Erm_ranap->selectERM($this->input->post('mulai'), $this->input->post('akhir'), $this->input->post('tipe'));
+		} else {
 			$tgl = date('Y-m-d');
-            $page_data = $this->M_Erm_ranap->selectERM($tgl,$tgl,'ranap');
-        }
-        $out = null;
-        for ($i = 0; $i < count($page_data); $i++) {
+			$page_data = $this->M_Erm_ranap->selectERM($tgl, $tgl, 'ranap');
+		}
+		$out = null;
+		for ($i = 0; $i < count($page_data); $i++) {
 
-            $erm = "<a class='btn btn-primary btn-icon-anim btn-square' href=" . base_url('erm_ranap/form/' . urlencode(base64_encode($page_data[$i]->id_pelayanan)) . '/' . urlencode(base64_encode($page_data[$i]->id_history))) . "><i class='icon-note'></i></a>";
-           
-            $tgl = strtotime($page_data[$i]->tgl_lahir);
-            $date3 = strftime("%A, %d %B %Y ", $tgl);
+			$erm = "<a class='btn btn-primary btn-icon-anim btn-square' href=" . base_url('erm_ranap/form/' . urlencode(base64_encode($page_data[$i]->id_pelayanan)) . '/' . urlencode(base64_encode($page_data[$i]->id_history))) . "><i class='icon-note'></i></a>";
 
-            $birthDate = $page_data[$i]->tgl_lahir;
-            $date = new DateTime($birthDate);
-            $now = new DateTime();
-            $interval = $now->diff($date);
-            $umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
+			$tgl = strtotime($page_data[$i]->tgl_lahir);
+			$date3 = strftime("%A, %d %B %Y ", $tgl);
 
-            $no = $i + 1;
-            $no_rm =  "" . sprintf('%06d', $page_data[$i]->no_rm);
-            $nama = $page_data[$i]->nama;
-            $tgl_masuk = indo_date($page_data[$i]->tgl_masuk) . ' ' .date('H:m:s',strtotime($page_data[$i]->tgl_masuk));
-            $tgl_pulang = indo_date($page_data[$i]->keluar_kamar) . ' ' .date('H:m:s',strtotime($page_data[$i]->keluar_kamar));
-           
-            $jenis_kelamin = $page_data[$i]->jenis_kelamin;
-            $tgl_lahir = $date3;
-            $umur = $umur;
-            $cara_masuk = $page_data[$i]->jenis_pelayanan;
-            $dokter = $page_data[$i]->nama_dokter;
-            $cara_bayar = $page_data[$i]->cara_bayar;
-            $diagnosa = $page_data[$i]->diagnosa;
-            $ruangan = $page_data[$i]->poli;
+			$birthDate = $page_data[$i]->tgl_lahir;
+			$date = new DateTime($birthDate);
+			$now = new DateTime();
+			$interval = $now->diff($date);
+			$umur = $interval->y . " Tahun, " . $interval->m . " Bulan";
 
-            $out[$i] = array($no, $erm, $tgl_masuk, $tgl_pulang, $no_rm, $nama, $jenis_kelamin, $tgl_lahir, $umur, $cara_masuk,$ruangan, $cara_bayar, $diagnosa, $dokter);
-        }
-        if ($out == null) {
-            echo '{"data":""}';
-            exit;
-        } else {
-            $page_data['data'] = $out;
-            echo json_encode($page_data);
-            exit;
-        }
-    }
-	
+			$no = $i + 1;
+			$no_rm = "" . sprintf('%06d', $page_data[$i]->no_rm);
+			$nama = $page_data[$i]->nama;
+			$tgl_masuk = indo_date($page_data[$i]->tgl_masuk) . ' ' . date('H:m:s', strtotime($page_data[$i]->tgl_masuk));
+			$tgl_pulang = indo_date($page_data[$i]->keluar_kamar) . ' ' . date('H:m:s', strtotime($page_data[$i]->keluar_kamar));
+
+			$jenis_kelamin = $page_data[$i]->jenis_kelamin;
+			$tgl_lahir = $date3;
+			$umur = $umur;
+			$cara_masuk = $page_data[$i]->jenis_pelayanan;
+			$dokter = $page_data[$i]->nama_dokter;
+			$cara_bayar = $page_data[$i]->cara_bayar;
+			$diagnosa = $page_data[$i]->diagnosa;
+			$ruangan = $page_data[$i]->poli;
+
+			$out[$i] = array($no, $erm, $tgl_masuk, $tgl_pulang, $no_rm, $nama, $jenis_kelamin, $tgl_lahir, $umur, $cara_masuk, $ruangan, $cara_bayar, $diagnosa, $dokter);
+		}
+		if ($out == null) {
+			echo '{"data":""}';
+			exit;
+		} else {
+			$page_data['data'] = $out;
+			echo json_encode($page_data);
+			exit;
+		}
+	}
+
 }

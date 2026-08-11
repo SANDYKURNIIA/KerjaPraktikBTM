@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $http = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http";
 // $config['`base_url`'] = 'http://192.168.88.248:8880/'; 
-$config['base_url'] = 'https://sibatik-web.btmmagang.site/';
+$config['base_url'] = 'http://localhost/KerjaPraktikBTM/';
 
 // Mendeteksi host (domain atau IP) yang sedang diakses
 // $host = $_SERVER['HTTP_HOST'];
@@ -36,7 +36,7 @@ $config['base_url'] = 'https://sibatik-web.btmmagang.site/';
 //         // Setting untuk server production
 //         $config['base_url'] = $http . 'sibatik-web.btmmagang.site/';
 //         break;
-    
+
 //     case '192.168.88.248:8880':
 //         // Setting untuk server development lokal Anda
 //         $config['base_url'] = $http . '192.168.88.248:8880/';
@@ -76,8 +76,8 @@ $config['index_page'] = '';
 |
 | WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
 */
-$config['uri_protocol']	= 'REQUEST_URI';
-
+$config['uri_protocol'] = 'REQUEST_URI';
+ 
 /*
 |--------------------------------------------------------------------------
 | URL suffix
@@ -100,7 +100,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -160,7 +160,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FCPATH.'vendor/autoload.php';
+$config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -424,11 +424,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
-$config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_prefix'] = '';
+$config['cookie_domain'] = '';
+$config['cookie_path'] = '/';
+$config['cookie_secure'] = FALSE;
+$config['cookie_httponly'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

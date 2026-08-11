@@ -12,7 +12,7 @@ class M_Erm extends CI_Model
     {
         $this->db->insert($table, $data);
     }
-	public function insert_rajal($data, $table)
+    public function insert_rajal($data, $table)
     {
         $this->db->insert($table, $data);
     }
@@ -22,41 +22,43 @@ class M_Erm extends CI_Model
         $this->db->where($where);
         $this->db->update($table, $data);
     }
-    public function delete($where,$table)
+    public function delete($where, $table)
     {
         $this->db->where($where);
         $this->db->delete($table);
     }
-    public function selectPembatalan($date1,$date2){
+    public function selectPembatalan($date1, $date2)
+    {
         $sql = "SELECT konfirmasi_batal.*, pelayanan.tgl_hapus FROM konfirmasi_batal,pelayanan WHERE pelayanan.id_pelayanan = konfirmasi_batal.id_pelayanan
          AND pelayanan.tgl_hapus between \"$date1\" AND \"$date2\" ORDER BY tgl_hapus DESC";
-         $query = $this->db->query($sql);
+        $query = $this->db->query($sql);
         //$this->db->select("konfirmasi_batal.*");
         //$this->db->from("konfirmasi_batal");
         //return $this->db->get()->result();
-       return $query->result();
+        return $query->result();
     }
 
-        //select data untuk surveiInfeksi
-        public function selectSurveiInfeksi($id_pelayanan)
-        {
-            $this->db->select('*');
-            $this->db->from('form_survei_infeksi f');
-            $this->db->where('f.id_pelayanan', $id_pelayanan);
-            return $this->db->get()->result();
-        }
-        //end select data
+    //select data untuk surveiInfeksi
+    public function selectSurveiInfeksi($id_pelayanan)
+    {
+        $this->db->select('*');
+        $this->db->from('form_survei_infeksi f');
+        $this->db->where('f.id_pelayanan', $id_pelayanan);
+        return $this->db->get()->result();
+    }
+    //end select data
 
-    public function selectPembatalanDateRange($mulai,$hingga){
-            $this->db->select("*");
-            $this->db->from("konfirmasi_batal");
-            $this->db->where('tgl_masuk >=', $mulai);
-            $this->db->where('tgl_masuk <=', $hingga); 
-            return $this->db->get()->result();
+    public function selectPembatalanDateRange($mulai, $hingga)
+    {
+        $this->db->select("*");
+        $this->db->from("konfirmasi_batal");
+        $this->db->where('tgl_masuk >=', $mulai);
+        $this->db->where('tgl_masuk <=', $hingga);
+        return $this->db->get()->result();
     }
     public function selectDataPasien($no_rm)
     {
-        $query =  $this->db->query("SELECT * FROM (
+        $query = $this->db->query("SELECT * FROM (
         SELECT p.id_pasien no_rm,p.tgl_masuk,p.tgl_keluar,d.nama dokter,p.diagnosa,l.nama_panjang jenis_pelayanan
         from pelayanan p , dokter d , history_pelayanan h , list_poli l
         where h.dpjp = d.id_dokter and p.id_pelayanan = h.id_pelayanan and h.nama_poli = l.id_list_poli and p.status_rawat = 'selesai' and p.id_pasien ='$no_rm'
@@ -74,10 +76,11 @@ class M_Erm extends CI_Model
         ");
         return $query->result_array();
     }
-    public function selectDataTBC($idpel){
+    public function selectDataTBC($idpel)
+    {
         $this->db->select("*");
         $this->db->from("pasien_TBC");
-        $this->db->where("id_pelayanan",$idpel);
+        $this->db->where("id_pelayanan", $idpel);
         return $this->db->get()->result();
     }
     public function getErm($no_rm)
@@ -122,7 +125,7 @@ class M_Erm extends CI_Model
 
         return $this->db->get()->row();
     }
-    
+
     public function getCetakSuperRanap($id_pelayanan)
     {
         $this->db->select('f.*, p.nama, p.tgl_lahir, p.jenis_kelamin');
@@ -145,7 +148,7 @@ class M_Erm extends CI_Model
         $this->db->where('id_history', $id_pelayanan);
         return $this->db->get()->result();
     }
-    
+
     public function selectTerapiByIdPel($id_pelayanan)
     {
         $this->db->select('l.nama,t.frek,t.tanggal, s.tindakan,c.cara_pemakaian');
@@ -372,7 +375,8 @@ class M_Erm extends CI_Model
         $this->db->where('f.id_history', $id);
         return $this->db->get()->row_array();
     }
-    function insert_update($id_pelayanan, $id_history, $data){
+    function insert_update($id_pelayanan, $id_history, $data)
+    {
         $this->db->where('id_history', $id_history);
         $this->db->where('id_pelayanan', $id_pelayanan);
         $q = $this->db->get('hasil_penunjang_diagnostik');
@@ -497,92 +501,99 @@ class M_Erm extends CI_Model
         $this->db->where('dokter_spes', 'UMU');
         return $this->db->get()->result_array();
     }
-  // ambil satu riwayat_dulu berdasarkan id_history
+    // ambil satu riwayat_dulu berdasarkan id_history
 
     // Simpan / update riwayat penyakit terdahulu
-public function saveRiwayatDulu($no_rm, $id_pelayanan, $id_history, $riwayat_dulu)
-{
-    // cek apakah sudah ada assesmen dokter untuk history ini
-    $row = $this->db->get_where('form_assesmen_dokter', [
-        'id_history' => $id_history
-    ])->row();
+    public function saveRiwayatDulu($no_rm, $id_pelayanan, $id_history, $riwayat_dulu)
+    {
+        // cek apakah sudah ada assesmen dokter untuk history ini
+        $row = $this->db->get_where('form_assesmen_dokter', [
+            'id_history' => $id_history
+        ])->row();
 
-    $data = [
-        'no_rm'        => $no_rm,
-        'id_pelayanan' => $id_pelayanan,
-        'id_history'   => $id_history,
-        'riwayat_dulu' => $riwayat_dulu
-    ];
+        $data = [
+            'no_rm' => $no_rm,
+            'id_pelayanan' => $id_pelayanan,
+            'id_history' => $id_history,
+            'riwayat_dulu' => $riwayat_dulu
+        ];
 
-    if ($row) {
-        // update saja kolom riwayat_dulu
-        $this->db->where('id_form_ass_dokter', $row->id_form_ass_dokter);
-        return $this->db->update('form_assesmen_dokter', ['riwayat_dulu' => $riwayat_dulu]);
-    } else {
-        // belum ada, buat record baru minimal
-        return $this->db->insert('form_assesmen_dokter', $data);
-    }
-}
-
-   public function getRiwayatDahulu($id_history)
-{
-    return $this->db
-        ->select('riwayat_dulu')
-        ->from('form_assesmen_dokter')
-        ->where('id_history', $id_history)
-        ->get()
-        ->row();
-}
-
-
-// 1) GET data triase (kalau mau dipakai untuk pre-fill form, dll)
-public function getTriaseVital($id_history)
-{
-    return $this->db
-        ->select('gcs,e,m,v,tekanan_darah,suhu,frequensi_nadi,frequensi_nafas,spo2')
-        ->from('form_transfer_pasien_igd')
-        ->where('id_history', $id_history)
-        ->get()
-        ->row();
-}
-
-// 2) SAVE / UPDATE triase (dipanggil dari Erm_ases_triase_ugd::saveTriase)
-public function saveTriase(
-    $no_rm,
-    $id_pelayanan,
-    $id_history,
-    $gcs, $e, $m, $v,
-    $td, $suhu, $nadi, $nafas, $spo2
-) {
-    $data = [
-        'no_rm'          => $no_rm,
-        'id_pelayanan'   => $id_pelayanan,
-        'id_history'     => $id_history,
-        'gcs'            => $gcs,
-        'e'              => $e,
-        'm'              => $m,
-        'v'              => $v,
-        'tekanan_darah'  => $td,
-        'suhu'           => $suhu,
-        'frequensi_nadi' => $nadi,
-        'frequensi_nafas'=> $nafas,
-        'spo2'           => $spo2,
-    ];
-
-    $existing = $this->db
-        ->get_where('form_transfer_pasien_igd', ['id_history' => $id_history])
-        ->row();
-
-    if ($existing) {
-        $this->db
-            ->where('id_form_transfer', $existing->id_form_transfer)
-            ->update('form_transfer_pasien_igd', $data);
-    } else {
-        $this->db->insert('form_transfer_pasien_igd', $data);
+        if ($row) {
+            // update saja kolom riwayat_dulu
+            $this->db->where('id_form_ass_dokter', $row->id_form_ass_dokter);
+            return $this->db->update('form_assesmen_dokter', ['riwayat_dulu' => $riwayat_dulu]);
+        } else {
+            // belum ada, buat record baru minimal
+            return $this->db->insert('form_assesmen_dokter', $data);
+        }
     }
 
-    return $this->db->affected_rows() >= 0;
-}
+    public function getRiwayatDahulu($id_history)
+    {
+        return $this->db
+            ->select('riwayat_dulu')
+            ->from('form_assesmen_dokter')
+            ->where('id_history', $id_history)
+            ->get()
+            ->row();
+    }
+
+
+    // 1) GET data triase (kalau mau dipakai untuk pre-fill form, dll)
+    public function getTriaseVital($id_history)
+    {
+        return $this->db
+            ->select('gcs,e,m,v,tekanan_darah,suhu,frequensi_nadi,frequensi_nafas,spo2')
+            ->from('form_transfer_pasien_igd')
+            ->where('id_history', $id_history)
+            ->get()
+            ->row();
+    }
+
+    // 2) SAVE / UPDATE triase (dipanggil dari Erm_ases_triase_ugd::saveTriase)
+    public function saveTriase(
+        $no_rm,
+        $id_pelayanan,
+        $id_history,
+        $gcs,
+        $e,
+        $m,
+        $v,
+        $td,
+        $suhu,
+        $nadi,
+        $nafas,
+        $spo2
+    ) {
+        $data = [
+            'no_rm' => $no_rm,
+            'id_pelayanan' => $id_pelayanan,
+            'id_history' => $id_history,
+            'gcs' => $gcs,
+            'e' => $e,
+            'm' => $m,
+            'v' => $v,
+            'tekanan_darah' => $td,
+            'suhu' => $suhu,
+            'frequensi_nadi' => $nadi,
+            'frequensi_nafas' => $nafas,
+            'spo2' => $spo2,
+        ];
+
+        $existing = $this->db
+            ->get_where('form_transfer_pasien_igd', ['id_history' => $id_history])
+            ->row();
+
+        if ($existing) {
+            $this->db
+                ->where('id_form_transfer', $existing->id_form_transfer)
+                ->update('form_transfer_pasien_igd', $data);
+        } else {
+            $this->db->insert('form_transfer_pasien_igd', $data);
+        }
+
+        return $this->db->affected_rows() >= 0;
+    }
 
 
 
