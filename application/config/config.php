@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $http = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http";
 // $config['`base_url`'] = 'http://192.168.88.248:8880/'; 
-$config['base_url'] = 'https://sibatik-web.btmmagang.site/';
+$config['base_url'] = 'http://localhost/Magang26/KerjaPraktikBTM/';
 
 // Mendeteksi host (domain atau IP) yang sedang diakses
 // $host = $_SERVER['HTTP_HOST'];
