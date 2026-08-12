@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Provides a quick method for targeting `border-width` on specific sides of a box. Use a `null` value to “skip” a side.
@@ -23,3 +24,30 @@
 @mixin border-width($vals...) {
   @include directional-property(border, width, $vals...);
 }
+=======
+@charset "UTF-8";
+
+/// Provides a quick method for targeting `border-width` on specific sides of a box. Use a `null` value to “skip” a side.
+///
+/// @param {Arglist} $vals
+///   List of arguments
+///
+/// @example scss - Usage
+///   .element {
+///     @include border-width(1em null 20px);
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     border-bottom-width: 20px;
+///     border-top-width: 1em;
+///   }
+///
+/// @require {mixin} directional-property
+///
+/// @output `border-width`
+
+@mixin border-width($vals...) {
+  @include directional-property(border, width, $vals...);
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

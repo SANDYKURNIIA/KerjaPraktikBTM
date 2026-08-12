@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "multi-select",
   "title": "multiselect",
@@ -35,3 +36,42 @@
     "jquery": ">= 1.8"
   }
 }
+=======
+{
+  "name": "multi-select",
+  "title": "multiselect",
+  "description": "This is a user-friendlier drop-in replacement for the standard <select> with multiple attribute activated.",
+  "keywords": [
+    "multiselect",
+    "select",
+    "multiple",
+    "form"
+  ],
+  "version": "0.9.12",
+  "author": {
+    "name": "lou",
+    "email" : "louiscuny@gmail.com",
+    "url": "https://github.com/lou"
+  },
+  "maintainers": [
+    {
+      "name": "Louis CUNY",
+      "email": "louiscuny@gmail.com",
+      "url": "https://github.com/lou"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "wtfpl",
+      "url": "http://sam.zoy.org/wtfpl/COPYING"
+    }
+  ],
+  "bugs": "https://github.com/lou/multi-select/issues",
+  "homepage": "http://loudev.com/",
+  "docs": "http://loudev.com/",
+  "download": "https://github.com/lou/multi-select/archive/master.zip",
+  "dependencies": {
+    "jquery": ">= 1.8"
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

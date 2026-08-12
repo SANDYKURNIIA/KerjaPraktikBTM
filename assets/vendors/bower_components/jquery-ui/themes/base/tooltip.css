@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * jQuery UI Tooltip 1.12.0
  * http://jqueryui.com
@@ -17,3 +18,24 @@
 body .ui-tooltip {
 	border-width: 2px;
 }
+=======
+/*!
+ * jQuery UI Tooltip 1.12.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/tooltip/#theming
+ */
+.ui-tooltip {
+	padding: 8px;
+	position: absolute;
+	z-index: 9999;
+	max-width: 300px;
+}
+body .ui-tooltip {
+	border-width: 2px;
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

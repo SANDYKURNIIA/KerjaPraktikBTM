@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
 	"name": "filament-tablesaw",
 	"main": [
@@ -13,3 +14,20 @@
 		"respond": ">=1.4.2"
 	}
 }
+=======
+{
+	"name": "filament-tablesaw",
+	"main": [
+		"dist/tablesaw.js",
+		"dist/tablesaw.css",
+		"dist/icons/**"
+	],
+	"ignore": [
+		"**/.*"
+	],
+	"dependencies": {
+		"jquery": ">=1.11.2",
+		"respond": ">=1.4.2"
+	}
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

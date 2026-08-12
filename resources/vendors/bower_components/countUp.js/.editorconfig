@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # This file is for unifying the coding style for different editors and IDEs
 # editorconfig.org
 
@@ -10,3 +11,17 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
+=======
+# This file is for unifying the coding style for different editors and IDEs
+# editorconfig.org
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

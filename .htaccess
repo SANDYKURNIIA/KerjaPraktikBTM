@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Options +FollowSymlinks -Indexes
 RewriteEngine on
 
@@ -5,4 +6,13 @@ DirectoryIndex index.php
 RewriteCond $1 !^(index\.php|resources|robots\.txt)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+=======
+Options +FollowSymlinks -Indexes
+RewriteEngine on
+
+DirectoryIndex index.php
+RewriteCond $1 !^(index\.php|resources|robots\.txt)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 RewriteRule ^(.*)$ index.php/$1 [L,QSA]

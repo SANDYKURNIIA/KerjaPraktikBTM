@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -185,3 +186,192 @@ class Stok_obat extends CI_Controller
     }
 
 }
+=======
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Stok_obat extends CI_Controller
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
+        setlocale(LC_ALL, 'id_ID');
+        $this->load->model('M_Stok_obat');
+        $this->load->model('M_Logistik_farmasi');
+       
+    }
+
+    public function index()
+    {
+        
+        $this->load->view('assets/_header');
+        $page_data['page_content'] = 'page_content/Stok_obat';
+        $page_data['obat'] = $this->M_Stok_obat->selectDataStok();
+        $this->load->view('Main', $page_data);
+        $this->load->view('assets/_footer');
+
+    }
+
+    public function tampil_detail(){
+        $id_logistik = $this->input->post('id_logistik');
+
+
+        $page_data = $this->M_Stok_obat->selectDetailStok($id_logistik);
+        
+
+
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $kadaluarsa=$page_data[$i]->kadaluarsa;
+        $frek=$page_data[$i]->stok;
+
+            $out[$i]=array($no,$nama,$kadaluarsa,$frek);
+        } 
+        
+        $page_data['data']=$out;
+        echo json_encode($page_data);
+    }
+
+    public function insertUpdateStok()
+    {
+        $data_staff = $this->session->userdata('data_auth');
+        $frek = $this->input->post('frek');
+        $idLogistik = $this->input->post('id_logistik');
+        $tglExp = $this->input->post('tglExp');
+      
+        $idProdusenObat = $this->input->post('idProdusenObat');
+        $id = $this->input->post('id');
+        $getStok = $this->M_Logistik_farmasi->getStokByRiwayatPermintaan($idLogistik)->stok;
+
+        $data = array(
+            'id_stok' => $id,
+            'id_logistik' => $idLogistik,
+            'tgl' => date("Y-m-d H:i:s"),
+            'keterangan' => 'MASUK',
+            'frek' => $frek,
+            'saldo' => $getStok + ($frek),
+            'kadaluarsa' => $tglExp,
+            'asal_tujuan' => 'BASE',
+            'id_struk' => '-',
+            'id_staff' => $data_staff->id_staff,
+        );
+        // var_dump($data);
+        // die();
+
+
+
+        $this->M_Stok_obat->insertUpdateStok($data, 'stok_logistik');
+        $out['status'] = "success";
+        echo json_encode($out);
+    }
+
+    public function tampil_stok_obat(){
+        $page_data = $this->M_Stok_obat->selectDataJoin();
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+         $tombol = "<button class='btn btn-primary btn-icon-anim btn-square' onclick='edit_detail(\"" .$page_data[$i]->id_logistik. "\" )'><i class='fa fa-pencil'></i></button>";
+       
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $harga_cost=$page_data[$i]->harga_cost;
+        $golongan_obat=$page_data[$i]->golongan_obat;
+        $produsen=$page_data[$i]->produsen;
+        $frek=number_format($page_data[$i]->stok);
+        $tipe=$page_data[$i]->tipe;
+
+            $out[$i]=array($no,$nama,$harga_cost,$golongan_obat,$produsen,$frek,$tipe,$tombol,);
+        }
+                $page_data['data']=$out;
+                echo json_encode($page_data);
+    }
+
+    public function tampil_stok_gudang(){
+        $page_data = $this->M_Stok_obat->selectDataJoin();
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+         $tombol = "<button class='btn btn-primary btn-icon-anim btn-square' onclick='edit_detail(\"" .$page_data[$i]->id_logistik. "\" )'><i class='fa fa-pencil'></i></button>";
+       
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $harga_cost=$page_data[$i]->harga_cost;
+        $golongan_obat=$page_data[$i]->golongan_obat;
+        $produsen=$page_data[$i]->produsen;
+        $frek=$page_data[$i]->stok;
+        $tipe=$page_data[$i]->tipe;
+
+            $out[$i]=array($no,$nama,$harga_cost,$golongan_obat,$produsen,$frek,$tipe,$tombol,);
+        }
+        $page_data['data']=$out;
+        echo json_encode($page_data);
+    }
+
+    public function tampil_stok_apotik(){
+        $page_data = $this->M_Stok_obat->selectDataJoinApotik();
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+        $tombol = "<button class='btn btn-primary btn-icon-anim btn-square' onclick='edit_detail(\"" .$page_data[$i]->id_logistik. "\" )'><i class='fa fa-pencil'></i></button>";
+       
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $harga_cost=$page_data[$i]->harga_cost;
+        $golongan_obat=$page_data[$i]->golongan_obat;
+        $produsen=$page_data[$i]->produsen;
+        $frek=$page_data[$i]->stok;
+        $tipe=$page_data[$i]->tipe;
+
+            $out[$i]=array($no,$nama,$harga_cost,$golongan_obat,$produsen,$frek,$tipe,$tombol,);
+        }
+                $page_data['data']=$out;
+                echo json_encode($page_data);
+    }
+    public function tampil_stok_depo(){
+        $page_data = $this->M_Stok_obat->selectDataJoinDepo();
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+         $tombol = "<button class='btn btn-primary btn-icon-anim btn-square' onclick='edit_detail(\"" .$page_data[$i]->id_logistik. "\" )'><i class='fa fa-pencil'></i></button>";
+       
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $harga_cost=$page_data[$i]->harga_cost;
+        $golongan_obat=$page_data[$i]->golongan_obat;
+        $produsen=$page_data[$i]->produsen;
+        $frek=$page_data[$i]->stok;
+        $tipe=$page_data[$i]->tipe;
+
+            $out[$i]=array($no,$nama,$harga_cost,$golongan_obat,$produsen,$frek,$tipe,$tombol,);
+        }
+                $page_data['data']=$out;
+                echo json_encode($page_data);
+    }
+    public function tampil_stok_igd(){
+        $page_data = $this->M_Stok_obat->selectDataJoinIgd();
+        $out=null;
+        for ($i=0; $i < count($page_data); $i++) { 
+
+         $tombol = "<button class='btn btn-primary btn-icon-anim btn-square' onclick='edit_detail(\"" .$page_data[$i]->id_logistik. "\" )'><i class='fa fa-pencil'></i></button>";
+       
+        $no=$i+1;
+        $nama=$page_data[$i]->nama;
+        $harga_cost=$page_data[$i]->harga_cost;
+        $golongan_obat=$page_data[$i]->golongan_obat;
+        $produsen=$page_data[$i]->produsen;
+        $frek=$page_data[$i]->stok;
+        $tipe=$page_data[$i]->tipe;
+
+            $out[$i]=array($no,$nama,$harga_cost,$golongan_obat,$produsen,$frek,$tipe,$tombol,);
+        }
+                $page_data['data']=$out;
+                echo json_encode($page_data);
+    }
+
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

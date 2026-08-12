@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Global variables to enable or disable vendor prefixes
@@ -7,3 +8,14 @@ $prefix-for-mozilla:   true !default;
 $prefix-for-microsoft: true !default;
 $prefix-for-opera:     true !default;
 $prefix-for-spec:      true !default;
+=======
+@charset "UTF-8";
+
+/// Global variables to enable or disable vendor prefixes
+
+$prefix-for-webkit:    true !default;
+$prefix-for-mozilla:   true !default;
+$prefix-for-microsoft: true !default;
+$prefix-for-opera:     true !default;
+$prefix-for-spec:      true !default;
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

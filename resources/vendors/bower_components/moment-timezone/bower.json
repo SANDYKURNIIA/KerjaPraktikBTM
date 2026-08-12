@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "moment-timezone",
   "description" : "Parse and display moments in any timezone.",
@@ -16,3 +17,23 @@
     "package.json"
   ]
 }
+=======
+{
+  "name": "moment-timezone",
+  "description" : "Parse and display moments in any timezone.",
+  "main": "builds/moment-timezone-with-data-2010-2020.js",
+  "dependencies" : {
+    "moment" : ">= 2.6.0"
+  },
+  "ignore": [
+    "**/.*",
+    "tests",
+    "tasks",
+    "data/*/20*.json",
+    "contributing.md",
+    "Gruntfile.js",
+    "index.js",
+    "package.json"
+  ]
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

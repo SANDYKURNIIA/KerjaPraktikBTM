@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// A global setting to enable or disable the `$asset-pipeline` variable for all functions that accept it.
@@ -5,3 +6,12 @@
 /// @type Bool
 
 $asset-pipeline: false !default;
+=======
+@charset "UTF-8";
+
+/// A global setting to enable or disable the `$asset-pipeline` variable for all functions that accept it.
+///
+/// @type Bool
+
+$asset-pipeline: false !default;
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

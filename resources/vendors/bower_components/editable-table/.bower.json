@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "editable-table",
   "homepage": "https://github.com/mindmup/editable-table",
@@ -11,4 +12,19 @@
   "_target": "*",
   "_originalSource": "mindmup/editable-table",
   "_direct": true
+=======
+{
+  "name": "editable-table",
+  "homepage": "https://github.com/mindmup/editable-table",
+  "_release": "4932ac1dfb",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "4932ac1dfb7e56fbfb9c505289d29678b6d8049e"
+  },
+  "_source": "git://github.com/mindmup/editable-table.git",
+  "_target": "*",
+  "_originalSource": "mindmup/editable-table",
+  "_direct": true
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 }

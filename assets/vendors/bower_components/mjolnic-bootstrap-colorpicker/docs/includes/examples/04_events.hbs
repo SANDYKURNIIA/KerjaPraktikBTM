@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <a href="#" class="btn btn-default" id="cp4">Change background color</a>
 <script>
     $(function () {
@@ -6,3 +7,13 @@
         });
     });
 </script>
+=======
+<a href="#" class="btn btn-default" id="cp4">Change background color</a>
+<script>
+    $(function () {
+        $('#cp4').colorpicker().on('changeColor', function (e) {
+            $('body')[0].style.backgroundColor = e.color.toHex();
+        });
+    });
+</script>
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

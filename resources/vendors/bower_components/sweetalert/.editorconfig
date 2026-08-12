@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # editorconfig.org
 
 root = true
@@ -9,3 +10,16 @@ indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
+=======
+# editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

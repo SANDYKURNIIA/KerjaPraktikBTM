@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.swp
 .DS_Store
 
@@ -14,3 +15,21 @@ bower_components
 
 *.iml
 .idea
+=======
+*.swp
+.DS_Store
+
+.grunt
+_SpecRunner.html
+test/coverage
+
+dist_temp
+
+node_modules
+npm-debug.log
+
+bower_components
+
+*.iml
+.idea
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

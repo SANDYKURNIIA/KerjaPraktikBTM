@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "year": "1941",
@@ -19,4 +20,27 @@
       "Way"
     ]
   }
+=======
+[
+  {
+    "year": "1941",
+    "value": "How Green Was My Valley",
+    "tokens": [
+      "How",
+      "Green",
+      "Was",
+      "My",
+      "Valley"
+    ]
+  },
+  {
+    "year": "1944",
+    "value": "Going My Way",
+    "tokens": [
+      "Going",
+      "My",
+      "Way"
+    ]
+  }
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 ]

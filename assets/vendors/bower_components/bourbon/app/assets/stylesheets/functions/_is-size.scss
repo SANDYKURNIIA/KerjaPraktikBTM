@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Checks for a valid CSS size.
@@ -11,3 +12,18 @@
   @return is-length($value)
           or contains("fill" "fit-content" "min-content" "max-content", $value);
 }
+=======
+@charset "UTF-8";
+
+/// Checks for a valid CSS size.
+///
+/// @param {String} $value
+///
+/// @require {function} contains
+/// @require {function} is-length
+
+@function is-size($value) {
+  @return is-length($value)
+          or contains("fill" "fit-content" "min-content" "max-content", $value);
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

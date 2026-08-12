@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Nestable Init*/
 $( document ).ready(function() {
 	"use strict";
@@ -19,4 +20,27 @@ $( document ).ready(function() {
 		return false;
 	});
 	$('#nestable_menu').nestable();
+=======
+/*Nestable Init*/
+$( document ).ready(function() {
+	"use strict";
+	
+	/*Nestable*/
+	
+	$('#nestable').nestable({group: 1});
+	$('#nestable2').nestable({group: 1});
+
+	$('#nestable_menu').on('click', function(e)  {
+		var target = $(e.target),
+			action = target.data('action');
+		if (action === 'expand-all') {
+			$('.dd').nestable('expandAll');
+		}
+		if (action === 'collapse-all') {
+			$('.dd').nestable('collapseAll');
+		}
+		return false;
+	});
+	$('#nestable_menu').nestable();
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 });

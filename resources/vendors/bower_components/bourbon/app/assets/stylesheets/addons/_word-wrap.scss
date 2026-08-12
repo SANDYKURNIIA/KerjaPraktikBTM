@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Provides an easy way to change the `word-wrap` property.
@@ -27,3 +28,34 @@
     word-break: $wrap;
   }
 }
+=======
+@charset "UTF-8";
+
+/// Provides an easy way to change the `word-wrap` property.
+///
+/// @param {String} $wrap [break-word]
+///   Value for the `word-break` property.
+///
+/// @example scss - Usage
+///   .wrapper {
+///     @include word-wrap(break-word);
+///   }
+///
+/// @example css - CSS Output
+///   .wrapper {
+///     overflow-wrap: break-word;
+///     word-break: break-all;
+///     word-wrap: break-word;
+///   }
+
+@mixin word-wrap($wrap: break-word) {
+  overflow-wrap: $wrap;
+  word-wrap: $wrap;
+
+  @if $wrap == break-word {
+    word-break: break-all;
+  } @else {
+    word-break: $wrap;
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

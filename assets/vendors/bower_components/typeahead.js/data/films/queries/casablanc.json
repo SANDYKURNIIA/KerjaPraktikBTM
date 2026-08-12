@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "year": "1943",
@@ -6,4 +7,14 @@
       "Casablanca"
     ]
   }
+=======
+[
+  {
+    "year": "1943",
+    "value": "Casablanca",
+    "tokens": [
+      "Casablanca"
+    ]
+  }
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 ]

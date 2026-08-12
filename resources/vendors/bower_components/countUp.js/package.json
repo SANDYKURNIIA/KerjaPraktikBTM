@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "countup.js",
   "description": "Animates a numerical value by counting to it",
@@ -21,3 +22,28 @@
     "clean": "gulp clean"
   }
 }
+=======
+{
+  "name": "countup.js",
+  "description": "Animates a numerical value by counting to it",
+  "version": "1.7.0",
+  "licenses": "MIT",
+  "main": "./dist/countUp.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inorganik/countUp.js.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "~3.8.10",
+    "gulp-uglify": "^1.4.2",
+    "gulp-rename": "~1.2.0",
+    "gulp-wrap-umd": "~0.2.1",
+    "del": "~0.1.3"
+  },
+  "scripts": {
+    "build": "gulp",
+    "clean": "gulp clean"
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

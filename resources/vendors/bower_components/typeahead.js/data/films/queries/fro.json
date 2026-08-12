@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "year": "1929/1930",
@@ -21,4 +22,29 @@
       "Eternity"
     ]
   }
+=======
+[
+  {
+    "year": "1929/1930",
+    "value": "All Quiet on the Western Front",
+    "tokens": [
+      "All",
+      "Quiet",
+      "on",
+      "the",
+      "Western",
+      "Front"
+    ]
+  },
+  {
+    "year": "1953",
+    "value": "From Here to Eternity",
+    "tokens": [
+      "From",
+      "Here",
+      "to",
+      "Eternity"
+    ]
+  }
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 ]

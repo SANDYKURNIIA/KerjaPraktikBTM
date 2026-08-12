@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Labels
 
 @mixin label-variant($color) {
@@ -10,3 +11,17 @@
     }
   }
 }
+=======
+// Labels
+
+@mixin label-variant($color) {
+  background-color: $color;
+
+  &[href] {
+    &:hover,
+    &:focus {
+      background-color: darken($color, 10%);
+    }
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "bower-jvectormap-2",
   "version": "2.0.0",
@@ -14,3 +15,21 @@
   "license": "MIT",
   "homepage": "http://jvectormap.com/"
 }
+=======
+{
+  "name": "bower-jvectormap-2",
+  "version": "2.0.0",
+  "authors": [
+    "Kirill Lebedev <echo.bjornd@gmail.com>"
+  ],
+  "description": "jQuery interactive vector maps",
+  "main": "jquery-jvectormap-2.0.0.min.js",
+  "keywords": [
+    "jquery",
+    "vector",
+    "maps"
+  ],
+  "license": "MIT",
+  "homepage": "http://jvectormap.com/"
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

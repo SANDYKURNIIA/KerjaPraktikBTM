@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Converts shorthand to the 4-value syntax.
@@ -25,3 +26,32 @@
     @return $shorthand;
   }
 }
+=======
+@charset "UTF-8";
+
+/// Converts shorthand to the 4-value syntax.
+///
+/// @param {List} $shorthand
+///
+/// @example scss - Usage
+///   .element {
+///     margin: unpack(1em 2em);
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     margin: 1em 2em 1em 2em;
+///   }
+
+@function unpack($shorthand) {
+  @if length($shorthand) == 1 {
+    @return nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1);
+  } @else if length($shorthand) == 2 {
+    @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 1) nth($shorthand, 2);
+  } @else if length($shorthand) == 3 {
+    @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 3) nth($shorthand, 2);
+  } @else {
+    @return $shorthand;
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

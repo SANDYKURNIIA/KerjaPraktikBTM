@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "name": "twitter/typeahead.js",
     "description": "fast and fully-featured autocomplete library",
@@ -15,3 +16,22 @@
     "author": "Twitter Inc.",
     "license": "MIT"
 }
+=======
+{
+    "name": "twitter/typeahead.js",
+    "description": "fast and fully-featured autocomplete library",
+    "keywords": ["typeahead", "autocomplete"],
+    "homepage": "http://twitter.github.com/typeahead.js",
+    "authors": [
+        {
+            "name": "Twitter Inc.",
+            "homepage": "https://twitter.com/twitteross"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/twitter/typeahead.js/issues"
+    },
+    "author": "Twitter Inc.",
+    "license": "MIT"
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

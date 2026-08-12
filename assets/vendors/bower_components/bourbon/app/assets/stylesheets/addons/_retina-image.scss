@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @mixin retina-image($filename, $background-size, $extension: png, $retina-filename: null, $retina-suffix: _2x, $asset-pipeline: $asset-pipeline) {
   @if $asset-pipeline {
     background-image: image-url("#{$filename}.#{$extension}");
@@ -23,3 +24,30 @@
     background-size: $background-size;
   }
 }
+=======
+@mixin retina-image($filename, $background-size, $extension: png, $retina-filename: null, $retina-suffix: _2x, $asset-pipeline: $asset-pipeline) {
+  @if $asset-pipeline {
+    background-image: image-url("#{$filename}.#{$extension}");
+  } @else {
+    background-image:       url("#{$filename}.#{$extension}");
+  }
+
+  @include hidpi {
+    @if $asset-pipeline {
+      @if $retina-filename {
+        background-image: image-url("#{$retina-filename}.#{$extension}");
+      } @else {
+        background-image: image-url("#{$filename}#{$retina-suffix}.#{$extension}");
+      }
+    } @else {
+      @if $retina-filename {
+        background-image: url("#{$retina-filename}.#{$extension}");
+      } @else {
+        background-image: url("#{$filename}#{$retina-suffix}.#{$extension}");
+      }
+    }
+
+    background-size: $background-size;
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

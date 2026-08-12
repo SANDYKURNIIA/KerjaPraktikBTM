@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "rangy",
   "version": "1.3alpha.804",
@@ -14,4 +15,22 @@
     "uncompressed/rangy-textrange.js"
   ],
   "license": "MIT"
+=======
+{
+  "name": "rangy",
+  "version": "1.3alpha.804",
+  "description": "Rangy, a cross-browser JavaScript range and selection library",
+  "keywords": [
+    "component"
+  ],
+  "main": [
+    "uncompressed/rangy-core.js",
+    "uncompressed/rangy-cssclassapplier.js",
+    "uncompressed/rangy-highlighter.js",
+    "uncompressed/rangy-selectionsaverestore.js",
+    "uncompressed/rangy-serializer.js",
+    "uncompressed/rangy-textrange.js"
+  ],
+  "license": "MIT"
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 }

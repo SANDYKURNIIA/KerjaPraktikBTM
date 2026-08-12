@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "jquery-countto",
   "version": "1.2.0",
@@ -27,3 +28,34 @@
   },
   "homepage": "https://github.com/mhuggins/jquery-countTo#readme"
 }
+=======
+{
+  "name": "jquery-countto",
+  "version": "1.2.0",
+  "description": "A jQuery plugin that will count up (or down) to a target number at a specified speed.",
+  "main": "jquery.countTo.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhuggins/jquery-countTo.git"
+  },
+  "keywords": [
+    "jQuery",
+    "counter",
+    "count",
+    "increment",
+    "decrement"
+  ],
+  "author": "Matt Huggins <matt.huggins@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhuggins/jquery-countTo/issues"
+  },
+  "homepage": "https://github.com/mhuggins/jquery-countTo#readme"
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

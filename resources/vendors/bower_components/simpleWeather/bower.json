@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "simpleWeather",
   "description": "A simple jQuery plugin to display current weather data for any location and doesn't get in your way. Handcrafted with ♥ from Austin, Texas by James Fleeting.",
@@ -26,3 +27,33 @@
     "simple"
   ]
 }
+=======
+{
+  "name": "simpleWeather",
+  "description": "A simple jQuery plugin to display current weather data for any location and doesn't get in your way. Handcrafted with ♥ from Austin, Texas by James Fleeting.",
+  "main": "jquery.simpleWeather.js",
+  "version": "3.1.0",
+  "homepage": "http://simpleweatherjs.com",
+  "authors": [
+    "James Fleeting <hello@jamesfleeting.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": ">= 1.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "jquery",
+    "javascript",
+    "weather",
+    "plugin",
+    "simple"
+  ]
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

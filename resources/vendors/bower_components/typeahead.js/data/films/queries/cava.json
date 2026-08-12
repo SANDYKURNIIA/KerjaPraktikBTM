@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "year": "1932/1933",
@@ -6,4 +7,14 @@
       "Cavalcade"
     ]
   }
+=======
+[
+  {
+    "year": "1932/1933",
+    "value": "Cavalcade",
+    "tokens": [
+      "Cavalcade"
+    ]
+  }
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
 ]

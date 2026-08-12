@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # will be overwritten by github, see https://help.github.com/articles/using-jekyll-with-pages
 lsi: false
 safe: true
@@ -22,3 +23,29 @@ gems:
     - jekyll-coffeescript
     - jekyll-paginate
 
+=======
+# will be overwritten by github, see https://help.github.com/articles/using-jekyll-with-pages
+lsi: false
+safe: true
+source: ./
+incremental: false
+highlighter: rouge
+gist:
+    noscript: false
+# /overwritten
+
+baseurl: /jszip
+
+layouts_dir: ./documentation/_layouts
+permalink: none
+exclude: ['bin', 'README.md', 'node_modules']
+
+
+kramdown:
+    input: GFM
+    hard_wrap: false
+gems:
+    - jekyll-coffeescript
+    - jekyll-paginate
+
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

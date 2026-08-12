@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Mixes a color with white.
@@ -22,3 +23,29 @@
 @function tint($color, $percent) {
   @return mix(#fff, $color, $percent);
 }
+=======
+@charset "UTF-8";
+
+/// Mixes a color with white.
+///
+/// @param {Color} $color
+///
+/// @param {Number (Percentage)} $percent
+///   The amount of white to be mixed in.
+///
+/// @example scss - Usage
+///   .element {
+///     background-color: tint(#6ecaa6, 40%);
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     background-color: #a8dfc9;
+///   }
+///
+/// @return {Color}
+
+@function tint($color, $percent) {
+  @return mix(#fff, $color, $percent);
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

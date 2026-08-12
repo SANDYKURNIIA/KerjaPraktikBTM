@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Provides a quick method for targeting `padding` on specific sides of a box. Use a `null` value to “skip” a side.
@@ -24,3 +25,31 @@
 @mixin padding($vals...) {
   @include directional-property(padding, false, $vals...);
 }
+=======
+@charset "UTF-8";
+
+/// Provides a quick method for targeting `padding` on specific sides of a box. Use a `null` value to “skip” a side.
+///
+/// @param {Arglist} $vals
+///   List of arguments
+///
+/// @example scss - Usage
+///   .element {
+///     @include padding(12vh null 10px 5%);
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     padding-bottom: 10px;
+///     padding-left: 5%;
+///     padding-top: 12vh;
+///   }
+///
+/// @require {mixin} directional-property
+///
+/// @output `padding`
+
+@mixin padding($vals...) {
+  @include directional-property(padding, false, $vals...);
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

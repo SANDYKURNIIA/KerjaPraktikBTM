@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "moment",
   "main": "moment.js",
@@ -20,3 +21,27 @@
     "package.json"
   ]
 }
+=======
+{
+  "name": "moment",
+  "main": "moment.js",
+  "ignore": [
+    "**/.*",
+    "benchmarks",
+    "bower_components",
+    "meteor",
+    "node_modules",
+    "scripts",
+    "tasks",
+    "test",
+    "component.json",
+    "composer.json",
+    "CONTRIBUTING.md",
+    "ender.js",
+    "Gruntfile.js",
+    "Moment.js.nuspec",
+    "package.js",
+    "package.json"
+  ]
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Progress bars
 
 @mixin progress-bar-variant($color) {
@@ -8,3 +9,15 @@
     @include gradient-striped;
   }
 }
+=======
+// Progress bars
+
+@mixin progress-bar-variant($color) {
+  background-color: $color;
+
+  // Deprecated parent class requirement as of v3.2.0
+  .progress-striped & {
+    @include gradient-striped;
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

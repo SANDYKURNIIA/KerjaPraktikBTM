@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Truncates text and adds an ellipsis to represent overflow.
@@ -28,3 +29,35 @@
   white-space: nowrap;
   word-wrap: normal;
 }
+=======
+@charset "UTF-8";
+
+/// Truncates text and adds an ellipsis to represent overflow.
+///
+/// @param {Number} $width [100%]
+///   Max-width for the string to respect before being truncated
+///
+/// @example scss - Usage
+///   .element {
+///     @include ellipsis;
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     display: inline-block;
+///     max-width: 100%;
+///     overflow: hidden;
+///     text-overflow: ellipsis;
+///     white-space: nowrap;
+///     word-wrap: normal;
+///   }
+
+@mixin ellipsis($width: 100%) {
+  display: inline-block;
+  max-width: $width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

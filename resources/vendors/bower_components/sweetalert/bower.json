@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "sweetalert",
   "homepage": "http://tristanedwards.me/sweetalert",
@@ -23,3 +24,30 @@
     "jquery": "~2.1.4"
   }
 }
+=======
+{
+  "name": "sweetalert",
+  "homepage": "http://tristanedwards.me/sweetalert",
+  "authors": [
+    "Tristan Edwards <tristan.edwards@me.com> (http://tristanedwards.me)"
+  ],
+  "description": "A beautiful replacement for JavaScript's alert.",
+  "main": [
+    "dist/sweetalert.min.js",
+    "dist/sweetalert.css"
+  ],
+  "keywords": [
+    "alert",
+    "modal"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:t4t5/sweetalert.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "qunit": "~1.18.0",
+    "jquery": "~2.1.4"
+  }
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

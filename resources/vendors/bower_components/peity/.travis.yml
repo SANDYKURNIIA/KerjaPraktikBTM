@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 language: node_js
 node_js:
   - "0.10"
@@ -7,3 +8,14 @@ cache:
 notifications:
   email: false
 sudo: false
+=======
+language: node_js
+node_js:
+  - "0.10"
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+sudo: false
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

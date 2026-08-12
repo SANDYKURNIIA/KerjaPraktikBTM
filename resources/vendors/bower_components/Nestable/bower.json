@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "Nestable",
   "authors": [
@@ -16,3 +17,23 @@
     "tests"
   ]
 }
+=======
+{
+  "name": "Nestable",
+  "authors": [
+    "Ruben Heymans <ruben.heymans@gmail.com>"
+  ],
+  "description": "",
+  "main": "jquery.nestable.js",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

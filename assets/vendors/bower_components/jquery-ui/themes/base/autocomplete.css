@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * jQuery UI Autocomplete 1.12.0
  * http://jqueryui.com
@@ -14,3 +15,21 @@
 	left: 0;
 	cursor: default;
 }
+=======
+/*!
+ * jQuery UI Autocomplete 1.12.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/autocomplete/#theming
+ */
+.ui-autocomplete {
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: default;
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

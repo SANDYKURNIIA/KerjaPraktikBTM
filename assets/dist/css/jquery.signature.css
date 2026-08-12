@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Styles for signature plugin v1.2.0. */
 .kbw-signature {
 	display: inline-block;
@@ -7,3 +8,14 @@
 .kbw-signature-disabled {
 	opacity: 0.35;
 }
+=======
+/* Styles for signature plugin v1.2.0. */
+.kbw-signature {
+	display: inline-block;
+	border: 1px solid #a0a0a0;
+	-ms-touch-action: none;
+}
+.kbw-signature-disabled {
+	opacity: 0.35;
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

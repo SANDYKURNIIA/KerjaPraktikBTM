@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 /// Programatically determines whether a color is light or dark.
@@ -19,3 +20,26 @@
 
   @return $-local-lightness > 0.6;
 }
+=======
+@charset "UTF-8";
+
+/// Programatically determines whether a color is light or dark.
+///
+/// @link http://robots.thoughtbot.com/closer-look-color-lightness
+///
+/// @param {Color (Hex)} $color
+///
+/// @example scss - Usage
+///   is-light($color)
+///
+/// @return {Bool}
+
+@function is-light($hex-color) {
+  $-local-red: red(rgba($hex-color, 1));
+  $-local-green: green(rgba($hex-color, 1));
+  $-local-blue: blue(rgba($hex-color, 1));
+  $-local-lightness: ($-local-red * 0.2126 + $-local-green * 0.7152 + $-local-blue * 0.0722) / 255;
+
+  @return $-local-lightness > 0.6;
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719

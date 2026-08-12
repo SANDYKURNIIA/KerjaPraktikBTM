@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "jquery-wizard.js",
   "version": "0.3.1",
@@ -31,3 +32,38 @@
     "matchMedia"
   ]
 }
+=======
+{
+  "name": "jquery-wizard.js",
+  "version": "0.3.1",
+  "description": "jquery wizard is a lightweight jquery plugin for creating step-by-step wizards",
+  "main": "dist/jquery-wizard.js",
+  "copyright": "amazingSurge",
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "demo",
+    "libs",
+    "package.json",
+    "Gruntfile.js",
+    "tests"
+  ],
+  "homepage": "https://github.com/amazingSurge/jquery-wizard",
+  "authors": [
+    "amazingSurge <amazingSurge@yahoo.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "javascript",
+    "breakpoints",
+    "bootstrap",
+    "media query",
+    "matchMedia"
+  ]
+}
+>>>>>>> 6f5424233f04375feed0c12782e2d1ba4c144719
