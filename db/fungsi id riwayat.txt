@@ -1,0 +1,9 @@
+
+DELIMITER $$
+CREATE FUNCTION `generate_id_riwayat`() RETURNS VARCHAR(50)
+BEGIN
+   DECLARE tbl_kamar INT;
+   select case when max(id_riwayat) is null then 1 else (max(id_riwayat)+1) end as id into tbl_kamar from riwayat_kamar;
+   return tbl_kamar;
+END$$
+DELIMITER $$

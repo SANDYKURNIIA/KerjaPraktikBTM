@@ -1,0 +1,9 @@
+DELIMITER $$
+CREATE FUNCTION `generate_id_erm`() RETURNS varchar(50)
+BEGIN
+   DECLARE tbl_erm INT;
+   select case when max(id_erm) is null then 1 else (max(id_erm)+1) end as id into tbl_erm from erm;
+   return tbl_erm;
+END $$
+DELIMITER $$
+

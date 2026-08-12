@@ -1,0 +1,1 @@
+Semua data view, function berada di db
