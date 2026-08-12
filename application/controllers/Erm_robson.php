@@ -48,6 +48,10 @@ class Erm_robson extends CI_Controller
         $id_pelayanan = $this->input->post('id_pelayanan');
         $id_histori = $this->input->post('id_histori');
 
+        // Ambil data staff yang sedang login
+        $staff = $this->session->userdata('data_auth');
+        $id_staff = $staff->id_staff;
+
         // Validasi input
         $this->form_validation->set_rules('gravida', 'Gravida', 'required|numeric');
         $this->form_validation->set_rules('paritas', 'Paritas', 'required|numeric');
@@ -72,6 +76,7 @@ class Erm_robson extends CI_Controller
         $save_data = [
             'id_pelayanan' => $id_pelayanan,
             'id_histori' => $id_histori,
+            'id_staff' => $id_staff,
         ];
 
         // A. Identitas Pasien
