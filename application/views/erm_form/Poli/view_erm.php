@@ -354,12 +354,12 @@
                                         Formulir Layanan Rehabilitasi Medik
                                     </a>
                                     <a class="btn btn-success col-md-5 hd_harian" href="<?php echo base_url('Pemantauan_pelaksanaan_hemodialis_harian/form/')  . $id_pel .  '/' . $id_his .  '/' . $jenis_pelayanan; ?>">
-                                        Pemantauan Pelaksanaan Hemodialisis
+                                        Hemodialisis & Intradialitik
                                     </a>
 
-                                    <a class="btn btn-success col-md-5 intradialitik" href="<?= base_url('Erm_pemantauan_intradialitik/form/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>">
+                                    <!-- <a class="btn btn-success col-md-5 intradialitik" href="<?= base_url('Erm_pemantauan_intradialitik/form/') . $id_pelayanan .  '/' . $id_histori .  '/' . $jenis_pelayanan; ?>">
                                         Pemantauan Intradialitik
-                                    </a>
+                                    </a> -->
 
                                     <a class="btn btn-success col-md-5 form_ekg"
                                         href="<?= base_url('Erm_form_ekg/form/') . $id_pelayanan . '/' . $id_histori . '/' . $jenis_pelayanan; ?>">
