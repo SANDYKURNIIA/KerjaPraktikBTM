@@ -74,11 +74,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn' => '',
-    'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => 'dbsibatik',
+    'dsn'      => '',
+    'hostname' => getenv('DB_HOST'),
+    'username' => getenv('DB_USER'),
+    'password' => getenv('DB_PASSWORD'),
+    'database' => getenv('DB_DATABASE'),
     'port' => 3306, // <-- PASTIKAN BARIS INI ADA
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
