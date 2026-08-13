@@ -860,45 +860,83 @@ class M_Erm_poli extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function upsert_pemantauan($data)
-    {
-        $table = 'pemantauan_intradialitik';
+// Di M_Erm_poli.php - Perbaiki fungsi upsert_pemantauan
 
-        $this->db->where('id_pelayanan', $data['id_pelayanan']);
-        $this->db->where('tanggal', $data['tanggal']);
-        $q = $this->db->get($table);
+public function upsert_pemantauan($data)
+{
+    $table = 'pemantauan_intradialitik';
 
-        $this->db->trans_start();
+    // Cek apakah data sudah ada berdasarkan id_pelayanan dan tanggal
+    $this->db->where('id_pelayanan', $data['id_pelayanan']);
+    $this->db->where('tanggal', $data['tanggal']);
+    $q = $this->db->get($table);
 
-        if ($q->num_rows() > 0) {
-            $existing_id = $q->row()->id;
+    $this->db->trans_start();
 
-            $this->db->where('id', $existing_id);
-            $this->db->update($table, $data);
+    if ($q->num_rows() > 0) {
+        // UPDATE data yang sudah ada
+        $existing_id = $q->row()->id;
+        
+        // Hapus created_at karena tidak perlu diupdate
+        unset($data['created_at']);
+        
+        // Tambahkan updated_at
+        $data['updated_at'] = date('Y-m-d H:i:s');
 
-            $result = [
-                'status' => true,
-                'action' => 'update',
-                'id'     => $existing_id
-            ];
-        } else {
-            $this->db->insert($table, $data);
+        $this->db->where('id', $existing_id);
+        $this->db->update($table, $data);
 
-            $result = [
-                'status' => true,
-                'action' => 'insert',
-                'id'     => $this->db->insert_id()
-            ];
-        }
+        $result = [
+            'status' => true,
+            'action' => 'update',
+            'id'     => $existing_id,
+            'message' => 'Data berhasil diupdate'
+        ];
+    } else {
+        // INSERT data baru
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $this->db->trans_complete();
+        $this->db->insert($table, $data);
 
-        if ($this->db->trans_status() === FALSE) {
-            return ['status' => false, 'message' => 'Gagal menyimpan ke database (Transaction Error).'];
-        }
-
-        return $result;
+        $result = [
+            'status' => true,
+            'action' => 'insert',
+            'id'     => $this->db->insert_id(),
+            'message' => 'Data berhasil disimpan'
+        ];
     }
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+        return ['status' => false, 'message' => 'Gagal menyimpan ke database.'];
+    }
+
+    return $result;
+}
+    public function insert_pemantauan($data)
+{
+    // Tambahkan created_at dan updated_at
+    $data['created_at'] = date('Y-m-d H:i:s');
+    $data['updated_at'] = date('Y-m-d H:i:s');
+    
+    $this->db->insert('pemantauan_intradialitik', $data);
+    
+    if ($this->db->affected_rows() > 0) {
+        return [
+            'status' => true,
+            'message' => 'Data berhasil disimpan',
+            'id' => $this->db->insert_id(),
+            'action' => 'insert'
+        ];
+    } else {
+        return [
+            'status' => false,
+            'message' => 'Gagal menyimpan data'
+        ];
+    }
+}
 
     public function get_pemantauan($id_pelayanan, $tanggal)
     {
@@ -957,5 +995,169 @@ class M_Erm_poli extends CI_Model
         
         return $this->db->get()->row_array();
     }
+        // ==================== METHOD SBAR INTRADIALITIK ====================
+
+    /**
+     * Get data SBAR untuk tabel di halaman intradialitik
+     */
+    public function get_data_sbar($id_pelayanan, $id_history)
+    {
+        $this->db->select('
+            p.*,
+            pasien.nama as nama_pasien,
+            pelayanan.tgl_masuk
+        ');
+        $this->db->from('pemantauan_intradialitik p');
+        $this->db->join('pelayanan', 'pelayanan.id_pelayanan = p.id_pelayanan', 'left');
+        $this->db->join('pasien', 'pasien.no_rm = pelayanan.id_pasien', 'left');
+        $this->db->where('p.id_pelayanan', $id_pelayanan);
+        $this->db->where('p.id_history', $id_history);
+        $this->db->order_by('p.id', 'DESC');
+        
+        return $this->db->get()->result();
+    }
+
+    /**
+     * Get data SBAR by ID
+     */
+    public function get_sbar_by_id($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('pemantauan_intradialitik');
+        
+        if ($query->num_rows() > 0) {
+            $data = $query->row();
+            if (!empty($data->json_data)) {
+                $data->data_pemantauan = json_decode($data->json_data, true);
+            }
+            return $data;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Update data SBAR
+     */
+    public function update_sbar($id, $data)
+    {
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        $this->db->where('id', $id);
+        return $this->db->update('pemantauan_intradialitik', $data);
+    }
+
+    /**
+     * Delete data SBAR
+     */
+    public function delete_sbar($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('pemantauan_intradialitik');
+    }
+
+    /**
+     * Get data SBAR untuk cetak
+     */
+    public function get_sbar_for_print($id)
+    {
+        $this->db->select('
+            p.*,
+            pasien.nama as nama_pasien,
+            pasien.no_rm,
+            pasien.tgl_lahir,
+            pelayanan.tgl_masuk,
+            pelayanan.cara_bayar,
+            pelayanan.id_pasien
+        ');
+        $this->db->from('pemantauan_intradialitik p');
+        $this->db->join('pelayanan', 'pelayanan.id_pelayanan = p.id_pelayanan', 'left');
+        $this->db->join('pasien', 'pasien.no_rm = pelayanan.id_pasien', 'left');
+        $this->db->where('p.id', $id);
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) {
+            $data = $query->row();
+            if (!empty($data->json_data)) {
+                $data->data_pemantauan = json_decode($data->json_data, true);
+            }
+            return $data;
+        }
+        
+        return null;
+    }
+    /**
+ * Insert data pemantauan intradialitik
+ */
+public function insert_pemantauan_intradialitik($data)
+{
+    $data['created_at'] = date('Y-m-d H:i:s');
+    $data['updated_at'] = date('Y-m-d H:i:s');
+    
+    $this->db->insert('pemantauan_intradialitik', $data);
+    
+    if ($this->db->affected_rows() > 0) {
+        return [
+            'status' => true,
+            'message' => 'Data berhasil disimpan',
+            'id' => $this->db->insert_id(),
+            'action' => 'insert'
+        ];
+    }
+    return [
+        'status' => false,
+        'message' => 'Gagal menyimpan data'
+    ];
+}
+
+/**
+ * Update data pemantauan intradialitik
+ */
+public function update_pemantauan_intradialitik($id, $data)
+{
+    $data['updated_at'] = date('Y-m-d H:i:s');
+    
+    $this->db->where('id', $id);
+    $this->db->update('pemantauan_intradialitik', $data);
+    
+    if ($this->db->affected_rows() >= 0) {
+        return [
+            'status' => true,
+            'message' => 'Data berhasil diupdate',
+            'action' => 'update'
+        ];
+    }
+    return [
+        'status' => false,
+        'message' => 'Gagal mengupdate data'
+    ];
+}
+
+/**
+ * Get data by ID untuk edit
+ */
+public function get_pemantauan_intradialitik_by_id($id)
+{
+    $this->db->where('id', $id);
+    $query = $this->db->get('pemantauan_intradialitik');
+    
+    if ($query->num_rows() > 0) {
+        $data = $query->row();
+        if (!empty($data->json_data)) {
+            $data->data_pemantauan = json_decode($data->json_data, true);
+        }
+        return $data;
+    }
+    return null;
+}
+
+/**
+ * Delete data pemantauan intradialitik
+ */
+public function delete_pemantauan_intradialitik($id)
+{
+    $this->db->where('id', $id);
+    return $this->db->delete('pemantauan_intradialitik');
+}
 
 }

@@ -13,12 +13,51 @@ class Pemantauan_pelaksanaan_hemodialis_harian extends CI_Controller
 		$this->load->model('M_Pemantauan_hd');
 	}
 
-	public function form($id_pel, $id_his)
+	public function form($id_pel = null, $id_his = null)
 	{
-		$id_pelayanan = base64_decode(urldecode($id_pel));
-		$id_history = base64_decode(urldecode($id_his));
+		// Coba ambil dari parameter URL
+		$id_pelayanan = null;
+		$id_history = null;
+		
+		if (!empty($id_pel) && !empty($id_his)) {
+			// Decode dari base64 (format lama)
+			$id_pelayanan = base64_decode(urldecode($id_pel));
+			$id_history = base64_decode(urldecode($id_his));
+		}
+		
+		// Jika kosong, coba dari GET parameter
+		if (empty($id_pelayanan) || empty($id_history)) {
+			$id_pelayanan = $this->input->get('id_pelayanan');
+			$id_history = $this->input->get('id_history');
+		}
+		
+		// Jika masih kosong, coba dari URL segment
+		if (empty($id_pelayanan)) {
+			$id_pelayanan = $this->uri->segment(3);
+			if (!empty($id_pelayanan)) {
+				$id_pelayanan = base64_decode(urldecode($id_pelayanan));
+			}
+		}
+		if (empty($id_history)) {
+			$id_history = $this->uri->segment(4);
+			if (!empty($id_history)) {
+				$id_history = base64_decode(urldecode($id_history));
+			}
+		}
+		
+		// Validasi akhir
+		if (empty($id_pelayanan) || empty($id_history)) {
+			show_error('Parameter id_pelayanan dan id_history diperlukan.', 400);
+			return;
+		}
 
 		$selectPasien = $this->M_Erm_poli->selectDataPasienIGDby_id($id_pelayanan, $id_history);
+		
+		if (!$selectPasien) {
+			show_error('Data pasien tidak ditemukan.', 404);
+			return;
+		}
+		
 		$staff = $this->session->userdata('data_auth');
 		$page_data['pasien'] = $selectPasien;
 		$page_data['nama'] = $selectPasien->nama;
